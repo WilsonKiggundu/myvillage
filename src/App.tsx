@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {ToastContainer} from "react-toastify";
+import ContentSwitch from "./modules/ContentSwitch";
+import Splash from "./modules/login/Splash";
+import {useSelector} from 'react-redux'
+import LoaderDialog from "./components/LoaderDialog";
+import Home from "./modules/home/Home";
+import FrontLayout from "./components/layout/FrontLayout";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App: React.FC = () => {
+  const coreState: any = useSelector((state: any) => state.core)
+
+  const {isLoadingUser, user, globalLoader} = coreState
+  if (isLoadingUser) {
+    return <Splash/>
+  } else {
+    return <Router>
+      <ToastContainer/>
+      <>
+        {<LoaderDialog open={globalLoader}/>}
+        {!user ?
+            <ContentSwitch/> :
+            <Switch>
+              <FrontLayout>
+                <Route exact component={Home}/>
+              </FrontLayout>
+            </Switch>
+        }
+      </>
+    </Router>;
+  }
 }
 
 export default App;

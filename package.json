@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -10,9 +12,23 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "clsx": "^1.1.1",
+    "date-fns": "^2.16.1",
+    "fontsource-roboto": "^3.0.3",
+    "jsonpath": "^1.0.2",
+    "oidc-client": "^1.10.1",
     "react": "^16.13.1",
+    "react-confirm": "^0.1.20",
     "react-dom": "^16.13.1",
+    "react-pace-progress": "^2.0.0",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-toastify": "^6.0.8",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "superagent": "^6.1.0",
     "typescript": "~3.7.2"
   },
   "scripts": {
@@ -35,5 +51,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/jsonpath": "^0.2.0",
+    "@types/react-confirm": "^0.1.4",
+    "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/redux-logger": "^3.0.8",
+    "@types/superagent": "^4.1.10",
+    "formik": "^2.1.7"
   }
 }
