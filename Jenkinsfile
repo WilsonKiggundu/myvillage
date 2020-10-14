@@ -27,7 +27,6 @@ pipeline {
             }
             post {
                 success {
-                    // Notify if the upload succeeded
                     mail to: 'builds@innovationvillage.co.ug', from: 'TIV DEVOPS <noreply@devops.innovationvillage.co.ug>', subject: '[MYVILLAGE-UI-TEST] New build available!', body: 'Check it out!'
                 }
             }
