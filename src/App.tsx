@@ -19,14 +19,7 @@ const App: React.FC = () => {
       <ToastContainer/>
       <>
         {<LoaderDialog open={globalLoader}/>}
-        {!user ?
-            <ContentSwitch/> :
-            <Switch>
-              <FrontLayout>
-                <Route exact component={Home}/>
-              </FrontLayout>
-            </Switch>
-        }
+        <ContentSwitch/>
       </>
     </Router>;
   }

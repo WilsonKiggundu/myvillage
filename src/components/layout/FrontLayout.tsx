@@ -2,9 +2,11 @@ import React from "react";
 import {useLayoutStyles} from "./styles";
 import Paper from "@material-ui/core/Paper";
 import ApplicationBar from "../appBar/AppBar";
-import {Container} from "@material-ui/core";
+import {Container, createStyles, Theme} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import {Wrapper} from "./Wrapper";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 
 interface IProps {
     title?: string
@@ -12,9 +14,18 @@ interface IProps {
     mobilePadding?: boolean
 }
 
+const footerStyles = makeStyles((theme: Theme) => ({
+        footer: {
+            position: 'absolute',
+        }
+    })
+)
+
 function FrontLayout(props: IProps) {
     const classes = useLayoutStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const styles = footerStyles()
 
     return (
         <>
@@ -24,9 +35,9 @@ function FrontLayout(props: IProps) {
                     {props.children}
                 </main>
             </div>
-            <div className={classes.footer}>
+            <div className={clsx(classes.footer, styles.footer)}>
                 <Divider />
-                <Wrapper bgColor="#3C3C3C" textColor="white" padding={25}>
+                <Wrapper bgColor="#f1f1f1" textColor="#3c3c3c" padding={25}>
                     <footer>&copy; The Innovation Village Kampala</footer>
                 </Wrapper>
             </div>

@@ -6,6 +6,8 @@ import NavMenu from "./NavMenu";
 import {Typography} from "@material-ui/core";
 import ApplicationBar from "../appBar/AppBar";
 import Divider from "@material-ui/core/Divider";
+import clsx from "clsx";
+import {Wrapper} from "./Wrapper";
 
 interface IProps {
     title?: string
@@ -22,16 +24,22 @@ function MainLayout(props: IProps) {
     }
 
     return (
-        <div className={classes.root}>
-            <CssBaseline/>
-            <ApplicationBar />
-            <main className={classes.content}>
-                <div className={classes.toolbar}/>
-                {props.children}
-            </main>
-            <Divider />
-            <footer>Here</footer>
-        </div>
+        <>
+            <div className={classes.root}>
+                <CssBaseline/>
+                <ApplicationBar />
+                <main className={classes.content}>
+                    <div className={classes.toolbar}/>
+                    {props.children}
+                </main>
+            </div>
+            <div className={clsx(classes.footer)}>
+                <Divider />
+                <Wrapper bgColor="#f1f1f1" textColor="#3c3c3c" padding={25}>
+                    <footer>&copy; The Innovation Village</footer>
+                </Wrapper>
+            </div>
+        </>
     );
 }
 
