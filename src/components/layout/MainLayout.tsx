@@ -8,6 +8,7 @@ import ApplicationBar from "../appBar/AppBar";
 import Divider from "@material-ui/core/Divider";
 import clsx from "clsx";
 import {Wrapper} from "./Wrapper";
+import Container from "@material-ui/core/Container";
 
 interface IProps {
     title?: string
@@ -27,10 +28,14 @@ function MainLayout(props: IProps) {
         <>
             <div className={classes.root}>
                 <CssBaseline/>
-                <ApplicationBar />
+                <header>
+                    <ApplicationBar />
+                </header>
                 <main className={classes.content}>
                     <div className={classes.toolbar}/>
-                    {props.children}
+                    <Container style={{paddingTop: 25, paddingBottom: 25}} fixed>
+                        {props.children}
+                    </Container>
                 </main>
             </div>
             <div className={clsx(classes.footer)}>

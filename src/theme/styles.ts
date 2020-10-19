@@ -18,5 +18,9 @@ export const globalStyles = makeStyles((theme) => ({
 
     capitalize: {
         textTransform: 'none'
+    },
+
+    bottomMargin: {
+        marginBottom: 50
     }
 }))

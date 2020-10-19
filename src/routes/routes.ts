@@ -4,6 +4,7 @@ export const Routes = ({
     profiles: {
         single: "/profiles/",
         startups: "/profiles/startups",
+        singleStartup: "/profiles/startups/:id",
         investors: "/profiles/investors",
         entrepreneurs: "/profiles/entrepreneurs"
     },

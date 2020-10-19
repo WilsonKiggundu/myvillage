@@ -26,5 +26,5 @@ export const Startups = [
         "logo": "/assets/images/kain-logo.png",
         "interests": ["Meetups", "Technology", "Funding", "Talent"],
         "category": "Manufacturing"
-    },
+    }
 ]
