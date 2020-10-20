@@ -1,4 +1,5 @@
 import {makeStyles} from "@material-ui/core/styles";
+import palette from "./palette";
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
@@ -21,6 +22,26 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     bottomMargin: {
-        marginBottom: 50
+        marginBottom: 20
+    },
+
+    rounderImage: {
+        borderRadius: '100%',
+        width: 150,
+        height: 150,
+        borderStyle: 'solid',
+        borderColor: 'white',
+        borderSize: 2
+    },
+
+    profilePhoto: {
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        maxHeight: 200,
+        borderRadius: '1%',
+        padding: 15,
+        textAlign: 'center',
+        //backgroundColor: palette.primary.main
     }
 }))

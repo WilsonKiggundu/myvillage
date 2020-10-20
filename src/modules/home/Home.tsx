@@ -127,10 +127,6 @@ function Home() {
                 </Container>
             </Wrapper>
 
-            <Wrapper textAlign="center" padding={0} bgColor="#FFFFFF">
-
-            </Wrapper>
-
             <Wrapper textAlign="center" textColor="white" bgColor={palette.secondary.dark}>
                 <Grid container>
                     <Grid item sm={2} md={3} />

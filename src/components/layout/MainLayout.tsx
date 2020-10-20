@@ -33,7 +33,7 @@ function MainLayout(props: IProps) {
                 </header>
                 <main className={classes.content}>
                     <div className={classes.toolbar}/>
-                    <Container style={{paddingTop: 25, paddingBottom: 25}} fixed>
+                    <Container fixed={false} style={{paddingTop: 25, paddingBottom: 25}}>
                         {props.children}
                     </Container>
                 </main>

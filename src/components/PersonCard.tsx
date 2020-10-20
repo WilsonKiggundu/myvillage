@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-interface IProps{
+interface IProps {
     name: string
     avatar: string
     id: string
@@ -19,14 +19,12 @@ interface IProps{
 const PersonCard = (props: IProps) => {
     return (
         <Card>
-            <CardActionArea>
-                <Avatar src={props.avatar} />
-                <CardContent>
-                    <Typography variant="h5" component="h5">
-                        {props.name}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
+            <Avatar src={props.avatar}/>
+            <CardContent>
+                <Typography variant="h5" component="h5">
+                    {props.name}
+                </Typography>
+            </CardContent>
             <CardActions></CardActions>
         </Card>
     )

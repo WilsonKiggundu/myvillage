@@ -49,7 +49,7 @@ const typography: TypographyOptions = {
         fontWeight: 500,
         fontSize: '14px',
         letterSpacing: '-0.05px',
-        lineHeight: '20px'
+        lineHeight: '10px'
     },
     subtitle1: {
         color: palette.text.primary,
