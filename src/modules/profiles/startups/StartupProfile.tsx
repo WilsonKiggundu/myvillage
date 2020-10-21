@@ -139,7 +139,7 @@ const StartupProfile = ({match}: any) => {
                                     subheader="Gulu . Jinja . Mbarara . Mbale . Ntinda"
                                 />
 
-                                <img style={{maxHeight: 300, width: '100%'}} src={coverPhoto} alt=""/>
+                                <img style={{width: '100%'}} src={coverPhoto} alt=""/>
 
                                 <CardContent>
                                     <Box>
@@ -161,7 +161,7 @@ const StartupProfile = ({match}: any) => {
                                         </Button>
                                         <Button className={clsx(classes.noShadow)}
                                                 style={{marginLeft: 10}}
-                                                color="primary"
+                                                color="secondary"
                                                 size="small"
                                                 variant="outlined">
                                             Send message
