@@ -1,5 +1,6 @@
 import {makeStyles} from "@material-ui/core/styles";
-import palette from "./palette";
+import deepOrange from "@material-ui/core/colors/deepOrange";
+import deepPurple from "@material-ui/core/colors/deepPurple";
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
@@ -7,6 +8,37 @@ export const globalStyles = makeStyles((theme) => ({
     },
     noShadow: {
         boxShadow: 'none'
+    },
+
+    borderless: {
+      border: 0
+    },
+
+    orange: {
+        color: theme.palette.getContrastText(deepOrange[500]),
+        backgroundColor: deepOrange[500],
+    },
+
+    purple: {
+        color: theme.palette.getContrastText(deepPurple[500]),
+        backgroundColor: deepPurple[500],
+    },
+
+    center: {
+        margin: 'auto'
+    },
+    centerAvatar: {
+        margin: 'auto  auto 10px auto',
+    },
+
+    largeAvatar: {
+        width: theme.spacing(10),
+        height: theme.spacing(10),
+    },
+
+    mediumAvatar: {
+        width: theme.spacing(8),
+        height: theme.spacing(8),
     },
 
     flex: {
@@ -43,5 +75,13 @@ export const globalStyles = makeStyles((theme) => ({
         padding: 15,
         textAlign: 'center',
         //backgroundColor: palette.primary.main
-    }
+    },
+
+    tile: {
+        borderRadius: 0
+    },
+
+    flat: {
+        boxShadow: 'none'
+    },
 }))

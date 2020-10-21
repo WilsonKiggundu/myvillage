@@ -1,6 +1,5 @@
 import React from "react";
 import {Card, createStyles, Theme} from "@material-ui/core";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
@@ -10,12 +9,14 @@ import {globalStyles} from "../../../theme/styles";
 import clsx from "clsx";
 import Chip from "@material-ui/core/Chip";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import CardMedia from "@material-ui/core/CardMedia";
 import {useHistory} from 'react-router-dom';
+import Avatar from "@material-ui/core/Avatar";
+import ProfileRating from "../../../components/ProfileRating";
 
 interface IProps {
     id: string
     name: string
+    details: string
     interests?: [string]
     category?: string
     logo?: string
@@ -30,6 +31,12 @@ const useStyles = makeStyles((theme: Theme) =>
             '& > *': {
                 margin: theme.spacing(0.5),
             },
+        },
+
+        truncate: {
+            height: 50,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
         },
 
         tile: {
@@ -56,42 +63,31 @@ const StartupCard = (props: IProps) => {
     }
 
     return (
-        <Card style={{textAlign: "center", padding: 10}}
+        <Card style={{textAlign: "center", padding: 20}}
               className={clsx(classes.flat, classes.tile)}>
-            <CardActionArea style={{height: 300}}>
-                <CardMedia
-                    image="../../assets/images/tiv-logo.png"
-                    title="Contemplative Reptile"
-                />
                 <CardContent>
-                    <Typography variant="h5" style={{textAlign: "center"}}>
+                    <Avatar className={clsx(styles.largeAvatar, styles.orange, styles.centerAvatar)} src={props.logo}/>
+                    <Typography noWrap variant="h5" className={classes.truncate} style={{textAlign: "center"}}>
                         {props.name}
-                        <Typography paragraph>{props.category}</Typography>
                     </Typography>
-                    <div className={classes.root}>
-                        {props.interests?.map((m, i) => <Chip key={i} size="small" label={m} variant="outlined"/>)}
-                    </div>
+                    <Typography component="div">
+                        <Chip size="small" label={props.category} />
+                    </Typography>
+                    <Typography style={{marginTop: 25}} className={classes.truncate}>
+                        {props.details}
+                    </Typography>
+
+                    <ProfileRating rating={3} />
                 </CardContent>
-                <CardActions style={{position: "absolute", width:'100%', bottom: 0}}>
+                <CardActions>
                         <Button
-                            className={clsx(classes.flat, classes.tile, styles.flex)}
-                            href={Routes.profiles.startups + '/' + props.id}
-                            size="small"
+                            className={clsx(styles.flex, styles.noShadow)}
                             onClick={() => handleClick(props.id)}
                             variant="outlined"
-                            color="secondary">
-                             Profile
+                            color="primary">
+                             <strong>View Profile</strong>
                         </Button>
-                        <Button variant="contained"
-                                className={clsx(classes.flat, classes.tile, styles.flex)}
-                                href={Routes.profiles.startups + '/' + props.id}
-                                size="small"
-                                color="primary">
-                            Connect
-                        </Button>
-
                 </CardActions>
-            </CardActionArea>
         </Card>
     )
 }

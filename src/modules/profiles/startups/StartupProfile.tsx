@@ -1,40 +1,26 @@
 import React from "react";
 import {globalStyles} from "../../../theme/styles"
-import {Container, createStyles, Theme, ListItemIcon} from "@material-ui/core";
+import {Container, createStyles, Theme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
-import Alert from "@material-ui/lab/Alert";
-import {AlertTitle} from "@material-ui/lab";
-import CalendarIcon from "@material-ui/icons/CalendarToday";
-import {CalendarToday, Edit, LocationOn} from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from '@material-ui/icons/Edit';
-import CloseIcon from "@material-ui/icons/Cancel";
 import {Awards, Contacts, Interests} from "../../../data/mockData";
 import Chip from "@material-ui/core/Chip";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Avatar from "@material-ui/core/Avatar";
 import clsx from "clsx";
 import palette from "../../../theme/palette";
-import List from "@material-ui/core/List";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import InfoIcon from '@material-ui/icons/Info';
 import Button from "@material-ui/core/Button";
 import AwardsTimeline from "../../../components/AwardsTimeline";
 import ContactCard from "../../../components/ContactCard";
 import Box from "@material-ui/core/Box";
-
-interface IProps {
-    id: string
-    children: any
-    interests?: any
-}
+import ProfileRating from "../../../components/ProfileRating";
+import CardMedia from "@material-ui/core/CardMedia";
+import IconButton from "@material-ui/core/IconButton";
+import CardHeader from "@material-ui/core/CardHeader";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,7 +47,10 @@ const useStyles = makeStyles((theme: Theme) =>
             width: theme.spacing(15),
             height: theme.spacing(15),
         },
-
+        media: {
+            height: 0,
+            paddingTop: '56.25%', // 16:9
+        },
         avatar: {
             backgroundColor: palette.primary.main
         }
@@ -71,12 +60,13 @@ const useStyles = makeStyles((theme: Theme) =>
 const StartupProfile = ({match}: any) => {
     const classes = globalStyles()
     const styles = useStyles();
-    const {id} = match.params;
 
     const interests = Interests;
     const contacts = Contacts;
     const awards = Awards;
 
+    const avatar = "https://innovationvillage.co.ug/wp-content/uploads/2020/07/new-logo-white-02-1.png";
+    const coverPhoto = "https://picsum.photos/1920/1080?image=20"
     const placeHolder = "https://picsum.photos/500/500"
     let products = []
 
@@ -85,13 +75,9 @@ const StartupProfile = ({match}: any) => {
         products.push(`${placeHolder}?image=${i * 5 + 10}`)
     }
 
-    const handleRemoveInterest = (id: string) => {
-
-    }
-
     return (
         <div className={classes.root}>
-            <Container fixed>
+            <Container maxWidth="lg">
                 <Grid spacing={2} container justify="flex-start">
                     <Box clone order={{xs: 2, sm: 1}}>
                         <Grid item xs={12} md={4} lg={3} sm={12}>
@@ -101,11 +87,13 @@ const StartupProfile = ({match}: any) => {
                                         <Avatar className={clsx(styles.largeAvatar, styles.avatar)}
                                                 style={{}}
                                                 variant="circle"
-                                                src="https://innovationvillage.co.ug/wp-content/uploads/2020/07/new-logo-white-02-1.png"/>
+                                                src={avatar}/>
                                     </div>
 
                                     <Typography variant="h6">The Innovation Village Kampala</Typography>
                                     <Typography paragraph>Gulu . Jinja . Mbarara . Mbale . Ntinda</Typography>
+
+                                    <ProfileRating rating={3} />
 
                                     <Divider />
 
@@ -116,10 +104,19 @@ const StartupProfile = ({match}: any) => {
 
                                     <Divider />
 
-                                    <Typography style={{marginTop: 15}}>
+                                    <Typography style={{margin: '15px 0'}}>
                                         <strong>Address</strong> <br/>
                                         <span>Ntinda Complex <br /> Block B&C - 3rd Floor</span>
                                     </Typography>
+
+                                    <Divider />
+
+                                    <Button variant="outlined"
+                                            target="_blank"
+                                            color="primary"
+                                            href="https://www.innovationvillage.co.ug" style={{marginTop: 15}}>
+                                        <strong>Visit Website</strong>
+                                    </Button>
 
                                 </CardContent>
                             </Card>
@@ -128,23 +125,34 @@ const StartupProfile = ({match}: any) => {
                     <Box clone order={{xs: 1, sm: 2}}>
                         <Grid item xs={12} sm={12} md={8} lg={9}>
                             <Card variant="outlined" className={classes.bottomMargin}>
-                                <CardContent>
-                                    <Typography component="h2" variant="h4">
-                                        The Innovation Village Kampala
-                                    </Typography>
-                                    <Typography style={{paddingTop: 15, paddingBottom: 15}}
-                                                variant="h6">
-                                        Gulu . Jinja . Mbarara . Mbale . Ntinda
-                                    </Typography>
-                                    <Typography paragraph>
-                                        Quisque eu eleifend sapien. Sed et eros non nibh eleifend tempus. Sed rhoncus
-                                        mauris in tellus viverra, in molestie turpis feugiat. Fusce massa massa,
-                                        convallis ut elit ac, dictum porta odio. Aenean viverra neque id turpis maximus
-                                        cursus. Etiam vitae mi eros. Duis vestibulum orci ex, in vulputate leo iaculis
-                                        eget. Suspendisse suscipit tortor sit amet neque.
-                                    </Typography>
 
-                                    <Typography>
+                                <CardHeader
+                                    avatar={
+                                        <Avatar src={avatar} aria-label="recipe" className={styles.avatar} />
+                                    }
+                                    action={
+                                        <IconButton aria-label="settings">
+                                            <MoreVertIcon />
+                                        </IconButton>
+                                    }
+                                    title="The Innovation Village Kampala"
+                                    subheader="Gulu . Jinja . Mbarara . Mbale . Ntinda"
+                                />
+
+                                <img style={{maxHeight: 300, width: '100%'}} src={coverPhoto} alt=""/>
+
+                                <CardContent>
+                                    <Box>
+                                        <Typography variant="body2">
+                                            Quisque eu eleifend sapien. Sed et eros non nibh eleifend tempus. Sed rhoncus
+                                            mauris in tellus viverra, in molestie turpis feugiat. Fusce massa massa,
+                                            convallis ut elit ac, dictum porta odio. Aenean viverra neque id turpis maximus
+                                            cursus. Etiam vitae mi eros. Duis vestibulum orci ex, in vulputate leo iaculis
+                                            eget. Suspendisse suscipit tortor sit amet neque.
+                                        </Typography>
+                                    </Box>
+
+                                    <Box mt={2}>
                                         <Button className={clsx(classes.noShadow)}
                                                 color="primary"
                                                 size="small"
@@ -158,7 +166,7 @@ const StartupProfile = ({match}: any) => {
                                                 variant="outlined">
                                             Send message
                                         </Button>
-                                    </Typography>
+                                    </Box>
 
                                 </CardContent>
                             </Card>
@@ -171,8 +179,9 @@ const StartupProfile = ({match}: any) => {
                                         {interests ? interests.map(i =>
                                             <Chip
                                                 label={i.category}
-                                                deleteIcon={<CloseIcon/>}
-                                                onDelete={() => handleRemoveInterest(i.id)}
+                                                key={i.id}
+                                                //deleteIcon={<CloseIcon/>}
+                                                //onDelete={() => handleRemoveInterest(i.id)}
                                                 clickable
                                                 color="secondary"
                                                 variant="default"/>) : ""}
@@ -184,12 +193,12 @@ const StartupProfile = ({match}: any) => {
                             <Card variant="outlined" className={classes.bottomMargin}>
                                 <CardContent>
                                     <Typography style={{paddingTop: 15, paddingBottom: 15}}
-                                                variant="h6">Stuff we make.</Typography>
+                                                variant="h6">Our work.</Typography>
 
                                     <Grid container spacing={2}>
-                                        {products ? products.map(p => (
-                                            <Grid item xs={6} sm={3} md={4}>
-                                                <img style={{width: '100%', height:'auto'}} src={p}/>
+                                        {products ? products.map((p, index) => (
+                                            <Grid key={index} item xs={6} sm={3} md={4}>
+                                                <img style={{width: '100%', height:'auto'}} src={p} alt={p}/>
                                             </Grid>
                                         )) : ""}
                                     </Grid>
@@ -214,7 +223,7 @@ const StartupProfile = ({match}: any) => {
                                         <Grid container spacing={2}>
                                             {
                                                 contacts.map(contact => (
-                                                    <Grid item xs={12} sm={6} md={4}>
+                                                    <Grid key={contact.id} item xs={12} sm={6} md={4}>
                                                         <ContactCard {...contact}/>
                                                     </Grid>
                                                 ))

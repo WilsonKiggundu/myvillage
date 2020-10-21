@@ -1,31 +1,19 @@
 import React from "react";
-import ApplicationBar from "../../components/appBar/AppBar";
 import {useStyles} from "./styles";
-import {Paper} from "@material-ui/core";
 import {useLayoutStyles} from "../../components/layout/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import {services} from "../../data/services";
-import {baseUrl} from "../../data/constants";
-import MenuIcon from "@material-ui/icons/Menu"
-import LinkageIcon from "@material-ui/icons/Link"
-import MoneyIcon from "@material-ui/icons/MoneyRounded";
-import TukoleLogo from "../../assets/images/tukole-logo.png";
 import StartAStartup from "../../assets/images/start-a-startup.png";
-import KainLogo from "../../assets/images/kain-logo.png";
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import BusinessIcon from '@material-ui/icons/Business';
 import WorkIcon from "@material-ui/icons/Work";
 import Grid from "@material-ui/core/Grid";
 import {Wrapper} from "../../components/layout/Wrapper";
 import AuthService from "../auth/AuthService";
-import {ReactComponent as TivJourney} from "../../assets/images/TIV-Journey-Updated.svg"
 import {Stats} from "../../components/Stats";
-import {colors} from "@material-ui/core";
 import {PeopleOutline} from "@material-ui/icons";
 import palette from "../../theme/palette";
-import Divider from "@material-ui/core/Divider";
 
 interface IStat {
     title: string
@@ -157,7 +145,7 @@ function Home() {
             </Wrapper>
 
             <Wrapper bgColor="#f1f1f1" textAlign="center">
-                <img style={{width: '75%'}} src={StartAStartup}/>
+                <img style={{width: '75%'}} src={StartAStartup} alt="How to start a startup"/>
             </Wrapper>
         </div>
     )

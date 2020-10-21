@@ -46,7 +46,8 @@ export const useLayoutStyles = makeStyles((theme: Theme) =>
         },
         body: {
             backgroundColor: grey[50],
-            padding: theme.spacing(2),
+            padding: theme.spacing(0),
+            margin: theme.spacing(0),
             [theme.breakpoints.only('xs')]: {
                 padding: 0,
             },
@@ -101,7 +102,6 @@ export const useLayoutStyles = makeStyles((theme: Theme) =>
         },
 
         footer: {
-            backgroundColor: grey[50],
             width: "100%",
             flexGrow: 1,
             textAlign: "center"

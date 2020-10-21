@@ -3,32 +3,23 @@ import {
     AppBar,
     Badge,
     Button,
-    colors,
-    createStyles, Divider, Drawer,
+    Divider, Drawer,
     InputBase,
-    Theme,
     Typography,
-    useTheme,
-    withStyles
+    useTheme
 } from "@material-ui/core";
 import Toolbar from "@material-ui/core/Toolbar";
 import {appBarStyles} from "./styles";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import MailIcon from "@material-ui/icons/Mail";
-import {AccountCircle, Image} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import {globalStyles} from "../../theme/styles";
-import {useSelector} from "react-redux";
 import Container from "@material-ui/core/Container";
 import AuthService from "../../modules/auth/AuthService";
 import List from "@material-ui/core/List";
-import MuiListItem from "@material-ui/core/ListItem";
-import palette from "../../theme/palette";
 import ListItemText from "@material-ui/core/ListItemText";
-import {makeStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
@@ -52,8 +43,8 @@ export default function ApplicationBar() {
 
     return (
         <div className={classes.grow}>
-            <AppBar style={{boxShadow: 'none'}} position="fixed">
-                <Container maxWidth="lg" fixed>
+            <AppBar elevation={2} position="fixed">
+                <Container maxWidth="xl">
                     <Toolbar>
                         <IconButton
                             onClick={handleDrawerOpen}
@@ -64,6 +55,7 @@ export default function ApplicationBar() {
                         <Typography className={classes.title} variant="h5" noWrap>
                             MyVillage
                         </Typography>
+
                         {!authService.isAuthenticated() ?
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
@@ -87,13 +79,13 @@ export default function ApplicationBar() {
                                     <ListItemText primary="Startups" />
                                 </ListItemLink>
                                 <ListItemLink href="/profiles/investors">
-                                    <ListItemText primary="Investors" />
+                                    <ListItemText primary="People" />
                                 </ListItemLink>
                                 <ListItemLink href="/events">
                                     <ListItemText primary="Events" />
                                 </ListItemLink>
                                 <ListItemLink href="/work-in-tech">
-                                    <ListItemText primary="Work in Tech" />
+                                    <ListItemText primary="Jobs" />
                                 </ListItemLink>
                             </List>
                         </div>
@@ -103,7 +95,7 @@ export default function ApplicationBar() {
                                 <div className={classes.sectionDesktop}>
                                     <Button className={`${styles.noShadow} ${styles.capitalize} ${styles.bold}`}
                                             variant="contained"
-                                            style={{borderRadius: 25, marginLeft: 15, textTransform: "inherit"}}
+                                            style={{borderRadius: 30, marginLeft: 15, textTransform: "inherit"}}
                                             size="small"
                                             onClick={authService.signinRedirect}
                                             color="secondary">
