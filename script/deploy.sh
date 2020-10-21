@@ -5,5 +5,5 @@ ssh -p 50739 jenkins@test-server.innovationvillage.co.ug <<EOF
  git pull
  yarn install
  yarn run build
- exit
+ exit 
 EOF
