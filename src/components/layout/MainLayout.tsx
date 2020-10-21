@@ -5,6 +5,7 @@ import ApplicationBar from "../appBar/AppBar";
 import Divider from "@material-ui/core/Divider";
 import clsx from "clsx";
 import {Wrapper} from "./Wrapper";
+import palette from "../../theme/palette";
 
 interface IProps {
     title?: string
@@ -16,7 +17,7 @@ function MainLayout(props: IProps) {
     const classes = useLayoutStyles();
 
     return (
-        <div className={classes.body}>
+        <>
             <div className={classes.root}>
                 <CssBaseline/>
                 <header>
@@ -31,11 +32,11 @@ function MainLayout(props: IProps) {
             </div>
             <div className={clsx(classes.footer)}>
                 <Divider />
-                <Wrapper textColor="#3c3c3c" padding={25}>
+                <Wrapper textAlign="left" bgColor={palette.primary.light} textColor="#ffffff" padding={25}>
                     <footer>&copy; The Innovation Village</footer>
                 </Wrapper>
             </div>
-        </div>
+        </>
     );
 }
 

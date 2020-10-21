@@ -172,9 +172,17 @@ const StartupProfile = ({match}: any) => {
                             </Card>
 
                             <Card variant="outlined" className={classes.bottomMargin}>
+
+                                <CardHeader
+                                    action={
+                                        <IconButton aria-label="settings">
+                                            <MoreVertIcon />
+                                        </IconButton>
+                                    }
+                                    subheader="Stuff we are interested in"
+                                />
+
                                 <CardContent>
-                                    <Typography style={{paddingTop: 15, paddingBottom: 15}}
-                                                variant="h6">Stuff we are interested in.</Typography>
                                     <div className={styles.root}>
                                         {interests ? interests.map(i =>
                                             <Chip
@@ -192,8 +200,14 @@ const StartupProfile = ({match}: any) => {
 
                             <Card variant="outlined" className={classes.bottomMargin}>
                                 <CardContent>
-                                    <Typography style={{paddingTop: 15, paddingBottom: 15}}
-                                                variant="h6">Our work.</Typography>
+                                    <CardHeader
+                                        action={
+                                            <IconButton aria-label="settings">
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                        }
+                                        subheader="Our work"
+                                    />
 
                                     <Grid container spacing={2}>
                                         {products ? products.map((p, index) => (
@@ -208,17 +222,28 @@ const StartupProfile = ({match}: any) => {
 
                             <Card variant="outlined" className={classes.bottomMargin}>
                                 <CardContent>
-                                    <Typography style={{paddingTop: 15, paddingBottom: 15}}
-                                                variant="h6">Awards.</Typography>
+                                    <CardHeader
+                                        action={
+                                            <IconButton aria-label="settings">
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                        }
+                                        subheader="Awards"
+                                    />
                                     <AwardsTimeline awards={awards} />
                                 </CardContent>
                             </Card>
 
                             <Card variant="outlined" className={classes.bottomMargin}>
                                 <CardContent>
-                                    <Typography style={{paddingTop: 15, paddingBottom: 15}}
-                                                variant="h6">Get in touch.</Typography>
-
+                                    <CardHeader
+                                        action={
+                                            <IconButton aria-label="settings">
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                        }
+                                        subheader="Our people"
+                                    />
                                     {contacts ?
                                         <Grid container spacing={2}>
                                             {
