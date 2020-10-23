@@ -1,10 +1,23 @@
 import {makeStyles} from "@material-ui/core/styles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import deepPurple from "@material-ui/core/colors/deepPurple";
+import palette from "./palette";
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
       display: 'flex'
+    },
+
+    clickable: {
+        cursor: 'pointer',
+        background: palette.background.default,
+        '&:hover': {
+            background: palette.background.dark
+        }
+    },
+
+    rounded: {
+        borderRadius: 25
     },
 
     fullWidth: {
@@ -34,6 +47,11 @@ export const globalStyles = makeStyles((theme) => ({
     },
     centerAvatar: {
         margin: 'auto  auto 10px auto',
+    },
+
+    smallAvatar: {
+        width: theme.spacing(5),
+        height: theme.spacing(5),
     },
 
     largeAvatar: {
@@ -89,4 +107,12 @@ export const globalStyles = makeStyles((theme) => ({
     flat: {
         boxShadow: 'none',
     },
+
+    avatar: {
+        backgroundColor: palette.primary.main
+    },
+
+    textCenter: {
+        textAlign: 'center'
+    }
 }))

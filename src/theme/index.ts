@@ -5,6 +5,13 @@ import palette from "./palette";
 
 const font = "'Montserrat', sans-serif";
 const theme = createMuiTheme({
+    overrides: {
+      MuiCard: {
+          root: {
+              borderRadius: 8,
+          }
+      },
+    },
     typography: {
         fontFamily: font,
         button: {

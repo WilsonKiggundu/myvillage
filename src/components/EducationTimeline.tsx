@@ -20,61 +20,58 @@ const useStyles = makeStyles((theme) => ({
         padding: '6px 16px',
     },
     secondaryTail: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
     },
 }));
 
-interface IAward {
-    date: number
-    awardedBy: string
-    category?: string
-    details: string
-    location?: string
-    attachments?: []
+interface IQualification {
+    id: string
+    award: string
+    year: string
+    month: string
+    details?: string
+    institution: string
 }
 
 interface IProps {
-    awards?: any
+    qualifications?: any
 }
 
-export default function CustomizedTimeline(props: IProps) {
-    const classes = useStyles();
-    const styles = globalStyles();
+export default function EducationTimeline(props: IProps) {
+    const classes = globalStyles();
 
     return (
-        props.awards ? <Timeline align="left">
+        props.qualifications ? <Timeline align="left">
                 {
-                    props.awards.map((award: any, index: number) => (
+                    props.qualifications.map((award: any, index: number) => (
                         <TimelineItem key={index}>
-                            <TimelineOppositeContent style={{flex: 0.3, }}>
+                            <TimelineOppositeContent style={{flex: 0.3}}>
                                 <Typography>
                                     <small style={{color: '#cccccc'}}>
-                                        {award.date}
+                                        {award.month}
                                     </small>
                                 </Typography>
-                                <Typography style={{margin: 0}} variant="h5">
-                                    {award.awardedBy}
+                                <Typography style={{margin: 0}}>
+                                    {award.year}
                                 </Typography>
                             </TimelineOppositeContent>
                             <TimelineSeparator>
-                                <TimelineDot color="secondary">
+                                <TimelineDot className={classes.noShadow} color="secondary">
                                     <SchoolIcon/>
                                 </TimelineDot>
-                                {++index < props.awards.length ? <TimelineConnector/> : ""}
+                                {++index < props.qualifications.length ? <TimelineConnector/> : ""}
                             </TimelineSeparator>
                             <TimelineContent>
-                                <Paper elevation={0} className={classes.paper}>
-                                    <Typography>{award.details}</Typography>
-                                    <div style={{marginTop: 15}}>
+                                <Paper elevation={0} >
+                                    <Typography variant={"h6"} component={"h5"}>
+                                        {award.institution}
+                                    </Typography>
+                                    <Typography paragraph>{award.award}</Typography>
 
-                                        {award.category ? <Chip
-                                            style={{marginRight: 5}}
-                                            size="small"
-                                            label={award.category}/> : ""}
+                                    <Typography paragraph>
+                                        <small>{award.details}</small>
+                                    </Typography>
 
-                                        {award.location ? <Chip size="small" label={award.location}/> : ""}
-
-                                    </div>
                                 </Paper>
                             </TimelineContent>
                         </TimelineItem>
@@ -87,7 +84,7 @@ export default function CustomizedTimeline(props: IProps) {
                 <Button color="secondary"
                         variant="outlined"
                         style={{marginLeft: 15}}
-                        className={clsx(styles.noShadow)}>Boost your profile</Button>
+                        className={clsx(classes.noShadow)}>Boost your profile</Button>
             </Typography>
     );
 }

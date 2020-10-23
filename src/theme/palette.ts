@@ -26,8 +26,8 @@ const palette = {
         secondary: colors.blueGrey[600]
     },
     background: {
-        default: '#F4F6F8',
-        paper: white
+        default: colors.grey[100],
+        dark: colors.grey[200]
     }
 }
 

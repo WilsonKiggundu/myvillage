@@ -5,25 +5,24 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import ContactCard from "../../../components/ContactCard";
 import Container from "@material-ui/core/Container";
-import {Contacts} from "../../../data/mockData";
+import {PersonProfiles} from "../../../data/mockData";
 import Button from "@material-ui/core/Button";
 import {globalStyles} from "../../../theme/styles";
 import clsx from "clsx";
 import ProfileRating from "../../../components/ProfileRating";
 import Typography from "@material-ui/core/Typography";
 import grey from "@material-ui/core/colors/grey";
-import Avatar from "@material-ui/core/Avatar";
 import {Routes} from "../../../routes/routes";
 import { useHistory } from "react-router-dom";
 
 const People = () => {
 
     const styles = globalStyles()
-    const profiles: any[] = Contacts
+    const profiles: any[] = PersonProfiles
     const history = useHistory()
 
     const handleViewProfile = (id: string) => {
-        const url = `${Routes.profiles.person}/${id}`
+        const url = `${Routes.profiles.people}/${id}`
         history.push(url)
     }
 
