@@ -1,14 +1,14 @@
 import React from "react"
-import {Interests, Startups} from "../../../data/mockData";
+import {Interests, Startups as businesses} from "../../../data/mockData";
 import StartupCard from "./StartupCard";
 import {Grid} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import SelectDropdown from "../../../components/SelectDropdown";
 import Box from "@material-ui/core/Box";
 
-const StartupsList = () => {
+const Startups = () => {
 
-    const data: any[] = Startups;
+    const data: any[] = businesses;
 
     let categories: any[] = []
     Interests.forEach(m => categories.push({value: m.id, label: m.category}))
@@ -46,4 +46,4 @@ const StartupsList = () => {
     )
 }
 
-export default StartupsList
+export default Startups

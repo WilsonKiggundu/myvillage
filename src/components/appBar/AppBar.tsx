@@ -45,7 +45,7 @@ export default function ApplicationBar() {
         <div className={classes.grow}>
             <AppBar elevation={2} position="fixed">
                 <Container maxWidth="xl">
-                    <Toolbar>
+                    <Toolbar disableGutters>
                         <IconButton
                             onClick={handleDrawerOpen}
                             className={clsx(classes.menuButton, open && classes.hide)}
@@ -78,8 +78,11 @@ export default function ApplicationBar() {
                                 <ListItemLink href="/profiles/startups">
                                     <ListItemText primary="Startups" />
                                 </ListItemLink>
-                                <ListItemLink href="/profiles/investors">
+                                <ListItemLink href="/profiles/people">
                                     <ListItemText primary="People" />
+                                </ListItemLink>
+                                <ListItemLink href="/profiles/people">
+                                    <ListItemText primary="Corporates" />
                                 </ListItemLink>
                                 <ListItemLink href="/events">
                                     <ListItemText primary="Events" />

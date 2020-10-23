@@ -2,7 +2,8 @@ export const Routes = ({
     home: "/",
     feed: "/feed",
     profiles: {
-        single: "/profiles/",
+        person: "/profiles/people/:id",
+        people: "/profiles/people",
         startups: "/profiles/startups",
         singleStartup: "/profiles/startups/:id",
         investors: "/profiles/investors",

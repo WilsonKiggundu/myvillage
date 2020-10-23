@@ -62,7 +62,7 @@ export const appBarStyles = makeStyles((theme) => ({
     },
     menuButton: {
         display: 'none',
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(0),
         [theme.breakpoints.down('sm')]: {
             display: 'block'
         }

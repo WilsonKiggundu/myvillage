@@ -6,6 +6,11 @@ export const globalStyles = makeStyles((theme) => ({
     root: {
       display: 'flex'
     },
+
+    fullWidth: {
+      width: '100%'
+    },
+
     noShadow: {
         boxShadow: 'none'
     },
@@ -82,6 +87,6 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     flat: {
-        boxShadow: 'none'
+        boxShadow: 'none',
     },
 }))

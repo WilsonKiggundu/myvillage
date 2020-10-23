@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const StartupProfile = ({match}: any) => {
+const Startup = ({match}: any) => {
     const classes = globalStyles()
     const styles = useStyles();
 
@@ -270,4 +270,4 @@ const StartupProfile = ({match}: any) => {
     )
 }
 
-export default StartupProfile
+export default Startup
