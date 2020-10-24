@@ -30,12 +30,12 @@ function MainLayout(props: IProps) {
                     </div>
                 </main>
             </div>
-            <div className={clsx(classes.footer)}>
-                <Divider />
-                <Wrapper textAlign="left" bgColor={palette.primary.light} textColor="#ffffff" padding={25}>
-                    <footer>&copy; The Innovation Village</footer>
-                </Wrapper>
-            </div>
+            {/*<div className={clsx(classes.footer)}>*/}
+            {/*    <Divider />*/}
+            {/*    <Wrapper textAlign="left" bgColor={palette.primary.light} textColor="#ffffff" padding={25}>*/}
+            {/*        <footer>&copy; The Innovation Village</footer>*/}
+            {/*    </Wrapper>*/}
+            {/*</div>*/}
         </>
     );
 }

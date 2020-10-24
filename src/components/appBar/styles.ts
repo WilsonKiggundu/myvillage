@@ -1,7 +1,7 @@
 import {fade, makeStyles} from "@material-ui/core/styles";
 import {white} from "../../theme/custom-colors";
 
-const drawerWidth = 240
+const drawerWidth = 200
 
 export const appBarStyles = makeStyles((theme) => ({
     root: {
@@ -9,6 +9,7 @@ export const appBarStyles = makeStyles((theme) => ({
     },
 
     appBar: {
+        zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -39,11 +40,16 @@ export const appBarStyles = makeStyles((theme) => ({
     drawerHeader: {
         display: 'flex',
         alignItems: 'center',
-        padding: theme.spacing(0, 1),
+        // padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
+        // justifyContent: 'flex-end',
     },
+
+    drawerContainer: {
+        overflow: 'auto'
+    },
+
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),

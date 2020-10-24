@@ -90,7 +90,7 @@ function Home() {
                     </Grid>
                 </Grid>
             </Wrapper>
-            <Wrapper padding={50} textColor="#3C3C3C" >
+            <Wrapper padding={"50px 0"} textColor="#3C3C3C" >
                 <Container fixed>
                     <Grid spacing={5} container>
                         {stats.map(s => (
@@ -115,7 +115,7 @@ function Home() {
                 </Container>
             </Wrapper>
 
-            <Wrapper textAlign="center" textColor="white" bgColor={palette.secondary.dark}>
+            <Wrapper padding={50} textAlign="center" textColor="white" bgColor={palette.secondary.dark}>
                 <Grid container>
                     <Grid item sm={2} md={3} />
                     <Grid item sm={8} md={6}>
@@ -144,9 +144,6 @@ function Home() {
                 </Grid>
             </Wrapper>
 
-            <Wrapper bgColor="#f1f1f1" textAlign="center">
-                <img style={{width: '75%'}} src={StartAStartup} alt="How to start a startup"/>
-            </Wrapper>
         </div>
     )
 }

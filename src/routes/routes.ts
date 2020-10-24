@@ -7,7 +7,7 @@ export const Routes = ({
         startups: "/profiles/startups",
         singleStartup: "/profiles/startups/:id",
         investors: "/profiles/investors",
-        entrepreneurs: "/profiles/entrepreneurs"
+        entrepreneurs: "/profiles/entrepreneurs",
     },
     jobs: "/work-in-tech"
 })

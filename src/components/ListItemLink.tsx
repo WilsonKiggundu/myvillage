@@ -6,7 +6,6 @@ import MuiListItem from "@material-ui/core/ListItem";
 const ListItem = withStyles({
     root: {
         width: "auto",
-        textAlign: "center",
         "&$selected": {
             backgroundColor: palette.primary.light,
             color: "white"
@@ -23,4 +22,4 @@ const ListItem = withStyles({
     selected: {}
 })(MuiListItem);
 
-export default (props: any) => <ListItem alignItems="center" button component="a" {...props} />
+export default (props: any) => <ListItem button component="a" {...props} />

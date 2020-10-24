@@ -24,6 +24,9 @@ import clsx from "clsx";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import ListItemLink from "../ListItemLink";
+import {MainMenuItems} from "./MainMenuItems";
+
+type Anchor = 'left' | 'right';
 
 export default function ApplicationBar() {
 
@@ -34,12 +37,28 @@ export default function ApplicationBar() {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true)
-    }
-    const handleDrawerClose = () => {
-        setOpen(false)
-    }
+    const [state, setState] = useState({
+        left: false,
+        right: false
+    })
+
+    const anchor = 'left';
+
+    const toggleDrawer = (anchor: Anchor, open: boolean) => (
+        event: React.KeyboardEvent | React.MouseEvent,
+    ) => {
+        if (
+            event &&
+            event.type === 'keydown' &&
+            ((event as React.KeyboardEvent).key === 'Tab' ||
+                (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+            return;
+        }
+
+        setState({ ...state, [anchor]: open });
+    };
+
 
     return (
         <div className={classes.grow}>
@@ -47,7 +66,7 @@ export default function ApplicationBar() {
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <IconButton
-                            onClick={handleDrawerOpen}
+                            onClick={toggleDrawer(anchor, true)}
                             className={clsx(classes.menuButton, open && classes.hide)}
                             edge="start">
                             <MenuIcon color="secondary" />
@@ -75,21 +94,15 @@ export default function ApplicationBar() {
 
                         <div className={classes.sectionDesktop}>
                             <List className={classes.flexContainer}>
-                                <ListItemLink href="/profiles/startups">
-                                    <ListItemText primary="Startups" />
-                                </ListItemLink>
-                                <ListItemLink href="/profiles/people">
-                                    <ListItemText primary="People" />
-                                </ListItemLink>
-                                <ListItemLink href="/profiles/people">
-                                    <ListItemText primary="Corporates" />
-                                </ListItemLink>
-                                <ListItemLink href="/events">
-                                    <ListItemText primary="Events" />
-                                </ListItemLink>
-                                <ListItemLink href="/work-in-tech">
-                                    <ListItemText primary="Jobs" />
-                                </ListItemLink>
+
+                                {
+                                    MainMenuItems ? MainMenuItems.map(item => (
+                                        <ListItemLink href={item.url}>
+                                            <ListItemText primary={item.label} />
+                                        </ListItemLink>
+                                    )) : ""
+                                }
+
                             </List>
                         </div>
                         
@@ -127,16 +140,31 @@ export default function ApplicationBar() {
 
             <Drawer
                 variant="temporary"
-                anchor="left"
-                open={open}
+                anchor={anchor}
+                onClose={toggleDrawer(anchor, false)}
+                open={state[anchor]}
                 classes={{paper: classes.drawerPaper}}
                 className={classes.drawer}>
                 <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={toggleDrawer(anchor, false)}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
+                    MyVillage
                 </div>
                 <Divider />
+
+                <List>
+                    {
+                        MainMenuItems ? MainMenuItems.map(item => (
+                            <>
+                                <ListItemLink alignItems="left" href={item.url}>
+                                    <ListItemText primary={item.label} />
+                                </ListItemLink>
+                            </>
+                        )) : ""
+                    }
+                </List>
+
             </Drawer>
 
         </div>

@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 interface IProps {
     bgColor?: string
-    padding?: number
+    padding?: string | number
     children?: any
     textColor?: any
     textAlign?: any
@@ -14,7 +14,6 @@ interface IProps {
 const wrapperStyles = makeStyles((theme: Theme) =>
     createStyles({
         container: {
-            padding: 50,
             [theme.breakpoints.down('sm')]: {
                 padding: 15
             },
