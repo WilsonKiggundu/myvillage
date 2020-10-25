@@ -4,7 +4,6 @@ import {useLayoutStyles} from "../../components/layout/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import StartAStartup from "../../assets/images/start-a-startup.png";
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import BusinessIcon from '@material-ui/icons/Business';
 import WorkIcon from "@material-ui/icons/Work";
@@ -54,45 +53,47 @@ function Home() {
     return (
         <div style={{display: "block"}} className={`${classes.toolbar} ${globalClasses.fullWidth}`}>
             <Wrapper>
-                <Grid container>
-                    <Grid item lg={3}/>
-                    <Grid item lg={6} md={8}>
-                        <Typography style={
-                            {
-                                padding: 15,
-                                textAlign: 'center'
-                            }}
-                            variant="h2"
-                            component="h2">
-                            Join MyVillage.
-                        </Typography>
-                        <Typography style={{paddingTop: 15, paddingBottom: 25, textAlign: 'center'}}
-                                    variant="h5"
-                                    component="h5">
-                            Grow your network. Expand your thinking. Exchange ideas. Be inspired.
-                        </Typography>
-                        <Typography style={{paddingBottom: 15, textAlign: 'center'}}>
-                            <Button variant="contained"
-                                    size={"large"}
-                                    onClick={authService.signinRedirect}
-                                    style={{
-                                        boxShadow: 'none',
-                                        textTransform:'inherit',
-                                        fontSize: "1.1em",
-                                        fontWeight: "bold",
-                                        borderRadius: 25
-                                    }}
-                                    color="secondary">
-                                Join the Community
-                            </Button>
-                        </Typography>
+                <Container maxWidth={"lg"}>
+                    <Grid container>
+                        <Grid item lg={3}/>
+                        <Grid item lg={6} md={8}>
+                            <Typography style={
+                                {
+                                    padding: 15,
+                                    textAlign: 'center'
+                                }}
+                                        variant="h2"
+                                        component="h2">
+                                Join MyVillage.
+                            </Typography>
+                            <Typography style={{paddingTop: 15, paddingBottom: 25, textAlign: 'center'}}
+                                        variant="h5"
+                                        component="h5">
+                                Grow your network. Expand your thinking. Exchange ideas. Be inspired.
+                            </Typography>
+                            <Typography style={{paddingBottom: 15, textAlign: 'center'}}>
+                                <Button variant="contained"
+                                        size={"large"}
+                                        onClick={authService.signinRedirect}
+                                        style={{
+                                            boxShadow: 'none',
+                                            textTransform:'inherit',
+                                            fontSize: "1.1em",
+                                            fontWeight: "bold",
+                                            borderRadius: 25
+                                        }}
+                                        color="secondary">
+                                    Join the Community
+                                </Button>
+                            </Typography>
 
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Container>
             </Wrapper>
             <Wrapper padding={"50px 0"} textColor="#3C3C3C" >
-                <Container fixed>
-                    <Grid spacing={5} container>
+                <Container maxWidth={"lg"}>
+                    <Grid spacing={2} container>
                         {stats.map(s => (
                             <Grid item xs={6} sm={4} md={3}>
                                 <Stats
@@ -116,17 +117,18 @@ function Home() {
             </Wrapper>
 
             <Wrapper padding={50} textAlign="center" textColor="white" bgColor={palette.secondary.dark}>
-                <Grid container>
-                    <Grid item sm={2} md={3} />
-                    <Grid item sm={8} md={6}>
-                        <Typography variant="h3" component="h3">
-                            Don't be left out, again!
-                        </Typography>
+                <Container maxWidth={"lg"}>
+                    <Grid container>
+                        <Grid item sm={2} md={3} />
+                        <Grid item sm={8} md={6}>
+                            <Typography variant="h3" component="h3">
+                                Don't be left out, again!
+                            </Typography>
 
-                        <Typography style={{paddingTop: 20, fontSize: 20}} paragraph>
-                            We are building a vibrant community. A lot is always happening from developer
+                            <Typography style={{paddingTop: 20, fontSize: 20}} paragraph>
+                                We are building a vibrant community. A lot is always happening from developer
                                 meetups to founder labs.
-                        </Typography>
+                            </Typography>
                             <Button variant="contained"
                                     size={"large"}
                                     onClick={authService.signinRedirect}
@@ -140,8 +142,9 @@ function Home() {
                                     color="primary">
                                 Get onboard
                             </Button>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Container>
             </Wrapper>
 
         </div>

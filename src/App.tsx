@@ -4,19 +4,24 @@ import {ToastContainer} from "react-toastify";
 import ContentSwitch from "./modules/ContentSwitch";
 import {useSelector} from 'react-redux'
 import LoaderDialog from "./components/LoaderDialog";
+import Splash from "./modules/login/Splash";
 
 const App: React.FC = () => {
-  const coreState: any = useSelector((state: any) => state.core)
+    const coreState: any = useSelector((state: any) => state.core)
 
-  const {globalLoader} = coreState
+    const {globalLoader, isUserLoading} = coreState
 
-    return <Router>
-      <ToastContainer/>
-      <>
-        {<LoaderDialog open={globalLoader}/>}
-        <ContentSwitch/>
-      </>
-    </Router>;
+    if (isUserLoading) {
+        return <Splash />
+    } else {
+        return <Router>
+            <ToastContainer/>
+            <>
+                {<LoaderDialog open={globalLoader}/>}
+                <ContentSwitch/>
+            </>
+        </Router>;
+    }
 }
 
 export default App;
