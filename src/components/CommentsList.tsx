@@ -1,11 +1,5 @@
 import React from 'react';
 import {createStyles, Theme, makeStyles} from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import {Comments} from "../data/mockData";
@@ -14,9 +8,7 @@ import Box from "@material-ui/core/Box";
 import grey from "@material-ui/core/colors/grey";
 import clsx from "clsx";
 import {globalStyles} from "../theme/styles";
-import IconButton from "@material-ui/core/IconButton";
-
-const useStyles = makeStyles((theme: Theme) =>
+makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: '100%',

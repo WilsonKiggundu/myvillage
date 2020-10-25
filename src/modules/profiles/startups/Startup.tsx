@@ -17,7 +17,6 @@ import AwardsTimeline from "../../../components/AwardsTimeline";
 import ContactCard from "../../../components/ContactCard";
 import Box from "@material-ui/core/Box";
 import ProfileRating from "../../../components/ProfileRating";
-import CardMedia from "@material-ui/core/CardMedia";
 import IconButton from "@material-ui/core/IconButton";
 import CardHeader from "@material-ui/core/CardHeader";
 import MoreVertIcon from '@material-ui/icons/MoreVert';

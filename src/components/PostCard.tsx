@@ -7,7 +7,6 @@ import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import ShareIcon from '@material-ui/icons/Share';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
 import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
 import grey from "@material-ui/core/colors/grey";
@@ -59,7 +58,7 @@ const PostCard = (props: IProps) => {
                             <Grid container spacing={1}>
                                 { uploads.map(p => (
                                     <Grid item xs={6} sm={4} md={4}>
-                                        <img className={classes.clickable} style={{maxWidth: '100%'}} src={p.url}/>
+                                        <img alt={p.url} className={classes.clickable} style={{maxWidth: '100%'}} src={p.url}/>
                                     </Grid>
                                 ) ) }
                             </Grid>

@@ -22,8 +22,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Chip from "@material-ui/core/Chip";
 import EducationTimeline from "../../../components/EducationTimeline";
 import PostCard from "../../../components/PostCard";
-
-const useStyles = makeStyles((theme: Theme) =>
+makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -36,7 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Person = ({match}: any) => {
     const classes = globalStyles()
-    const styles = useStyles()
     const history = useHistory();
 
     const {id} = match.params

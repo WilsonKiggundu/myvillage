@@ -2,10 +2,6 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {useLayoutStyles} from "./styles";
 import ApplicationBar from "../appBar/AppBar";
-import Divider from "@material-ui/core/Divider";
-import clsx from "clsx";
-import {Wrapper} from "./Wrapper";
-import palette from "../../theme/palette";
 
 interface IProps {
     title?: string

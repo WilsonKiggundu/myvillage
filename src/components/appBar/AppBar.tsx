@@ -35,7 +35,6 @@ export default function ApplicationBar() {
     const styles = globalStyles();
     const classes = appBarStyles();
     const theme = useTheme();
-    const [open, setOpen] = useState(false);
 
     const [state, setState] = useState({
         left: false,
@@ -67,9 +66,9 @@ export default function ApplicationBar() {
                     <Toolbar disableGutters>
                         <IconButton
                             onClick={toggleDrawer(anchor, true)}
-                            className={clsx(classes.menuButton, open && classes.hide)}
+                            className={clsx(classes.menuButton, classes.hide)}
                             edge="start">
-                            <MenuIcon color="secondary" />
+                            <MenuIcon style={{color: 'white'}} />
                         </IconButton>
                         <Typography className={classes.title} variant="h5" noWrap>
                             MyVillage

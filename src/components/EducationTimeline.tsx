@@ -10,12 +10,10 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import SchoolIcon from '@material-ui/icons/School';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import {Chip} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {globalStyles} from "../theme/styles"
 import clsx from "clsx";
-
-const useStyles = makeStyles((theme) => ({
+makeStyles((theme) => ({
     paper: {
         padding: '6px 16px',
     },
@@ -23,15 +21,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.main,
     },
 }));
-
-interface IQualification {
-    id: string
-    award: string
-    year: string
-    month: string
-    details?: string
-    institution: string
-}
 
 interface IProps {
     qualifications?: any

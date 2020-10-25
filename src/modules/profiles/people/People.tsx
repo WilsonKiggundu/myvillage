@@ -1,6 +1,4 @@
 import React from "react"
-import {Paper} from "@material-ui/core";
-import {IPerson} from "./IPerson";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import ContactCard from "../../../components/ContactCard";
