@@ -25,6 +25,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import ListItemLink from "../ListItemLink";
 import {MainMenuItems} from "./MainMenuItems";
+import {white} from "../../theme/custom-colors";
 
 type Anchor = 'left' | 'right';
 
@@ -55,26 +56,26 @@ export default function ApplicationBar() {
             return;
         }
 
-        setState({ ...state, [anchor]: open });
+        setState({...state, [anchor]: open});
     };
 
 
     return (
         <div className={classes.grow}>
-            <AppBar elevation={2} position="fixed">
-                <Container maxWidth="xl">
+            <AppBar elevation={0} position="fixed">
+                <Container maxWidth="lg">
                     <Toolbar disableGutters>
                         <IconButton
                             onClick={toggleDrawer(anchor, true)}
                             className={clsx(classes.menuButton, classes.hide)}
                             edge="start">
-                            <MenuIcon style={{color: 'white'}} />
+                            <MenuIcon style={{color: 'white'}}/>
                         </IconButton>
                         <Typography className={classes.title} variant="h5" noWrap>
                             MyVillage
                         </Typography>
 
-                        {!authService.isAuthenticated() ?
+                        {authService.isAuthenticated() ?
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon/>
@@ -95,16 +96,16 @@ export default function ApplicationBar() {
                             <List className={classes.flexContainer}>
 
                                 {
-                                    MainMenuItems ? MainMenuItems.map(item => (
-                                        <ListItemLink href={item.url}>
-                                            <ListItemText primary={item.label} />
+                                    MainMenuItems ? MainMenuItems.map((item, index) => (
+                                        <ListItemLink key={index} href={item.url}>
+                                            <ListItemText primary={item.label}/>
                                         </ListItemLink>
                                     )) : ""
                                 }
 
                             </List>
                         </div>
-                        
+
                         {
                             authService.isAuthenticated() ? '' :
                                 <div className={classes.sectionDesktop}>
@@ -118,6 +119,7 @@ export default function ApplicationBar() {
                                     </Button>
                                 </div>
                         }
+
                         {authService.isAuthenticated() ?
                             <div className={classes.sectionDesktop}>
                                 <IconButton aria-label="show 4 new mails" color="inherit">
@@ -145,21 +147,19 @@ export default function ApplicationBar() {
                 classes={{paper: classes.drawerPaper}}
                 className={classes.drawer}>
                 <div className={classes.drawerHeader}>
-                    <IconButton onClick={toggleDrawer(anchor, false)}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                    <IconButton style={{color: white}} onClick={toggleDrawer(anchor, false)}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
-                    MyVillage
+
                 </div>
-                <Divider />
+                <Divider/>
 
                 <List>
                     {
-                        MainMenuItems ? MainMenuItems.map(item => (
-                            <>
-                                <ListItemLink alignItems="left" href={item.url}>
-                                    <ListItemText primary={item.label} />
-                                </ListItemLink>
-                            </>
+                        MainMenuItems ? MainMenuItems.map((item, index) => (
+                            <ListItemLink key={index} alignItems="left" href={item.url}>
+                                <ListItemText primary={item.label}/>
+                            </ListItemLink>
                         )) : ""
                     }
                 </List>

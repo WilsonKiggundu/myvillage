@@ -1,7 +1,8 @@
 import {fade, makeStyles} from "@material-ui/core/styles";
 import {white} from "../../theme/custom-colors";
+import palette from "../../theme/palette";
 
-const drawerWidth = 200
+const drawerWidth = 250
 
 export const appBarStyles = makeStyles((theme) => ({
     root: {
@@ -36,6 +37,8 @@ export const appBarStyles = makeStyles((theme) => ({
     },
     drawerPaper: {
         width: drawerWidth,
+        backgroundColor: palette.primary.main,
+        color: white
     },
     drawerHeader: {
         display: 'flex',

@@ -3,14 +3,14 @@ import responsiveFontSizes from "@material-ui/core/styles/responsiveFontSizes";
 
 import palette from "./palette";
 
-const font = "'Montserrat', sans-serif";
+const font = "'Lora', sans-serif";
 const theme = createMuiTheme({
     overrides: {
       MuiCard: {
           root: {
               borderRadius: 8,
           }
-      },
+      }
     },
     typography: {
         fontFamily: font,
@@ -20,4 +20,10 @@ const theme = createMuiTheme({
     },
     palette
 })
+
+theme.props = {
+    MuiLink: {
+
+    }
+}
 export default responsiveFontSizes(theme)

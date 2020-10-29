@@ -1,7 +1,6 @@
 import React from "react";
 import {Card, createStyles, Theme} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {Routes} from "../../../routes/routes";
@@ -12,6 +11,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useHistory} from 'react-router-dom';
 import Avatar from "@material-ui/core/Avatar";
 import ProfileRating from "../../../components/ProfileRating";
+import Box from "@material-ui/core/Box";
 
 interface IProps {
     id: string
@@ -63,31 +63,36 @@ const StartupCard = (props: IProps) => {
     }
 
     return (
-        <Card style={{textAlign: "center", padding: 20}}
-              className={clsx(classes.flat, classes.tile)}>
-                <CardContent>
-                    <Avatar className={clsx(styles.largeAvatar, styles.orange, styles.centerAvatar)} src={props.logo}/>
-                    <Typography noWrap variant="h5" className={classes.truncate} style={{textAlign: "center"}}>
+        <Card style={{textAlign: "center"}}>
+                <CardContent style={{paddingTop: 25}}>
+
+                    <Avatar variant={"circle"}
+                            className={clsx(styles.largeAvatar, styles.orange, styles.centerAvatar)}
+                            src={props.logo}/>
+
+                    <Typography noWrap
+                                variant="h5"
+                                className={classes.truncate}
+                                style={{textAlign: "center", marginTop: 15}}>
                         {props.name}
                     </Typography>
+
                     <Typography component="div">
                         <Chip size="small" label={props.category} />
                     </Typography>
-                    <Typography style={{marginTop: 25}} className={classes.truncate}>
-                        {props.details}
-                    </Typography>
 
                     <ProfileRating rating={3} />
-                </CardContent>
-                <CardActions>
+
+                    <Box mx={"auto"} mb={2}>
                         <Button
                             className={clsx(styles.flex, styles.noShadow)}
                             onClick={() => handleClick(props.id)}
                             variant="outlined"
                             color="primary">
-                             <strong>View Profile</strong>
+                            <strong>View profile</strong>
                         </Button>
-                </CardActions>
+                    </Box>
+                </CardContent>
         </Card>
     )
 }

@@ -9,5 +9,6 @@ export const Routes = ({
         investors: "/profiles/investors",
         entrepreneurs: "/profiles/entrepreneurs",
     },
-    jobs: "/work-in-tech"
+    jobs: "/jobs",
+    job: '/jobs/:id'
 })

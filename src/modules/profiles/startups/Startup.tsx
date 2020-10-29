@@ -6,8 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import {Awards, PersonProfiles, Interests} from "../../../data/mockData";
-import Chip from "@material-ui/core/Chip";
+import {Awards, Interests, PersonProfiles, Startups} from "../../../data/mockData";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Avatar from "@material-ui/core/Avatar";
 import clsx from "clsx";
@@ -17,9 +16,11 @@ import AwardsTimeline from "../../../components/AwardsTimeline";
 import ContactCard from "../../../components/ContactCard";
 import Box from "@material-ui/core/Box";
 import ProfileRating from "../../../components/ProfileRating";
-import IconButton from "@material-ui/core/IconButton";
-import CardHeader from "@material-ui/core/CardHeader";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import StartAPostCard from "../../../components/StartAPostCard";
+import {StartupBioCard} from "./StartupBioCard";
+import InterestsCard from "../../../components/InterestsCard";
+import Gallery from "../../../components/Gallery";
+import {PeopleCard} from "./PeopleCard";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -69,6 +70,8 @@ const Startup = ({match}: any) => {
     const placeHolder = "https://picsum.photos/500/500"
     let products = []
 
+    const profile = Startups[0];
+
     for (let i = 0; i < 9; i++) {
 
         products.push(`${placeHolder}?image=${i * 5 + 10}`)
@@ -92,23 +95,23 @@ const Startup = ({match}: any) => {
                                     <Typography variant="h6">The Innovation Village Kampala</Typography>
                                     <Typography paragraph>Gulu . Jinja . Mbarara . Mbale . Ntinda</Typography>
 
-                                    <ProfileRating rating={3} />
+                                    <ProfileRating rating={3}/>
 
-                                    <Divider />
+                                    <Divider/>
 
                                     <Typography style={{margin: '15px 0'}}>
                                         <strong>Incorporation Date</strong> <br/>
                                         <span>Aug. 21, 2007</span>
                                     </Typography>
 
-                                    <Divider />
+                                    <Divider/>
 
                                     <Typography style={{margin: '15px 0'}}>
                                         <strong>Address</strong> <br/>
-                                        <span>Ntinda Complex <br /> Block B&C - 3rd Floor</span>
+                                        <span>Ntinda Complex <br/> Block B&C - 3rd Floor</span>
                                     </Typography>
 
-                                    <Divider />
+                                    <Divider/>
 
                                     <Button variant="outlined"
                                             target="_blank"
@@ -123,144 +126,12 @@ const Startup = ({match}: any) => {
                     </Box>
                     <Box clone order={{xs: 1, sm: 2}}>
                         <Grid item xs={12} sm={12} md={8} lg={9}>
-                            <Card variant="outlined" className={classes.bottomMargin}>
-
-                                <CardHeader
-                                    avatar={
-                                        <Avatar src={avatar} aria-label="recipe" className={styles.avatar} />
-                                    }
-                                    action={
-                                        <IconButton aria-label="settings">
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                    }
-                                    title="The Innovation Village Kampala"
-                                    subheader="Gulu . Jinja . Mbarara . Mbale . Ntinda"
-                                />
-
-                                <img style={{width: '100%'}} src={coverPhoto} alt=""/>
-
-                                <CardContent>
-                                    <Box>
-                                        <Typography variant="body2">
-                                            Quisque eu eleifend sapien. Sed et eros non nibh eleifend tempus. Sed rhoncus
-                                            mauris in tellus viverra, in molestie turpis feugiat. Fusce massa massa,
-                                            convallis ut elit ac, dictum porta odio. Aenean viverra neque id turpis maximus
-                                            cursus. Etiam vitae mi eros. Duis vestibulum orci ex, in vulputate leo iaculis
-                                            eget. Suspendisse suscipit tortor sit amet neque.
-                                        </Typography>
-                                    </Box>
-
-                                    <Box mt={2}>
-                                        <Button className={clsx(classes.noShadow)}
-                                                color="primary"
-                                                size="small"
-                                                variant="outlined">
-                                            Follow
-                                        </Button>
-                                        <Button className={clsx(classes.noShadow)}
-                                                style={{marginLeft: 10}}
-                                                color="secondary"
-                                                size="small"
-                                                variant="outlined">
-                                            Send message
-                                        </Button>
-                                    </Box>
-
-                                </CardContent>
-                            </Card>
-
-                            <Card variant="outlined" className={classes.bottomMargin}>
-
-                                <CardHeader
-                                    action={
-                                        <IconButton aria-label="settings">
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                    }
-                                    subheader="Stuff we are interested in"
-                                />
-
-                                <CardContent>
-                                    <div className={styles.root}>
-                                        {interests ? interests.map(i =>
-                                            <Chip
-                                                label={i.category}
-                                                key={i.id}
-                                                //deleteIcon={<CloseIcon/>}
-                                                //onDelete={() => handleRemoveInterest(i.id)}
-                                                clickable
-                                                color="secondary"
-                                                variant="default"/>) : ""}
-                                    </div>
-
-                                </CardContent>
-                            </Card>
-
-                            <Card variant="outlined" className={classes.bottomMargin}>
-                                <CardContent>
-                                    <CardHeader
-                                        action={
-                                            <IconButton aria-label="settings">
-                                                <MoreVertIcon />
-                                            </IconButton>
-                                        }
-                                        subheader="Our work"
-                                    />
-
-                                    <Grid container spacing={2}>
-                                        {products ? products.map((p, index) => (
-                                            <Grid key={index} item xs={6} sm={3} md={4}>
-                                                <img style={{width: '100%', height:'auto'}} src={p} alt={p}/>
-                                            </Grid>
-                                        )) : ""}
-                                    </Grid>
-
-                                </CardContent>
-                            </Card>
-
-                            <Card variant="outlined" className={classes.bottomMargin}>
-                                <CardContent>
-                                    <CardHeader
-                                        action={
-                                            <IconButton aria-label="settings">
-                                                <MoreVertIcon />
-                                            </IconButton>
-                                        }
-                                        subheader="Awards"
-                                    />
-                                    <AwardsTimeline awards={awards} />
-                                </CardContent>
-                            </Card>
-
-                            <Card variant="outlined" className={classes.bottomMargin}>
-                                <CardContent>
-                                    <CardHeader
-                                        action={
-                                            <IconButton aria-label="settings">
-                                                <MoreVertIcon />
-                                            </IconButton>
-                                        }
-                                        subheader="Our people"
-                                    />
-                                    {contacts ?
-                                        <Grid container spacing={2}>
-                                            {
-                                                contacts.map(contact => (
-                                                    <Grid key={contact.id} item xs={12} sm={6} md={4}>
-                                                        <ContactCard {...contact}/>
-                                                    </Grid>
-                                                ))
-
-                                            }
-                                            <Grid item xs={12} sm={2} md={4}>
-
-                                            </Grid>
-                                        </Grid> : ""
-                                    }
-                                </CardContent>
-                            </Card>
-
+                            <StartAPostCard placeholder={`Post on ${profile.name}'s wall...`}/>
+                            <StartupBioCard profile={profile}/>
+                            <InterestsCard items={interests}/>
+                            <Gallery items={products} title={"Our products"}/>
+                            <AwardsTimeline awards={awards}/>
+                            <PeopleCard title={"Our people"} items={contacts.slice(0, 8)}/>
                         </Grid>
                     </Box>
                 </Grid>

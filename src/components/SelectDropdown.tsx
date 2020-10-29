@@ -19,8 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+type Variant = 'outlined' | 'filled' | 'standard'
+
 interface IProps {
-    placeholder: string
+    variant?: Variant
+    placeholder?: string
     options?: any[]
     helperText?: string
 }
@@ -34,7 +37,7 @@ export default function SelectDropdown(props: IProps) {
     };
 
     return (
-        <FormControl variant="standard" className={classes.formControl}>
+        <FormControl variant={props.variant} className={classes.formControl}>
             <InputLabel id="select-filled-label">{props.placeholder || 'Select'}</InputLabel>
             <Select
                 labelId="select-filled-label"

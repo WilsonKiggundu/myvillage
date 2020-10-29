@@ -12,28 +12,28 @@ const typography: TypographyOptions = {
     h1: {
         color: palette.text.primary,
         fontWeight: 500,
-        fontSize: '35px',
+        fontSize: '25px',
         letterSpacing: '-0.24px',
         lineHeight: '40px'
     },
     h2: {
         color: palette.text.primary,
         fontWeight: 500,
-        fontSize: '29px',
+        fontSize: '22px',
         letterSpacing: '-0.24px',
         lineHeight: '32px'
     },
     h3: {
         color: palette.text.primary,
         fontWeight: 500,
-        fontSize: '24px',
+        fontSize: '20px',
         letterSpacing: '-0.06px',
         lineHeight: '28px'
     },
     h4: {
         color: palette.text.primary,
         fontWeight: 500,
-        fontSize: '20px',
+        fontSize: '18px',
         letterSpacing: '-0.06px',
         lineHeight: '24px'
     },
@@ -78,7 +78,8 @@ const typography: TypographyOptions = {
     },
     button: {
         color: palette.text.primary,
-        fontSize: '14px'
+        fontSize: '14px',
+        textTransform: 'uppercase'
     },
     caption: {
         color: palette.text.secondary,

@@ -2,9 +2,9 @@ import {Routes} from "../../routes/routes";
 
 export const MainMenuItems = [
     {
-        label: "Home",
+        label: "Feed",
         icon: "",
-        url: Routes.home
+        url: Routes.feed
     },
     {
         label: "Startups",
@@ -17,18 +17,18 @@ export const MainMenuItems = [
         url: Routes.profiles.people
     },
     {
-        label: "Corporates",
-        icon: "",
-        url: Routes.profiles.startups
-    },
-    {
-        label: "Events",
-        icon: "",
-        url: ""
-    },
-    {
         label: "Jobs",
         icon: "",
         url: Routes.jobs
-    }
+    },
+    // {
+    //     label: "Corporates",
+    //     icon: "",
+    //     url: Routes.profiles.startups
+    // },
+    // {
+    //     label: "Events",
+    //     icon: "",
+    //     url: ""
+    // }
 ]

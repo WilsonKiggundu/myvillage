@@ -66,10 +66,10 @@ const ContactCard = (props: IProps) => {
                         <Avatar className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
                             {initials.join("")}
                         </Avatar> }
-                    <Typography component="div" style={{fontSize: '1.1rem', marginTop: 10}}>
+                    <Typography noWrap component="div" style={{fontSize: '1.1rem', marginTop: 10}}>
                         <strong>{props.name}</strong>
                     </Typography>
-                    {props.role ? <Typography component="div">
+                    {props.role ? <Typography noWrap component="div">
                         <small>{props.role}</small>
                     </Typography> : ""}
 

@@ -5,7 +5,15 @@ import palette from "./palette";
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex'
+      display: 'flex',
+    },
+
+    flexWrap: {
+        justifyContent: 'left',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: theme.spacing(0.5),
+        },
     },
 
     clickable: {
@@ -55,8 +63,8 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     largeAvatar: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
+        width: theme.spacing(15),
+        height: theme.spacing(15),
     },
 
     mediumAvatar: {
@@ -114,5 +122,9 @@ export const globalStyles = makeStyles((theme) => ({
 
     textCenter: {
         textAlign: 'center'
+    },
+
+    dropzone: {
+        maxHeight: 100
     }
 }))

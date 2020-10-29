@@ -36,6 +36,7 @@ export default function CommentsList() {
                 comments ?
                     comments.map(c => (
                         <Grid
+                            key={c.id}
                             style={
                             {
                                 backgroundColor: grey[100],

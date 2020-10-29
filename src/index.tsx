@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import store from "./data/store";
 import './index.css';
 import App from './App';
+
 import * as serviceWorker from './serviceWorker';
 import theme from "./theme";
 // @ts-ignore
@@ -18,10 +19,11 @@ ReactDOM.render(
             <>
                 <CssBaseline/>
                 <PWAPrompt
+                    copyBody="MyVillage has app functionality. Add it to your home screen to use it as a native app and while offline"
                     promptOnVisit={1}
                     timesToShow={3}
                     copyClosePrompt="Close"
-                    permanentlyHideOnDismiss={false}/>
+                    permanentlyHideOnDismiss={true}/>
                 <App/>
             </>
         </ThemeProvider>

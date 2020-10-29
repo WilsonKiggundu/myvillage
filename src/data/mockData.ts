@@ -1278,7 +1278,8 @@ export const Awards = [
     {
         "id": "a58d651a-5d9e-4dee-a7e4-bf20e56e1f11",
         "date": "4/18/2020",
-        "awardedBy": "Teklist",
+        "award": "Top 100 SMEs of 2020",
+        "awardedBy": "Private Sector Foundation Uganda",
         "category": "dui luctus",
         "details": "Phasellus sit amet erat. a tempus. Vivamus in felis eu sapien cursus vestibulum.",
         "location": "China"

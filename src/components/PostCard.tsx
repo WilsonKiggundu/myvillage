@@ -56,8 +56,8 @@ const PostCard = (props: IProps) => {
                     uploads ?
                         <CardContent>
                             <Grid container spacing={1}>
-                                { uploads.map(p => (
-                                    <Grid item xs={6} sm={4} md={4}>
+                                { uploads.map((p, index) => (
+                                    <Grid key={index} item xs={6} sm={4} md={4}>
                                         <img alt={p.url} className={classes.clickable} style={{maxWidth: '100%'}} src={p.url}/>
                                     </Grid>
                                 ) ) }

@@ -7,6 +7,8 @@ import Startups from "./profiles/startups/Startups";
 import Startup from "./profiles/startups/Startup";
 import People from "./profiles/people/People";
 import Person from "./profiles/people/Person";
+import Jobs from "./jobs/Jobs";
+import Feed from "./feed/Feed";
 
 const ContentSwitch = () => {
     return (
@@ -19,9 +21,16 @@ const ContentSwitch = () => {
                     <Route exact path={Routes.profiles.startups} component={Startups} />
                     <Route exact path={Routes.profiles.singleStartup} component={Startup} />
 
-                    {/* People* */}
+                    {/* People */}
                     <Route exact path={Routes.profiles.people} component={People} />
                     <Route exact path={Routes.profiles.person} component={Person} />
+
+                    {/* Jobs */}
+                    <Route exact path={Routes.jobs} component={Jobs} />
+                    <Route exact path={Routes.job} component={Jobs} />
+
+                    {/* Feed */}
+                    <Route exact path={Routes.feed} component={Feed} />
                 </Switch>
             </MainLayout>
         </Switch>

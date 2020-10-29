@@ -22,6 +22,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Chip from "@material-ui/core/Chip";
 import EducationTimeline from "../../../components/EducationTimeline";
 import PostCard from "../../../components/PostCard";
+import StartAPostCard from "../../../components/StartAPostCard";
 makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -137,6 +138,9 @@ const Person = ({match}: any) => {
                 </Box>
                 <Box clone order={{xs: 1, sm: 2}}>
                     <Grid item xs={12} md={8} lg={9} sm={12}>
+
+                        <StartAPostCard placeholder={`Write on ${person.name}'s wall...`} />
+
                         <Box mb={2}>
                             <Card>
                                 <Typography style={{minHeight: 200, position: 'relative'}} component={"div"}>
