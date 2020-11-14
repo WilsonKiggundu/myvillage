@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, MouseEvent} from "react";
+import { useHistory } from "react-router-dom"
 import {
     AppBar,
     Badge,
@@ -17,7 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import {globalStyles} from "../../theme/styles";
 import Container from "@material-ui/core/Container";
-import AuthService from "../../modules/auth/AuthService";
+import AuthService from "../../services/AuthService";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import clsx from "clsx";
@@ -26,6 +27,10 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import ListItemLink from "../ListItemLink";
 import {MainMenuItems} from "./MainMenuItems";
 import {white} from "../../theme/custom-colors";
+import Avatar from "@material-ui/core/Avatar";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import {Urls} from "../../routes/Urls";
 
 type Anchor = 'left' | 'right';
 
@@ -36,6 +41,18 @@ export default function ApplicationBar() {
     const styles = globalStyles();
     const classes = appBarStyles();
     const theme = useTheme();
+
+    const history = useHistory()
+    const user = authService.getUser()
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const closeProfileMenu = () => {
+        setAnchorEl(null)
+    }
 
     const [state, setState] = useState({
         left: false,
@@ -58,6 +75,11 @@ export default function ApplicationBar() {
 
         setState({...state, [anchor]: open});
     };
+
+    const handleProfileView = () => {
+        closeProfileMenu()
+        history.push(Urls.profiles.onePerson(user.profile.sub))
+    }
 
 
     return (
@@ -122,16 +144,27 @@ export default function ApplicationBar() {
 
                         {authService.isAuthenticated() ?
                             <div className={classes.sectionDesktop}>
-                                <IconButton aria-label="show 4 new mails" color="inherit">
-                                    <Badge badgeContent={4} color="secondary">
-                                        <MailIcon/>
-                                    </Badge>
+                                <IconButton aria-controls="profile-menu"
+                                            aria-haspopup="true"
+                                            onClick={showProfileMenu}
+                                            color="inherit">
+                                    <Avatar src={""} variant={"circle"}/>
                                 </IconButton>
-                                <IconButton aria-label="show 17 new notifications" color="inherit">
-                                    <Badge badgeContent={17} color="secondary">
-                                        <NotificationsIcon/>
-                                    </Badge>
-                                </IconButton>
+                                <Menu
+                                    id="profile-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    getContentAnchorEl={null}
+                                    anchorOrigin={{ vertical: "bottom", horizontal: "left"}}
+                                    onClose={closeProfileMenu}
+                                    open={Boolean(anchorEl)}>
+                                    <MenuItem disabled>{user.profile.name}</MenuItem>
+                                    <MenuItem onClick={handleProfileView}>
+                                        My Profile
+                                    </MenuItem>
+                                    <Divider />
+                                    <MenuItem onClick={() => authService.logout()}>Logout</MenuItem>
+                                </Menu>
 
                             </div> : ""
                         }

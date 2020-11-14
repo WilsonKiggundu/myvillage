@@ -1,20 +1,8 @@
-import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import SchoolIcon from '@material-ui/icons/School';
-import Paper from '@material-ui/core/Paper';
+import React, { Fragment } from 'react';
 import Typography from '@material-ui/core/Typography';
-import {Chip} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {globalStyles} from "../theme/styles"
 import clsx from "clsx";
-import List from "@material-ui/core/List";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -23,30 +11,11 @@ import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        padding: '6px 16px',
-    },
-    secondaryTail: {
-        backgroundColor: theme.palette.secondary.main,
-    },
-}));
-
-interface IAward {
-    date: number
-    awardedBy: string
-    category?: string
-    details: string
-    location?: string
-    attachments?: []
-}
-
 interface IProps {
     awards?: any
 }
 
 export default function CustomizedTimeline(props: IProps) {
-    const classes = useStyles();
     const styles = globalStyles();
 
     return (
@@ -58,7 +27,7 @@ export default function CustomizedTimeline(props: IProps) {
                         <Grid spacing={1} container>
                             {
                                 props.awards.map((award: any, index: number) => (
-                                    <>
+                                    <Fragment key={index}>
                                         <Grid xs={2} sm={1} item>
                                             <Avatar variant={"square"}/>
                                         </Grid>
@@ -80,7 +49,7 @@ export default function CustomizedTimeline(props: IProps) {
                                                 style={{margin: '15px 0', display: index + 1 < props.awards.length ? 'block' : 'none'}}/>
                                         </Grid>
 
-                                    </>
+                                    </Fragment>
                                 ))
                             }
                         </Grid> :

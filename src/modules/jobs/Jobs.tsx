@@ -10,10 +10,10 @@ import Divider from "@material-ui/core/Divider";
 import {Alert} from "@material-ui/lab";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemLink from "../../components/ListItemLink";
-import {Routes} from "../../routes/routes";
+import {Urls} from "../../routes/Urls";
 import {format, differenceInCalendarDays, formatDistanceToNow} from "date-fns"
 import {Link, useHistory} from "react-router-dom";
-import SelectDropdown from "../../components/SelectDropdown";
+import XSelectDropdown from "../../components/inputs/XSelectDropdown";
 import palette from "../../theme/palette";
 import CustomAccordion from "../../components/CustomAccordion";
 
@@ -56,7 +56,7 @@ const Jobs = ({match}: any) => {
         .map(m => ({label: m, value: m}))
 
     const handleClick = (id: string) => {
-        history.push(Routes.jobs + "/" + id)
+        history.push(Urls.jobs + "/" + id)
     }
 
     return (
@@ -67,21 +67,21 @@ const Jobs = ({match}: any) => {
                         <CustomAccordion title={"Filter"}>
                             <Grid container spacing={4}>
                                 <Grid item xs={12} sm={4}>
-                                    <SelectDropdown
+                                    <XSelectDropdown
                                         variant={"standard"}
                                         placeholder={"Location"}
                                         helperText={"Filter by location"}
                                         options={locations}/>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <SelectDropdown helperText={"Filter by category"}
-                                                    placeholder={"Category"}
-                                                    options={categories}/>
+                                    <XSelectDropdown helperText={"Filter by category"}
+                                                     placeholder={"Category"}
+                                                     options={categories}/>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <SelectDropdown helperText={"Filter by company"}
-                                                    placeholder={"Company"}
-                                                    options={companies}/>
+                                    <XSelectDropdown helperText={"Filter by company"}
+                                                     placeholder={"Company"}
+                                                     options={companies}/>
                                 </Grid>
                             </Grid>
                         </CustomAccordion>
@@ -116,7 +116,7 @@ const Jobs = ({match}: any) => {
                                         </Typography>
                                         <Typography component={"div"}>
                                             <Link style={{textDecoration: 'none', color: palette.secondary.main}}
-                                                  to={`${Routes.profiles.startups}/${job.company.id}`}>
+                                                  to={`${Urls.profiles.startups}/${job.company.id}`}>
                                                 {job.company.name}</Link> . {job.location} . {job.status}
                                         </Typography>
 

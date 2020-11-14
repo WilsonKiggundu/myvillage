@@ -3,7 +3,7 @@ import {Card, createStyles, Theme} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import {Routes} from "../../../routes/routes";
+import {Urls} from "../../../routes/Urls";
 import {globalStyles} from "../../../theme/styles";
 import clsx from "clsx";
 import Chip from "@material-ui/core/Chip";
@@ -58,7 +58,7 @@ const StartupCard = (props: IProps) => {
     const history = useHistory()
 
     const handleClick = (id: string) => {
-        const url = `${Routes.profiles.startups}/${id}`
+        const url = `${Urls.profiles.startups}/${id}`
         history.push(url)
     }
 

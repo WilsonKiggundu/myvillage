@@ -15,7 +15,8 @@ const theme = createMuiTheme({
     typography: {
         fontFamily: font,
         button: {
-            textTransform: "none"
+            textTransform: "uppercase",
+            fontWeight: "bold"
         }
     },
     palette

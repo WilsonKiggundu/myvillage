@@ -7,13 +7,11 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import clsx from "clsx";
+import {IPerson, Person} from "../modules/profiles/people/IPerson";
 
 interface IProps {
     children?: any
-    name: string
-    avatar?: string
-    id?: string
-    role?: string
+    person: IPerson
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -52,26 +50,23 @@ const useStyles = makeStyles((theme: Theme) =>
 const ContactCard = (props: IProps) => {
 
     const classes = useStyles()
-
-    const nameArray = props.name.split(' ')
-    let initials: string[] = []
-
-    nameArray.forEach(name => initials.push(name[0].toUpperCase()))
+    const person = new Person(props.person)
 
     return (
         <Card elevation={1}>
                 <CardContent style={{textAlign: 'center'}}>
-                    {props.avatar ?
-                        <Avatar className={clsx(classes.largeAvatar, classes.centerAvatar)} src={props.avatar}/> :
+
+                    {person.person.avatar ?
+                        <Avatar className={clsx(classes.largeAvatar, classes.centerAvatar)} src={person.person.avatar}/> :
                         <Avatar className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
-                            {initials.join("")}
+                            {person.initials}
                         </Avatar> }
                     <Typography noWrap component="div" style={{fontSize: '1.1rem', marginTop: 10}}>
-                        <strong>{props.name}</strong>
+                        <strong>{person.fullName}</strong>
                     </Typography>
-                    {props.role ? <Typography noWrap component="div">
-                        <small>{props.role}</small>
-                    </Typography> : ""}
+                    {/*{props.role ? <Typography noWrap component="div">*/}
+                    {/*    <small>{props.role}</small>*/}
+                    {/*</Typography> : ""}*/}
 
                     {props.children}
 

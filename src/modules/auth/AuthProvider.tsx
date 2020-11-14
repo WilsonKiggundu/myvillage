@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import AuthService from "./AuthService";
+import AuthService from "../../services/AuthService";
 
 const AuthContext = React.createContext({
     signinRedirectCallback: () => ({}),
@@ -21,8 +21,7 @@ export class AuthProvider extends Component<any, any>{
     }
     render() {
         return (
-            <AuthContext.Provider
-                value={this.authService}>
+            <AuthContext.Provider value={this.authService}>
                 {this.props.children}
             </AuthContext.Provider>
         );

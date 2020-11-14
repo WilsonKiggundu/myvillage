@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -13,61 +13,102 @@ import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import {globalStyles} from "../theme/styles"
 import clsx from "clsx";
-makeStyles((theme) => ({
-    paper: {
-        padding: '6px 16px',
-    },
-    secondaryTail: {
-        backgroundColor: theme.palette.primary.main,
-    },
-}));
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {IconButton} from "@material-ui/core";
+import UpdateEducationForm from "../modules/profiles/people/forms/profile/UpdateEducationForm";
+import XDialog from "./dialogs/XDialog";
+import XConfirmDialog from "./dialogs/XConfirmDialog";
+import {IEducation} from "../interfaces/IEducation";
+import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
+import Grid from "@material-ui/core/Grid";
+import {number} from "yup";
+import grey from "@material-ui/core/colors/grey";
+import Avatar from "@material-ui/core/Avatar";
 
 interface IProps {
-    qualifications?: any
+    education: any
+    isMine: boolean
 }
 
 export default function EducationTimeline(props: IProps) {
     const classes = globalStyles();
+    const {isMine, education} = props
+
+    const [openEditEductionDialog, setOpenEditEductionDialog] = useState<boolean>(false)
+    const [openDeleteEductionDialog, setOpenDeleteEductionDialog] = useState<boolean>(false)
 
     return (
-        props.qualifications ? <Timeline align="left">
-                {
-                    props.qualifications.map((award: any, index: number) => (
-                        <TimelineItem key={index}>
-                            <TimelineOppositeContent style={{flex: 0.3}}>
-                                <Typography>
-                                    <small style={{color: '#cccccc'}}>
-                                        {award.month}
-                                    </small>
-                                </Typography>
-                                <Typography style={{margin: 0}}>
-                                    {award.year}
-                                </Typography>
-                            </TimelineOppositeContent>
-                            <TimelineSeparator>
-                                <TimelineDot className={classes.noShadow} color="secondary">
-                                    <SchoolIcon/>
-                                </TimelineDot>
-                                {++index < props.qualifications.length ? <TimelineConnector/> : ""}
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                <Paper elevation={0} >
-                                    <Typography variant={"h6"} component={"h5"}>
-                                        {award.institution}
-                                    </Typography>
-                                    <Typography paragraph>{award.award}</Typography>
+        education ?
+            education.map((it: IEducation, index: number) => (
+                <Grid container key={index}>
+                    <Grid item xs={1}>
+                        <Avatar variant={"square"}>
+                            <SchoolIcon />
+                        </Avatar>
+                    </Grid>
+                    <Grid xs={9} item>
+                        <Typography variant={"h6"} component={"div"}>
+                            {it.school}
+                        </Typography>
+                        <Typography component={"div"}>
+                            {it.degree}, {it.fieldOfStudy}
+                        </Typography>
+                        <Typography component={"div"} style={{color: grey[400]}}>
+                            {it.startYear} - {it.endYear}
+                        </Typography>
+                        <Typography
+                            component={"div"}
+                            style={{color: grey[400], fontSize: '0.9rem'}}>
+                            {it.activities}
+                        </Typography>
+                        <Typography
+                            style={{paddingTop: 5, fontSize: '0.9rem'}}
+                            component={"div"}>
+                            {it.description}
+                        </Typography>
 
-                                    <Typography paragraph>
-                                        <small>{award.details}</small>
-                                    </Typography>
+                        <Divider style={{marginTop: 15, marginBottom: 15}}/>
+                    </Grid>
 
-                                </Paper>
-                            </TimelineContent>
-                        </TimelineItem>
-                    ))
-                }
+                    <Grid style={{textAlign: "right"}} item xs={2}>
+                        {isMine ? (
+                            <>
+                                <IconButton
+                                    onClick={() => setOpenEditEductionDialog(true)}
+                                    style={{marginLeft: 15}} size={"small"}>
+                                    <EditIcon/>
+                                </IconButton>
 
-            </Timeline> :
+                                <IconButton
+                                    onClick={() => setOpenDeleteEductionDialog(true)}
+                                    size={"small"}>
+                                    <DeleteIcon/>
+                                </IconButton>
+
+                                <XDialog title={"Edit education"}
+                                         maxWidth={"md"}
+                                         onClose={() => setOpenEditEductionDialog(false)}
+                                         open={openEditEductionDialog}>
+                                    <UpdateEducationForm/>
+                                </XDialog>
+
+                                <XConfirmDialog
+                                    open={openDeleteEductionDialog}
+                                    title={"Delete education record?"}
+                                    message={"This means that this record will no longer " +
+                                    "be visible on your profile."}
+                                    onContinue={() => {
+                                    }}
+                                    onClose={() => setOpenDeleteEductionDialog(false)}
+                                />
+
+                            </>
+                        ) : ""}
+                    </Grid>
+                </Grid>
+            )) :
             <Typography>
                 Have you received any awards?
                 <Button color="secondary"
@@ -75,5 +116,6 @@ export default function EducationTimeline(props: IProps) {
                         style={{marginLeft: 15}}
                         className={clsx(classes.noShadow)}>Boost your profile</Button>
             </Typography>
+
     );
 }

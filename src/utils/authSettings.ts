@@ -1,21 +1,19 @@
 export const IDENTITY_CONFIG = {
     authority: process.env.REACT_APP_AUTH_URL,
-    client_id: process.env.REACT_APP_IDENTITY_CLIENT_ID,
+    client_id: process.env.REACT_APP_CLIENT_ID,
     redirect_uri: process.env.REACT_APP_REDIRECT_URL,
-    login: process.env.REACT_APP_AUTH_URL + "/login",
     automaticSilentRenew: true,
     loadUserInfo: true,
-    silent_redirect_uri: process.env.REACT_APP_SILENT_REDIRECT_URL,
+    // silent_redirect_uri: process.env.REACT_APP_SILENT_REDIRECT_URL,
     post_logout_redirect_uri: process.env.REACT_APP_LOGOFF_REDIRECT_URL,
-    audience: "https://example.com",
-    responseType: "id_token token",
-    grantType: "password",
-    scope: "openid",
-    webAuthResponseType: "id_token token"
+    // audience: "https://example.com",
+    response_type: "id_token token",
+    scope: "openid email roles profile",
+    // webAuthResponseType: "id_token token"
 }
 
 export const METADATA_OIDC = {
-    issuer: "https://identityserver",
+    issuer: process.env.REACT_APP_AUTH_URL,
     jwks_uri: process.env.REACT_APP_AUTH_URL + "/.well-known/openid-configuration/jwks",
     authorization_endpoint: process.env.REACT_APP_AUTH_URL + "/connect/authorize",
     token_endpoint: process.env.REACT_APP_AUTH_URL + "/connect/token",

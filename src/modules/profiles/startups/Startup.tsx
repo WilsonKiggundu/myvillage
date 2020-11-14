@@ -13,7 +13,6 @@ import clsx from "clsx";
 import palette from "../../../theme/palette";
 import Button from "@material-ui/core/Button";
 import AwardsTimeline from "../../../components/AwardsTimeline";
-import ContactCard from "../../../components/ContactCard";
 import Box from "@material-ui/core/Box";
 import ProfileRating from "../../../components/ProfileRating";
 import StartAPostCard from "../../../components/StartAPostCard";
@@ -66,14 +65,12 @@ const Startup = ({match}: any) => {
     const awards = Awards;
 
     const avatar = "https://innovationvillage.co.ug/wp-content/uploads/2020/07/new-logo-white-02-1.png";
-    const coverPhoto = "https://picsum.photos/1920/1080?image=20"
     const placeHolder = "https://picsum.photos/500/500"
     let products = []
 
     const profile = Startups[0];
 
     for (let i = 0; i < 9; i++) {
-
         products.push(`${placeHolder}?image=${i * 5 + 10}`)
     }
 

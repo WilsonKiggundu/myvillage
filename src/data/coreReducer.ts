@@ -9,6 +9,7 @@ const initialState: any = {
 }
 
 export const coreConstants = {
+    getUser: "GET_USER",
     coreLogin: "CORE_LOGIN",
     startLoading: "CORE_START_LOADING",
     stopLoading: "CORE_STOP_LOADING",
@@ -23,10 +24,15 @@ export default function reducer(state = initialState, action: any) {
             return {...state, globalLoader: true}
         }
 
+        case coreConstants.getUser: {
+            const key = `oidc.user:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_CLIENT_ID}`
+            return {...state, user: sessionStorage.getItem(key)}
+        }
+
         case coreConstants.coreStopGlobalLoader: {
             return {...state, globalLoader: false}
         }
-        
+
         case coreConstants.coreLogin: {
             const {token, user}: ILoginResponse = action.payload
             localStorage.setItem(AUTH_TOKEN_KEY, token)

@@ -15,14 +15,9 @@ import Button from "@material-ui/core/Button";
 import clsx from "clsx";
 import {globalStyles} from "../theme/styles";
 import CommentsList from "./CommentsList";
+import {IPerson} from "../modules/profiles/people/IPerson";
 
-interface IProps {
-    id: string
-    name: string
-    avatar: string
-}
-
-const PostCard = (props: IProps) => {
+const PostCard = (props: IPerson) => {
 
     const classes = globalStyles()
     const uploads = [
@@ -38,7 +33,7 @@ const PostCard = (props: IProps) => {
             <Card>
                 <CardHeader
                     avatar={<Avatar src={props.avatar}/>}
-                    title={<strong>{props.name}</strong>}
+                    title={<strong>{props.firstName} {props.lastName}</strong>}
                     subheader={<small style={{color: grey[500]}}>Monday, 26 October, 2020</small>}
                     action={
                         <IconButton>

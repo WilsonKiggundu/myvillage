@@ -1,8 +1,7 @@
 import {Box, createStyles, Theme} from "@material-ui/core";
-import React, {useState} from "react";
+import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import grey from "@material-ui/core/colors/grey";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 
 interface IProps {

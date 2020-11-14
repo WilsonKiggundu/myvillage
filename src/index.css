@@ -6,3 +6,32 @@ body, #root, .fill {
   height: 100%;
   width: 100%;
 }
+
+.ql-editor {
+  min-height: 55vh;
+  padding: 20px 0 !important;
+  font-size: 1.2em;
+}
+
+.ql-container.ql-snow{
+  border: 0 !important;
+  border-bottom: solid 1px #ccc !important;
+}
+
+.ql-editor.ql-blank::before {
+  color: rgba(0,0,0,0.6);
+  content: attr(data-placeholder);
+  font-style: normal !important;
+  left: 0px !important;
+  pointer-events: none;
+  position: absolute;
+  right: 15px;
+}
+
+.ql-toolbar.ql-snow {
+  border: 1px solid #ccc !important;
+  border-radius: 5px;
+  box-sizing: content-box;
+  padding: 5px !important;
+  background-color: #fafafa;
+}

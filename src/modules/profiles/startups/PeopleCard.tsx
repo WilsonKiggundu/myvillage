@@ -3,6 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
 import ContactCard from "../../../components/ContactCard";
+import {IPerson} from "../people/IPerson";
 
 interface IProps {
     title: string
@@ -16,9 +17,9 @@ export function PeopleCard(props: IProps) {
         {props.items ?
             <Grid container spacing={2}>
                 {
-                    props.items.slice(0, 6).map((person: any, index: number) => (
+                    props.items.slice(0, 6).map((person: IPerson, index: number) => (
                         <Grid key={person.id} item xs={6} sm={6} md={4}>
-                            <ContactCard {...person}/>
+                            <ContactCard person={person}/>
                         </Grid>
                     ))
 

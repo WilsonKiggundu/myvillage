@@ -9,10 +9,13 @@ import BusinessIcon from '@material-ui/icons/Business';
 import WorkIcon from "@material-ui/icons/Work";
 import Grid from "@material-ui/core/Grid";
 import {Wrapper} from "../../components/layout/Wrapper";
-import AuthService from "../auth/AuthService";
+import AuthService from "../../services/AuthService";
 import {Stats} from "../../components/Stats";
 import {PeopleOutline} from "@material-ui/icons";
 import palette from "../../theme/palette";
+import {RedirectToUrl} from "../../routes/RedirectToUrl";
+import {Urls} from "../../routes/Urls";
+import {User} from "oidc-client";
 
 interface IStat {
     title: string
@@ -26,6 +29,11 @@ function Home() {
     const classes = useStyles();
 
     const authService = new AuthService();
+
+
+    if (authService.isAuthenticated()){
+        RedirectToUrl(Urls.feed)
+    }
 
     const stats: IStat[] = [
         {
@@ -52,8 +60,8 @@ function Home() {
 
     return (
         <div style={{display: "block"}} className={`${classes.toolbar} ${globalClasses.fullWidth}`}>
-            <Wrapper>
-                <Container maxWidth={"lg"}>
+            <Wrapper padding={"50px 0"} bgColor={palette.primary.main} textColor={palette.white}>
+                <Container maxWidth={"xl"}>
                     <Grid container>
                         <Grid item lg={3}/>
                         <Grid item lg={6} md={8}>
@@ -74,16 +82,30 @@ function Home() {
                             <Typography style={{paddingBottom: 15, textAlign: 'center'}}>
                                 <Button variant="contained"
                                         size={"large"}
+                                        onClick={authService.signupRedirect}
+                                        style={{
+                                            boxShadow: 'none',
+                                            textTransform:'inherit',
+                                            fontSize: "1.1em",
+                                            fontWeight: "bold",
+                                            borderRadius: 0
+                                        }}
+                                        color="secondary">
+                                    Join the Community
+                                </Button>
+                                <Button variant="outlined"
+                                        size={"large"}
                                         onClick={authService.signinRedirect}
                                         style={{
                                             boxShadow: 'none',
                                             textTransform:'inherit',
                                             fontSize: "1.1em",
                                             fontWeight: "bold",
-                                            borderRadius: 25
+                                            marginLeft: 15,
+                                            borderRadius: 0
                                         }}
                                         color="secondary">
-                                    Join the Community
+                                    Sign in
                                 </Button>
                             </Typography>
 
@@ -93,9 +115,9 @@ function Home() {
             </Wrapper>
             <Wrapper padding={"50px 0"} textColor="#3C3C3C" >
                 <Container maxWidth={"lg"}>
-                    <Grid spacing={2} container>
-                        {stats.map(s => (
-                            <Grid item xs={6} sm={4} md={3}>
+                    <Grid spacing={4} container>
+                        {stats.map((s, index) => (
+                            <Grid key={index} item xs={6} sm={4} md={3}>
                                 <Stats
                                     padding={25}
                                     bgColor="#FFFFFF"
@@ -116,7 +138,7 @@ function Home() {
                 </Container>
             </Wrapper>
 
-            <Wrapper padding={50} textAlign="center" textColor="white" bgColor={palette.secondary.dark}>
+            <Wrapper padding={50} textAlign="center" bgColor={palette.white}>
                 <Container maxWidth={"lg"}>
                     <Grid container>
                         <Grid item sm={2} md={3} />
@@ -131,7 +153,7 @@ function Home() {
                             </Typography>
                             <Button variant="contained"
                                     size={"large"}
-                                    onClick={authService.signinRedirect}
+                                    onClick={authService.signupRedirect}
                                     style={{
                                         boxShadow: 'none',
                                         marginTop: 20,

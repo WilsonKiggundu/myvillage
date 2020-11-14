@@ -3,6 +3,7 @@ import {colors} from "@material-ui/core";
 const white = "#FFFFFF";
 
 const palette = {
+    white: white,
     primary: {
         contrastText: white,
         dark: '#021835',

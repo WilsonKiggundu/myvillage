@@ -23,15 +23,12 @@ const footerStyles = makeStyles((theme: Theme) => ({
 
 function FrontLayout(props: IProps) {
     const classes = useLayoutStyles();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-
     const styles = footerStyles()
 
     return (
         <>
             <div className={classes.root}>
-                <ApplicationBar/>
-                <main style={{marginTop: 64, display: "block"}} className={`${classes.root}`}>
+                <main className={`${classes.root}`}>
                     {props.children}
                 </main>
             </div>

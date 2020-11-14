@@ -4,6 +4,7 @@ import {useLayoutStyles} from "./styles";
 import ApplicationBar from "../appBar/AppBar";
 
 interface IProps {
+    user?: any
     title?: string
     children?: any,
     mobilePadding?: boolean

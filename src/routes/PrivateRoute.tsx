@@ -1,6 +1,7 @@
 import React from "react";
 import {Route} from "react-router-dom"
 import {AuthConsumer} from "../modules/auth/AuthProvider";
+import {PleaseWait} from "../components/PleaseWait";
 
 // @ts-ignore
 export const PrivateRoute = ({component, ...rest }) => {
@@ -11,7 +12,7 @@ export const PrivateRoute = ({component, ...rest }) => {
                     return <Component {...props}/>
                 } else{
                     signinRedirect()
-                    return <span>loading</span>
+                    return <PleaseWait />
                 }
             }}
         </AuthConsumer>

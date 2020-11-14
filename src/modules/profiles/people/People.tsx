@@ -10,7 +10,7 @@ import clsx from "clsx";
 import ProfileRating from "../../../components/ProfileRating";
 import Typography from "@material-ui/core/Typography";
 import grey from "@material-ui/core/colors/grey";
-import {Routes} from "../../../routes/routes";
+import {Urls} from "../../../routes/Urls";
 import { useHistory } from "react-router-dom";
 
 const People = () => {
@@ -20,7 +20,7 @@ const People = () => {
     const history = useHistory()
 
     const handleViewProfile = (id: string) => {
-        const url = `${Routes.profiles.people}/${id}`
+        const url = `${Urls.profiles.people}/${id}`
         history.push(url)
     }
 
@@ -33,22 +33,15 @@ const People = () => {
             <Grid container spacing={2}>
                 {
                     profiles ?
-                        profiles.map(profile => (
-                            <Grid item key={profile.id} xs={12} sm={4} lg={3}>
-                                <ContactCard
-                                    name={profile.name}
-                                    id={profile.id}
-                                    avatar={profile.avatar}
-                                    role={profile.role}>
-
+                        profiles.map(person => (
+                            <Grid item key={person.id} xs={12} sm={4} lg={3}>
+                                <ContactCard person={person}>
                                     <Box mt={2}>
-
                                         <ProfileRating rating={4} />
-
                                         <Grid container spacing={2}>
                                             <Grid item xs={6}>
                                                 <Button
-                                                    onClick={() => handleViewProfile(profile.id)}
+                                                    onClick={() => handleViewProfile(person.id)}
                                                     className={clsx(styles.fullWidth, styles.flat)}
                                                     variant="outlined"
                                                     color="secondary"
@@ -56,7 +49,7 @@ const People = () => {
                                             </Grid>
                                             <Grid item xs={6}>
                                                 <Button
-                                                    onClick={() => handleConnect(profile.id)}
+                                                    onClick={() => handleConnect(person.id)}
                                                     className={clsx(styles.fullWidth, styles.flat)}
                                                     variant="contained"
                                                     color="primary"

@@ -9,24 +9,25 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 interface IProps {
     title: string
     message: string
+    open: boolean
     onContinue: () => void
+    onClose: () => void
 }
 
-export default function ConfirmDialog(props: IProps) {
-    const [open, setOpen] = React.useState(false);
+export default function XConfirmDialog(props: IProps) {
     const {title, message} = props
 
     const handleContinue = () => {
-        setOpen(true);
+        props.onContinue()
     };
 
     const handleClose = () => {
-        setOpen(false);
+        props.onClose()
     };
 
     return (
         <Dialog
-            open={open}
+            open={props.open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"

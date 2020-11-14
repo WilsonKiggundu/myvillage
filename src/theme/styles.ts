@@ -2,6 +2,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import palette from "./palette";
+import {teal} from "@material-ui/core/colors";
+import {white} from "./custom-colors";
+import grey from "@material-ui/core/colors/grey";
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
@@ -117,7 +120,7 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     avatar: {
-        backgroundColor: palette.primary.main
+        backgroundColor: teal[900]
     },
 
     textCenter: {
@@ -126,5 +129,12 @@ export const globalStyles = makeStyles((theme) => ({
 
     dropzone: {
         maxHeight: 100
+    },
+
+    avatarPhotoIcon: {
+        color: grey[500],
+        position: "absolute",
+        left: -40,
+        bottom: 1
     }
 }))

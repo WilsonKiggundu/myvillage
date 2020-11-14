@@ -1,10 +1,11 @@
 import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom'
 import {ToastContainer} from "react-toastify";
-import ContentSwitch from "./modules/ContentSwitch";
+import Routes from "./routes/Routes";
 import {useSelector} from 'react-redux'
 import LoaderDialog from "./components/LoaderDialog";
 import Splash from "./modules/login/Splash";
+import {AuthProvider} from "./modules/auth/AuthProvider";
 
 const App: React.FC = () => {
     const coreState: any = useSelector((state: any) => state.core)
@@ -14,13 +15,13 @@ const App: React.FC = () => {
     if (isUserLoading) {
         return <Splash />
     } else {
-        return <Router>
+        return <AuthProvider>
             <ToastContainer/>
             <>
                 {<LoaderDialog open={globalLoader}/>}
-                <ContentSwitch/>
+                <BrowserRouter children={Routes} basename={"/"} />
             </>
-        </Router>;
+        </AuthProvider>;
     }
 }
 

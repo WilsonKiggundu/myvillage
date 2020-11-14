@@ -20,10 +20,10 @@ const Feed = ({match}: any) => {
     const feed = Posts
 
     return (
-        <Container maxWidth={"lg"}>
+        <Container maxWidth={"md"}>
             <Grid container spacing={2}>
-                <Box clone order={{xs: 2, sm: 1}}>
-                    <Grid item xs={12} md={4} lg={3} sm={12}>
+                <Box style={{display: "none"}} clone order={{xs: 2, sm: 1}}>
+                    <Grid item xs={12} md={3} lg={3} sm={12}>
                         <Box mb={2}>
                             <Card style={{textAlign: 'center'}}>
                                 <CardContent>
@@ -34,8 +34,8 @@ const Feed = ({match}: any) => {
                                                 src={person.avatar}/>
                                     </div>
 
-                                    <Typography variant="h6">{person.name}</Typography>
-                                    <Typography paragraph>{person.role}</Typography>
+                                    <Typography variant="h6">{person.firstName} {person.lastName}</Typography>
+                                    <Typography paragraph>{person.lastName}</Typography>
 
                                     <ProfileRating rating={3} />
 
@@ -46,7 +46,7 @@ const Feed = ({match}: any) => {
                     </Grid>
                 </Box>
                 <Box clone order={{xs: 1, sm: 2}}>
-                    <Grid item xs={12} md={8} lg={9} sm={12}>
+                    <Grid item xs={12}>
                         <StartAPostCard placeholder={"What's on your mind?"} />
                         <Box mb={2}>
                             { feed ? feed.map(p => <PostCard key={p.id} {...person} />) : "" }

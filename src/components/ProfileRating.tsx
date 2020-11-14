@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 
 interface IProps {
     rating: number | null
+    readonly?: boolean
 }
 
 export default function ProfileRating(props: IProps) {
@@ -12,6 +13,7 @@ export default function ProfileRating(props: IProps) {
     return (
             <Box component="fieldset" mb={1} mt={1} borderColor="transparent">
                 <Rating
+                    readOnly={props.readonly}
                     name="simple-controlled"
                     value={value}
                     onChange={(event, newValue) => {

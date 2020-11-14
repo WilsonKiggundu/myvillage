@@ -1,9 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import {DialogContent} from "@material-ui/core";
@@ -14,7 +11,6 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
-import Divider from "@material-ui/core/Divider";
 import withWidth from "@material-ui/core/withWidth";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
@@ -43,7 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function CreateDialog(props: IProps){
-    const [open, setOpen] = useState(false)
     const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("xs"));
 
     const dialogProps = {

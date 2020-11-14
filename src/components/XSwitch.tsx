@@ -3,7 +3,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-export default function CustomSwitch(props: any) {
+export default (props: any) => {
     const [state, setState] = useState({ checked: false });
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
