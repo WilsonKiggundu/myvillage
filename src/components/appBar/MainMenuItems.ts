@@ -24,16 +24,11 @@ export const MainMenuItems = [
     {
         label: "Jobs",
         icon: "",
-        url: Urls.jobs
+        url: Urls.jobs.list
     },
     // {
     //     label: "Corporates",
     //     icon: "",
     //     url: Urls.profiles.startups
-    // },
-    // {
-    //     label: "Events",
-    //     icon: "",
-    //     url: ""
     // }
 ]

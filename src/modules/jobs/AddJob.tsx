@@ -14,8 +14,9 @@ import "quill/dist/quill.snow.css"
 import Box from "@material-ui/core/Box";
 import * as yup from "yup";
 import {reqString} from "../../data/validations";
-import {FormikHelpers, Field} from "formik";
-import XTextAreaInput from "../../components/inputs/XTextAreaInput";
+import {FormikHelpers} from "formik";
+
+import QuillEditor from "../../utils/quillSettings";
 
 interface IProps {
     placeholder: string
@@ -31,39 +32,15 @@ const initialValues = {
     title: ''
 }
 
-const NewArticle = ({placeholder}: IProps) => {
-
-    const [content, setContent] = useState<any>(null)
+const AddJob = ({placeholder}: IProps) => {
 
     let editor: Quill | undefined = undefined
+    const [content, setContent] = useState<any>(null)
     const container = createRef<any>()
 
     useEffect(() => {
 
-        const toolbarOptions = [
-            [{'header': [1, 2, 3, 4, 5, 6, false]}],
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block'],
-
-            [{'list': 'ordered'}, {'list': 'bullet'}],
-            [{'script': 'sub'}, {'script': 'super'}],
-            [{'indent': '-1'}, {'indent': '+1'}],
-
-            [{'align': []}],
-        ];
-
-        editor = new Quill(container.current, {
-            theme: 'snow',
-            placeholder: placeholder,
-            readOnly: false,
-            formats: [
-                'header', 'underline', 'strike', 'blockquote', 'code-block',
-                'bold', 'italic', 'list', 'script', 'indent', 'align'
-            ],
-            modules: {
-                toolbar: toolbarOptions
-            }
-        })
+        editor = QuillEditor(container, placeholder)
 
         const delta: any = {
             ops: []
@@ -124,4 +101,4 @@ const NewArticle = ({placeholder}: IProps) => {
     )
 }
 
-export default NewArticle
+export default AddJob

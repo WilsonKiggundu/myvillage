@@ -20,7 +20,7 @@ interface IProps {
 type PickerProps = Omit<KeyboardDatePickerProps, 'variant' | 'inputVariant'>;
 
 const XDateInput = (props: IProps & Partial<PickerProps>) => {
-    const {variant, pickerVariant,margin = 'normal', ...rest} = props
+    const {variant, helperText, pickerVariant,margin = 'normal', ...rest} = props
     const [field, meta, helpers] = useField({name: props.name});
     const error = hasValue(meta.error) ? meta.error : undefined
     const showError = Boolean(error && meta.touched)
@@ -43,7 +43,7 @@ const XDateInput = (props: IProps & Partial<PickerProps>) => {
             autoOk
             name={field.name}
             value={field.value || null}
-            helperText={showError && error}
+            helperText={showError && error || helperText}
             error={Boolean(showError)}
             onChange={handleChange}
             onBlur={() => helpers.setTouched(true)}

@@ -1,23 +1,28 @@
-import Fab from "@material-ui/core/Fab";
+import Fab, {FabProps} from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
 
+type Position = 'absolute' | 'relative' | 'fixed' | 'static'
+type Size = 'small' | 'medium' | 'large'
+
 interface IProps {
-    color?: any
+    size?: Size
+    position?: Position
+    bottom?: number
+    top?: number
+    left?: number
+    right?: number
     children: any
-    onClick?: () => {}
 }
-export function XFab(props: IProps) {
+export function XFab({children, left, right, bottom, top, position, ...rest}: IProps & FabProps) {
     return <Fab
         style={{
-            position: "absolute",
-            bottom: 0,
-            right: 0
+            position: position,
+            bottom: bottom,
+            right: right
         }}
-        onClick={props.onClick}
-        size={"small"}
-        color={"default"}
+        {...rest}
         aria-label="edit">
-        {props.children}
+        {children}
     </Fab>;
 }

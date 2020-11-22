@@ -16,6 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 interface IProps {
     label: string
     name: string
+    helperText?: string
     options: IOption[]
     multiple?: boolean
     multiline?: boolean
@@ -79,15 +80,27 @@ const XSelectInput = (props: IProps) => {
             labelWidth={labelWidth}
             renderValue={(selected) => (
                 <div className={classes.chips}>
-                    {(selected as string[]).map((value, index) => (
-                        <Chip
-                            size={"small"}
-                            onDelete={handleDelete}
-                            color={"secondary"}
-                            key={index}
-                            label={options?.filter(q => q.id === value)[0]?.name}
-                            className={classes.chip}/>
-                    ))}
+                    {
+                        Array.isArray(selected) ? (
+                                (selected as string[]).map((value, index) => (
+                                    <Chip
+                                        size={"small"}
+                                        onDelete={handleDelete}
+                                        color={"secondary"}
+                                        key={index}
+                                        label={options?.filter(q => q.id === value)[0]?.name}
+                                        className={classes.chip}
+                                    />
+                                ))
+                            ) :
+                            <Chip
+                                size={"small"}
+                                onDelete={handleDelete}
+                                color={"secondary"}
+                                label={options?.filter(q => q.id === selected)[0]?.name}
+                                className={classes.chip}
+                            />
+                    }
                 </div>
             )}
             autoComplete="off"
@@ -107,7 +120,8 @@ const XSelectInput = (props: IProps) => {
 
         </Select>
         {
-            showError && <FormHelperText>{error}</FormHelperText>
+            props.helperText ? <FormHelperText>{props.helperText}</FormHelperText> :
+                showError && <FormHelperText>{error}</FormHelperText>
         }
     </FormControl>
 }
