@@ -89,8 +89,11 @@ export default function XDialog(props: IProps) {
                                 </IconButton>
                             </Grid>
                         </Grid>
+
                     </DialogTitle>
             }
+
+            <Divider />
 
             <DialogContent>
                 {

@@ -113,7 +113,7 @@ const StartAPostCard = (props: IProps) => {
                                 </Button>
                                 <XDialog
                                     title={"Add an event"}
-                                    maxWidth={"md"}
+                                    maxWidth={"sm"}
                                     open={openNewEventDialog}
                                     onClose={() => setOpenNewEventDialog(false)}>
                                     <NewEvent />

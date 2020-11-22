@@ -1,5 +1,5 @@
 import {Box} from "@material-ui/core";
-import React from "react";
+import React, {useState} from "react";
 import faker from "faker"
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -16,8 +16,15 @@ import {Link, useHistory} from "react-router-dom";
 import XSelectDropdown from "../../components/inputs/XSelectDropdown";
 import palette from "../../theme/palette";
 import CustomAccordion from "../../components/CustomAccordion";
+import {XFab} from "../../components/buttons/XFab";
+import AddIcon from "@material-ui/icons/Add"
+import NewJob from "./forms/NewJob";
+import XDialog from "../../components/dialogs/XDialog";
 
 const Jobs = ({match}: any) => {
+
+    const [openJobDialog, setOpenJobDialog] = useState<boolean>(false)
+
     const history = useHistory()
     let jobs = []
 
@@ -61,6 +68,24 @@ const Jobs = ({match}: any) => {
 
     return (
         <Container maxWidth={"lg"}>
+
+            <XFab
+                onClick={() => setOpenJobDialog(true)}
+                position={"fixed"}
+                bottom={20}
+                right={20}
+                color={"secondary"}>
+                <AddIcon/>
+            </XFab>
+
+            <XDialog
+                maxWidth={"md"}
+                title={"Add a new job"}
+                open={openJobDialog}
+                onClose={() => setOpenJobDialog(false)}>
+                <NewJob/>
+            </XDialog>
+
             <Grid spacing={2} container justify={"flex-start"}>
                 <Box mb={2} clone order={{xs: 1, md: 1}}>
                     <Grid item xs={12}>
@@ -74,14 +99,16 @@ const Jobs = ({match}: any) => {
                                         options={locations}/>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <XSelectDropdown helperText={"Filter by category"}
-                                                     placeholder={"Category"}
-                                                     options={categories}/>
+                                    <XSelectDropdown
+                                        helperText={"Filter by category"}
+                                        placeholder={"Category"}
+                                        options={categories}/>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <XSelectDropdown helperText={"Filter by company"}
-                                                     placeholder={"Company"}
-                                                     options={companies}/>
+                                    <XSelectDropdown
+                                        helperText={"Filter by company"}
+                                        placeholder={"Company"}
+                                        options={companies}/>
                                 </Grid>
                             </Grid>
                         </CustomAccordion>

@@ -20,6 +20,7 @@ import {StartupBioCard} from "./StartupBioCard";
 import InterestsCard from "../../../components/InterestsCard";
 import Gallery from "../../../components/Gallery";
 import {PeopleCard} from "./PeopleCard";
+import StartupSummary from "./StartupSummary";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -76,61 +77,19 @@ const Startup = ({match}: any) => {
 
     return (
         <div className={classes.root}>
-            <Container maxWidth="lg">
-                <Grid spacing={2} container justify="flex-start">
-                    <Box clone order={{xs: 2, sm: 1}}>
-                        <Grid item xs={12} md={4} lg={3} sm={12}>
-                            <Card style={{textAlign: 'center'}} variant="outlined">
-                                <CardContent>
-                                    <div className={classes.profilePhoto}>
-                                        <Avatar className={clsx(styles.largeAvatar, styles.avatar)}
-                                                style={{}}
-                                                variant="circle"
-                                                src={avatar}/>
-                                    </div>
+            <Container maxWidth="md">
+                <Grid container justify="flex-start">
+                    <Grid item xs={12}>
+                        <StartAPostCard placeholder={`Post on ${profile.name}'s wall...`}/>
 
-                                    <Typography variant="h6">The Innovation Village Kampala</Typography>
-                                    <Typography paragraph>Gulu . Jinja . Mbarara . Mbale . Ntinda</Typography>
+                        <StartupSummary id={123}/>
 
-                                    <ProfileRating rating={3}/>
-
-                                    <Divider/>
-
-                                    <Typography style={{margin: '15px 0'}}>
-                                        <strong>Incorporation Date</strong> <br/>
-                                        <span>Aug. 21, 2007</span>
-                                    </Typography>
-
-                                    <Divider/>
-
-                                    <Typography style={{margin: '15px 0'}}>
-                                        <strong>Address</strong> <br/>
-                                        <span>Ntinda Complex <br/> Block B&C - 3rd Floor</span>
-                                    </Typography>
-
-                                    <Divider/>
-
-                                    <Button variant="outlined"
-                                            target="_blank"
-                                            color="primary"
-                                            href="https://www.innovationvillage.co.ug" style={{marginTop: 15}}>
-                                        <strong>Visit Website</strong>
-                                    </Button>
-
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    </Box>
-                    <Box clone order={{xs: 1, sm: 2}}>
-                        <Grid item xs={12} sm={12} md={8} lg={9}>
-                            <StartAPostCard placeholder={`Post on ${profile.name}'s wall...`}/>
-                            <StartupBioCard profile={profile}/>
-                            <InterestsCard items={interests}/>
-                            <Gallery items={products} title={"Our products"}/>
-                            <AwardsTimeline awards={awards}/>
-                            <PeopleCard title={"Our people"} items={contacts.slice(0, 8)}/>
-                        </Grid>
-                    </Box>
+                        <StartupBioCard profile={profile}/>
+                        <InterestsCard items={interests}/>
+                        <Gallery items={products} title={"Our products"}/>
+                        <AwardsTimeline awards={awards}/>
+                        <PeopleCard title={"Our people"} items={contacts.slice(0, 8)}/>
+                    </Grid>
                 </Grid>
             </Container>
         </div>

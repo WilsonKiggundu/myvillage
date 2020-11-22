@@ -18,7 +18,10 @@ export const Urls = ({
         investors: "/profiles/investors",
         entrepreneurs: "/profiles/entrepreneurs",
     },
-    jobs: "/jobs",
+    jobs: {
+        create: "/jobs/create",
+        list: "/jobs"
+    },
     job: '/jobs/:id',
     events: "/events",
     event: '/events/:id'
