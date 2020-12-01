@@ -7,6 +7,13 @@ export const Options = {
         { id: "female", name: 'Female' },
         { id: "other", name: 'Other' },
     ],
+
+    STARTUP_CATEGORIES: [
+        { id: 1, name: "FinTech"},
+        { id: 2, name: "EdTech"},
+        { id: 3, name: "AgriTech"},
+        { id: 99, name: "Other"},
+    ],
     USER_CATEGORIES: [
         {
             name: "Investor",

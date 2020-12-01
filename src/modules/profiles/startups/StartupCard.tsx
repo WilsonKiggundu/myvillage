@@ -16,7 +16,7 @@ import Box from "@material-ui/core/Box";
 interface IProps {
     id: string
     name: string
-    details: string
+    description: string
     interests?: [string]
     category?: string
     logo?: string
@@ -77,9 +77,17 @@ const StartupCard = (props: IProps) => {
                         {props.name}
                     </Typography>
 
-                    <Typography component="div">
-                        <Chip size="small" label={props.category} />
-                    </Typography>
+                    {props.description ?
+                        <Typography style={{whiteSpace: 'pre-line'}} variant={"body2"}>
+                            {props.description}
+                        </Typography>
+                        : ""}
+
+                    <Box mt={1} mb={1}>
+                        <Typography component="div">
+                            <Chip size="small" label={props.category} />
+                        </Typography>
+                    </Box>
 
                     <ProfileRating rating={3} />
 

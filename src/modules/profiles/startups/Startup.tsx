@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {globalStyles} from "../../../theme/styles"
 import {Container, createStyles, Theme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -21,6 +21,10 @@ import InterestsCard from "../../../components/InterestsCard";
 import Gallery from "../../../components/Gallery";
 import {PeopleCard} from "./PeopleCard";
 import StartupSummary from "./StartupSummary";
+import {IStartup} from "../../../interfaces/IStartup";
+import {get, makeUrl} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
+import Toast from "../../../utils/Toast";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,6 +65,21 @@ const Startup = ({match}: any) => {
     const classes = globalStyles()
     const styles = useStyles();
 
+    const {id} = match.params
+    const [profile, setProfile] = useState<IStartup>(Object.create({}))
+
+    useEffect(() => {
+        const url = makeUrl("Profiles", Endpoints.business.base + "/" + id)
+
+        get(url, {},
+            (profile) => {
+                setProfile(profile)
+            }, err => {
+                Toast.error("Unable to fetch startup profile")
+            }
+        )
+    }, [id, setProfile])
+
     const interests = Interests;
     const contacts: any[] = [];
     const awards = Awards;
@@ -68,8 +87,6 @@ const Startup = ({match}: any) => {
     const avatar = "https://innovationvillage.co.ug/wp-content/uploads/2020/07/new-logo-white-02-1.png";
     const placeHolder = "https://picsum.photos/500/500"
     let products = []
-
-    const profile = Startups[0];
 
     for (let i = 0; i < 9; i++) {
         products.push(`${placeHolder}?image=${i * 5 + 10}`)
@@ -82,7 +99,7 @@ const Startup = ({match}: any) => {
                     <Grid item xs={12}>
                         <StartAPostCard placeholder={`Post on ${profile.name}'s wall...`}/>
 
-                        <StartupSummary id={123}/>
+                        <StartupSummary profile={profile}/>
 
                         <StartupBioCard profile={profile}/>
                         <InterestsCard items={interests}/>

@@ -14,12 +14,14 @@ import {globalStyles} from "../../../theme/styles";
 import {Box} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
+import {IStartup} from "../../../interfaces/IStartup";
+import {format} from "date-fns";
 
 interface IProps {
-    id: string | number
+    profile: IStartup
 }
 
-export default function StartupSummary(props: IProps) {
+export default function StartupSummary({profile}: IProps) {
 
     const classes = globalStyles()
 
@@ -35,7 +37,7 @@ export default function StartupSummary(props: IProps) {
                                         variant="square"/>
                             </div>
 
-                            <Typography variant="h6">The Innovation Village Kampala</Typography>
+                            <Typography variant="h6">{profile.name}</Typography>
                             <Typography paragraph>Gulu . Jinja . Mbarara . Mbale . Ntinda</Typography>
 
                             <ProfileRating rating={3}/>
@@ -43,7 +45,7 @@ export default function StartupSummary(props: IProps) {
                         <Grid item xs={12} md={6}>
                             <Typography style={{margin: "15px 0"}}>
                                 <strong>Incorporation Date</strong> <br/>
-                                <span>Aug. 21, 2007</span>
+                                <span>{profile.dateOfIncorporation}</span>
                             </Typography>
 
                             <Divider/>

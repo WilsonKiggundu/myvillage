@@ -5,7 +5,7 @@ switch (process.env.NODE_ENV){
         baseUrl = "https://profiles-test.innovationvillage.co.ug"
         break
     case "production":
-        baseUrl = "https://profiles.innovationvillage.co.ug"
+        baseUrl = "https://profiles-test.innovationvillage.co.ug"
         break
     default:
         baseUrl = "https://localhost:5001"

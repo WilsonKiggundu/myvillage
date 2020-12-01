@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Interests, Startups as businesses} from "../../../data/mockData";
 import StartupCard from "./StartupCard";
 import {Grid} from "@material-ui/core";
@@ -12,14 +12,38 @@ import {XFab} from "../../../components/buttons/XFab";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import {AddIconButton} from "../../../components/EditIconButton";
+import UpdateStartupDetails from "./forms/UpdateStartupDetails";
+import XDialog from "../../../components/dialogs/XDialog";
+import {IStartup} from "../../../interfaces/IStartup";
+import {get, makeUrl} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
+import Toast from "../../../utils/Toast";
 
 type Visibility = 'hide' | 'show'
 
 const Startups = () => {
 
     const [showFilter, setShowFilter] = useState<boolean>(false)
+    const [addStartupDialog, setAddStartupDialog] = useState<boolean>(false)
+    const [startups, setStartups] = useState<IStartup[]>([])
 
     const data: any[] = businesses;
+
+    useEffect(() => {
+        const url = makeUrl("Profiles", Endpoints.business.base)
+
+        get(url,
+            {},
+            (startups) => {
+                setStartups([...startups])
+            },
+            err => {
+                Toast.error("Error while fetching startups")
+            }
+        )
+
+    }, [setStartups])
+
 
     let categories: any[] = []
     Interests.forEach(m => categories.push({value: m.id, label: m.name}))
@@ -53,8 +77,8 @@ const Startups = () => {
 
             <Box mb={2}>
                 <Grid spacing={3} container>
-                    {data.map((s: any) => (
-                        <Grid item key={s.id} xs={12} sm={4} lg={3}>
+                    {startups.map((s: any) => (
+                        <Grid item key={s.id} xs={12} sm={6} md={4} lg={3}>
                             <StartupCard {...s} />
                         </Grid>
                     ))}
@@ -65,9 +89,16 @@ const Startups = () => {
                   bottom={15}
                   color={"secondary"}
                   position={"fixed"}
-                  onClick={() => {}}>
+                  onClick={() => setAddStartupDialog(true)}>
                 <AddIcon/>
             </XFab>
+
+            <XDialog title={"Enroll your startup"}
+                     maxWidth={"md"}
+                     open={addStartupDialog}
+                     onClose={() => setAddStartupDialog(false)}>
+                <UpdateStartupDetails />
+            </XDialog>
 
         </Container>
     )
