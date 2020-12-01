@@ -8,12 +8,16 @@ import Box from "@material-ui/core/Box";
 import ProfileRating from "../../../components/ProfileRating";
 import {Countries} from "../../../data/Countries";
 import XSwitch from "../../../components/XSwitch";
+import {XFab} from "../../../components/buttons/XFab";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
+import {AddIconButton} from "../../../components/EditIconButton";
 
 type Visibility = 'hide' | 'show'
 
 const Startups = () => {
 
-    const [filterState, setFilterState] = useState<Visibility>('hide')
+    const [showFilter, setShowFilter] = useState<boolean>(false)
 
     const data: any[] = businesses;
 
@@ -29,37 +33,23 @@ const Startups = () => {
 
     const countries = Countries.map(c => ({value: c.Code, label: c.Name}))
 
-    const toggleFilter = (state: Visibility) => {
-        //setFilterState(state)
-    }
-
     return (
         <Container maxWidth="lg">
-            <Box mb={1}>
-                <Grid container justify={"flex-end"}>
-                    <XSwitch onChange={toggleFilter(filterState)} />
-                </Grid>
-            </Box>
 
             <Box mb={2} p={2} style={{backgroundColor: "white"}}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={4} lg={3}>
-                        <XSelectDropdown
-                            placeholder="Category"
-                            options={categories}/>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={4} lg={3}>
+                            <XSelectDropdown
+                                placeholder="Category"
+                                options={categories}/>
+                        </Grid>
+                        <Grid item xs={12} sm={4} lg={3}>
+                            <XSelectDropdown
+                                placeholder="Country"
+                                options={countries}/>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={4} lg={3}>
-                        <XSelectDropdown
-                            placeholder="Rating"
-                            options={ratings}/>
-                    </Grid>
-                    <Grid item xs={12} sm={4} lg={3}>
-                        <XSelectDropdown
-                            placeholder="Country"
-                            options={countries}/>
-                    </Grid>
-                </Grid>
-            </Box>
+                </Box>
 
             <Box mb={2}>
                 <Grid spacing={3} container>
@@ -70,6 +60,14 @@ const Startups = () => {
                     ))}
                 </Grid>
             </Box>
+
+            <XFab right={15}
+                  bottom={15}
+                  color={"secondary"}
+                  position={"fixed"}
+                  onClick={() => {}}>
+                <AddIcon/>
+            </XFab>
 
         </Container>
     )

@@ -18,6 +18,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
+import palette from "../../theme/palette";
 
 interface IProps {
     minWidth?: number
@@ -32,7 +33,7 @@ interface IProps {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         appBar: {
-            backgroundColor: themeBackground,
+            backgroundColor: palette.primary.main,
             position: 'relative',
             boxShadow: "none"
         },
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function XDialog(props: IProps) {
     const classes = useStyles();
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
     return (
         <Dialog
@@ -65,7 +66,7 @@ export default function XDialog(props: IProps) {
                     <AppBar className={classes.appBar}>
                         <Toolbar>
                             <IconButton edge="start" onClick={props.onClose} aria-label="close">
-                                <CloseIcon style={{color: "red"}}/>
+                                <CloseIcon style={{color: "white"}}/>
                             </IconButton>
                             <Typography variant="h6" className={classes.title}>
                                 {props.title}

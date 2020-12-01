@@ -16,7 +16,7 @@ const App: React.FC = () => {
         return <Splash />
     } else {
         return <AuthProvider>
-            <ToastContainer/>
+            <ToastContainer enableMultiContainer={false} hideProgressBar/>
             <>
                 {<LoaderDialog open={globalLoader}/>}
                 <BrowserRouter children={Routes} basename={"/"} />

@@ -1,5 +1,18 @@
-export const ApiEndpoints = {
-    base: process.env.PROFILE_SERVICE,
+let baseUrl
+
+switch (process.env.NODE_ENV){
+    case "test":
+        baseUrl = "https://profiles-test.innovationvillage.co.ug"
+        break
+    case "production":
+        baseUrl = "https://profiles.innovationvillage.co.ug"
+        break
+    default:
+        baseUrl = "https://localhost:5001"
+}
+
+export const Endpoints = {
+    base: baseUrl,
 
     business: {
         base: "/api/business",
@@ -30,9 +43,9 @@ export const ApiEndpoints = {
     contact: "/api/contact",
 
     lookup: {
-        category: "/api/business/categories",
-        interest: "/api/business/interests",
-        need: "/api/business/needs",
-        upload: "/api/business/uploads",
+        category: "/api/lookup/categories",
+        interest: "/api/lookup/interests",
+        need: "/api/lookup/needs",
+        upload: "/api/lookup/uploads",
     },
 }

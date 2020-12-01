@@ -4,7 +4,7 @@ import React from "react";
 import * as yup from "yup"
 import {reqArray, reqString} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
-import {post} from "../../../../../utils/ajax";
+import {makeUrl, post, put} from "../../../../../utils/ajax";
 import Toast from "../../../../../utils/Toast";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../../components/inputs/XTextInput";
@@ -15,38 +15,35 @@ import XRadioInput from "../../../../../components/inputs/XRadioInput";
 import {Options} from "../../../../../utils/options";
 import XDateInput from "../../../../../components/inputs/XDateInput";
 import XSelectInput from "../../../../../components/inputs/XSelectInput";
+import {IPerson} from "../../IPerson";
+import {Endpoints} from "../../../../../services/Endpoints";
 
 interface IProps {
+    person: IPerson
     done?: () => any
 }
 
 const schema = yup.object().shape(
     {
-        firstName: reqString,
-        lastName: reqString,
-        //gender: reqString,
-        //dateOfBirth: reqString,
-        categories: reqArray
+        firstname: reqString,
+        lastname: reqString,
     }
 )
 
-const initialValues = {
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    gender: '',
-    dateOfBirth: '',
-    bio: '',
-    categories: []
-}
 
-const UpdateProfileForm = ({done}: IProps) => {
+
+const UpdateProfileForm = ({done, person}: IProps) => {
     const dispatch = useDispatch()
+
+    const initialValues = {...person}
 
     function handleSubmit(values: any, actions: FormikHelpers<any>) {
         const toSave = {}
+        const url = makeUrl("Profiles", Endpoints.person.base)
 
-        post('', toSave,
+        values.id = person.id
+
+        put(url, values,
             (data) => {
                 Toast.info("Your profile has been updated successfully")
                 actions.resetForm()
@@ -58,7 +55,9 @@ const UpdateProfileForm = ({done}: IProps) => {
                     done()
                 }
             },
-            () => Toast.error("Unable to update your profile. Please try again later"),
+            (err) => {
+                Toast.error("Unable to update your profile. Please try again later")
+            },
             () => {
                 actions.setSubmitting(false)
             }
@@ -73,7 +72,7 @@ const UpdateProfileForm = ({done}: IProps) => {
             <Grid spacing={2} container>
                 <Grid item xs={12} sm={4}>
                     <XTextInput
-                        name="firstName"
+                        name="firstname"
                         label={"First name"}
                         type={"text"}
                         variant={"standard"}
@@ -83,7 +82,7 @@ const UpdateProfileForm = ({done}: IProps) => {
 
                 <Grid item xs={12} sm={4}>
                     <XTextInput
-                        name="middleName"
+                        name="middlename"
                         label={"Middle name"}
                         type={"text"}
                         variant={"standard"}
@@ -93,7 +92,7 @@ const UpdateProfileForm = ({done}: IProps) => {
 
                 <Grid item xs={12} sm={4}>
                     <XTextInput
-                        name="lastName"
+                        name="lastname"
                         label={"Last name"}
                         type={"text"}
                         variant={"standard"}
@@ -111,7 +110,7 @@ const UpdateProfileForm = ({done}: IProps) => {
                     </Box>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
                     <XDateInput
                         disableFuture={true}
                         label={"Date of birth"}
@@ -119,15 +118,6 @@ const UpdateProfileForm = ({done}: IProps) => {
                         variant={"standard"}
                     />
                     <FormHelperText>The date of birth will help us give you age appropriate content.</FormHelperText>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <XSelectInput
-                        label={"Select one or more categories"}
-                        multiple={true}
-                        name={"categories"}
-                        options={Options.USER_CATEGORIES}
-                    />
                 </Grid>
 
                 <Grid item xs={12}>

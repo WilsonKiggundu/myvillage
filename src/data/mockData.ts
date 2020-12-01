@@ -48,47 +48,7 @@ export const Interests = [
     {"id": "4f586c9e-a7e8-4d73-b04b-937e0f7805aa", "name": "dapibus"},
 ] as IOption[]
 
-export const Qualifications = [{
-    grade: "First class honors",
-    startYear: "2007",
-    endYear: "2011",
-    fieldOfStudy: "Engineering",
-    degree: "BSc. Electrical Engineering",
-    activities: "Soccer, scripture union",
-    school: "Makerere University Kampala",
-    description: "Everybody is a genius but if you judge a fish by it's ability to climb a tree, it will spend the rest of it's life wondering how stupid it is."
-}] as IEducation[]
-
-export const PersonProfiles = [
-    {
-        id: "8100c725-34d3-4d0c-85ff-80c1754ccb47",
-        firstName: "Moishe",
-        lastName: "Canham",
-        middleName: "Kiggundu",
-        bio: "",
-        categories: ['investor', 'student'],
-        gender: 'male',
-        dateOfBirth: '07.02.2000'
-    }, {
-        id: "b44aaf9e-9a4d-4048-9afa-7b96f7e0a67d",
-        firstName: "Lillian",
-        lastName: "Musoke",
-        middleName: "Nassange",
-        bio: "",
-        categories: ['student'],
-        gender: 'female',
-        dateOfBirth: '07.09.2010'
-    }, {
-        id: "a58d651a-5d9e-4dee-a7e4-bf20e56e1f11",
-        firstName: "Eliana",
-        lastName: "Kwagala",
-        middleName: "Aretha",
-        bio: "",
-        categories: ['student'],
-        gender: 'female',
-        dateOfBirth: '07.09.2010'
-    }
-] as IPerson[]
+export const Qualifications = [] as IEducation[]
 
 export const Awards = [
     {

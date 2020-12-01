@@ -12,6 +12,7 @@ import {useState} from "react";
 import Input from "@material-ui/core/Input";
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemText from "@material-ui/core/ListItemText";
+import TextField from "@material-ui/core/TextField";
 
 interface IProps {
     label: string
@@ -48,7 +49,7 @@ const XSelectInput = (props: IProps) => {
 
     const classes = useStyles()
 
-    const {name, options, variant, margin = 'normal', ...rest} = props
+    const {name, options, variant, margin = 'normal', helperText, ...rest} = props
 
     const [field, meta] = useField({name});
     const error = hasValue(meta.error) ? meta.error : undefined
@@ -74,6 +75,7 @@ const XSelectInput = (props: IProps) => {
             onBlur={field.onBlur}
             multiline={rest.multiline}
             fullWidth
+            error={showError}
             input={<Input/>}
             multiple={rest.multiple}
             inputProps={{name}}
@@ -84,7 +86,7 @@ const XSelectInput = (props: IProps) => {
                         Array.isArray(selected) ? (
                                 (selected as string[]).map((value, index) => (
                                     <Chip
-                                        size={"small"}
+                                        size={"medium"}
                                         onDelete={handleDelete}
                                         color={"secondary"}
                                         key={index}
@@ -94,7 +96,7 @@ const XSelectInput = (props: IProps) => {
                                 ))
                             ) :
                             <Chip
-                                size={"small"}
+                                size={"medium"}
                                 onDelete={handleDelete}
                                 color={"secondary"}
                                 label={options?.filter(q => q.id === selected)[0]?.name}
@@ -120,7 +122,7 @@ const XSelectInput = (props: IProps) => {
 
         </Select>
         {
-            props.helperText ? <FormHelperText>{props.helperText}</FormHelperText> :
+            helperText ? <FormHelperText>{helperText}</FormHelperText> :
                 showError && <FormHelperText>{error}</FormHelperText>
         }
     </FormControl>

@@ -9,7 +9,7 @@ export const positions = {
     BOTTOM_CENTER: toast.POSITION.BOTTOM_CENTER
 }
 
-const defPosition = positions.TOP_CENTER
+const defPosition = positions.TOP_RIGHT
 
 export default class Toast {
     public static success(message: string, position = defPosition) {

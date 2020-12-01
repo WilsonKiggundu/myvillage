@@ -4,68 +4,65 @@ import React from "react";
 import * as yup from "yup"
 import {reqArray, reqString} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
-import {post} from "../../../../../utils/ajax";
-import Toast from "../../../../../utils/Toast";
 import {Grid} from "@material-ui/core";
-import XSelectInput from "../../../../../components/inputs/XSelectInput";
-import {Options} from "../../../../../utils/options";
-import {Interests} from "../../../../../data/mockData";
 import {IEducation} from "../../../../../interfaces/IEducation";
 import {IOption} from "../../../../../components/inputs/inputHelpers";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
+import {IPerson} from "../../IPerson";
+import {makeUrl, post} from "../../../../../utils/ajax";
+import {Endpoints} from "../../../../../services/Endpoints";
+import Toast from "../../../../../utils/Toast";
 
 interface IProps {
     done?: () => any
     id?: string
+    person: IPerson
+    education?: IEducation
 }
 
 const schema = yup.object().shape(
     {
-        school: reqString,
+        awardedBy: reqString,
+        title: reqString,
+        startYear: reqString,
         description: reqString
     }
 )
 
-const initialValues : IEducation = {
-    description: '',
-    school: '',
-    activities: '',
-    degree: '',
-    endYear: '',
-    fieldOfStudy: '',
-    startYear: '',
-    grade: ''
-}
 
-const UpdateEducationForm = ({done, id}: IProps) => {
+
+const UpdateEducationForm = ({done, id, education, person}: IProps) => {
     const dispatch = useDispatch()
-    const years: IOption[] = []
+
+    const initialValues = {...education}
 
     function handleSubmit(values: any, actions: FormikHelpers<any>) {
-        const toSave = {}
+        const url = makeUrl("Profiles", Endpoints.person.award)
+        values.personId = person.id
 
-        // post('', toSave,
-        //     (data) => {
-        //         Toast.info("Your profile has been updated successfully")
-        //         actions.resetForm()
-        //         dispatch({
-        //             type: '',
-        //             payload: {...data}
-        //         })
-        //         if (done) {
-        //             done()
-        //         }
-        //     },
-        //     () => Toast.error("Unable to update your profile. Please try again later"),
-        //     () => {
-        //         actions.setSubmitting(false)
-        //     }
-        // )
+        post(url, values,
+            (data) => {
+                Toast.info("Your eduction has been updated successfully")
+                actions.resetForm()
+                dispatch({
+                    type: '',
+                    payload: {...data}
+                })
+                if (done) {
+                    done()
+                }
+            },
+            () => Toast.error("Unable to update your education. Please try again later"),
+            () => {
+                actions.setSubmitting(false)
+            }
+        )
     }
 
     return (
         <XForm
+            debug={false}
             schema={schema}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
@@ -73,14 +70,14 @@ const UpdateEducationForm = ({done, id}: IProps) => {
                 <Grid item xs={12}>
                     <XTextInput
                         label={"School"}
-                        name={"school"}
+                        name={"awardedBy"}
                         helperText={"Ex. Makerere University Kampala. Required"}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <XTextInput
                         label={"Degree"}
-                        name={"degree"}
+                        name={"title"}
                         helperText={"Ex. BSc. Electrical Engineering. Optional"}
                     />
                 </Grid>
@@ -91,28 +88,28 @@ const UpdateEducationForm = ({done, id}: IProps) => {
                         helperText={"Electronics and telecommunications. Required"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <XTextInput
                         label={"Start year"}
                         name={"startYear"}
                         helperText={"Ex. 2007. Optional"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <XTextInput
                         label={"End year (or expected)"}
                         name={"endYear"}
                         helperText={"Ex. 2011. Optional"}
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <XTextInput
                         label={"Grade"}
                         name={"grade"}
                         helperText={"Ex. First class honors. Optional"}
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <XTextAreaInput
                         rows={1}
                         rowsMax={4}

@@ -2,6 +2,10 @@ import {IDENTITY_CONFIG, METADATA_OIDC} from "../utils/authSettings";
 import {UserManager, WebStorageStateStore, Log} from "oidc-client";
 import {Urls} from "../routes/Urls";
 import {User} from "oidc-client/dist/oidc-client";
+import {ACCESS_TOKEN, get, handleResponse, makeUrl} from "../utils/ajax";
+import {Endpoints} from "./Endpoints"
+import {getUser} from "./User";
+import * as superagent from "superagent";
 
 export default class AuthService {
     private userManager: UserManager;
@@ -20,8 +24,23 @@ export default class AuthService {
         Log.level = Log.DEBUG;
 
         this.userManager.events.addUserLoaded((user) => {
+
             if (window.location.href.indexOf("callback") !== -1) {
-                window.location.replace(Urls.feed)
+
+                const {access_token} = user
+                const url: string = makeUrl("Profiles", Endpoints.person.base)
+
+                superagent.get(`${url}/${user.profile.sub}`)
+                    .set('Authorization', `Bearer ${access_token}`)
+                    .set('Accept', 'application/json')
+                    .timeout(0)
+                    .end(handleResponse((response) => {
+                        if (response){
+                            window.location.replace(Urls.feed)
+                        } else{
+                            window.location.replace(Urls.profiles.create)
+                        }
+                    }))
             }
         });
 
@@ -38,17 +57,8 @@ export default class AuthService {
 
     signinRedirectCallback = () => {
         this.userManager.signinRedirectCallback().then((user: User) => {
-            window.location.assign(Urls.feed)
+
         }).catch(error => console.log(error));
-    };
-
-    getUser = () => {
-        const key : string = `oidc.user:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_CLIENT_ID}`
-        const item = sessionStorage.getItem(key);
-
-        if (item){
-            return JSON.parse(item)
-        }
     };
 
     public renewToken = async () => {

@@ -33,7 +33,7 @@ const PostCard = (props: IPerson) => {
             <Card>
                 <CardHeader
                     avatar={<Avatar src={props.avatar}/>}
-                    title={<strong>{props.firstName} {props.lastName}</strong>}
+                    title={<strong>{props.firstname} {props.lastname}</strong>}
                     subheader={<small style={{color: grey[500]}}>Monday, 26 October, 2020</small>}
                     action={
                         <IconButton>

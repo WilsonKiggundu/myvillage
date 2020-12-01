@@ -8,7 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import {globalStyles} from "../../theme/styles";
 import Button from "@material-ui/core/Button";
 import {Urls} from "../../routes/Urls";
-import { Form, Formik} from "formik";
+import {Form, Formik} from "formik";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {IProfileCategory} from "../../interfaces/IProfileCategory";
 import faker from 'faker'
@@ -24,194 +24,211 @@ import Checkbox from "@material-ui/core/Checkbox";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import {RedirectToUrl} from "../../routes/RedirectToUrl";
 import AuthService from "../../services/AuthService";
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import {combineReducers} from "redux";
+import {getUser} from "../../services/User";
+import XForm from "../../components/forms/XForm";
+import {User} from "oidc-client/dist/oidc-client";
+import {getInitials} from "../../utils/stringHelpers";
+import IconButton from "@material-ui/core/IconButton";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import XDialog from "../../components/dialogs/XDialog";
+import XTextInput from "../../components/inputs/XTextInput";
+import XRadioInput from "../../components/inputs/XRadioInput";
+import {Options} from "../../utils/options";
+import XTextAreaInput from "../../components/inputs/XTextAreaInput";
+import XDateInput from "../../components/inputs/XDateInput";
+import XSelectInput from "../../components/inputs/XSelectInput";
+import {IOption} from "../../components/inputs/inputHelpers";
+import * as yup from "yup";
+import {reqArray, reqString} from "../../data/validations";
+import {IProfile} from "../../interfaces/IProfile";
+import {makeUrl, post} from "../../utils/ajax";
+import {Endpoints} from "../../services/Endpoints";
 
-interface IProfile {
-    category: string
-    dateOfBirth?: string
-}
-
-interface IProps{
+interface IProps {
     history: any
 }
+
+const schema = yup.object().shape(
+    {
+        firstName: reqString,
+        lastName: reqString,
+        dateOfBirth: reqString,
+        gender: reqString
+    }
+)
 
 export const CreateProfile = (props: IProps) => {
 
     const classes = globalStyles()
-    const authService = new AuthService()
-    const interests = Interests.slice(0, 12)
-    const categories: IProfileCategory[] = [
+    const user: User = getUser()
+
+    const splitName = user.profile.name?.split(' ') ?? []
+
+    const initialValues = {
+        firstName: user.profile.first_name ?? splitName.length > 0 ? splitName[0] : "",
+        middleName: user.profile.middle_name ?? splitName.length === 3 ? splitName[2] : "",
+        lastName: user.profile.last_name ?? splitName.length === 2 ? splitName[1] : "",
+        email: user.profile.email
+    }
+
+    const [loading, setLoading] = useState<boolean>(false)
+    const [openEditProfilePhotoDialog, setOpenEditProfilePhotoDialog] = useState<boolean>(false)
+
+    const interests = Interests.slice(0, 12).map(m => ({id: m.id, name: m.name}))
+    const categories: IOption[] = [
         {
-            label: "Investor",
-            value: faker.random.uuid()
+            name: "Investor",
+            id: faker.random.uuid()
         },
         {
-            label: "Student",
-            value: faker.random.uuid()
+            name: "Student",
+            id: faker.random.uuid()
         },
         {
-            label: "Entrepreneur",
-            value: faker.random.uuid()
+            name: "Entrepreneur",
+            id: faker.random.uuid()
         }
     ]
 
-    const [gender, setGender] = useState();
-    const handleGenderChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setGender(event.target.value)
-    }
+    const handleSubmit = (values: IProfile) => {
+        setLoading(true)
 
-    const handleInterestClick = (event: any) => {
-        console.log(event.target)
-    }
+        values.userId = getUser().profile.sub
 
-    const handleSubmit = async (values: any) => {
-        const {history} = props
-        const user = await authService.getUser()
-        history.push(Urls.profiles.onePerson(user.profile.sub))
+        const url = makeUrl("Profiles", Endpoints.person.base)
+        post(url, values, (response) => {
+            setLoading(false)
+        }, err => {
+            setLoading(false)
+        })
     }
-
-    const sleep = (ms: any) => new Promise((r) => setTimeout(r, ms))
 
     return (
         <Container maxWidth={"md"}>
             <Card>
                 <CardContent>
-                    <Box mt={3} mb={3} mx={3}>
-                        <Typography variant={"h5"}>Start creating your profile.</Typography>
-                        <Typography variant={"body2"}>A profile helps you get noticed as well as get
-                            notified about things that you are interested in.</Typography>
-                    </Box>
+                    <XForm
+                        debug={false}
+                        schema={schema}
+                        initialValues={initialValues}
+                        submitButtonLabel={"Create profile"}
+                        loading={loading}
+                        onSubmit={handleSubmit}>
+                        <Box mb={3}>
+                            <Typography variant={"h5"}>Start creating your profile.</Typography>
+                            <Typography variant={"body2"}>A profile helps you get noticed as well as get
+                                notified about things that you are interested in.</Typography>
+                        </Box>
 
-                    <Box mt={3} mb={3} mx={3}>
-                        <Avatar variant={"circle"} className={classes.mediumAvatar}>WK</Avatar>
-                    </Box>
+                        <Box mb={3}>
+                            <Box className={classes.profilePhoto}>
+                                <Avatar
+                                    src={user.profile.picture}
+                                    variant={"circle"}
+                                    color={"secondary"}
+                                    className={classes.largeAvatar}>
+                                    {getInitials(user.profile.name)}
+                                </Avatar>
 
-                    <Box mt={3} mb={3} mx={3}>
-                        <Formik
-                            initialValues={{category: '', dateOfBirth: ''}}
-                            // validate={values => {
-                            //     const errors: Partial<IProfile> = {}
-                            //     if (!values.category) {
-                            //         errors.category = 'Required'
-                            //     }
-                            //
-                            //     return errors
-                            // }}
-                            onSubmit={async (values, {setSubmitting}) => {
-                                await handleSubmit(values)
-                            }}
-                        >
-                            {({isSubmitting}) => (
-                                <Form>
-                                    <XSelectMultipleDropdown
-                                        placeholder={"What of these best describes you?"}
-                                        helperText={"Select all that apply to you"}
-                                        options={categories}
-                                    />
+                                <Typography style={{position: "relative"}}>
+                                    <IconButton
+                                        onClick={() => setOpenEditProfilePhotoDialog(true)}
+                                        className={classes.avatarPhotoIcon}>
+                                        <AddAPhotoIcon fontSize={"large"}/>
+                                    </IconButton>
 
-                                    <Box mt={4} mb={2}>
-                                        <FormLabel component={"legend"}>What is your gender?</FormLabel>
+                                    <XDialog title={"Update photo"}
+                                             maxWidth={"sm"}
+                                             onClose={() => setOpenEditProfilePhotoDialog(false)}
+                                             open={openEditProfilePhotoDialog}>
 
-                                        <FormControlLabel
-                                            label={"Male"}
-                                            labelPlacement={"end"}
-                                            value="male"
-                                            name="rb-gender"
-                                            control={
-                                                <Radio
-                                                    checked={gender === 'male'}
-                                                    color={"secondary"}
-                                                    onChange={handleGenderChange}
-                                                    inputProps={{'aria-label': 'male'}}
-                                                />
-                                            }
-                                        />
+                                    </XDialog>
 
-                                        <FormControlLabel
-                                            label={"Female"}
-                                            labelPlacement={"end"}
-                                            value="female"
-                                            name="rb-gender"
-                                            control={
-                                                <Radio
-                                                    checked={gender === 'female'}
-                                                    color={"secondary"}
-                                                    onChange={handleGenderChange}
-                                                    inputProps={{'aria-label': 'female'}}
-                                                />
-                                            }
-                                        />
+                                </Typography>
+                            </Box>
 
-                                        <FormHelperText>Your gender will help us give you the most relevant content.
-                                            It's optional.</FormHelperText>
-                                    </Box>
+                            <Box>
+                                <Grid container spacing={4}>
+                                    <Grid item xs={12} sm={4}>
+                                        <XTextInput
+                                            name={"firstName"}
+                                            helperText={"Ex. John"}
+                                            label={"First name"}/>
+                                    </Grid>
 
-                                    <Box mt={4} mb={2}>
-                                        <CustomDatePicker
-                                            defaultValue={"01-01-2000"}
+                                    <Grid item xs={12} sm={4}>
+                                        <XTextInput
+                                            name={"middleName"}
+                                            helperText={"Ex. Watson"}
+                                            label={"Middle name"}/>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={4}>
+                                        <XTextInput
+                                            name={"lastName"}
+                                            helperText={"Ex. Joe"}
+                                            label={"Last name"}/>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <XTextInput
+                                            name={"email"}
+                                            helperText={"We shall use your email to communicate to you. We don't share it with anyone"}
+                                            label={"Email address"}/>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <XDateInput
+                                            disableFuture
                                             label={"Do you remember when you were born?"}
+                                            name={"dateOfBirth"}
                                             helperText={"Knowing your age will help us give you age appropriate content."}
                                         />
-                                    </Box>
+                                    </Grid>
 
-                                    <Box mt={4} mb={2}>
-                                        <FormLabel>What are you interested in?</FormLabel>
-                                        <FormHelperText>Select as many as you can</FormHelperText>
-                                        <Grid style={{marginTop: 5}} container spacing={3}>
-                                            {interests ? interests.map((item, index) => (
-                                                <Grid key={item.id} item xs={6} sm={3}>
-                                                    <Card>
-                                                        <CardActionArea>
-                                                            <CardContent style={{padding: '5px 15px'}}>
-                                                                <FormControlLabel
-                                                                    style={{display: "block"}}
-                                                                    control={
-                                                                        <Checkbox
-                                                                            // checked={state.checkedB}
-                                                                            // onChange={handleChange}
-                                                                            name="checkedB"
-                                                                            color="secondary"
-                                                                        />
-                                                                    }
-                                                                    label={item.name}
-                                                                    labelPlacement={"end"}
-                                                                />
-                                                            </CardContent>
-                                                        </CardActionArea>
-                                                    </Card>
-                                                </Grid>
-                                            )) : ""}
-                                        </Grid>
-                                    </Box>
+                                    <Grid item xs={12}>
+                                        <XSelectInput
+                                            label={"What of these best describes you?"}
+                                            name={"categories"}
+                                            multiple={true}
+                                            helperText={"Select all that apply to you"}
+                                            options={categories}
+                                        />
+                                    </Grid>
 
-                                    <Box mt={5}>
-                                        {isSubmitting && <LinearProgress
-                                            variant={"indeterminate"}
-                                            color={"secondary"}
-                                            style={{marginBottom: 15}}/>}
+                                    <Grid item xs={12} sm={12}>
+                                        <XRadioInput
+                                            label={"What is your gender?"}
+                                            name={"gender"}
+                                            helperText={"Your gender will help us give you the most relevant content. It's optional."}
+                                            options={Options.GENDER} />
+                                    </Grid>
 
-                                        <Grid container justify={"flex-start"}>
-                                            <Button disabled={isSubmitting}
-                                                    type={"submit"}
-                                                    className={classes.flat}
-                                                    color={"secondary"}
-                                                    variant={"contained"}>
-                                                <strong>Create profile</strong>
-                                            </Button>
-                                            <Button href={Urls.feed}
-                                                    style={{marginLeft: 15}}
-                                                    variant={"outlined"}>Skip, I will do this
-                                                later</Button>
-                                        </Grid>
-                                    </Box>
+                                    <Grid item xs={12}>
+                                        <XTextAreaInput
+                                            name={"bio"}
+                                            rows={4}
+                                            label={"Say something about your self"}
+                                            helperText={"Write a brief description about you. Keep it precise and short"}
+                                        />
+                                    </Grid>
 
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
+                                    <Grid item xs={12}>
+                                        <XSelectInput
+                                            label={"What are you interested in?"}
+                                            name={"interests"}
+                                            multiple={true}
+                                            helperText={"Select all that apply to you"}
+                                            options={interests}
+                                        />
+                                    </Grid>
+                                </Grid>
 
-
+                            </Box>
+                        </Box>
+                    </XForm>
                 </CardContent>
             </Card>
         </Container>

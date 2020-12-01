@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import {Awards, Interests, PersonProfiles, Startups} from "../../../data/mockData";
+import {Awards, Interests, Startups} from "../../../data/mockData";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Avatar from "@material-ui/core/Avatar";
 import clsx from "clsx";
@@ -62,7 +62,7 @@ const Startup = ({match}: any) => {
     const styles = useStyles();
 
     const interests = Interests;
-    const contacts = PersonProfiles;
+    const contacts: any[] = [];
     const awards = Awards;
 
     const avatar = "https://innovationvillage.co.ug/wp-content/uploads/2020/07/new-logo-white-02-1.png";

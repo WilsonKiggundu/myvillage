@@ -31,6 +31,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Urls} from "../../routes/Urls";
+import {getUser} from "../../services/User";
 
 type Anchor = 'left' | 'right';
 
@@ -43,7 +44,7 @@ export default function ApplicationBar() {
     const theme = useTheme();
 
     const history = useHistory()
-    const user = authService.getUser()
+    const user = getUser()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -183,14 +184,14 @@ export default function ApplicationBar() {
                     <IconButton style={{color: white}} onClick={toggleDrawer(anchor, false)}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
-
+                    <Typography variant={"h4"}>My Village</Typography>
                 </div>
-                <Divider/>
+                <Divider style={{color: "white"}}/>
 
                 <List>
                     {
                         MainMenuItems ? MainMenuItems.map((item, index) => (
-                            <ListItemLink key={index} alignItems="left" href={item.url}>
+                            <ListItemLink key={index} href={item.url}>
                                 <ListItemText primary={item.label}/>
                             </ListItemLink>
                         )) : ""

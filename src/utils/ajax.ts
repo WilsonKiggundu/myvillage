@@ -1,16 +1,16 @@
 import * as superagent from 'superagent'
 import Toast from './Toast'
-import {AUTH_TOKEN_KEY} from "../data/constants";
+import {Endpoints} from "../services/Endpoints";
+import {getUser} from "../services/User";
 
-export const getToken = (): string | null => {
-    return localStorage.getItem(AUTH_TOKEN_KEY)
-}
+export const ACCESS_TOKEN = getUser()?.access_token
 
 type CallbackFunction = (data?: any) => void;
 type ErrorCallback = (err: any, res: superagent.Response) => void;
 type EndCallback = (data?: any) => void;
 
 export const handleError = (err: any = {}, res: superagent.Response) => {
+
     const defaultMessage = "Invalid request, please contact admin";
     if ((res && res.forbidden) || (res && res.unauthorized)) {
         Toast.error("Authentication Error")
@@ -63,9 +63,25 @@ export const handleResponse = (callBack: CallbackFunction, errorCallBack?: Error
     }
 }
 
-export const get = (url: string, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
+export type Services = "Profiles" | "Jobs" | "Events" | "Auth"
+
+export const makeUrl = (service: Services, endpoint: string, params?: object) => {
+    switch (service) {
+        case "Auth":
+        case "Events":
+        case "Jobs":
+            return endpoint
+        case "Profiles":
+            return Endpoints.base + endpoint
+        default:
+            return Endpoints.base + endpoint
+    }
+}
+
+export const get = (url: string, params: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     superagent.get(url)
-        .set('Authorization', `Bearer ${getToken()}`)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+        .query(params)
         .set('Accept', 'application/json')
         .timeout(timeout)
         .end(handleResponse(callBack, errorCallBack, endCallBack))
@@ -73,7 +89,7 @@ export const get = (url: string, callBack: CallbackFunction, errorCallBack?: Err
 
 export const search = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     superagent.get(url)
-        .set('Authorization', `Bearer ${getToken()}`)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .set('Accept', 'application/json')
         .query(data)
         .timeout(timeout)
@@ -83,7 +99,7 @@ export const search = (url: string, data: any, callBack: CallbackFunction, error
 
 export const post = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     superagent.post(url)
-        .set('Authorization', `Bearer ${getToken()}`)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(data)
@@ -93,7 +109,7 @@ export const post = (url: string, data: any, callBack: CallbackFunction, errorCa
 
 export const postFile = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     superagent.post(url)
-        .set('Authorization', `Bearer ${getToken()}`)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .set('Accept', 'application/json')
         .send(data)
         .timeout(timeout)
@@ -102,7 +118,7 @@ export const postFile = (url: string, data: any, callBack: CallbackFunction, err
 
 export const put = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     superagent.put(url)
-        .set('Authorization', `Bearer ${getToken()}`)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
         .send(data)
@@ -112,7 +128,7 @@ export const put = (url: string, data: any, callBack: CallbackFunction, errorCal
 
 export const del = (url: string, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     superagent.delete(url)
-        .set('Authorization', `Bearer ${getToken()}`)
+        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
         .set('Accept', 'application/json')
         .timeout(timeout)
         .end(handleResponse(callBack, errorCallBack, endCallBack))

@@ -4,16 +4,20 @@ import GridWrapper from "../../components/GridWrapper";
 import {remoteRoutes} from "../../data/constants";
 import {useDispatch} from "react-redux";
 import {handleLogin, handleLogout, startLoading, stopLoading} from "../../data/coreActions";
-import {get, getToken} from "../../utils/ajax";
+import {get} from "../../utils/ajax";
 import {LinearProgress} from "@material-ui/core";
+import AuthService from "../../services/AuthService";
+import {getUser} from "../../services/User";
 
 export default function Splash() {
+    const user = getUser()
+
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(startLoading())
-        get(remoteRoutes.profile,
+        get(remoteRoutes.profile, {},
             data => {
-                dispatch(handleLogin({user: data, token: getToken()}))
+                dispatch(handleLogin({user: data, token: user.access_token}))
             }, (err) => {
                 dispatch(handleLogout())
             }, () => {

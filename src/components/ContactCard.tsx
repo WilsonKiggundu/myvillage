@@ -7,7 +7,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import clsx from "clsx";
-import {IPerson, Person} from "../modules/profiles/people/IPerson";
+import {getInitials, IPerson} from "../modules/profiles/people/IPerson";
 
 interface IProps {
     children?: any
@@ -50,19 +50,21 @@ const useStyles = makeStyles((theme: Theme) =>
 const ContactCard = (props: IProps) => {
 
     const classes = useStyles()
-    const person = new Person(props.person)
+    const {firstname, lastname, avatar} = props.person
+
+
 
     return (
         <Card elevation={1}>
                 <CardContent style={{textAlign: 'center'}}>
 
-                    {person.person.avatar ?
-                        <Avatar className={clsx(classes.largeAvatar, classes.centerAvatar)} src={person.person.avatar}/> :
+                    {avatar ?
+                        <Avatar className={clsx(classes.largeAvatar, classes.centerAvatar)} src={avatar}/> :
                         <Avatar className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
-                            {person.initials}
+                            {getInitials(firstname, lastname)}
                         </Avatar> }
                     <Typography noWrap component="div" style={{fontSize: '1.1rem', marginTop: 10}}>
-                        <strong>{person.fullName}</strong>
+                        <strong>{firstname} {lastname}</strong>
                     </Typography>
                     {/*{props.role ? <Typography noWrap component="div">*/}
                     {/*    <small>{props.role}</small>*/}

@@ -61,56 +61,50 @@ function Home() {
     return (
         <div style={{display: "block"}} className={`${classes.toolbar} ${globalClasses.fullWidth}`}>
             <Wrapper padding={"50px 0"} bgColor={palette.primary.main} textColor={palette.white}>
-                <Container maxWidth={"xl"}>
-                    <Grid container>
-                        <Grid item lg={3}/>
-                        <Grid item lg={6} md={8}>
-                            <Typography style={
-                                {
-                                    padding: 15,
-                                    textAlign: 'center'
+                <Container maxWidth={"md"}>
+                    <Typography style={
+                        {
+                            padding: 15,
+                            textAlign: 'center'
+                        }}
+                                variant="h2"
+                                component="h2">
+                        Join MyVillage.
+                    </Typography>
+                    <Typography style={{paddingTop: 15, paddingBottom: 25, textAlign: 'center'}}
+                                variant="h5"
+                                component="h5">
+                        Grow your network. Expand your thinking. Exchange ideas. Be inspired.
+                    </Typography>
+                    <Typography style={{paddingBottom: 15, textAlign: 'center'}}>
+                        <Button variant="contained"
+                                size={"large"}
+                                onClick={authService.signupRedirect}
+                                style={{
+                                    boxShadow: 'none',
+                                    textTransform:'inherit',
+                                    fontSize: "1.1em",
+                                    fontWeight: "bold",
+                                    borderRadius: 0
                                 }}
-                                        variant="h2"
-                                        component="h2">
-                                Join MyVillage.
-                            </Typography>
-                            <Typography style={{paddingTop: 15, paddingBottom: 25, textAlign: 'center'}}
-                                        variant="h5"
-                                        component="h5">
-                                Grow your network. Expand your thinking. Exchange ideas. Be inspired.
-                            </Typography>
-                            <Typography style={{paddingBottom: 15, textAlign: 'center'}}>
-                                <Button variant="contained"
-                                        size={"large"}
-                                        onClick={authService.signupRedirect}
-                                        style={{
-                                            boxShadow: 'none',
-                                            textTransform:'inherit',
-                                            fontSize: "1.1em",
-                                            fontWeight: "bold",
-                                            borderRadius: 0
-                                        }}
-                                        color="secondary">
-                                    Join the Community
-                                </Button>
-                                <Button variant="outlined"
-                                        size={"large"}
-                                        onClick={authService.signinRedirect}
-                                        style={{
-                                            boxShadow: 'none',
-                                            textTransform:'inherit',
-                                            fontSize: "1.1em",
-                                            fontWeight: "bold",
-                                            marginLeft: 15,
-                                            borderRadius: 0
-                                        }}
-                                        color="secondary">
-                                    Sign in
-                                </Button>
-                            </Typography>
-
-                        </Grid>
-                    </Grid>
+                                color="secondary">
+                            Join the Community
+                        </Button>
+                        <Button variant="outlined"
+                                size={"large"}
+                                onClick={authService.signinRedirect}
+                                style={{
+                                    boxShadow: 'none',
+                                    textTransform:'inherit',
+                                    fontSize: "1.1em",
+                                    fontWeight: "bold",
+                                    marginLeft: 15,
+                                    borderRadius: 0
+                                }}
+                                color="secondary">
+                            Sign in
+                        </Button>
+                    </Typography>
                 </Container>
             </Wrapper>
             <Wrapper padding={"50px 0"} textColor="#3C3C3C" >
