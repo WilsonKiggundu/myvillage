@@ -31,16 +31,14 @@ const Person = ({match}: any) => {
     return (
         <Container maxWidth={"lg"}>
             <Grid container spacing={2}>
-                <Box clone order={{xs: 1, sm: 2}}>
-                    <Grid item xs={12} md={4} lg={3} sm={12}>
-                        <PersonCard person={person} />
-
-                        "
-                        "                        <PersonInterests person={person} />
-                        <PersonAwards person={person} />
-                        <PersonSkills person={person} />
-                    </Grid>
-                </Box>
+                <Grid item xs={12} md={4} lg={3} sm={12}>
+                    <PersonCard person={person}/>
+                </Grid>
+                <Grid item xs={12} md={8} lg={9} sm={12}>
+                    <PersonInterests person={person}/>
+                    <PersonAwards person={person}/>
+                    <PersonSkills person={person}/>
+                </Grid>
             </Grid>
         </Container>
     )

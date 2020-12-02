@@ -24,7 +24,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import {RedirectToUrl} from "../../routes/RedirectToUrl";
 import AuthService from "../../services/AuthService";
-import {Redirect} from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 import {combineReducers} from "redux";
 import {getUser} from "../../services/User";
 import XForm from "../../components/forms/XForm";
@@ -45,6 +45,7 @@ import {reqArray, reqString} from "../../data/validations";
 import {IProfile} from "../../interfaces/IProfile";
 import {makeUrl, post} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
+import Toast from "../../utils/Toast";
 
 interface IProps {
     history: any
@@ -61,6 +62,7 @@ const schema = yup.object().shape(
 
 export const CreateProfile = (props: IProps) => {
 
+    const history = useHistory()
     const classes = globalStyles()
     const user: User = getUser()
 
@@ -99,9 +101,11 @@ export const CreateProfile = (props: IProps) => {
 
         const url = makeUrl("Profiles", Endpoints.person.base)
         post(url, values, (response) => {
-            setLoading(false)
+            if(response){
+                history.push(Urls.profiles.onePerson(values.userId))
+            }
         }, err => {
-            setLoading(false)
+            Toast.error("Unable to create your profile. Try again")
         })
     }
 

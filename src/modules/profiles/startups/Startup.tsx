@@ -12,61 +12,43 @@ import Avatar from "@material-ui/core/Avatar";
 import clsx from "clsx";
 import palette from "../../../theme/palette";
 import Button from "@material-ui/core/Button";
-import AwardsTimeline from "../../../components/AwardsTimeline";
+import AwardsTimeline from "./StartupAwards";
 import Box from "@material-ui/core/Box";
 import ProfileRating from "../../../components/ProfileRating";
 import StartAPostCard from "../../../components/StartAPostCard";
 import {StartupBioCard} from "./StartupBioCard";
 import InterestsCard from "../../../components/InterestsCard";
-import Gallery from "../../../components/Gallery";
+import ProductPortfolio from "../../../components/ProductPortfolio";
 import {PeopleCard} from "./PeopleCard";
 import StartupSummary from "./StartupSummary";
 import {IStartup} from "../../../interfaces/IStartup";
 import {get, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
 import Toast from "../../../utils/Toast";
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-
-        nav: {
-            width: '100%',
-            maxWidth: 360,
-            backgroundColor: theme.palette.background.paper,
-        },
-
-        root: {
-            display: 'flex',
-            justifyContent: 'left',
-            flexWrap: 'wrap',
-            '& > *': {
-                margin: theme.spacing(0.5),
-            },
-        },
-        smallAvatar: {
-            width: theme.spacing(3),
-            height: theme.spacing(3),
-        },
-        largeAvatar: {
-            width: theme.spacing(15),
-            height: theme.spacing(15),
-        },
-        media: {
-            height: 0,
-            paddingTop: '56.25%', // 16:9
-        },
-        avatar: {
-            backgroundColor: palette.primary.main
-        }
-    }),
-);
+import StartupInterests from "./StartupInterests";
+import {getUser} from "../../../services/User";
+import StartupAwards from "./StartupAwards";
 
 const Startup = ({match}: any) => {
-    const classes = globalStyles()
-    const styles = useStyles();
 
     const {id} = match.params
+    const user = getUser()
     const [profile, setProfile] = useState<IStartup>(Object.create({}))
+
+    const [isPageAdmin, setIsPageAdmin] = useState<boolean>(false)
+
+    useEffect(() => {
+        const url = makeUrl("Profiles", Endpoints.business.role)
+        get(url, {businessId: id}, (roles) => {
+            // is the current user a PageAdmin
+            // get all page admins
+            const admins = roles.filter((r: any) => r.role === 'PageAdmin').map((m: any) => m.personId);
+
+            setIsPageAdmin(admins.includes(user.profile.sub))
+        }, err => {
+            Toast.error("Unable to fetch user roles. Please try again later")
+        })
+    }, [user])
 
     useEffect(() => {
         const url = makeUrl("Profiles", Endpoints.business.base + "/" + id)
@@ -80,11 +62,6 @@ const Startup = ({match}: any) => {
         )
     }, [id, setProfile])
 
-    const interests = Interests;
-    const contacts: any[] = [];
-    const awards = Awards;
-
-    const avatar = "https://innovationvillage.co.ug/wp-content/uploads/2020/07/new-logo-white-02-1.png";
     const placeHolder = "https://picsum.photos/500/500"
     let products = []
 
@@ -93,23 +70,21 @@ const Startup = ({match}: any) => {
     }
 
     return (
-        <div className={classes.root}>
-            <Container maxWidth="md">
-                <Grid container justify="flex-start">
-                    <Grid item xs={12}>
-                        <StartAPostCard placeholder={`Post on ${profile.name}'s wall...`}/>
-
-                        <StartupSummary profile={profile}/>
-
-                        <StartupBioCard profile={profile}/>
-                        <InterestsCard items={interests}/>
-                        <Gallery items={products} title={"Our products"}/>
-                        <AwardsTimeline awards={awards}/>
-                        <PeopleCard title={"Our people"} items={contacts.slice(0, 8)}/>
-                    </Grid>
+        <Container maxWidth="lg">
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={4} lg={3}>
+                    <StartupSummary profile={profile}/>
                 </Grid>
-            </Container>
-        </div>
+                <Grid item xs={12} md={8} lg={9}>
+                    <StartAPostCard placeholder={`Post on ${profile.name}'s wall...`}/>
+                    <StartupInterests canEdit={isPageAdmin} profile={profile}/>
+
+                    <ProductPortfolio profile={profile} canEdit={isPageAdmin} title={"Our products"}/>
+                    <StartupAwards profile={profile} canEdit={isPageAdmin} />
+                    {/*<PeopleCard title={"Our people"} items={contacts.slice(0, 8)}/>*/}
+                </Grid>
+            </Grid>
+        </Container>
     )
 }
 

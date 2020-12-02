@@ -67,20 +67,21 @@ const PersonAwards = ({person}: IProps) => {
                     }
                     title="Education / Awards"
                 />
-                <CardContent>
 
-                    <EducationTimeline awards={awards} person={person} isMine={isMyProfile}/>
+                {awards.length ? (
+                    <CardContent>
+                        <EducationTimeline awards={awards} person={person} isMine={isMyProfile}/>
+                    </CardContent>
+                ) : ""}
 
-                    {isMyProfile ? (
-                        <XDialog title={"Add education"}
-                                 maxWidth={"md"}
-                                 onClose={() => setOpenAddEductionDialog(false)}
-                                 open={openAddEductionDialog}>
-                            <UpdateEducationForm person={person}/>
-                        </XDialog>
-                    ) : ""}
-
-                </CardContent>
+                {isMyProfile ? (
+                    <XDialog title={"Add education"}
+                             maxWidth={"md"}
+                             onClose={() => setOpenAddEductionDialog(false)}
+                             open={openAddEductionDialog}>
+                        <UpdateEducationForm person={person}/>
+                    </XDialog>
+                ) : ""}
             </Card>
         </Box>
     )

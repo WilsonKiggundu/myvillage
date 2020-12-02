@@ -20,6 +20,7 @@ import {get, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
 import UpdateSkillsForm from "./forms/profile/UpdateSkillsForm";
+import CardHeader from "@material-ui/core/CardHeader";
 
 interface IProps {
     person: IPerson
@@ -50,43 +51,48 @@ const PersonSkills = ({person}: IProps) => {
 
     return (
         <Box mb={2}>
-            <Typography style={{padding: '15px 0'}}>
-                {
-                    isMyProfile ? "My skills" : `${person.firstname}'s skills`
-                }
-            </Typography>
 
             <Card>
-                <CardContent>
-                    {skills ? skills.map(i =>
-                        <Chip
-                            label={i.name}
-                            key={i.id}
-                            style={{marginRight: 5, marginBottom: 5}}
-                            clickable
-                            color="primary"
-                            variant="outlined"/>) : ""}
+                <CardHeader
+                    action={
+                        isMyProfile ? (
+                            <IconButton
+                                onClick={() => setOpenEditSkillsDialog(true)}
+                                aria-label="settings">
+                                <EditIcon/>
+                            </IconButton>
+                        ) : ""
+                    }
+                    title={
+                        isMyProfile ? "Your skills" : `${person.firstname}'s skills`
+                    }
+                />
 
-                    {isMyProfile ?
-                        (
-                            <Typography component={"div"} style={{position: "relative"}}>
-                                <Fab
-                                    style={{position: 'absolute', bottom: 0, right: 0}}
-                                    size={"small"}
-                                    onClick={() => setOpenEditSkillsDialog(true)}>
-                                    <EditIcon/>
-                                </Fab>
-
-                                <XDialog title={"Update your skills"}
-                                         maxWidth={"sm"}
-                                         onClose={() => setOpenEditSkillsDialog(false)}
-                                         open={openEditSkillsDialog}>
-                                    <UpdateSkillsForm skills={skills} person={person}/>
-                                </XDialog>
-
+                {skills.length ? (
+                    <CardContent>
+                        {skills ? skills.map(i =>
+                            <Chip
+                                label={i.name}
+                                key={i.id}
+                                style={{marginRight: 5, marginBottom: 5}}
+                                clickable
+                                color="primary"
+                                variant="outlined"/>) : (
+                            <Typography>
+                                Not found
                             </Typography>
-                        ) : ""}
-                </CardContent>
+                        )}
+
+                    </CardContent>
+                ) : ""}
+
+
+                <XDialog title={"Update your skills"}
+                         maxWidth={"sm"}
+                         onClose={() => setOpenEditSkillsDialog(false)}
+                         open={openEditSkillsDialog}>
+                    <UpdateSkillsForm skills={skills} person={person}/>
+                </XDialog>
             </Card>
         </Box>
     )

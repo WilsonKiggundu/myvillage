@@ -17,6 +17,7 @@ export const Endpoints = {
     business: {
         base: "/api/business",
         address: "/api/business/addresses",
+        awards: "/api/business/awards",
         contact: "/api/business/contacts",
         interest: "/api/business/interests",
         need: "/api/business/needs",

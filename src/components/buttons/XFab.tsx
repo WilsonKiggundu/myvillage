@@ -19,6 +19,8 @@ export function XFab({children, left, right, bottom, top, position, ...rest}: IP
         style={{
             position: position,
             bottom: bottom,
+            top: top,
+            left: left,
             right: right
         }}
         {...rest}

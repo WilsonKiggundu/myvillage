@@ -1,54 +1,44 @@
-import {IPerson} from "./IPerson";
-import UpdateProfileForm from "./forms/profile/UpdateProfileForm";
-import {Typography} from "@material-ui/core";
-import ProfileRating from "../../../components/ProfileRating";
-import Fab from "@material-ui/core/Fab";
 import XDialog from "../../../components/dialogs/XDialog";
 import IconButton from "@material-ui/core/IconButton";
-import clsx from "clsx";
-import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import EditIcon from "@material-ui/icons/Edit";
 import React, {useEffect, useState} from "react";
-import {globalStyles} from "../../../theme/styles";
 import {getUser} from "../../../services/User";
 import {IOption} from "../../../components/inputs/inputHelpers";
 import {get, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
-import UpdateInterestsForm from "./forms/profile/UpdateInterestsForm";
-import AddIcon from "@material-ui/icons/Add";
 import CardHeader from "@material-ui/core/CardHeader";
+import {IStartup} from "../../../interfaces/IStartup";
+import Toast from "../../../utils/Toast";
+import UpdateStartupInterestsForm from "./forms/UpdateStartupInterestsForm";
 
 interface IProps {
-    person: IPerson
+    profile: IStartup,
+    canEdit: boolean
 }
 
-const PersonInterests = ({person}: IProps) => {
+const StartupInterests = ({profile, canEdit}: IProps) => {
 
-    const [user, setUser] = useState<any>(null)
+    const user = getUser()
+    const {id} = profile
     const [interests, setInterests] = useState<IOption[]>([])
-    const isMyProfile: boolean = person.id === user?.profile?.sub
+
     const [openEditInterestsDialog, setOpenEditInterestsDialog] = useState<boolean>(false)
 
-
     useEffect(() => {
-        const loggedInUser = getUser()
-        setUser(loggedInUser)
 
-        // person interests
-        const url = makeUrl("Profiles", Endpoints.person.interest)
-        get(url, {personId: person.id}, (response) => {
+        // startup interests
+        const url = makeUrl("Profiles", Endpoints.business.interest)
+        get(url, {businessId: id}, (response) => {
             if (response) {
                 const interests = response.map((m: any) => ({id: m.interest.id, name: m.interest.category}))
                 setInterests([...interests])
             }
         })
-
-    }, [get, person, setInterests])
+    }, [id])
 
     return (
         <Box mb={2}>
@@ -56,7 +46,7 @@ const PersonInterests = ({person}: IProps) => {
             <Card>
                 <CardHeader
                     action={
-                        isMyProfile ? (
+                        canEdit ? (
                             <IconButton
                                 onClick={() => setOpenEditInterestsDialog(true)}
                                 aria-label="settings">
@@ -64,9 +54,7 @@ const PersonInterests = ({person}: IProps) => {
                             </IconButton>
                         ) : ""
                     }
-                    title={
-                        isMyProfile ? "Your interests" : `${person.firstname}'s interests`
-                    }
+                    title={"Our interests"}
                 />
 
                 {interests.length ? (
@@ -82,12 +70,12 @@ const PersonInterests = ({person}: IProps) => {
                     </CardContent>
                 ) : ""}
 
-                {isMyProfile ? (
+                {canEdit ? (
                     <XDialog title={"Update your interests"}
                              maxWidth={"sm"}
                              onClose={() => setOpenEditInterestsDialog(false)}
                              open={openEditInterestsDialog}>
-                        <UpdateInterestsForm interests={interests} person={person}/>
+                        <UpdateStartupInterestsForm interests={interests} profile={profile}/>
                     </XDialog>
                 ) : ""}
             </Card>
@@ -95,4 +83,4 @@ const PersonInterests = ({person}: IProps) => {
     )
 }
 
-export default PersonInterests
+export default StartupInterests

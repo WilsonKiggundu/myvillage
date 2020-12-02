@@ -16,9 +16,11 @@ import {IPerson} from "../../people/IPerson";
 import {getUser} from "../../../../services/User";
 import XSelectInput from "../../../../components/inputs/XSelectInput";
 import {Options} from "../../../../utils/options";
+import {IStartup} from "../../../../interfaces/IStartup";
 
 interface IProps {
     done?: () => any
+    profile?: IStartup
 }
 
 const schema = yup.object().shape(
@@ -32,13 +34,12 @@ const schema = yup.object().shape(
 )
 
 
-
-const UpdateStartupDetails = ({done}: IProps) => {
+const UpdateStartupDetails = ({done, profile}: IProps) => {
     const dispatch = useDispatch()
 
     const [user, setUser] = useState<any>(null)
 
-    const initialValues = {}
+    const initialValues = {...profile}
 
     useEffect(() => {
         const user = getUser()
@@ -48,25 +49,44 @@ const UpdateStartupDetails = ({done}: IProps) => {
     function handleSubmit(values: any, actions: FormikHelpers<any>) {
         const url = makeUrl("Profiles", Endpoints.business.base)
 
-        post(url, values,
-            (data) => {
-                Toast.info("Your startup has been added successfully successfully")
-                actions.resetForm()
-                dispatch({
-                    type: '',
-                    payload: {...data}
+        if (profile && profile.id) {
+            put(url + "/" + profile.id, values, (data) => {
+                    Toast.info("Your startup has been updated successfully successfully")
+                    dispatch({
+                        type: '',
+                        payload: {...data}
+                    })
+                    if (done) {
+                        done()
+                    }
+                }, err => {
+                    Toast.error("Unable to update your startup. Please try again later")
+                },
+                () => {
+                    actions.setSubmitting(false)
                 })
-                if (done) {
-                    done()
+        } else {
+            values.createdBy = user.profile.sub
+            post(url, values,
+                (data) => {
+                    Toast.info("Your startup has been added successfully successfully")
+                    actions.resetForm()
+                    dispatch({
+                        type: '',
+                        payload: {...data}
+                    })
+                    if (done) {
+                        done()
+                    }
+                },
+                (err) => {
+                    Toast.error("Unable to enroll your startup. Please try again later")
+                },
+                () => {
+                    actions.setSubmitting(false)
                 }
-            },
-            (err) => {
-                Toast.error("Unable to enroll your startup. Please try again later")
-            },
-            () => {
-                actions.setSubmitting(false)
-            }
-        )
+            )
+        }
     }
 
     return (
