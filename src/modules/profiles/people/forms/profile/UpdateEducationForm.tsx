@@ -2,11 +2,10 @@ import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
-import {reqArray, reqString} from "../../../../../data/validations";
+import {reqString} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
 import {IEducation} from "../../../../../interfaces/IEducation";
-import {IOption} from "../../../../../components/inputs/inputHelpers";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
 import {IPerson} from "../../IPerson";
@@ -15,7 +14,7 @@ import {Endpoints} from "../../../../../services/Endpoints";
 import Toast from "../../../../../utils/Toast";
 
 interface IProps {
-    done?: () => any
+    onClose?: () => any
     id?: string
     person: IPerson
     education?: IEducation
@@ -32,7 +31,7 @@ const schema = yup.object().shape(
 
 
 
-const UpdateEducationForm = ({done, id, education, person}: IProps) => {
+const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
     const dispatch = useDispatch()
 
     const initialValues = {...education}
@@ -49,8 +48,8 @@ const UpdateEducationForm = ({done, id, education, person}: IProps) => {
                     type: '',
                     payload: {...data}
                 })
-                if (done) {
-                    done()
+                if (onClose) {
+                    onClose()
                 }
             },
             () => Toast.error("Unable to update your education. Please try again later"),

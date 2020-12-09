@@ -8,6 +8,12 @@ export const Options = {
         { id: "other", name: 'Other' },
     ],
 
+    EVENT_TYPES: [
+        { id: "event", name: "Event"},
+        { id: "meeting", name: "Meeting"},
+        { id: "conference", name: "Conference"}
+    ],
+
     STARTUP_CATEGORIES: [
         { id: "1", name: "FinTech"},
         { id: "2", name: "EdTech"},

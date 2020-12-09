@@ -1,5 +1,5 @@
 import React, {useState, MouseEvent} from "react";
-import { useHistory } from "react-router-dom"
+import {useHistory} from "react-router-dom"
 import {
     AppBar,
     Badge,
@@ -31,7 +31,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Urls} from "../../routes/Urls";
-import {getUser} from "../../services/User";
+import {getProfile, getUser} from "../../services/User";
+
+import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
+import {IProfile} from "../../interfaces/IProfile";
 
 type Anchor = 'left' | 'right';
 
@@ -44,7 +47,7 @@ export default function ApplicationBar() {
     const theme = useTheme();
 
     const history = useHistory()
-    const user = getUser()
+    const user: IProfile = getProfile()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -79,14 +82,14 @@ export default function ApplicationBar() {
 
     const handleProfileView = () => {
         closeProfileMenu()
-        history.push(Urls.profiles.onePerson(user.profile.sub))
+        history.push(Urls.profiles.onePerson(user.userId))
     }
 
 
     return (
         <div className={classes.grow}>
             <AppBar elevation={0} position="fixed">
-                <Container maxWidth="lg">
+                <Container maxWidth={false}>
                     <Toolbar disableGutters>
                         <IconButton
                             onClick={toggleDrawer(anchor, true)}
@@ -94,30 +97,29 @@ export default function ApplicationBar() {
                             edge="start">
                             <MenuIcon style={{color: 'white'}}/>
                         </IconButton>
-                        <Typography className={classes.title} variant="h5" noWrap>
-                            MyVillage
-                        </Typography>
 
-                        {authService.isAuthenticated() ?
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon/>
-                                </div>
-                                <InputBase
-                                    placeholder="Search…"
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                    inputProps={{'aria-label': 'search'}}
-                                />
-                            </div> : ""
-                        }
+                        <Logo style={{height: 50, width: 'auto', margin: '10px'}}/>
+
+                        {/*{authService.isAuthenticated() ?*/}
+                        {/*    <div className={classes.search}>*/}
+                        {/*        <div className={classes.searchIcon}>*/}
+                        {/*            <SearchIcon/>*/}
+                        {/*        </div>*/}
+                        {/*        <InputBase*/}
+                        {/*            placeholder="Search…"*/}
+                        {/*            classes={{*/}
+                        {/*                root: classes.inputRoot,*/}
+                        {/*                input: classes.inputInput,*/}
+                        {/*            }}*/}
+                        {/*            inputProps={{'aria-label': 'search'}}*/}
+                        {/*        />*/}
+                        {/*    </div> : ""*/}
+                        {/*}*/}
+
+
                         <div className={classes.grow}/>
-
                         <div className={classes.sectionDesktop}>
                             <List className={classes.flexContainer}>
-
                                 {
                                     MainMenuItems ? MainMenuItems.map((item, index) => (
                                         <ListItemLink key={index} href={item.url}>
@@ -125,7 +127,6 @@ export default function ApplicationBar() {
                                         </ListItemLink>
                                     )) : ""
                                 }
-
                             </List>
                         </div>
 
@@ -149,21 +150,21 @@ export default function ApplicationBar() {
                                             aria-haspopup="true"
                                             onClick={showProfileMenu}
                                             color="inherit">
-                                    <Avatar src={""} variant={"circle"}/>
+                                    <Avatar src={""} variant={"circular"}/>
                                 </IconButton>
                                 <Menu
                                     id="profile-menu"
                                     anchorEl={anchorEl}
                                     keepMounted
                                     getContentAnchorEl={null}
-                                    anchorOrigin={{ vertical: "bottom", horizontal: "left"}}
+                                    anchorOrigin={{vertical: "bottom", horizontal: "left"}}
                                     onClose={closeProfileMenu}
                                     open={Boolean(anchorEl)}>
-                                    <MenuItem disabled>{user.profile.name}</MenuItem>
+                                    <MenuItem disabled>{user.firstName} {user.lastName}</MenuItem>
                                     <MenuItem onClick={handleProfileView}>
                                         My Profile
                                     </MenuItem>
-                                    <Divider />
+                                    <Divider/>
                                     <MenuItem onClick={() => authService.logout()}>Logout</MenuItem>
                                 </Menu>
 
@@ -184,7 +185,7 @@ export default function ApplicationBar() {
                     <IconButton style={{color: white}} onClick={toggleDrawer(anchor, false)}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
-                    <Typography variant={"h4"}>My Village</Typography>
+                    <Logo />
                 </div>
                 <Divider style={{color: "white"}}/>
 

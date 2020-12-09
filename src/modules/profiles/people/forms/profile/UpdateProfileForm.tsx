@@ -2,9 +2,9 @@ import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
-import {reqArray, reqString} from "../../../../../data/validations";
+import {reqString} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
-import {makeUrl, post, put} from "../../../../../utils/ajax";
+import {makeUrl, put} from "../../../../../utils/ajax";
 import Toast from "../../../../../utils/Toast";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../../components/inputs/XTextInput";
@@ -14,13 +14,13 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import XRadioInput from "../../../../../components/inputs/XRadioInput";
 import {Options} from "../../../../../utils/options";
 import XDateInput from "../../../../../components/inputs/XDateInput";
-import XSelectInput from "../../../../../components/inputs/XSelectInput";
 import {IPerson} from "../../IPerson";
 import {Endpoints} from "../../../../../services/Endpoints";
 
 interface IProps {
     person: IPerson
     done?: () => any
+    onClose?: () => any
 }
 
 const schema = yup.object().shape(
@@ -32,7 +32,7 @@ const schema = yup.object().shape(
 
 
 
-const UpdateProfileForm = ({done, person}: IProps) => {
+const UpdateProfileForm = ({done, person, onClose}: IProps) => {
     const dispatch = useDispatch()
 
     const initialValues = {...person}
@@ -51,8 +51,8 @@ const UpdateProfileForm = ({done, person}: IProps) => {
                     type: '',
                     payload: {...data}
                 })
-                if (done) {
-                    done()
+                if (onClose) {
+                    onClose()
                 }
             },
             (err) => {

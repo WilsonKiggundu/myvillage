@@ -1,9 +1,19 @@
+import {OIDC_SESSION_KEY, PROFILE_SESSION_KEY} from "../data/constants";
 
 export const getUser = () => {
-    const key : string = `oidc.user:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_CLIENT_ID}`
-    const item = sessionStorage.getItem(key);
+    const item = sessionStorage.getItem(OIDC_SESSION_KEY);
 
     if (item){
         return JSON.parse(item)
     }
-};
+
+    return null
+}
+
+export const getProfile = () => {
+    const profile = sessionStorage.getItem(PROFILE_SESSION_KEY);
+    if (profile){
+        return JSON.parse(profile)
+    }
+    return null
+}

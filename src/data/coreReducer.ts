@@ -5,7 +5,7 @@ const initialState: any = {
     splash: true,
     user: null,
     isLoadingUser: true,
-    globalLoader: false
+    globalLoader: false,
 }
 
 export const coreConstants = {

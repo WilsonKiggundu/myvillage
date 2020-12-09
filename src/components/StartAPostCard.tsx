@@ -11,9 +11,6 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import Card from "@material-ui/core/Card";
 import React, {useState} from "react";
 import {globalStyles} from "../theme/styles";
-import CreateDialog from "./dialogs/CreateDialog";
-import {DropzoneArea} from "material-ui-dropzone";
-import {TextField} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import XDialog from "./dialogs/XDialog";
 import UploadFile from "../modules/posts/forms/UploadFile";
@@ -66,7 +63,7 @@ const StartAPostCard = (props: IProps) => {
                         title={"New Post"}
                         open={openNewPostDialog}
                         onClose={() => setOpenNewPostDialog(false)}>
-                        <NewPost />
+                        <NewPost onClose={() => setOpenNewPostDialog(false)} />
                     </XDialog>
 
                     <Box mt={2}>
@@ -83,7 +80,9 @@ const StartAPostCard = (props: IProps) => {
                                     onClose={() => setOpenPhotoDialog(false)}
                                     title={"Upload photos"}
                                     open={openPhotoDialog}>
-                                    <UploadFile acceptedTypes={['image/jpeg', 'image/png', 'image/bmp']}/>
+                                    <UploadFile
+                                        onClose={() => setOpenPhotoDialog(false)}
+                                        acceptedTypes={['image/jpeg', 'image/png', 'image/bmp']}/>
                                 </XDialog>
                             </Grid>
 
@@ -100,7 +99,7 @@ const StartAPostCard = (props: IProps) => {
                                     onClose={() => setOpenVideoDialog(false)}
                                     title={"Upload videos"}
                                     open={openVideoDialog}>
-                                    <UploadFile/>
+                                    <UploadFile onClose={() => setOpenVideoDialog(false)}/>
                                 </XDialog>
                             </Grid>
 
@@ -116,7 +115,7 @@ const StartAPostCard = (props: IProps) => {
                                     maxWidth={"sm"}
                                     open={openNewEventDialog}
                                     onClose={() => setOpenNewEventDialog(false)}>
-                                    <NewEvent />
+                                    <NewEvent onClose={() => setOpenNewEventDialog(false)} />
                                 </XDialog>
                             </Grid>
 

@@ -43,7 +43,7 @@ const PersonCard = ({person}: IProps) => {
                     <div className={classes.profilePhoto}>
                         <Avatar className={clsx(classes.largeAvatar, classes.avatar)}
                                 style={{}}
-                                variant="circle"
+                                variant={"circular"}
                                 src={person.avatar}>
                         </Avatar>
 
@@ -86,8 +86,7 @@ const PersonCard = ({person}: IProps) => {
                                     bottom: 1,
                                     right: 1
                                 }}
-                                onClick={() => {
-                                }}
+                                onClick={() => setOpenEditProfileDialog(true)}
                                 size={"small"}
                                 aria-label="edit">
                                 <EditIcon/>
@@ -97,7 +96,9 @@ const PersonCard = ({person}: IProps) => {
                                      maxWidth={"md"}
                                      onClose={() => setOpenEditProfileDialog(false)}
                                      open={openEditProfileDialog}>
-                                <UpdateProfileForm person={person}/>
+                                <UpdateProfileForm
+                                    onClose={() => setOpenEditProfileDialog(false)}
+                                    person={person}/>
                             </XDialog>
 
                         </Typography>

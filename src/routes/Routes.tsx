@@ -16,8 +16,7 @@ import Feed from "../modules/feed/Feed";
 import {PrivateRoute} from "./PrivateRoute";
 import {CreateProfile} from "../modules/profiles/CreateProfile";
 import NewArticle from "../modules/articles/NewArticle";
-import Calendar from "../modules/events/Calendar";
-import AddJob from "../modules/jobs/AddJob";
+import Calendar from "../modules/events/Events";
 
 export const Routes = (
     <Switch>
@@ -39,13 +38,13 @@ export const Routes = (
 
                     <PrivateRoute exact path={Urls.jobs.list} component={Jobs}/>
                     <PrivateRoute exact path={Urls.job} component={Jobs}/>
-                    <PrivateRoute
-                        exact
-                        path={Urls.jobs.create}
-                        component={
-                            () => <AddJob placeholder={"Details of the job"}/>
-                        }
-                    />
+                    {/*<PrivateRoute*/}
+                    {/*    exact*/}
+                    {/*    path={Urls.jobs.create}*/}
+                    {/*    component={*/}
+                    {/*        () => <AddJob placeholder={"Details of the job"}/>*/}
+                    {/*    }*/}
+                    {/*/>*/}
 
                     <PrivateRoute
                         exact

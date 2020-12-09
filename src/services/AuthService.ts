@@ -6,6 +6,7 @@ import {ACCESS_TOKEN, get, handleResponse, makeUrl} from "../utils/ajax";
 import {Endpoints} from "./Endpoints"
 import {getUser} from "./User";
 import * as superagent from "superagent";
+import {OIDC_SESSION_KEY, PROFILE_SESSION_KEY} from "../data/constants";
 
 export default class AuthService {
     private userManager: UserManager;
@@ -35,7 +36,9 @@ export default class AuthService {
                     .set('Accept', 'application/json')
                     .timeout(0)
                     .end(handleResponse((response) => {
+
                         if (response){
+                            sessionStorage.setItem(PROFILE_SESSION_KEY, JSON.stringify(response))
                             window.location.replace(Urls.feed)
                         } else{
                             window.location.replace(Urls.profiles.create)
@@ -82,8 +85,7 @@ export default class AuthService {
     }
 
     public isAuthenticated = () => {
-        const key : string = `oidc.user:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_CLIENT_ID}`
-        const item = sessionStorage.getItem(key);
+        const item = sessionStorage.getItem(OIDC_SESSION_KEY);
 
         if (item){
             const oidcStorage = JSON.parse(item)

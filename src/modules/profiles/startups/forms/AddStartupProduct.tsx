@@ -1,6 +1,6 @@
 import XForm from "../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import * as yup from "yup"
 import {reqString} from "../../../../data/validations";
 import {useDispatch} from "react-redux";
@@ -9,19 +9,13 @@ import Toast from "../../../../utils/Toast";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
-import Box from "@material-ui/core/Box";
-import XDateInput from "../../../../components/inputs/XDateInput";
 import {Endpoints} from "../../../../services/Endpoints";
-import {IPerson} from "../../people/IPerson";
-import {getUser} from "../../../../services/User";
-import XSelectInput from "../../../../components/inputs/XSelectInput";
-import {Options} from "../../../../utils/options";
 import {IStartup} from "../../../../interfaces/IStartup";
 import XFileInput from "../../../../components/inputs/XFileInput";
 import {IProduct} from "../../../../interfaces/IProduct";
 
 interface IProps {
-    done?: () => any
+    onClose?: () => any
     profile?: IStartup
     product?: IProduct
 }
@@ -33,7 +27,7 @@ const schema = yup.object().shape(
     }
 )
 
-const AddStartupProduct = ({done, profile, product}: IProps) => {
+const AddStartupProduct = ({onClose, profile, product}: IProps) => {
     const dispatch = useDispatch()
 
     const initialValues = {...product}
@@ -54,11 +48,11 @@ const AddStartupProduct = ({done, profile, product}: IProps) => {
                         type: '',
                         payload: {...data}
                     })
-                    if (done) {
-                        done()
+                    if (onClose) {
+                        onClose()
                     }
                 }, err => {
-                    Toast.error("Unable to update your startup. Please try again later")
+                    Toast.error(err.toString())
                 },
                 () => {
                     actions.setSubmitting(false)
@@ -72,12 +66,12 @@ const AddStartupProduct = ({done, profile, product}: IProps) => {
                         type: '',
                         payload: {...data}
                     })
-                    if (done) {
-                        done()
+                    if (onClose) {
+                        onClose()
                     }
                 },
                 (err) => {
-                    Toast.error("Unable to add your product. Please try again later")
+                    Toast.error(err.toString())
                 },
                 () => {
                     actions.setSubmitting(false)

@@ -2,14 +2,11 @@ import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
-import {reqArray} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
 import {get, makeUrl, post} from "../../../../../utils/ajax";
 import Toast from "../../../../../utils/Toast";
 import {Grid} from "@material-ui/core";
 import XSelectInput from "../../../../../components/inputs/XSelectInput";
-import {Options} from "../../../../../utils/options";
-import {Interests} from "../../../../../data/mockData";
 import {IPerson} from "../../IPerson";
 import {IOption} from "../../../../../components/inputs/inputHelpers";
 import {Endpoints} from "../../../../../services/Endpoints";
@@ -19,7 +16,7 @@ import XTextInput from "../../../../../components/inputs/XTextInput";
 interface IProps {
     interests: IOption[]
     person: IPerson
-    done?: () => any
+    onClose?: () => any
 }
 
 const schema = yup.object().shape(
@@ -27,7 +24,7 @@ const schema = yup.object().shape(
 )
 
 
-const UpdateInterestsForm = ({done, person, interests}: IProps) => {
+const UpdateInterestsForm = ({onClose, person, interests}: IProps) => {
     const dispatch = useDispatch()
 
     const [interestsLookup, setInterestsLookup] = useState<IOption[]>([])
@@ -68,8 +65,8 @@ const UpdateInterestsForm = ({done, person, interests}: IProps) => {
                             type: '',
                             payload: {...data}
                         })
-                        if (done) {
-                            done()
+                        if (onClose) {
+                            onClose()
                         }
                     },
                     () => Toast.error("Unable to update your profile. Please try again later"),
@@ -92,8 +89,8 @@ const UpdateInterestsForm = ({done, person, interests}: IProps) => {
                             type: '',
                             payload: {...data}
                         })
-                        if (done) {
-                            done()
+                        if (onClose) {
+                            onClose()
                         }
                     },
                     () => Toast.error("Unable to update your profile. Please try again later"),

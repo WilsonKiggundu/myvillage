@@ -12,14 +12,13 @@ import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
 import Box from "@material-ui/core/Box";
 import XDateInput from "../../../../components/inputs/XDateInput";
 import {Endpoints} from "../../../../services/Endpoints";
-import {IPerson} from "../../people/IPerson";
 import {getUser} from "../../../../services/User";
 import XSelectInput from "../../../../components/inputs/XSelectInput";
 import {Options} from "../../../../utils/options";
 import {IStartup} from "../../../../interfaces/IStartup";
 
 interface IProps {
-    done?: () => any
+    onClose?: () => any
     profile?: IStartup
 }
 
@@ -34,7 +33,7 @@ const schema = yup.object().shape(
 )
 
 
-const UpdateStartupDetails = ({done, profile}: IProps) => {
+const UpdateStartupDetails = ({onClose, profile}: IProps) => {
     const dispatch = useDispatch()
 
     const [user, setUser] = useState<any>(null)
@@ -56,8 +55,8 @@ const UpdateStartupDetails = ({done, profile}: IProps) => {
                         type: '',
                         payload: {...data}
                     })
-                    if (done) {
-                        done()
+                    if (onClose) {
+                        onClose()
                     }
                 }, err => {
                     Toast.error("Unable to update your startup. Please try again later")
@@ -75,8 +74,8 @@ const UpdateStartupDetails = ({done, profile}: IProps) => {
                         type: '',
                         payload: {...data}
                     })
-                    if (done) {
-                        done()
+                    if (onClose) {
+                        onClose()
                     }
                 },
                 (err) => {

@@ -1,19 +1,42 @@
-let baseUrl
+let profileBaseUrl, eventsBaseUrl, jobsBaseUrl, cdnBaseUrl
 
 switch (process.env.NODE_ENV){
     case "test":
-        baseUrl = "https://profiles-test.innovationvillage.co.ug"
+        profileBaseUrl = "https://profiles-test.innovationvillage.co.ug"
+        eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
+        jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
+        cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     case "production":
-        baseUrl = "https://profiles-test.innovationvillage.co.ug"
+        profileBaseUrl = "https://profiles-test.innovationvillage.co.ug"
+        eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
+        jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
+        cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     default:
-        baseUrl = "https://localhost:5001"
+        profileBaseUrl = "https://localhost:5001"
+        eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
+        jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
+        cdnBaseUrl = "https://static.innovationvillage.co.ug"
 }
 
 export const Endpoints = {
-    base: baseUrl,
+    base: profileBaseUrl,
 
+    cdn: {
+        base: cdnBaseUrl,
+        api: '/api/uploads'
+    },
+
+    jobs: {
+        base: jobsBaseUrl,
+        api: '/api/jobs'
+    },
+
+    events: {
+        base: eventsBaseUrl,
+        api: "/api/events"
+    },
     business: {
         base: "/api/business",
         address: "/api/business/addresses",
@@ -23,6 +46,12 @@ export const Endpoints = {
         need: "/api/business/needs",
         product: "/api/business/products",
         role: "/api/business/roles",
+    },
+
+    blog: {
+        article: '/api/blog/articles',
+        post: '/api/blog/posts',
+        comment: '/api/blog/comments',
     },
 
     investor: {

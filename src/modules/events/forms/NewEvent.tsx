@@ -1,22 +1,17 @@
 import {FormikHelpers} from "formik";
-import React, {useState} from "react";
+import React from "react";
 import * as yup from "yup"
 import {useDispatch} from "react-redux";
-import {Grid, TextField} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {reqDate, reqString} from "../../../data/validations";
 import XForm from "../../../components/forms/XForm";
 import Box from "@material-ui/core/Box";
-import {DropzoneArea} from "material-ui-dropzone";
-import CreateDialog from "../../../components/dialogs/CreateDialog";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {globalStyles} from "../../../theme/styles";
 import XTextInput from "../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
 import XDateInput from "../../../components/inputs/XDateInput";
 import XTimeInput from "../../../components/inputs/XTimeInput";
 import {addHours, format} from "date-fns";
 import XCheckBoxInput from "../../../components/inputs/XCheckBoxInput";
-import XSelectDropdown from "../../../components/inputs/XSelectDropdown";
 import XSelectInput from "../../../components/inputs/XSelectInput";
 import {IOption} from "../../../components/inputs/inputHelpers";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -25,17 +20,26 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import AttachmentIcon from '@material-ui/icons/Attachment';
 import XFileInput from "../../../components/inputs/XFileInput";
-import Chip from "@material-ui/core/Chip";
 import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
+import {Options} from "../../../utils/options";
+import {IEvent} from "../../../interfaces/IEvent";
+import {makeUrl, post} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
+import Toast from "../../../utils/Toast";
+import {useHistory} from "react-router-dom";
+import {addEventAction} from "../../../data/customActions";
+import {addEvent} from "../eventSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
 
 interface IProps {
     done?: () => any
+    onClose?: () => any
 }
 
 const schema = yup.object().shape(
     {
-        name: reqString,
+        title: reqString,
         date: reqDate,
         startTime: reqString,
         endTime: reqString
@@ -43,14 +47,22 @@ const schema = yup.object().shape(
 )
 
 const initialValues = {
-    details: '',
+    details: 'Ullum feugait mandamus in est, et ius causae civibus alienum. Iracundia adversarium cu qui. Ex vim omnium dolorem referrentur, odio brute fuisset per ex, veri primis vis ex. Nostrum inimicus ocurreret eu cum, modus mucius consequuntur id qui, ut delenit fuisset pro.',
     date: new Date(),
-    interval: 0,
     startTime: new Date().getTime(),
-    endTime: addHours(new Date(), 1).getTime()
+    endTime: addHours(new Date(), 1).getTime(),
+    conferenceUrl: "https://us02web.zoom.us/j/86720807637?pwd=WmlHb2lRc1ZUeE1WWW5xWTZMb25YQT09",
+    frequency: 3,
+    title: "Demo with MCF",
+    type: "meeting",
+    location: "TIV Boardroom",
+    startDateTime: "",
+    endDateTime: "",
+    days: [],
 }
 
-const NewEvent = ({done}: IProps) => {
+const NewEvent = ({done, onClose}: IProps) => {
+    const history = useHistory()
     const dispatch = useDispatch()
 
     const repeatIntervals: IOption[] = [
@@ -66,43 +78,64 @@ const NewEvent = ({done}: IProps) => {
 
     }
 
-    function handleSubmit(values: any, actions: FormikHelpers<any>) {
-        const toSave = {}
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        // post('', toSave,
-        //     (data) => {
-        //         Toast.info("Your profile has been updated successfully")
-        //         actions.resetForm()
-        //         dispatch({
-        //             type: '',
-        //             payload: {...data}
-        //         })
-        //         if (done) {
-        //             done()
-        //         }
-        //     },
-        //     () => Toast.error("Unable to update your profile. Please try again later"),
-        //     () => {
-        //         actions.setSubmitting(false)
-        //     }
-        // )
+        const startDateTime = format(new Date(values.startTime), "yyyy-MM-dd HH:mm:ss")
+        const endDateTime = format(new Date(values.endTime), "yyyy-MM-dd HH:mm:ss")
+
+        const event: IEvent = {
+            conferenceUrl: values.conferenceUrl,
+            details: values.details,
+            interval: 0, // this is hardcoded
+            frequency: 2,
+            title: values.title,
+            type: "event", // this is hardcoded
+            location: values.location,
+            startDateTime: startDateTime,
+            endDateTime: endDateTime,
+            days: [1],
+        }
+
+        try {
+            const resultAction: any = await dispatch(addEvent(event))
+            unwrapResult(resultAction)
+        }catch (e) {
+
+        } finally {
+            actions.resetForm()
+            if (onClose) {
+                onClose()
+            }
+        }
     }
 
     return (
         <XForm
+            debug={false}
             submitButtonLabel={"Add Event"}
             schema={schema}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={11}>
+                <Grid item xs={12}>
                     <XTextInput
-                        name={"name"}
+                        name={"title"}
                         multiline={false}
                         autoFocus={true}
                         variant={"standard"}
                         placeholder={"Add title"}
+                    />
+                </Grid>
+
+            </Grid>
+
+            <Grid spacing={2} container>
+                <Grid item xs={12}>
+                    <XSelectInput
+                        label={"Event Type"}
+                        name={"type"}
+                        options={Options.EVENT_TYPES}
+                        variant={"standard"}
                     />
                 </Grid>
 
@@ -159,7 +192,7 @@ const NewEvent = ({done}: IProps) => {
                         <Grid item xs={12} sm={6}>
                             <XSelectInput
                                 variant={"standard"}
-                                name={"interval"}
+                                name={"frequency"}
                                 label={"Repeat interval"}
                                 options={repeatIntervals}
                             />
@@ -180,7 +213,7 @@ const NewEvent = ({done}: IProps) => {
                 <Grid item xs={11}>
                     <XTextAreaInput
                         variant={"standard"}
-                        name={"description"}
+                        name={"details"}
                         label={"Add description"}
                     />
                 </Grid>
@@ -232,7 +265,7 @@ const NewEvent = ({done}: IProps) => {
                     <XTextInput
                         variant={"standard"}
                         helperText={'Ex. Zoom link, Google Meet'}
-                        name={"video_link"}
+                        name={"conferenceUrl"}
                         label={"Add a link to video call"}
                     />
                 </Grid>

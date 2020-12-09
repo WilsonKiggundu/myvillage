@@ -7,15 +7,15 @@ const ListItem = withStyles({
     root: {
         width: "auto",
         "&$selected": {
-            backgroundColor: palette.primary.light,
+            backgroundColor: palette.tertiary.main,
             color: "white"
         },
         "&$selected:hover": {
-            backgroundColor: palette.primary.light,
+            backgroundColor: palette.tertiary.main,
             color: "white"
         },
         "&:hover": {
-            backgroundColor: palette.primary.light,
+            backgroundColor: palette.tertiary.main,
             color: "white"
         }
     },

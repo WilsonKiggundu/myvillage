@@ -6,19 +6,13 @@ import Typography from "@material-ui/core/Typography";
 import ProfileRating from "../../../components/ProfileRating";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
-import LanguageIcon from '@material-ui/icons/Language';
-import LinkIcon from '@material-ui/icons/Cast';
-import SendIcon from '@material-ui/icons/Send';
 import React, {useEffect, useState} from "react";
 import {globalStyles} from "../../../theme/styles";
 import {Box} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import EditIcon from "@material-ui/icons/Edit";
 import {IStartup} from "../../../interfaces/IStartup";
-import {format} from "date-fns";
-import {Alert} from "@material-ui/lab";
 import Chip from "@material-ui/core/Chip";
-import UpdateProfileForm from "../people/forms/profile/UpdateProfileForm";
 import XDialog from "../../../components/dialogs/XDialog";
 import {XFab} from "../../../components/buttons/XFab";
 import UpdateStartupDetails from "./forms/UpdateStartupDetails";
@@ -135,7 +129,9 @@ export default function StartupSummary({profile}: IProps) {
                      maxWidth={"md"}
                      onClose={() => setOpenEditProfileDialog(false)}
                      open={openEditProfileDialog}>
-                <UpdateStartupDetails profile={profile}/>
+                <UpdateStartupDetails
+                    onClose={() => setOpenEditProfileDialog(false)}
+                    profile={profile}/>
             </XDialog>
         </>
     );

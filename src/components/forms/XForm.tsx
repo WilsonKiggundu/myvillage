@@ -4,8 +4,6 @@ import {Form, Formik, FormikHelpers} from 'formik';
 import {Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import {Alert} from "@material-ui/lab";
-import {hasValue} from "../inputs/inputHelpers";
 import {makeStyles} from "@material-ui/core/styles";
 import XSubmitButton from "../buttons/XSubmitButton";
 
@@ -84,6 +82,7 @@ const XForm = (props: IProps) => {
                             }
                             <Grid item>
                                 <XSubmitButton
+                                    style={{textTransform: "inherit"}}
                                     color={"primary"}
                                     label={props.submitButtonLabel ?? "Submit"}
                                     onClick={submitForm}

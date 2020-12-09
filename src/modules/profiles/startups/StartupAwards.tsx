@@ -75,7 +75,9 @@ export default function StartupAwards({canEdit, profile}: IProps) {
                                 <XDialog title={"Add an award"}
                                          open={openAddAwardDialog}
                                          onClose={() => setOpenAddAwardDialog(false)} >
-                                    <UpdateAwardForm profile={profile} />
+                                    <UpdateAwardForm
+                                        onClose={() => setOpenAddAwardDialog(false)}
+                                        profile={profile} />
                                 </XDialog>
 
                             </Typography>

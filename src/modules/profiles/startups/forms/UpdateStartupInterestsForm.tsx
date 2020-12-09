@@ -16,14 +16,14 @@ import {IStartup} from "../../../../interfaces/IStartup";
 interface IProps {
     interests: IOption[]
     profile: IStartup
-    done?: () => any
+    onClose?: () => any
 }
 
 const schema = yup.object().shape(
     {}
 )
 
-const UpdateStartupInterestsForm = ({done, profile, interests}: IProps) => {
+const UpdateStartupInterestsForm = ({onClose, profile, interests}: IProps) => {
     const dispatch = useDispatch()
 
     const [interestsLookup, setInterestsLookup] = useState<IOption[]>([])
@@ -62,8 +62,8 @@ const UpdateStartupInterestsForm = ({done, profile, interests}: IProps) => {
                             type: '',
                             payload: {...data}
                         })
-                        if (done) {
-                            done()
+                        if (onClose) {
+                            onClose()
                         }
                     },
                     () => Toast.error("Unable to update your profile. Please try again later"),
@@ -86,8 +86,8 @@ const UpdateStartupInterestsForm = ({done, profile, interests}: IProps) => {
                             type: '',
                             payload: {...data}
                         })
-                        if (done) {
-                            done()
+                        if (onClose) {
+                            onClose()
                         }
                     },
                     () => Toast.error("Unable to update your profile. Please try again later"),

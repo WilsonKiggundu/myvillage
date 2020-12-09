@@ -2,24 +2,20 @@ import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
 import {useDispatch} from "react-redux";
-import {useHistory} from "react-router-dom"
 import {Grid} from "@material-ui/core";
 import {reqString} from "../../../data/validations";
 import XForm from "../../../components/forms/XForm";
 import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
 import {getUser} from "../../../services/User";
 import {IPost} from "../../../interfaces/IPost";
-import {makeUrl, post} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
-import Toast from "../../../utils/Toast";
-import {addEvent} from "../../events/eventSlice";
+import {IComment} from "../../../interfaces/IComment";
 import {unwrapResult} from "@reduxjs/toolkit";
-import {addPost} from "../postsSlice";
-import {format} from "date-fns";
+import {addComment} from "../postsSlice";
 
 interface IProps {
     done?: () => any
     onClose?: () => any
+    post?: IPost
 }
 
 const schema = yup.object().shape(
@@ -29,21 +25,20 @@ const schema = yup.object().shape(
 )
 
 const initialValues = {
-    details: '',
+    details: 'Yes, those are the tables that always turn. Remember, always ensure that when they do turn, you are on the right side of the table.',
 }
 
-const NewPost = ({done, onClose}: IProps) => {
+const NewComment = ({done, onClose, ...props}: IProps) => {
     const dispatch = useDispatch()
-    const history = useHistory()
-
     const user = getUser();
 
-    const handleSubmit = async (values: IPost, actions: FormikHelpers<any>) => {
-        values.authorId = user.profile.sub
-        values.dateCreated = format(new Date(), "yyyy-MM-dd HH:mm:ss")
+    const handleSubmit = async (comment: IComment, actions: FormikHelpers<any>) => {
+
+        comment.authorId = user.profile.sub
+        if (props.post) comment.postId = props.post.id
 
         try {
-            const resultAction: any = await dispatch(addPost(values))
+            const resultAction: any = await dispatch(addComment(comment))
             unwrapResult(resultAction)
         }catch (e) {
 
@@ -69,14 +64,13 @@ const NewPost = ({done, onClose}: IProps) => {
                         name={"details"}
                         autoFocus={true}
                         variant={"standard"}
-                        label={"What's on your mind?"}
+                        label={"What do you want to say about the post?"}
                         helperText={"Press enter / return key to start a new line"}
                         multiline
-                        rows={6}
+                        rows={3}
                         rowsMax={12}
                     />
                 </Grid>
-
 
             </Grid>
 
@@ -84,4 +78,4 @@ const NewPost = ({done, onClose}: IProps) => {
     )
 }
 
-export default NewPost
+export default NewComment

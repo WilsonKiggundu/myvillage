@@ -1,6 +1,8 @@
 export const AUTH_TOKEN_KEY = '__demo__eva__token'
 export const AUTH_USER_KEY = '__demo__eva__user'
 
+export const PROFILE_SESSION_KEY = `oidc.profile:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_CLIENT_ID}`
+export const OIDC_SESSION_KEY = `oidc.user:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_CLIENT_ID}`
 
 export const appRoles = {
     roleCrmView: "CRM_VIEW",

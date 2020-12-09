@@ -1,19 +1,12 @@
 import {IPerson} from "./IPerson";
-import UpdateProfileForm from "./forms/profile/UpdateProfileForm";
 import {Typography} from "@material-ui/core";
-import ProfileRating from "../../../components/ProfileRating";
-import Fab from "@material-ui/core/Fab";
 import XDialog from "../../../components/dialogs/XDialog";
 import IconButton from "@material-ui/core/IconButton";
-import clsx from "clsx";
-import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import EditIcon from "@material-ui/icons/Edit";
 import React, {useEffect, useState} from "react";
-import {globalStyles} from "../../../theme/styles";
 import {getUser} from "../../../services/User";
 import {IOption} from "../../../components/inputs/inputHelpers";
 import {get, makeUrl} from "../../../utils/ajax";
@@ -91,7 +84,9 @@ const PersonSkills = ({person}: IProps) => {
                          maxWidth={"sm"}
                          onClose={() => setOpenEditSkillsDialog(false)}
                          open={openEditSkillsDialog}>
-                    <UpdateSkillsForm skills={skills} person={person}/>
+                    <UpdateSkillsForm
+                        onClose={() => setOpenEditSkillsDialog(false)}
+                        skills={skills} person={person}/>
                 </XDialog>
             </Card>
         </Box>

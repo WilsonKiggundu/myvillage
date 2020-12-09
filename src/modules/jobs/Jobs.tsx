@@ -1,6 +1,5 @@
-import {Box} from "@material-ui/core";
-import React, {useState} from "react";
-import faker from "faker"
+import {Box, AccordionDetails, createStyles, makeStyles, Theme} from "@material-ui/core";
+import React, {useEffect, useState} from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Container from "@material-ui/core/Container";
@@ -10,60 +9,162 @@ import Divider from "@material-ui/core/Divider";
 import {Alert} from "@material-ui/lab";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemLink from "../../components/ListItemLink";
-import {Urls} from "../../routes/Urls";
-import {format, differenceInCalendarDays, formatDistanceToNow} from "date-fns"
-import {Link, useHistory} from "react-router-dom";
-import XSelectDropdown from "../../components/inputs/XSelectDropdown";
-import palette from "../../theme/palette";
-import CustomAccordion from "../../components/CustomAccordion";
+import {differenceInCalendarDays, format, formatDistanceToNow} from "date-fns"
+import {useHistory} from "react-router-dom";
 import {XFab} from "../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add"
 import NewJob from "./forms/NewJob";
 import XDialog from "../../components/dialogs/XDialog";
+import {IJob} from "../../interfaces/IJob";
+import {get, makeUrl} from "../../utils/ajax";
+import {Endpoints} from "../../services/Endpoints";
+import Toast from "../../utils/Toast";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CustomAccordion from "../../components/CustomAccordion";
+import XSelectDropdown from "../../components/inputs/XSelectDropdown";
+import {useDispatch, useSelector} from "react-redux";
+import {getPosts, selectAllPosts} from "../posts/postsSlice";
+import {getJobs, selectAllJobs} from "./jobsSlice";
+import {PleaseWait} from "../../components/PleaseWait";
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            width: '100%',
+        },
+        heading: {
+            fontSize: theme.typography.pxToRem(15),
+            flexBasis: '33.33%',
+            fontWeight: 'bold',
+            flexShrink: 0,
+        },
+        secondaryHeading: {
+            fontSize: theme.typography.pxToRem(15),
+            color: theme.palette.text.secondary,
+        },
+    }),
+);
 
 const Jobs = ({match}: any) => {
 
+    const classes = useStyles()
+
+    const {id} = match.params
+
     const [openJobDialog, setOpenJobDialog] = useState<boolean>(false)
+    const [expanded, setExpanded] = React.useState<string | false>(false);
 
-    const history = useHistory()
-    let jobs = []
+    const dispatch = useDispatch()
+    const jobs = useSelector(selectAllJobs)
+    const error = useSelector((state: any) => state.jobs.error)
 
-    for (let i = 0; i < 18; i++) {
-        const job = {
-            id: faker.random.uuid(),
-            deadline: new Date(faker.date.soon(4)),
-            title: faker.lorem.sentence(4),
-            status: faker.random.arrayElements(['Part time', 'Full time'])[0],
-            location: faker.address.country(),
-            company: {
-                name: faker.company.companyName(),
-                id: faker.random.uuid()
-            },
-            about: faker.lorem.paragraphs(3),
-            description: faker.lorem.sentences(12),
-            qualifications: faker.lorem.sentences(7),
-            benefits: faker.lorem.sentences(21),
-            instructions: faker.lorem.sentences(3)
+    const status = useSelector((state: any) => state.jobs.status)
+
+    useEffect(() => {
+        if (status === 'idle'){
+            dispatch(getJobs())
         }
-        jobs.push(job)
-    }
+    }, [status, dispatch])
 
-    let {id} = match.params
-    if (id === undefined) {
-        id = jobs[0].id
-    }
+    const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
-    const locations = Array.from(new Set([...jobs.map(j => j.location)]))
-        .map(m => ({label: m, value: m}))
 
-    const categories: any = Array.from(new Set([...jobs.map(j => j.status)]))
-        .map(m => ({label: m, value: m}))
+    let content;
+    switch (status) {
+        case 'loading':
+            return <PleaseWait />
+        case 'succeeded':
+            content = (
+                <Box clone order={{xs: 2, md: 3}}>
+                    <Grid item xs={12} md={8}>
+                        {jobs ? jobs.map((job: IJob) => (
 
-    const companies: any = Array.from(new Set([...jobs.map(j => j.company.name)]))
-        .map(m => ({label: m, value: m}))
+                            <Accordion key={job.id} expanded={expanded === job.id}
+                                       onChange={handleChange(job.id)}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon/>}
+                                    aria-controls="panel1bh-content"
+                                    id="panel1bh-header"
+                                >
+                                    <Typography className={classes.heading}>{job.title}</Typography>
+                                    <Typography className={classes.secondaryHeading}>
+                                        {job.location} . {job.category.name}
+                                    </Typography>
+                                </AccordionSummary>
 
-    const handleClick = (id: string) => {
-        history.push(Urls.jobs + "/" + id)
+                                <AccordionDetails>
+
+                                    <Grid container>
+                                        <Grid item xs={12}>
+                                            <Alert color={
+                                                differenceInCalendarDays(new Date(job.deadline), new Date()) <= 1 ? "warning" : "info"
+                                            } icon={false}>
+                                                Application deadline is
+                                                on <strong>{format(new Date(job.deadline), "PPPP")}</strong> ({formatDistanceToNow(new Date(job.deadline))} from
+                                                now)
+                                            </Alert>
+                                        </Grid>
+
+                                        <Grid xs={12} item>
+                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
+                                                <strong>What you'll do</strong>
+                                            </Typography>
+                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
+                                                {job.details}
+                                            </Typography>
+                                        </Grid>
+
+                                        <Grid item xs={12}>
+                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
+                                                <strong>What you'll bring</strong>
+                                            </Typography>
+                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
+                                                {job.qualifications}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
+                                                <strong>The experience</strong>
+                                            </Typography>
+                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
+                                                {job.experience}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
+                                                <strong>How to apply</strong>
+                                            </Typography>
+                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
+                                                {job.howToApply}
+                                            </Typography>
+                                        </Grid>
+
+                                    </Grid>
+
+                                </AccordionDetails>
+                            </Accordion>
+
+                        )) : ""
+                        }
+                    </Grid>
+                </Box>
+            )
+            break;
+        case 'error':
+            content = <Grid item xs={12}>
+                <Alert
+                    title={"We failed to get the jobs..."}
+                    color={"error"} icon={false}>
+                    {error}
+                </Alert>
+            </Grid>
+            break
+        default:
+            return <></>
     }
 
     return (
@@ -83,126 +184,36 @@ const Jobs = ({match}: any) => {
                 title={"Add a new job"}
                 open={openJobDialog}
                 onClose={() => setOpenJobDialog(false)}>
-                <NewJob/>
+                <NewJob onClose={() => setOpenJobDialog(false)}/>
             </XDialog>
 
             <Grid spacing={2} container justify={"flex-start"}>
-                <Box mb={2} clone order={{xs: 1, md: 1}}>
-                    <Grid item xs={12}>
-                        <CustomAccordion title={"Filter"}>
-                            <Grid container spacing={4}>
-                                <Grid item xs={12} sm={4}>
-                                    <XSelectDropdown
-                                        variant={"standard"}
-                                        placeholder={"Location"}
-                                        helperText={"Filter by location"}
-                                        options={locations}/>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <XSelectDropdown
-                                        helperText={"Filter by category"}
-                                        placeholder={"Category"}
-                                        options={categories}/>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <XSelectDropdown
-                                        helperText={"Filter by company"}
-                                        placeholder={"Company"}
-                                        options={companies}/>
-                                </Grid>
-                            </Grid>
-                        </CustomAccordion>
-                    </Grid>
-                </Box>
+                {/*<Box mb={2} clone order={{xs: 1, md: 1}}>*/}
+                {/*    <Grid container spacing={4}>*/}
+                {/*        <Grid item xs={12}>*/}
+                {/*            <XSelectDropdown*/}
+                {/*                variant={"standard"}*/}
+                {/*                placeholder={"Location"}*/}
+                {/*                helperText={"Filter by location"}*/}
+                {/*                options={[]}/>*/}
+                {/*        </Grid>*/}
+                {/*        <Grid item xs={12}>*/}
+                {/*            <XSelectDropdown*/}
+                {/*                helperText={"Filter by category"}*/}
+                {/*                placeholder={"Category"}*/}
+                {/*                options={[]}/>*/}
+                {/*        </Grid>*/}
+                {/*        <Grid item xs={12}>*/}
+                {/*            <XSelectDropdown*/}
+                {/*                helperText={"Filter by company"}*/}
+                {/*                placeholder={"Company"}*/}
+                {/*                options={[]}/>*/}
+                {/*        </Grid>*/}
+                {/*    </Grid>*/}
+                {/*</Box>*/}
 
-                <Box clone order={{xs: 3, md: 2}}>
-                    <Grid item xs={12} md={3}>
-                        <Card>
-                            <CardContent>
-                                {jobs ? jobs.map(job => (
-                                    <div key={job.id}>
-                                        <ListItemLink alignItems="flex-start" onClick={() => handleClick(job.id)}>
-                                            <ListItemText primary={job.title} secondary={job.company.name}/>
-                                        </ListItemLink>
-                                        <Divider/>
-                                    </div>
-                                )) : ""}
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Box>
+                {content}
 
-                <Box clone order={{xs: 2, md: 3}}>
-                    <Grid item xs={12} md={9}>
-                        {jobs ? jobs.filter(f => f.id === id).map(job => (
-                            <Box mb={2} key={job.id}>
-                                <Card>
-                                    <CardContent>
-                                        <Typography variant={"h4"} style={{marginBottom: 10}}>
-                                            {job.title}
-                                        </Typography>
-                                        <Typography component={"div"}>
-                                            <Link style={{textDecoration: 'none', color: palette.secondary.main}}
-                                                  to={`${Urls.profiles.startups}/${job.company.id}`}>
-                                                {job.company.name}</Link> . {job.location} . {job.status}
-                                        </Typography>
-
-                                        <Box mt={2} mb={2}>
-                                            <Alert color={
-                                                differenceInCalendarDays(job.deadline, new Date()) <= 1 ? "warning" : "info"
-                                            } icon={false}>
-                                                Application deadline is
-                                                on <strong>{format(job.deadline, "PPPP")}</strong> ({formatDistanceToNow(job.deadline)} from
-                                                now)
-                                            </Alert>
-                                        </Box>
-
-                                        <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                            <strong>About the role</strong>
-                                        </Typography>
-                                        <Typography component={"p"}>{job.about}</Typography>
-
-                                        <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                            <strong>What you'll do</strong>
-                                        </Typography>
-                                        <Typography component={"p"}>{job.description}</Typography>
-
-                                        <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                            <strong>What you'll bring</strong>
-                                        </Typography>
-                                        <Typography component={"div"}>
-                                            <ul>
-                                                {job.qualifications.slice(0, -1).split('.').map((m, index) => <li
-                                                    key={index}>{m}</li>)}
-                                            </ul>
-                                        </Typography>
-
-                                        <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                            <strong>What you'll get</strong>
-                                        </Typography>
-                                        <Typography component={"div"}>
-                                            <ul>
-                                                {job.benefits.slice(0, -1).split('.').map((m, index) => <li
-                                                    key={index}>{m}</li>)}
-                                            </ul>
-                                        </Typography>
-
-                                        <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                            <strong>How to apply</strong>
-                                        </Typography>
-                                        <Typography component={"div"}>
-                                            <ul>
-                                                {job.instructions.slice(0, -1).split('.').map((m, index) => <li
-                                                    key={index}>{m}</li>)}
-                                            </ul>
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Box>
-                        )) : ""
-                        }
-                    </Grid>
-                </Box>
             </Grid>
         </Container>
     )

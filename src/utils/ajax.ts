@@ -63,14 +63,17 @@ export const handleResponse = (callBack: CallbackFunction, errorCallBack?: Error
     }
 }
 
-export type Services = "Profiles" | "Jobs" | "Events" | "Auth"
+export type Services = "Profiles" | "Jobs" | "Events" | "Auth" | "CDN"
 
 export const makeUrl = (service: Services, endpoint: string, params?: object) => {
     switch (service) {
+        case "CDN":
+            return Endpoints.cdn.base + Endpoints.cdn.api
         case "Auth":
         case "Events":
+            return Endpoints.events.base + endpoint
         case "Jobs":
-            return endpoint
+            return Endpoints.jobs.base + endpoint
         case "Profiles":
             return Endpoints.base + endpoint
         default:
@@ -85,6 +88,20 @@ export const get = (url: string, params: any, callBack: CallbackFunction, errorC
         .set('Accept', 'application/json')
         .timeout(timeout)
         .end(handleResponse(callBack, errorCallBack, endCallBack))
+}
+
+export  const getAsync = (url: string, params?: any) => {
+    return new Promise((resolve, reject) => {
+        return superagent.get(url)
+            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+            .set('Accept', 'application/json')
+            .query(params)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
+    })
 }
 
 export const search = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
@@ -107,13 +124,54 @@ export const post = (url: string, data: any, callBack: CallbackFunction, errorCa
         .end(handleResponse(callBack, errorCallBack, endCallBack))
 }
 
-export const postFile = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
+export const postAsync = (url: string, data: any) => {
+    return new Promise((resolve, reject) => {
+        return superagent.post(url)
+            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send(data)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
+    })
+}
+
+export const postFile = (file: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
+    const url = Endpoints.cdn.base + Endpoints.cdn.api
+
+    const formData = new FormData();
+    formData.append('file', file);
+
     superagent.post(url)
         .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-        .set('Accept', 'application/json')
-        .send(data)
+        .set('Accept', 'application/octet-stream')
+        .set('APIKEY', 'ea22375e-7836-43ba-9b85-5150c0a973e6')
+        .send(formData)
         .timeout(timeout)
         .end(handleResponse(callBack, errorCallBack, endCallBack))
+}
+
+export const postFileAsync = (file: any) => {
+    const url = Endpoints.cdn.base + Endpoints.cdn.api
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return new Promise((resolve, reject) => {
+        return superagent.post(url)
+            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+            .set('Accept', 'application/octet-stream')
+            .set('APIKEY', 'ea22375e-7836-43ba-9b85-5150c0a973e6')
+            .send(formData)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
+    })
 }
 
 export const put = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {

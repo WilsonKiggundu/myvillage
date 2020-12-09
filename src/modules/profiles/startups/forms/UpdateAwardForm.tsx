@@ -2,7 +2,7 @@ import XForm from "../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
-import {reqArray, reqString} from "../../../../data/validations";
+import {reqString} from "../../../../data/validations";
 import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
@@ -15,7 +15,7 @@ import {IStartup} from "../../../../interfaces/IStartup";
 import XDateInput from "../../../../components/inputs/XDateInput";
 
 interface IProps {
-    done?: () => any
+    onClose?: () => any
     id?: string
     profile: IStartup
     award?: IAward
@@ -29,7 +29,7 @@ const schema = yup.object().shape(
     }
 )
 
-const UpdateAwardForm = ({done, id, award, profile}: IProps) => {
+const UpdateAwardForm = ({onClose, id, award, profile}: IProps) => {
     const dispatch = useDispatch()
 
     const initialValues = {...award}
@@ -46,8 +46,8 @@ const UpdateAwardForm = ({done, id, award, profile}: IProps) => {
                     type: '',
                     payload: {...data}
                 })
-                if (done) {
-                    done()
+                if (onClose) {
+                    onClose()
                 }
             },
             () => Toast.error("Unable to update your education. Please try again later"),

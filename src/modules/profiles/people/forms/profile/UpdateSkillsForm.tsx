@@ -6,7 +6,6 @@ import {useDispatch} from "react-redux";
 import {get, makeUrl, post} from "../../../../../utils/ajax";
 import Toast from "../../../../../utils/Toast";
 import {Grid} from "@material-ui/core";
-import XSelectInput from "../../../../../components/inputs/XSelectInput";
 import {IPerson} from "../../IPerson";
 import {IOption} from "../../../../../components/inputs/inputHelpers";
 import {Endpoints} from "../../../../../services/Endpoints";
@@ -18,6 +17,7 @@ interface IProps {
     skills: IOption[]
     person: IPerson
     done?: () => any
+    onClose?: () => any
 }
 
 const schema = yup.object().shape(
@@ -27,7 +27,7 @@ const schema = yup.object().shape(
 )
 
 
-const UpdateSkillsForm = ({done, person, skills}: IProps) => {
+const UpdateSkillsForm = ({done, person, skills, onClose}: IProps) => {
     const dispatch = useDispatch()
 
     const [personSkills, setPersonSkills] = useState<IOption[]>([])
@@ -59,8 +59,8 @@ const UpdateSkillsForm = ({done, person, skills}: IProps) => {
                             type: '',
                             payload: {...data}
                         })
-                        if (done) {
-                            done()
+                        if (onClose) {
+                            onClose()
                         }
                     },
                     () => Toast.error("Unable to add skills to your profile. Please try again later"),

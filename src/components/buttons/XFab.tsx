@@ -1,6 +1,7 @@
 import Fab, {FabProps} from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import React from "react";
+import useTheme from "@material-ui/core/styles/useTheme";
 
 type Position = 'absolute' | 'relative' | 'fixed' | 'static'
 type Size = 'small' | 'medium' | 'large'
@@ -15,13 +16,17 @@ interface IProps {
     children: any
 }
 export function XFab({children, left, right, bottom, top, position, ...rest}: IProps & FabProps) {
+
+    const theme = useTheme()
+
     return <Fab
         style={{
             position: position,
             bottom: bottom,
             top: top,
             left: left,
-            right: right
+            right: right,
+            zIndex: theme.zIndex.appBar + 1
         }}
         {...rest}
         aria-label="edit">

@@ -12,7 +12,6 @@ import {Endpoints} from "../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
 import CardHeader from "@material-ui/core/CardHeader";
 import {IStartup} from "../../../interfaces/IStartup";
-import Toast from "../../../utils/Toast";
 import UpdateStartupInterestsForm from "./forms/UpdateStartupInterestsForm";
 
 interface IProps {
@@ -75,7 +74,9 @@ const StartupInterests = ({profile, canEdit}: IProps) => {
                              maxWidth={"sm"}
                              onClose={() => setOpenEditInterestsDialog(false)}
                              open={openEditInterestsDialog}>
-                        <UpdateStartupInterestsForm interests={interests} profile={profile}/>
+                        <UpdateStartupInterestsForm
+                            onClose={() => setOpenEditInterestsDialog(false)}
+                            interests={interests} profile={profile}/>
                     </XDialog>
                 ) : ""}
             </Card>

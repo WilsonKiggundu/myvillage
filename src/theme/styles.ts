@@ -136,5 +136,23 @@ export const globalStyles = makeStyles((theme) => ({
         position: "absolute",
         left: -40,
         bottom: 1
+    },
+
+    maxLines: {
+        display: "block",
+        textOverflow: "ellipsis",
+        wordWrap: "break-word",
+        overflow: "hidden",
+        lineHeight: '1.5em',
+        height: "3em",
+        verticalAlign: "middle",
+        '&$:after' : {
+            content: '...'
+        }
+    },
+
+    video: {
+        width: '100% !important',
+        height: 'auto !important'
     }
 }))

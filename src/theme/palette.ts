@@ -7,14 +7,20 @@ const palette = {
     primary: {
         contrastText: white,
         dark: '#021835',
-        main: '#1B314E',
+        main: '#62cbc9',
         light: '#4E6481'
     },
     secondary: {
         contrastText: white,
         dark: '#DE7B04',
-        main: '#F7941D',
+        main: '#ff9015',
         light: '#FFAE37'
+    },
+    tertiary: {
+        contrastText: white,
+        dark: '#636569',
+        main: '#636569',
+        light: '#636569'
     },
     error: {
         contrastText: white,
