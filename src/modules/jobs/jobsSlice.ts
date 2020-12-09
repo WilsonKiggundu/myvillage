@@ -57,15 +57,6 @@ export const jobsSlice = createSlice({
             state.error = action.error.message
         },
         [addJob.fulfilled.toString()]: (state: any, action: any) => {
-            const profile: IProfile = getProfile()
-
-            action.payload.dateCreated = new Date()
-            action.payload.author = profile
-
-            if (action.payload.uploads){
-                action.payload.uploads = JSON.parse(action.payload.uploads)
-            }
-
             state.jobs.push(action.payload)
         }
     }

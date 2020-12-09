@@ -80,7 +80,7 @@ const Jobs = ({match}: any) => {
         case 'succeeded':
             content = (
                 <Box clone order={{xs: 2, md: 3}}>
-                    <Grid item xs={12} md={8}>
+                    <Grid item xs={12}>
                         {jobs ? jobs.map((job: IJob) => (
 
                             <Accordion key={job.id} expanded={expanded === job.id}
@@ -168,7 +168,7 @@ const Jobs = ({match}: any) => {
     }
 
     return (
-        <Container maxWidth={"lg"}>
+        <Container maxWidth={"md"}>
 
             <XFab
                 onClick={() => setOpenJobDialog(true)}

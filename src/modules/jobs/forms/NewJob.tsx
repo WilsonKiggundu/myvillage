@@ -20,6 +20,7 @@ import {IPerson} from "../../profiles/people/IPerson";
 import {addPost} from "../../posts/postsSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 import {addJob} from "../jobsSlice";
+import { addDays } from "date-fns";
 
 interface IProps {
     done?: () => any
@@ -39,23 +40,23 @@ const schema = yup.object().shape(
 )
 
 const initialValues = {
-    // title: 'Senior Software Engineer',
-    // details: 'Design, develop and implement applications that support day-to-day operations.\n' +
-    //     'Provide innovative solutions to complex business problems.\n' +
-    //     'Plan, develop and implement large-scale projects from conception to completion.\n' +
-    //     'Develop and architect lifecycle of projects working on different technologies and platforms.\n' +
-    //     'Interface with clients and gather business requirements and objectives.\n' +
-    //     'Translate clients’ business requirements and objectives into technical applications and solutions.\n' +
-    //     'Understand and evaluate complex data models.\n' +
-    //     'Design, develop and implement new integration.\n' +
-    //     'Execute system development and maintenance activities.\n' +
-    //     'Develop solutions to improvise performance and scalability of systems.',
-    // category: 12,
-    // location: 2,
-    // deadline: addDays(new Date(), 14),
-    // qualifications: 'Degree in Engineering, Computer Science or anything',
-    // experience: 'At least 50 years of active software development in ReactJs and COBOL',
-    // howToApply: 'Just apply. It is that simple. Drop us an email on Facebook and Twitter'
+    title: 'Senior Software Engineer',
+    details: 'Design, develop and implement applications that support day-to-day operations.\n' +
+        'Provide innovative solutions to complex business problems.\n' +
+        'Plan, develop and implement large-scale projects from conception to completion.\n' +
+        'Develop and architect lifecycle of projects working on different technologies and platforms.\n' +
+        'Interface with clients and gather business requirements and objectives.\n' +
+        'Translate clients’ business requirements and objectives into technical applications and solutions.\n' +
+        'Understand and evaluate complex data models.\n' +
+        'Design, develop and implement new integration.\n' +
+        'Execute system development and maintenance activities.\n' +
+        'Develop solutions to improvise performance and scalability of systems.',
+    category: 12,
+    location: 2,
+    deadline: addDays(new Date(), 14),
+    qualifications: 'Degree in Engineering, Computer Science or anything',
+    experience: 'At least 50 years of active software development in ReactJs and COBOL',
+    howToApply: 'Just apply. It is that simple. Drop us an email on Facebook and Twitter'
 }
 
 const NewJob = ({done, onClose}: IProps) => {
