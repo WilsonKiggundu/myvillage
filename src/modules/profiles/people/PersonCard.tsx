@@ -43,7 +43,7 @@ const PersonCard = ({person}: IProps) => {
                     <div className={classes.profilePhoto}>
                         <Avatar className={clsx(classes.largeAvatar, classes.avatar)}
                                 style={{}}
-                                variant={"circular"}
+                                variant={"circle"}
                                 src={person.avatar}>
                         </Avatar>
 
