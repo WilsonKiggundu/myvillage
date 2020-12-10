@@ -150,7 +150,7 @@ export default function ApplicationBar() {
                                             aria-haspopup="true"
                                             onClick={showProfileMenu}
                                             color="inherit">
-                                    <Avatar src={""} variant={"circular"}/>
+                                    <Avatar src={""} variant={"circle"}/>
                                 </IconButton>
                                 <Menu
                                     id="profile-menu"
