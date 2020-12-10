@@ -10,4 +10,5 @@ export interface IEvent {
     days?: number[]
     details: string
     conferenceUrl: string
+    createdBy: string
 }

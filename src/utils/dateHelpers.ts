@@ -1,4 +1,4 @@
-import {format, isValid, parseISO} from "date-fns";
+import {format, getISOWeek, getMonth, getYear, isValid, parseISO} from "date-fns";
 
 export const dateFormat = 'dd.MM.yyyy'
 export const dateTimeFormat = 'dd.MM.yyyy HH:mm'
@@ -111,4 +111,30 @@ export const strToDate = (str: string): Date | null => {
     } catch (e) {
         return null
     }
+}
+
+export const isToday = (str: string) : boolean => {
+    const today = new Date()
+    const date = new Date(str)
+    return date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+}
+
+export const isThisWeek = (str: string) : boolean => {
+    const today = new Date()
+    const date = new Date(str)
+    return getISOWeek(today) === getISOWeek(date)
+}
+
+export const isThisMonth = (str: string) : boolean => {
+    const today = new Date()
+    const date = new Date(str)
+    return getMonth(today) === getMonth(date)
+}
+
+export const isThisYear = (str: string) : boolean => {
+    const today = new Date()
+    const date = new Date(str)
+    return getYear(today) === getYear(date)
 }

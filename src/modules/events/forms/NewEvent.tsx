@@ -31,6 +31,10 @@ import {useHistory} from "react-router-dom";
 import {addEventAction} from "../../../data/customActions";
 import {addEvent} from "../eventSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
+import {IPerson} from "../../profiles/people/IPerson";
+import {getProfile} from "../../../services/User";
+import {IPost} from "../../../interfaces/IPost";
+import {addPost} from "../../posts/postsSlice";
 
 interface IProps {
     done?: () => any
@@ -47,18 +51,10 @@ const schema = yup.object().shape(
 )
 
 const initialValues = {
-    details: 'Ullum feugait mandamus in est, et ius causae civibus alienum. Iracundia adversarium cu qui. Ex vim omnium dolorem referrentur, odio brute fuisset per ex, veri primis vis ex. Nostrum inimicus ocurreret eu cum, modus mucius consequuntur id qui, ut delenit fuisset pro.',
+    details: '',
     date: new Date(),
     startTime: new Date().getTime(),
     endTime: addHours(new Date(), 1).getTime(),
-    conferenceUrl: "https://us02web.zoom.us/j/86720807637?pwd=WmlHb2lRc1ZUeE1WWW5xWTZMb25YQT09",
-    frequency: 3,
-    title: "Demo with MCF",
-    type: "meeting",
-    location: "TIV Boardroom",
-    startDateTime: "",
-    endDateTime: "",
-    days: [],
 }
 
 const NewEvent = ({done, onClose}: IProps) => {
@@ -82,22 +78,33 @@ const NewEvent = ({done, onClose}: IProps) => {
 
         const startDateTime = format(new Date(values.startTime), "yyyy-MM-dd HH:mm:ss")
         const endDateTime = format(new Date(values.endTime), "yyyy-MM-dd HH:mm:ss")
+        const user: IPerson = getProfile()
 
         const event: IEvent = {
             conferenceUrl: values.conferenceUrl,
             details: values.details,
             interval: 0, // this is hardcoded
-            frequency: 2,
+            frequency: values.frequency,
             title: values.title,
-            type: "event", // this is hardcoded
+            type: values.type,
             location: values.location,
             startDateTime: startDateTime,
             endDateTime: endDateTime,
-            days: [1],
+            days: [],
+            createdBy: user.id
         }
 
         try {
-            const resultAction: any = await dispatch(addEvent(event))
+            await dispatch(addEvent(event))
+
+            const post = {
+                authorId: user.id,
+                type: 5, // 5 = Event
+                details: `#Upcoming Event\n\n${event.title}\n\n${event.details}`,
+                dateCreated: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+            }
+
+            const resultAction: any = await dispatch(addPost(post))
             unwrapResult(resultAction)
         }catch (e) {
 

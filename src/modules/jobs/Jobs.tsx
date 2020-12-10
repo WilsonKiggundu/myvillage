@@ -15,7 +15,7 @@ import {XFab} from "../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add"
 import NewJob from "./forms/NewJob";
 import XDialog from "../../components/dialogs/XDialog";
-import {IJob} from "../../interfaces/IJob";
+import {IJob, IJobCategory} from "../../interfaces/IJob";
 import {get, makeUrl} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import Toast from "../../utils/Toast";
@@ -28,6 +28,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPosts, selectAllPosts} from "../posts/postsSlice";
 import {getJobs, selectAllJobs} from "./jobsSlice";
 import {PleaseWait} from "../../components/PleaseWait";
+import Chip from "@material-ui/core/Chip";
+import XSelectInput from "../../components/inputs/XSelectInput";
+import {IStartup} from "../../interfaces/IStartup";
+import {IOption} from "../../components/inputs/inputHelpers";
+import XForm from "../../components/forms/XForm";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,19 +59,22 @@ const Jobs = ({match}: any) => {
     const {id} = match.params
 
     const [openJobDialog, setOpenJobDialog] = useState<boolean>(false)
-    const [expanded, setExpanded] = React.useState<string | false>(false);
+    const [categories, setCategories] = useState<IJobCategory[]>([])
+    const [companies, setCompanies] = useState<IOption[]>([])
 
     const dispatch = useDispatch()
     const jobs = useSelector(selectAllJobs)
     const error = useSelector((state: any) => state.jobs.error)
 
     const status = useSelector((state: any) => state.jobs.status)
+    const [expanded, setExpanded] = React.useState<string | false>(false);
 
     useEffect(() => {
-        if (status === 'idle'){
+        if (status === 'idle') {
             dispatch(getJobs())
         }
-    }, [status, dispatch])
+
+    }, [status, dispatch, setCompanies, setCategories])
 
     const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
@@ -76,13 +84,13 @@ const Jobs = ({match}: any) => {
     let content;
     switch (status) {
         case 'loading':
-            return <PleaseWait />
+            return <PleaseWait/>
         case 'succeeded':
+
             content = (
                 <Box clone order={{xs: 2, md: 3}}>
                     <Grid item xs={12}>
-                        {jobs ? jobs.map((job: IJob) => (
-
+                        {jobs ? jobs.map((job: IJob, index: number) => (
                             <Accordion key={job.id} expanded={expanded === job.id}
                                        onChange={handleChange(job.id)}>
                                 <AccordionSummary
@@ -188,29 +196,27 @@ const Jobs = ({match}: any) => {
             </XDialog>
 
             <Grid spacing={2} container justify={"flex-start"}>
-                {/*<Box mb={2} clone order={{xs: 1, md: 1}}>*/}
-                {/*    <Grid container spacing={4}>*/}
-                {/*        <Grid item xs={12}>*/}
-                {/*            <XSelectDropdown*/}
-                {/*                variant={"standard"}*/}
-                {/*                placeholder={"Location"}*/}
-                {/*                helperText={"Filter by location"}*/}
-                {/*                options={[]}/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={12}>*/}
-                {/*            <XSelectDropdown*/}
-                {/*                helperText={"Filter by category"}*/}
-                {/*                placeholder={"Category"}*/}
-                {/*                options={[]}/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={12}>*/}
-                {/*            <XSelectDropdown*/}
-                {/*                helperText={"Filter by company"}*/}
-                {/*                placeholder={"Company"}*/}
-                {/*                options={[]}/>*/}
-                {/*        </Grid>*/}
-                {/*    </Grid>*/}
-                {/*</Box>*/}
+
+                {/*<Grid item xs={12}>*/}
+                {/*    <Card style={{width: '100%'}}>*/}
+                {/*        <CardContent>*/}
+                {/*            <Grid container spacing={4}>*/}
+                {/*                <Grid item xs={12} md={4}>*/}
+                {/*                    <XSelectDropdown*/}
+                {/*                        helperText={"Filter by category"}*/}
+                {/*                        placeholder={"Category"}*/}
+                {/*                        options={categories}/>*/}
+                {/*                </Grid>*/}
+                {/*                <Grid item xs={12} md={4}>*/}
+                {/*                    <XSelectDropdown*/}
+                {/*                        helperText={"Filter by company"}*/}
+                {/*                        placeholder={"Company"}*/}
+                {/*                        options={companies}/>*/}
+                {/*                </Grid>*/}
+                {/*            </Grid>*/}
+                {/*        </CardContent>*/}
+                {/*    </Card>*/}
+                {/*</Grid>*/}
 
                 {content}
 

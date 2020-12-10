@@ -9,18 +9,15 @@ import XTextInput from "../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
 import XDateInput from "../../../components/inputs/XDateInput";
 import XSelectInput from "../../../components/inputs/XSelectInput";
-import {IOption} from "../../../components/inputs/inputHelpers";
 import {IJobCategory} from "../../../interfaces/IJob";
-import {get, makeUrl, post} from "../../../utils/ajax";
+import {get, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
-import Toast from "../../../utils/Toast";
-import {User} from "oidc-client/dist/oidc-client";
 import {getProfile} from "../../../services/User";
 import {IPerson} from "../../profiles/people/IPerson";
-import {addPost} from "../../posts/postsSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 import {addJob} from "../jobsSlice";
-import { addDays } from "date-fns";
+import {IOption} from "../../../components/inputs/inputHelpers";
+import {IStartup} from "../../../interfaces/IStartup";
 
 interface IProps {
     done?: () => any
@@ -35,41 +32,20 @@ const schema = yup.object().shape(
         howToApply: reqString,
         qualifications: reqString,
         experience: reqString,
-        deadline: reqDate
+        deadline: reqDate,
+        location: reqString
     }
 )
 
 const initialValues = {
-    title: 'Senior Software Engineer',
-    details: 'Design, develop and implement applications that support day-to-day operations.\n' +
-        'Provide innovative solutions to complex business problems.\n' +
-        'Plan, develop and implement large-scale projects from conception to completion.\n' +
-        'Develop and architect lifecycle of projects working on different technologies and platforms.\n' +
-        'Interface with clients and gather business requirements and objectives.\n' +
-        'Translate clients’ business requirements and objectives into technical applications and solutions.\n' +
-        'Understand and evaluate complex data models.\n' +
-        'Design, develop and implement new integration.\n' +
-        'Execute system development and maintenance activities.\n' +
-        'Develop solutions to improvise performance and scalability of systems.',
-    category: 12,
-    location: 2,
-    deadline: addDays(new Date(), 14),
-    qualifications: 'Degree in Engineering, Computer Science or anything',
-    experience: 'At least 50 years of active software development in ReactJs and COBOL',
-    howToApply: 'Just apply. It is that simple. Drop us an email on Facebook and Twitter'
+
 }
 
 const NewJob = ({done, onClose}: IProps) => {
     const dispatch = useDispatch()
 
-    const location: IOption[] = [
-        {id: 1, name:"Remote"},
-        {id: 2, name:"Uganda"},
-        {id: 3, name:"Kenya"},
-        {id: 4, name:"Tanzania"},
-    ]
-
     const [categories, setCategories] = useState<IJobCategory[]>([])
+    const [companies, setCompanies] = useState<IOption[]>([])
 
     useEffect(() => {
         const url = makeUrl("Jobs", Endpoints.jobs.api + "/categories")
@@ -78,7 +54,13 @@ const NewJob = ({done, onClose}: IProps) => {
         }, err => {
 
         })
-    }, [setCategories])
+
+        const companiesUrl = makeUrl("Profiles", Endpoints.business.base)
+        get(companiesUrl, {}, (companies) => {
+            console.log(companies)
+            setCompanies(companies.map((c: IStartup) => ({id: c.id, name: c.name})))
+        }, undefined, undefined)
+    }, [setCategories, setCompanies])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
         const user: IPerson = getProfile()
@@ -118,6 +100,13 @@ const NewJob = ({done, onClose}: IProps) => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <XSelectInput
+                        label={"Company"}
+                        name={"companyId"}
+                        helperText={"Select a company"}
+                        options={companies} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <XSelectInput
                         label={"Category"}
                         name={"category"}
                         helperText={"Ex. Information Technology"}
@@ -125,16 +114,15 @@ const NewJob = ({done, onClose}: IProps) => {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <XSelectInput
+                    <XTextInput
                         helperText={"Ex. Uganda, Kenya, Remote"}
-                        options={location}
                         name={"location"}
-                        label={"Country"}
+                        label={"Location"}
                         variant={"standard"}
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <XDateInput
                         disablePast
                         name={"deadline"}
@@ -148,7 +136,7 @@ const NewJob = ({done, onClose}: IProps) => {
                 <Grid item xs={12}>
                     <XTextAreaInput
                         rows={1}
-                        rowsMax={12}
+                        rowsMax={6}
                         helperText={"Briefly describe the job so that candidates know what to expect.."}
                         label={"Job description"}
                         name={"details"} />
@@ -157,7 +145,7 @@ const NewJob = ({done, onClose}: IProps) => {
                 <Grid item xs={12} md={6}>
                     <XTextAreaInput
                         rows={1}
-                        rowsMax={4}
+                        rowsMax={6}
                         helperText={"What qualifications should a potential candidate have?"}
                         label={"Qualifications"}
                         name={"qualifications"} />
@@ -166,7 +154,7 @@ const NewJob = ({done, onClose}: IProps) => {
                 <Grid item xs={12} md={6}>
                     <XTextAreaInput
                         rows={1}
-                        rowsMax={4}
+                        rowsMax={6}
                         helperText={"How many years of experience are you looking for? You can specify a range."}
                         label={"Experience"}
                         name={"experience"} />

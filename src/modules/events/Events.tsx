@@ -12,6 +12,13 @@ import {getEvents, selectAllEvents} from './eventSlice'
 import {IEvent} from "../../interfaces/IEvent";
 import EventCard from "./EventCard";
 import {Alert} from "@material-ui/lab";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
+import {isThisMonth, isThisWeek, isThisYear, isToday} from "../../utils/dateHelpers";
+import {isThisISOWeek} from "date-fns";
+
+type EventFilter = 'today' | 'week' | 'month' | 'year'
 
 const EventsView = () => {
 
@@ -19,21 +26,28 @@ const EventsView = () => {
     const [openAddEventDialog, setOpenAddEventDialog] = useState<boolean>(false)
 
     const dispatch = useDispatch()
-    const events = useSelector(selectAllEvents)
+    const results = useSelector(selectAllEvents)
     const error = useSelector((state: any) => state.events.error)
 
+    const [events, setEvents] = useState<IEvent[]>([])
+
     const status = useSelector((state: any) => state.events.status)
+
 
     useEffect(() => {
         if (status === 'idle'){
             dispatch(getEvents())
         }
+        setEvents(results)
     }, [status, dispatch])
 
     let content;
     if(status === 'loading') return <PleaseWait />
     else if(status === 'succeeded'){
-        content = events.map((event: IEvent, index: number) => (
+
+        const ordered = events.slice().sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
+
+        content = ordered.map((event: IEvent, index: number) => (
             <Grid key={index} item xs={12} md={4}>
                 <EventCard event={event} />
             </Grid>
@@ -47,6 +61,27 @@ const EventsView = () => {
                 {error}
             </Alert>
         </Grid>
+    }
+
+    const handleFilter = (filter: EventFilter) => {
+        let filtered = results
+        switch (filter){
+            case "today":
+                filtered = filtered.filter((f: any) => isToday(f.startDateTime))
+                break
+            case "week":
+                filtered = filtered.filter((f: any) => isThisWeek(f.startDateTime))
+                break
+            case "month":
+                filtered = filtered.filter((f: any) => isThisMonth(f.startDateTime))
+                break
+            case "year":
+                filtered = filtered.filter((f: any) => isThisYear(f.startDateTime))
+                break
+            default:
+                break
+        }
+        setEvents(filtered)
     }
 
     return (
@@ -70,6 +105,18 @@ const EventsView = () => {
             </XDialog>
 
             <Container maxWidth={"lg"}>
+
+                <Grid container justify={"center"} spacing={2}>
+                    <Box mt={2} ml={1} mr={1} mb={3}>
+                            <ButtonGroup size={"small"} color="primary" aria-label="outlined primary button group">
+                                <Button onClick={() => handleFilter("today")}>Today</Button>
+                                <Button onClick={() => handleFilter("week")}>This Week</Button>
+                                <Button onClick={() => handleFilter("month")}>This Month</Button>
+                                <Button onClick={() => handleFilter("year")}>This Year</Button>
+                            </ButtonGroup>
+                    </Box>
+                </Grid>
+
                 <Grid container spacing={2}>
                 {content}
                 </Grid>

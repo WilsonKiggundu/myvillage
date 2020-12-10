@@ -18,6 +18,7 @@ import {IEvent} from "../../interfaces/IEvent";
 import {Alert} from "@material-ui/lab";
 import {selectAllPosts, getPosts} from "../posts/postsSlice";
 import {getComments} from "../posts/commentsSlice";
+import Typography from "@material-ui/core/Typography";
 
 
 const Feed = ({match}: any) => {
@@ -42,7 +43,6 @@ const Feed = ({match}: any) => {
         const orderedByDate = feed?.slice().sort((a: any, b: any) => b.dateCreated.localeCompare(a.dateCreated))
 
         content = orderedByDate ? orderedByDate.map((item: any, index: number) => {
-
             switch (item.entityType) {
                 case 1:
                     return <PostCard key={index} post={item}/>
@@ -52,14 +52,21 @@ const Feed = ({match}: any) => {
                     return <PostCard key={index} post={item}/>
             }
         }) : ""
+
     }else{
-        content = <Grid item md={6}>
-            <Alert
-                title={"We failed to get the events..."}
-                color={"error"} icon={false}>
-                {error}
+        content =
+            <Alert color={"error"} icon={false}>
+
+                <Typography variant={"h5"} component={"h5"}>
+                    Ooops. We are unable to get your feed...
+                </Typography>
+
+                <Box mt={2}>
+                    <Typography variant={"body2"} component={"div"}>
+                        {error}
+                    </Typography>
+                </Box>
             </Alert>
-        </Grid>
     }
 
     return (

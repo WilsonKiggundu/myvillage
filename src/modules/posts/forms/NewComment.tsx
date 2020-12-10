@@ -25,7 +25,7 @@ const schema = yup.object().shape(
 )
 
 const initialValues = {
-    details: 'Yes, those are the tables that always turn. Remember, always ensure that when they do turn, you are on the right side of the table.',
+    details: '',
 }
 
 const NewComment = ({done, onClose, ...props}: IProps) => {
