@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import EditIcon from "@material-ui/icons/Edit";
 import React, {useEffect, useState} from "react";
-import {getUser} from "../../../services/User";
+import {getProfile, getUser} from "../../../services/User";
 import {IOption} from "../../../components/inputs/inputHelpers";
 import {get, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
@@ -20,26 +20,10 @@ interface IProps {
 
 const PersonInterests = ({person}: IProps) => {
 
-    const [user, setUser] = useState<any>(null)
-    const [interests, setInterests] = useState<IOption[]>([])
-    const isMyProfile: boolean = person.id === user?.profile?.sub
+    const user: IPerson = getProfile()
+    const {interests} = person
+    const isMyProfile: boolean = person.id === user.id
     const [openEditInterestsDialog, setOpenEditInterestsDialog] = useState<boolean>(false)
-
-
-    useEffect(() => {
-        const loggedInUser = getUser()
-        setUser(loggedInUser)
-
-        // person interests
-        const url = makeUrl("Profiles", Endpoints.person.interest)
-        get(url, {personId: person.id}, (response) => {
-            if (response) {
-                const interests = response.map((m: any) => ({id: m.interest.id, name: m.interest.category}))
-                setInterests([...interests])
-            }
-        })
-
-    }, [get, person, setInterests])
 
     return (
         <Box mb={2}>
@@ -60,12 +44,12 @@ const PersonInterests = ({person}: IProps) => {
                     }
                 />
 
-                {interests.length ? (
+                {interests?.length ? (
                     <CardContent>
-                        {interests ? interests.map(i =>
+                        {interests ? interests.map((i: any) =>
                             <Chip
-                                label={i.name}
-                                key={i.id}
+                                label={i.interest.category}
+                                key={i.interest.id}
                                 style={{marginRight: 5, marginBottom: 5}}
                                 clickable
                                 color="secondary"

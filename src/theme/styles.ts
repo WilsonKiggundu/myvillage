@@ -66,8 +66,8 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     largeAvatar: {
-        width: theme.spacing(15),
-        height: theme.spacing(15),
+        width: theme.spacing(20),
+        height: theme.spacing(20),
     },
 
     mediumAvatar: {
@@ -154,5 +154,20 @@ export const globalStyles = makeStyles((theme) => ({
     video: {
         width: '100% !important',
         height: 'auto !important'
+    },
+
+    coverPhoto: {
+        // borderBottomLeftRadius: 8,
+        // borderBottomRightRadius: 8,
+        position: 'relative',
+        backgroundColor: grey[100],
+        width: '100%',
+        maxHeight: '45vh',
+        minHeight: '20vh',
+        overflow: 'hidden',
+        marginBottom: 15,
+        [theme.breakpoints.down('sm')]: {
+            height: '25vh'
+        }
     }
 }))

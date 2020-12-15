@@ -1,3 +1,7 @@
 export interface IAward {
-    id: string
+    id?: string
+    title: string
+    awardedBy: string
+    date: string
+    description: string
 }

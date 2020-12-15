@@ -1,10 +1,11 @@
 import {IOption} from "../components/inputs/inputHelpers";
 
 export interface IProfile {
+    id: string
     userId: string
-    firstName: string
-    middleName?: string
-    lastName: string
+    firstname: string
+    middlename?: string
+    lastname: string
     email: string
     dateOfBirth: string
     gender: string

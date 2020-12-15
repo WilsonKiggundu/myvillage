@@ -1,27 +1,28 @@
-import React, {useEffect, useState} from "react";
-import {globalStyles} from "../../theme/styles"
-import {Container} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import {IPerson} from "./IPerson";
+import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
-import StartAPostCard from "../../components/StartAPostCard";
-import PostCard from "../../components/PostCard";
-import {getUser} from "../../services/User";
-import {IPost} from "../../interfaces/IPost";
-import {get, makeUrl} from "../../utils/ajax";
-import {Endpoints} from "../../services/Endpoints";
-import Toast from "../../utils/Toast";
-import {IFeed} from "../../interfaces/IFeed";
-import EventCard from "../events/EventCard";
+import React, {useEffect, useState} from "react";
+import {getProfile, getUser} from "../../../services/User";
+import {Typography} from "@material-ui/core";
+import PostCard from "../../../components/PostCard";
+import {IPost} from "../../../interfaces/IPost";
+import {getPosts, getPostsByPersonId, selectAllPosts} from "../../posts/postsSlice";
+import {get, getAsync, makeUrl} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
 import {useDispatch, useSelector} from "react-redux";
-import {PleaseWait} from "../../components/PleaseWait";
-import {IEvent} from "../../interfaces/IEvent";
+import {PleaseWait} from "../../../components/PleaseWait";
+import EventCard from "../../events/EventCard";
 import {Alert} from "@material-ui/lab";
-import {selectAllPosts, getPosts} from "../posts/postsSlice";
-import {getComments} from "../posts/commentsSlice";
-import Typography from "@material-ui/core/Typography";
+import grey from "@material-ui/core/colors/grey";
 
+interface IProps {
+    person: IPerson
+}
 
-const Feed = ({match}: any) => {
+const PersonPosts = ({person}: IProps) => {
+
+    const user: IPerson = getProfile()
+    const isMyProfile: boolean = person.id === user.id
 
     const dispatch = useDispatch()
     const feed = useSelector(selectAllPosts)
@@ -31,11 +32,12 @@ const Feed = ({match}: any) => {
 
     useEffect(() => {
         if (status === 'idle'){
-            dispatch(getPosts())
+            dispatch(getPostsByPersonId(person.id))
         }
     }, [status, dispatch])
 
     let content;
+
     if(status === 'loading') return <PleaseWait />
     else if(status === 'succeeded'){
         const orderedByDate = feed?.slice().sort((a: any, b: any) => b.dateCreated.localeCompare(a.dateCreated))
@@ -68,17 +70,13 @@ const Feed = ({match}: any) => {
     }
 
     return (
-        <Container maxWidth={"md"}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <StartAPostCard placeholder={"What's on your mind?"}/>
-                    <Box mb={2}>
-                        {content}
-                    </Box>
-                </Grid>
-            </Grid>
-        </Container>
+        <Box mb={2}>
+            <Typography style={{color: grey[400], margin: '30px 0 10px'}}>
+                { isMyProfile ? "Your feed" : `${person.firstname}'s posts` }
+            </Typography>
+            {content}
+        </Box>
     )
 }
 
-export default Feed
+export default PersonPosts

@@ -13,14 +13,19 @@ const initialState = {
     error: null
 }
 
-export const getPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    const url = makeUrl("Profiles", Endpoints.blog.post)
-    const response: any = await getAsync(url)
+export const getPosts = createAsyncThunk('posts/fetchPosts',
+    async () => {
+        const url = makeUrl("Profiles", Endpoints.blog.post)
+        const response: any = await getAsync(url)
+        return response.body
+    })
 
-
-    console.log(response.body)
-    return response.body
-})
+export const getPostsByPersonId = createAsyncThunk('posts/fetchPosts',
+    async (personId: string) => {
+        const url = makeUrl("Profiles", Endpoints.blog.post)
+        const response: any = await getAsync(url, {personId})
+        return response.body
+    })
 
 export const addPost = createAsyncThunk(
     'posts/addPost',
@@ -46,7 +51,7 @@ export const postsSlice = createSlice({
     initialState,
     reducers: {
         postAdded: {
-            reducer(state: any, action: any){
+            reducer(state: any, action: any) {
                 state.posts.push(action.payload)
             },
             prepare(post) {
@@ -58,12 +63,12 @@ export const postsSlice = createSlice({
             }
         },
         commentAdded: {
-            reducer(state: any, action: any){
+            reducer(state: any, action: any) {
                 const {postId, comment} = action.payload
                 const existingPost = state.posts.find((post: IPost) => post.id === postId)
                 if (existingPost) existingPost.comments.push(comment)
             },
-            prepare(){
+            prepare() {
                 const profile: IProfile = getProfile()
                 return {
                     payload: {
@@ -92,7 +97,7 @@ export const postsSlice = createSlice({
             action.payload.dateCreated = new Date()
             action.payload.author = profile
 
-            if (action.payload.uploads){
+            if (action.payload.uploads) {
                 action.payload.uploads = JSON.parse(action.payload.uploads)
             }
 

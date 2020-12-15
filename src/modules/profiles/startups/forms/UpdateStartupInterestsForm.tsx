@@ -12,9 +12,13 @@ import {Endpoints} from "../../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import {IStartup} from "../../../../interfaces/IStartup";
+import {IPerson} from "../../people/IPerson";
+import {getProfile} from "../../../../services/User";
+import {addInterest} from "../startupSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
 
 interface IProps {
-    interests: IOption[]
+    interests: any | undefined
     profile: IStartup
     onClose?: () => any
 }
@@ -24,6 +28,7 @@ const schema = yup.object().shape(
 )
 
 const UpdateStartupInterestsForm = ({onClose, profile, interests}: IProps) => {
+
     const dispatch = useDispatch()
 
     const [interestsLookup, setInterestsLookup] = useState<IOption[]>([])
@@ -31,72 +36,52 @@ const UpdateStartupInterestsForm = ({onClose, profile, interests}: IProps) => {
 
     useEffect(() => {
 
-        // startup interests
-        const startupInterestUrl = makeUrl("Profiles", Endpoints.business.interest)
-        get(startupInterestUrl, {businessId: profile.id}, (interests: any) => {
-            if (interests.length) {
-                setStartupInterests(interests.map((m: any) => ({id: m.interest.id, name: m.interest.category})))
-            }
-        })
-
-        // lookup interests
         const lookupInterestUrl = makeUrl("Profiles", Endpoints.lookup.interest)
-        get(lookupInterestUrl, {}, (interests: any) => {
-            if (interests.length) {
-                setInterestsLookup(interests.map((m: any) => ({id: m.id, name: m.category})))
+        get(lookupInterestUrl, {}, (response) => {
+            if (response) {
+                let lookupInterests = response.map((m: any) => ({id: m.id, name: m.category}))
+
+                const lookupInterestsFiltered: any = []
+                lookupInterests.forEach((el: any) => {
+                    const exists = interests.some((i: any) => i.interestId === el.id)
+                    if(!exists){
+                        lookupInterestsFiltered.push(el)
+                    }
+                })
+
+                lookupInterests = lookupInterestsFiltered
+                setInterestsLookup(lookupInterests)
             }
         })
 
-    }, [])
+    }, [interests])
 
-    function handleSubmit(values: any, actions: FormikHelpers<any>) {
-        const toSave = {}
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        if (values.custom) {
-            const lookupUrl = makeUrl("Profiles", Endpoints.lookup.interest)
-            values.custom.split(',').forEach((v: string) => {
-                post(lookupUrl, {category: v.trimStart().trimEnd()},
-                    (data: any) => {
-                        actions.resetForm()
-                        dispatch({
-                            type: '',
-                            payload: {...data}
-                        })
-                        if (onClose) {
-                            onClose()
-                        }
-                    },
-                    () => Toast.error("Unable to update your profile. Please try again later"),
-                    () => {
-                        actions.setSubmitting(false)
-                    }
-                )
-            })
+        const {interests, custom} = values
 
+        if (custom) {
+            await Promise.all(custom.split(',').map(async (interest: string) => {
+                const resultAction: any = await dispatch(addInterest({
+                    businessId: profile.id,
+                    name: interest.trimStart().trimEnd()
+                }))
+                unwrapResult(resultAction)
+            }))
         }
 
-        if (values.interests) {
-            const url = makeUrl("Profiles", Endpoints.business.interest)
+        if (interests) {
+            await Promise.all(interests.map(async (interest: string) => {
+                const resultAction: any = await dispatch(addInterest({
+                    businessId: profile.id, interestId: interest,
+                    interest: interestsLookup.filter(f => f.id === interest)[0]
+                }))
+                unwrapResult(resultAction)
+            }))
+        }
 
-            values.interests.forEach((interest: any) => {
-                post(url, {businessId: profile.id, interestId: interest},
-                    (data: any) => {
-                        actions.resetForm()
-                        dispatch({
-                            type: '',
-                            payload: {...data}
-                        })
-                        if (onClose) {
-                            onClose()
-                        }
-                    },
-                    () => Toast.error("Unable to update your profile. Please try again later"),
-                    () => {
-                        actions.setSubmitting(false)
-                    }
-                )
-            })
-
+        if (onClose) {
+            onClose()
         }
 
     }

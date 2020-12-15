@@ -1,3 +1,5 @@
+import {IAddress} from "./IAddress";
+
 export interface IStartup {
     id: string
     name: string
@@ -6,4 +8,11 @@ export interface IStartup {
     dateOfIncorporation: string
     website: string
     category: string
+    coverPhoto?: string
+    interests?: []
+    awards?: []
+    contacts?: []
+    roles?: []
+    addresses?: IAddress[]
+    products?: []
 }

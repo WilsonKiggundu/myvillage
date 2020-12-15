@@ -97,15 +97,15 @@ const NewEvent = ({done, onClose}: IProps) => {
         try {
             await dispatch(addEvent(event))
 
-            const post = {
-                authorId: user.id,
-                type: 5, // 5 = Event
-                details: `#Upcoming Event\n\n${event.title}\n\n${event.details}`,
-                dateCreated: format(new Date(), "yyyy-MM-dd HH:mm:ss")
-            }
-
-            const resultAction: any = await dispatch(addPost(post))
-            unwrapResult(resultAction)
+            // const post = {
+            //     authorId: user.id,
+            //     type: 5, // 5 = Event
+            //     details: `#Upcoming Event\n\n${event.title}\n\n${event.details}`,
+            //     dateCreated: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+            // }
+            //
+            // const resultAction: any = await dispatch(addPost(post))
+            // unwrapResult(resultAction)
         }catch (e) {
 
         } finally {
@@ -195,16 +195,16 @@ const NewEvent = ({done, onClose}: IProps) => {
                         </Grid>
                     </Grid>
 
-                    <Grid container>
-                        <Grid item xs={12} sm={6}>
-                            <XSelectInput
-                                variant={"standard"}
-                                name={"frequency"}
-                                label={"Repeat interval"}
-                                options={repeatIntervals}
-                            />
-                        </Grid>
-                    </Grid>
+                    {/*<Grid container>*/}
+                    {/*    <Grid item xs={12} sm={6}>*/}
+                    {/*        <XSelectInput*/}
+                    {/*            variant={"standard"}*/}
+                    {/*            name={"frequency"}*/}
+                    {/*            label={"Repeat interval"}*/}
+                    {/*            options={repeatIntervals}*/}
+                    {/*        />*/}
+                    {/*    </Grid>*/}
+                    {/*</Grid>*/}
                 </Grid>
 
             </Grid>

@@ -42,7 +42,6 @@ export default function CommentsList({postId, articleId}: IProps) {
     const classes = globalStyles();
 
     const comments: any = useSelector(state => getCommentsByPostId(state, postId))
-
     const orderedByDate = comments?.slice().sort((a: any, b: any) => a.dateCreated.localeCompare(b.dateCreated))
 
     const content = orderedByDate ? orderedByDate.map((c: any, index: number) => (
@@ -58,7 +57,9 @@ export default function CommentsList({postId, articleId}: IProps) {
                 }
             } container spacing={1}>
             <Grid className={clsx(classes.textCenter)} item xs={2} sm={1}>
-                <Avatar className={clsx(classes.center)}/>
+                <Avatar src={c.author?.avatar}>
+                    {c.author?.firstname[0].toUpperCase()}{c.author?.lastname[0].toUpperCase()}
+                </Avatar>
             </Grid>
             <Grid item xs={10} sm={11}>
                 <Typography component={"div"}>

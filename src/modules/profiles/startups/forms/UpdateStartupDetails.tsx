@@ -94,7 +94,7 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12}>
                     <XTextInput
                         name="name"
                         label={"What is the name of your startup?"}
@@ -105,7 +105,7 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12}>
                     <XSelectInput
                         name="category"
                         multiple={false}
@@ -117,7 +117,7 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12}>
                     <XTextAreaInput
                         name="description"
                         rows={6}
@@ -129,16 +129,6 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
-                    <XTextInput
-                        name="numberOfEmployees"
-                        label={"How many employees do you have?"}
-                        helperText={"It's fine if you just put an approximate number. Required"}
-                        type={"text"}
-                        variant={"standard"}
-                        margin={"none"}
-                    />
-                </Grid>
 
                 <Grid item xs={12}>
                     <Box mt={2}>
@@ -150,7 +140,18 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                     </Box>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
+                    <XTextInput
+                        name="numberOfEmployees"
+                        label={"How many employees do you have?"}
+                        helperText={"It's fine if you just put an approximate number. Required"}
+                        type={"text"}
+                        variant={"standard"}
+                        margin={"none"}
+                    />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
                     <XTextInput
                         name={"website"}
                         label={"Enter the website url"}

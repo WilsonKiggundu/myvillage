@@ -20,6 +20,14 @@ export const Options = {
         { id: "3", name: "AgriTech"},
         { id: "99", name: "Other"},
     ],
+
+    ADDRESS_TYPES: [
+        { id: "1", name: "Mailing" },
+        { id: "2", name: "Physical" },
+        { id: "3", name: "Billing" },
+        { id: "99", name: "Other" },
+    ],
+
     USER_CATEGORIES: [
         {
             name: "Investor",

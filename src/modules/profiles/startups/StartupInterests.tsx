@@ -23,21 +23,9 @@ const StartupInterests = ({profile, canEdit}: IProps) => {
 
     const user = getUser()
     const {id} = profile
-    const [interests, setInterests] = useState<IOption[]>([])
+    const {interests} = profile
 
     const [openEditInterestsDialog, setOpenEditInterestsDialog] = useState<boolean>(false)
-
-    useEffect(() => {
-
-        // startup interests
-        const url = makeUrl("Profiles", Endpoints.business.interest)
-        get(url, {businessId: id}, (response) => {
-            if (response) {
-                const interests = response.map((m: any) => ({id: m.interest.id, name: m.interest.category}))
-                setInterests([...interests])
-            }
-        })
-    }, [id])
 
     return (
         <Box mb={2}>
@@ -56,12 +44,12 @@ const StartupInterests = ({profile, canEdit}: IProps) => {
                     title={"Our interests"}
                 />
 
-                {interests.length ? (
+                {interests?.length ? (
                     <CardContent>
-                        {interests ? interests.map(i =>
+                        {interests ? interests.map((i: any, index: number) =>
                             <Chip
-                                label={i.name}
-                                key={i.id}
+                                label={i.label}
+                                key={index}
                                 style={{marginRight: 5, marginBottom: 5}}
                                 clickable
                                 color="secondary"

@@ -12,6 +12,9 @@ import {Endpoints} from "../../../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import {reqString} from "../../../../../data/validations";
+import {addInterest, addSkill} from "../../personSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
+import {getProfile} from "../../../../../services/User";
 
 interface IProps {
     skills: IOption[]
@@ -46,34 +49,23 @@ const UpdateSkillsForm = ({done, person, skills, onClose}: IProps) => {
 
     }, [])
 
-    function handleSubmit(values: any, actions: FormikHelpers<any>) {
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
         if (values.skills) {
-            const url = makeUrl("Profiles", Endpoints.person.skill)
 
-            values.skills.split(',').forEach((skill: any) => {
-                post(url, {personId: person.id, details: skill},
-                    (data) => {
-                        actions.resetForm()
-                        dispatch({
-                            type: '',
-                            payload: {...data}
-                        })
-                        if (onClose) {
-                            onClose()
-                        }
-                    },
-                    () => Toast.error("Unable to add skills to your profile. Please try again later"),
-                    () => {
-                        actions.setSubmitting(false)
-                    }
-                )
-            })
+            const skills = values.skills.split(',')
+            const user: IPerson = getProfile()
 
+            await Promise.all(skills.map(async (skill: any) => {
+                const resultAction: any = await dispatch(addSkill({
+                    personId: user.id,
+                    details: skill
+                }))
+                unwrapResult(resultAction)
+            }))
 
+            if (onClose) onClose()
         }
-
-
     }
 
     return (
