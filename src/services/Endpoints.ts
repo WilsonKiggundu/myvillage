@@ -8,9 +8,9 @@ switch (process.env.NODE_ENV){
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     case "production":
-        profileBaseUrl = "https://profiles-test.innovationvillage.co.ug"
-        eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
-        jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
+        profileBaseUrl = "https://profiles.innovationvillage.co.ug"
+        eventsBaseUrl = "https://events-api.innovationvillage.co.ug"
+        jobsBaseUrl = "https://jobs-api.innovationvillage.co.ug"
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     default:
