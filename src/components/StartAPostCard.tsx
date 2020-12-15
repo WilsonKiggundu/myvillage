@@ -68,7 +68,7 @@ const StartAPostCard = (props: IProps) => {
 
                     <Box mt={2}>
                         <Grid container spacing={2}>
-                            <Grid className={classes.textCenter} item xs={6} sm={3}>
+                            <Grid className={classes.textCenter} item xs={6} sm={4}>
                                 <Button
                                     onClick={() => setOpenPhotoDialog(true)}
                                     style={{padding: 5}}
@@ -86,7 +86,7 @@ const StartAPostCard = (props: IProps) => {
                                 </XDialog>
                             </Grid>
 
-                            <Grid className={classes.textCenter} item xs={6} sm={3}>
+                            <Grid className={classes.textCenter} item xs={6} sm={4}>
                                 <Button
                                     onClick={() => setOpenVideoDialog(true)}
                                     size={"large"}
@@ -103,7 +103,7 @@ const StartAPostCard = (props: IProps) => {
                                 </XDialog>
                             </Grid>
 
-                            <Grid className={classes.textCenter} item xs={6} sm={3}>
+                            <Grid className={classes.textCenter} item xs={6} sm={4}>
                                 <Button
                                     onClick={() => setOpenNewEventDialog(true)}
                                     style={{padding: 5}}
@@ -119,14 +119,14 @@ const StartAPostCard = (props: IProps) => {
                                 </XDialog>
                             </Grid>
 
-                            <Grid className={classes.textCenter} item xs={6} sm={3}>
-                                <Button
-                                    href={Urls.articles.create}
-                                    style={{padding: 5}}
-                                    className={clsx(classes.bold, classes.fullWidth)}>
-                                    <DescriptionIcon style={{marginRight: 10}}/> Write article
-                                </Button>
-                            </Grid>
+                            {/*<Grid className={classes.textCenter} item xs={6} sm={3}>*/}
+                            {/*    <Button*/}
+                            {/*        href={Urls.articles.create}*/}
+                            {/*        style={{padding: 5}}*/}
+                            {/*        className={clsx(classes.bold, classes.fullWidth)}>*/}
+                            {/*        <DescriptionIcon style={{marginRight: 10}}/> Write article*/}
+                            {/*    </Button>*/}
+                            {/*</Grid>*/}
                         </Grid>
                     </Box>
 

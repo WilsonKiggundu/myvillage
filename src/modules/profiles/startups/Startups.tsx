@@ -60,20 +60,20 @@ const Startups = () => {
     return (
         <Container maxWidth="lg">
 
-            <Box mb={2} p={2} style={{backgroundColor: "white"}}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} sm={4} lg={3}>
-                            <XSelectDropdown
-                                placeholder="Category"
-                                options={categories}/>
-                        </Grid>
-                        <Grid item xs={12} sm={4} lg={3}>
-                            <XSelectDropdown
-                                placeholder="Country"
-                                options={countries}/>
-                        </Grid>
-                    </Grid>
-                </Box>
+            {/*<Box mb={2} p={2} style={{backgroundColor: "white"}}>*/}
+            {/*        <Grid container spacing={3}>*/}
+            {/*            <Grid item xs={12} sm={4} lg={3}>*/}
+            {/*                <XSelectDropdown*/}
+            {/*                    placeholder="Category"*/}
+            {/*                    options={categories}/>*/}
+            {/*            </Grid>*/}
+            {/*            <Grid item xs={12} sm={4} lg={3}>*/}
+            {/*                <XSelectDropdown*/}
+            {/*                    placeholder="Country"*/}
+            {/*                    options={countries}/>*/}
+            {/*            </Grid>*/}
+            {/*        </Grid>*/}
+            {/*    </Box>*/}
 
             <Box mb={2}>
                 <Grid spacing={3} container>

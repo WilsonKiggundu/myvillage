@@ -54,7 +54,7 @@ const People = () => {
                         <Typography className={styles.maxLines} variant={"body2"}>
                             {person.bio}
                         </Typography>
-                        <ProfileRating rating={4}/>
+                        {/*<ProfileRating rating={4}/>*/}
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Button

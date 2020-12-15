@@ -89,7 +89,7 @@ const StartupCard = (props: IProps) => {
                         </Typography>
                     </Box>
 
-                    <ProfileRating rating={3} />
+                    {/*<ProfileRating rating={3} />*/}
 
                     <Box mx={"auto"} mb={2}>
                         <Button

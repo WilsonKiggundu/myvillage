@@ -167,7 +167,7 @@ const PersonCard = ({person}: IProps) => {
                         ) : ""
 
                     }
-                    <ProfileRating readonly rating={3}/>
+                    {/*<ProfileRating readonly rating={3}/>*/}
 
                 </CardContent>
             </Card>
