@@ -18,8 +18,9 @@ import {XFab} from "../../../components/buttons/XFab";
 import UpdateStartupDetails from "./forms/UpdateStartupDetails";
 import {get, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
-import {getUser} from "../../../services/User";
+import {getProfile, getUser} from "../../../services/User";
 import Toast from "../../../utils/Toast";
+import {IPerson} from "../people/IPerson";
 
 interface IProps {
     profile: IStartup

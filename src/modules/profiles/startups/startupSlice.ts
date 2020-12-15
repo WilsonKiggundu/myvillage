@@ -14,7 +14,6 @@ const initialState = {
 export const getStartup = createAsyncThunk('startup/fetchStartup', async (startupId: any, {getState, requestId}: any) => {
     const url = makeUrl("Profiles", Endpoints.business.base + '/' + startupId)
     const response: any = await getAsync(url)
-    console.log(response.body)
     return response.body
 })
 
