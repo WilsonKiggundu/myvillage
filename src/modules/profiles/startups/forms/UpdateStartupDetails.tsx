@@ -12,10 +12,14 @@ import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
 import Box from "@material-ui/core/Box";
 import XDateInput from "../../../../components/inputs/XDateInput";
 import {Endpoints} from "../../../../services/Endpoints";
-import {getUser} from "../../../../services/User";
+import {getProfile, getUser} from "../../../../services/User";
 import XSelectInput from "../../../../components/inputs/XSelectInput";
 import {Options} from "../../../../utils/options";
 import {IStartup} from "../../../../interfaces/IStartup";
+import {addStartup} from "../startupsSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
+import {IPerson} from "../../people/IPerson";
+import {updateStartup} from "../startupSlice";
 
 interface IProps {
     onClose?: () => any
@@ -36,55 +40,26 @@ const schema = yup.object().shape(
 const UpdateStartupDetails = ({onClose, profile}: IProps) => {
     const dispatch = useDispatch()
 
-    const [user, setUser] = useState<any>(null)
+    const user: IPerson = getProfile()
 
     const initialValues = {...profile}
 
-    useEffect(() => {
-        const user = getUser()
-        setUser(user)
-    }, [setUser])
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-    function handleSubmit(values: any, actions: FormikHelpers<any>) {
-        const url = makeUrl("Profiles", Endpoints.business.base)
+        values.createdBy = user.id
 
-        if (profile && profile.id) {
-            put(url + "/" + profile.id, values, (data) => {
-                    Toast.info("Your startup has been updated successfully successfully")
-                    dispatch({
-                        type: '',
-                        payload: {...data}
-                    })
-                    if (onClose) {
-                        onClose()
-                    }
-                }, err => {
-                    Toast.error("Unable to update your startup. Please try again later")
-                },
-                () => {
-                    actions.setSubmitting(false)
-                })
-        } else {
-            values.createdBy = user.profile.sub
-            post(url, values,
-                (data) => {
-                    Toast.info("Your startup has been added successfully successfully")
-                    actions.resetForm()
-                    dispatch({
-                        type: '',
-                        payload: {...data}
-                    })
-                    if (onClose) {
-                        onClose()
-                    }
-                },
-                (err) => {
-                    Toast.error("Unable to enroll your startup. Please try again later")
-                },
-                () => {
-                    actions.setSubmitting(false)
-                }
-            )
+        try {
+            if (profile && profile.id) {
+                const resultAction: any = await dispatch(updateStartup(values))
+                unwrapResult(resultAction)
+            } else {
+                const resultAction: any = await dispatch(addStartup(values))
+                unwrapResult(resultAction)
+            }
+        } catch (e) {
+
+        } finally {
+            if (onClose) onClose()
         }
     }
 

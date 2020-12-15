@@ -42,9 +42,9 @@ export default function StartupSummary({profile, canEdit}: IProps) {
                         </div>
 
                         <Typography variant="h6">{profile.name}</Typography>
-                        <Typography style={{whiteSpace: 'pre-line'}} component={"div"} variant={"body2"}>
-                            {profile.description}
-                        </Typography>
+                        {/*<Typography style={{whiteSpace: 'pre-line'}} component={"div"} variant={"body2"}>*/}
+                        {/*    {profile.description}*/}
+                        {/*</Typography>*/}
 
                         <Box mt={1} mb={1}>
                             <Typography component="div">

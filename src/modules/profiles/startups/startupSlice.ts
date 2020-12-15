@@ -32,8 +32,6 @@ export const updateStartup = createAsyncThunk(
             website: startup.website
         }
 
-        console.log(toUpdate)
-
         const url = makeUrl("Profiles", Endpoints.business.base)
         const response: any = await putAsync(url, toUpdate)
         return response.body
