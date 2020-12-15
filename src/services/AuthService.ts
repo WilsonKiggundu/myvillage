@@ -81,7 +81,7 @@ export default class AuthService {
     };
 
     public signupRedirect = () => {
-        window.location.replace(`${process.env.REACT_APP_AUTH_URL}/account/signup?returnUrl=${process.env.REACT_APP_REDIRECT_URL}`)
+        window.location.replace(`${process.env.REACT_APP_AUTH_URL}/account/signup?returnUrl=${process.env.REACT_APP_SIGNUP_REDIRECT_URL}`)
     }
 
     public isAuthenticated = () => {
