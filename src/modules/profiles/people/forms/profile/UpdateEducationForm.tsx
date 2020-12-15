@@ -12,6 +12,9 @@ import {IPerson} from "../../IPerson";
 import {makeUrl, post} from "../../../../../utils/ajax";
 import {Endpoints} from "../../../../../services/Endpoints";
 import Toast from "../../../../../utils/Toast";
+import {getProfile} from "../../../../../services/User";
+import {addEducation, addCategory} from "../../personSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
 
 interface IProps {
     onClose?: () => any
@@ -30,33 +33,22 @@ const schema = yup.object().shape(
 )
 
 
-
 const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
     const dispatch = useDispatch()
 
     const initialValues = {...education}
 
-    function handleSubmit(values: any, actions: FormikHelpers<any>) {
-        const url = makeUrl("Profiles", Endpoints.person.award)
+    const handleSubmit = async (values: IEducation, actions: FormikHelpers<any>) => {
         values.personId = person.id
 
-        post(url, values,
-            (data) => {
-                Toast.info("Your eduction has been updated successfully")
-                actions.resetForm()
-                dispatch({
-                    type: '',
-                    payload: {...data}
-                })
-                if (onClose) {
-                    onClose()
-                }
-            },
-            () => Toast.error("Unable to update your education. Please try again later"),
-            () => {
-                actions.setSubmitting(false)
-            }
-        )
+        try {
+            const resultAction: any = await dispatch(addEducation(values))
+            unwrapResult(resultAction)
+
+            if (onClose) onClose()
+        } catch (e) {
+
+        }
     }
 
     return (

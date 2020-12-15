@@ -23,32 +23,13 @@ import Toast from "../../../utils/Toast";
 
 interface IProps {
     profile: IStartup
+    canEdit?: boolean
 }
 
-export default function StartupSummary({profile}: IProps) {
+export default function StartupSummary({profile, canEdit}: IProps) {
 
     const classes = globalStyles()
-    const {id} = profile
-
-    const [user, setUser] = useState<any>(null)
-    const [isPageAdmin, setIsPageAdmin] = useState<boolean>(false)
     const [openEditProfileDialog, setOpenEditProfileDialog] = useState<boolean>(false)
-
-    useEffect(() => {
-        const user = getUser()
-        setUser(user)
-
-        const url = makeUrl("Profiles", Endpoints.business.role)
-        get(url, {businessId: id}, (roles) => {
-            // is the current user a PageAdmin
-            // get all page admins
-            const admins = roles.filter((r: any) => r.role === 'PageAdmin').map((m: any) => m.personId);
-
-            setIsPageAdmin(admins.includes(user.profile.sub))
-        }, err => {
-            Toast.error("Unable to fetch user roles. Please try again later")
-        })
-    }, [id, setIsPageAdmin, setUser])
 
     return (
         <>
@@ -70,25 +51,7 @@ export default function StartupSummary({profile}: IProps) {
                             </Typography>
                         </Box>
 
-                        <ProfileRating rating={3}/>
-
-                        <Divider/>
-
-                        <div style={{margin: "0 0"}}>
-                            <Typography variant={"h6"}>{profile.dateOfIncorporation}</Typography>
-                            <span>Incorporation Date</span>
-                        </div>
-                        <div style={{margin: "15px 0"}}>
-                            <Typography variant={"h6"}>{profile.numberOfEmployees}</Typography>
-                            <span>Number of Employees</span>
-                        </div>
-
-                        <Divider/>
-
-                        <Typography style={{margin: "15px 0"}}>
-                            <strong>Address</strong> <br/>
-                            <span>Ntinda Complex <br/> Block B&C - 3rd Floor</span>
-                        </Typography>
+                        {/*<ProfileRating rating={3}/>*/}
 
                         <Divider/>
 
@@ -111,7 +74,7 @@ export default function StartupSummary({profile}: IProps) {
                             {/*</Button>*/}
                         </Grid>
 
-                        {isPageAdmin ? (
+                        {canEdit ? (
                             <Typography component={"div"} style={{position: "relative"}}>
                                 <XFab onClick={() => setOpenEditProfileDialog(true)}
                                       size={"medium"}
@@ -126,7 +89,7 @@ export default function StartupSummary({profile}: IProps) {
             </Box>
 
             <XDialog title={"Edit startup details"}
-                     maxWidth={"md"}
+                     maxWidth={"sm"}
                      onClose={() => setOpenEditProfileDialog(false)}
                      open={openEditProfileDialog}>
                 <UpdateStartupDetails

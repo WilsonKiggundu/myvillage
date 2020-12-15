@@ -13,6 +13,8 @@ import Toast from "../../../../utils/Toast";
 import {IAward} from "../../../../interfaces/IAward";
 import {IStartup} from "../../../../interfaces/IStartup";
 import XDateInput from "../../../../components/inputs/XDateInput";
+import {addAward, addProduct, updateProduct} from "../startupSlice";
+import {unwrapResult} from "@reduxjs/toolkit";
 
 interface IProps {
     onClose?: () => any
@@ -32,29 +34,22 @@ const schema = yup.object().shape(
 const UpdateAwardForm = ({onClose, id, award, profile}: IProps) => {
     const dispatch = useDispatch()
 
-    const initialValues = {...award}
+    const initialValues = {
+        date: new Date().toISOString(),
+        description: "Some details about the award",
+        awardedBy: "Someone gave it to me",
+        title: "Sample title"
+    }
 
-    function handleSubmit(values: any, actions: FormikHelpers<any>) {
-        const url = makeUrl("Profiles", Endpoints.business.base)
-        //values.personId = person.id
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
+        try {
+            const resultAction: any = await dispatch(addAward(values))
+            unwrapResult(resultAction)
+        } catch (e) {
 
-        post(url, values,
-            (data) => {
-                Toast.info("Your eduction has been updated successfully")
-                actions.resetForm()
-                dispatch({
-                    type: '',
-                    payload: {...data}
-                })
-                if (onClose) {
-                    onClose()
-                }
-            },
-            () => Toast.error("Unable to update your education. Please try again later"),
-            () => {
-                actions.setSubmitting(false)
-            }
-        )
+        }
+
+        if (onClose) onClose()
     }
 
     return (

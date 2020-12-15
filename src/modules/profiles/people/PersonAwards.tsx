@@ -5,11 +5,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import AddIcon from "@material-ui/icons/Add";
-import React, {useEffect, useState} from "react";
-import {getUser} from "../../../services/User";
-import {get, makeUrl} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
-import {IEducation} from "../../../interfaces/IEducation";
+import React, { useState} from "react";
+import {getProfile, getUser} from "../../../services/User";
 import EducationTimeline from "../../../components/EducationTimeline";
 import UpdateEducationForm from "./forms/profile/UpdateEducationForm";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -20,25 +17,10 @@ interface IProps {
 
 const PersonAwards = ({person}: IProps) => {
 
-    const [user, setUser] = useState<any>(null)
-    const [awards, setAwards] = useState<IEducation[]>([])
-    const isMyProfile: boolean = person.id === user?.profile?.sub
+    const user: IPerson = getProfile()
+    const {awards} = person
+    const isMyProfile: boolean = person.id === user.id
     const [openAddEductionDialog, setOpenAddEductionDialog] = useState<boolean>(false)
-
-
-    useEffect(() => {
-        const loggedInUser = getUser()
-        setUser(loggedInUser)
-
-        // person awards
-        const url = makeUrl("Profiles", Endpoints.person.award)
-        get(url, {personId: person.id}, (awards) => {
-            if (awards) {
-                setAwards([...awards])
-            }
-        })
-
-    }, [get, person, setAwards])
 
     return (
         <Box mb={2}>
@@ -56,7 +38,7 @@ const PersonAwards = ({person}: IProps) => {
                     title="Education / Awards"
                 />
 
-                {awards.length ? (
+                {awards?.length ? (
                     <CardContent>
                         <EducationTimeline awards={awards} person={person} isMine={isMyProfile}/>
                     </CardContent>

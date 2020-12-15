@@ -35,6 +35,8 @@ import {getProfile, getUser} from "../../services/User";
 
 import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
 import {IProfile} from "../../interfaces/IProfile";
+import Box from "@material-ui/core/Box";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 type Anchor = 'left' | 'right';
 
@@ -46,8 +48,8 @@ export default function ApplicationBar() {
     const classes = appBarStyles();
     const theme = useTheme();
 
-    const history = useHistory()
-    const user: IProfile = getProfile()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const user = getProfile()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -82,9 +84,8 @@ export default function ApplicationBar() {
 
     const handleProfileView = () => {
         closeProfileMenu()
-        history.push(Urls.profiles.onePerson(user.userId))
+        window.location.replace(Urls.profiles.onePerson(user.id))
     }
-
 
     return (
         <div className={classes.grow}>
@@ -97,6 +98,8 @@ export default function ApplicationBar() {
                             edge="start">
                             <MenuIcon style={{color: 'white'}}/>
                         </IconButton>
+
+                        {isMobile ? <div className={classes.grow}/> : "" }
 
                         <Logo style={{height: 50, width: 'auto', margin: '10px'}}/>
 
@@ -117,7 +120,8 @@ export default function ApplicationBar() {
                         {/*}*/}
 
 
-                        <div className={classes.grow}/>
+                        {!isMobile ? <div className={classes.grow}/> : ""}
+
                         <div className={classes.sectionDesktop}>
                             <List className={classes.flexContainer}>
                                 {
@@ -160,7 +164,7 @@ export default function ApplicationBar() {
                                     anchorOrigin={{vertical: "bottom", horizontal: "left"}}
                                     onClose={closeProfileMenu}
                                     open={Boolean(anchorEl)}>
-                                    <MenuItem disabled>{user.firstName} {user.lastName}</MenuItem>
+                                    <MenuItem disabled>{user.firstname} {user.lastname}</MenuItem>
                                     <MenuItem onClick={handleProfileView}>
                                         My Profile
                                     </MenuItem>
@@ -185,7 +189,14 @@ export default function ApplicationBar() {
                     <IconButton style={{color: white}} onClick={toggleDrawer(anchor, false)}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
-                    <Logo />
+
+                    <div className={classes.grow} />
+
+                    <Logo style={{
+                        height: 50,
+                        margin: 10,
+                        width: 'auto'
+                    }}/>
                 </div>
                 <Divider style={{color: "white"}}/>
 

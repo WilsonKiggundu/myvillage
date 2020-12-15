@@ -13,6 +13,8 @@ import {Endpoints} from "../../../../services/Endpoints";
 import {IStartup} from "../../../../interfaces/IStartup";
 import XFileInput from "../../../../components/inputs/XFileInput";
 import {IProduct} from "../../../../interfaces/IProduct";
+import {unwrapResult} from "@reduxjs/toolkit";
+import {addProduct, updateProduct} from "../startupSlice";
 
 interface IProps {
     onClose?: () => any
@@ -32,52 +34,23 @@ const AddStartupProduct = ({onClose, profile, product}: IProps) => {
 
     const initialValues = {...product}
 
-    useEffect(() => {
-
-    }, [])
-
-    function handleSubmit(values: any, actions: FormikHelpers<any>) {
-        const url = makeUrl("Profiles", Endpoints.business.product)
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
         values.businessId = profile?.id
 
-        if (product && product.id) {
-            put(url + "/" + product.id, values, (data) => {
-                    Toast.info("Your product has been updated successfully successfully")
-                    dispatch({
-                        type: '',
-                        payload: {...data}
-                    })
-                    if (onClose) {
-                        onClose()
-                    }
-                }, err => {
-                    Toast.error(err.toString())
-                },
-                () => {
-                    actions.setSubmitting(false)
-                })
-        } else {
-            post(url, values,
-                (data) => {
-                    Toast.info("Your product has been added successfully successfully")
-                    actions.resetForm()
-                    dispatch({
-                        type: '',
-                        payload: {...data}
-                    })
-                    if (onClose) {
-                        onClose()
-                    }
-                },
-                (err) => {
-                    Toast.error(err.toString())
-                },
-                () => {
-                    actions.setSubmitting(false)
-                }
-            )
+        try {
+            if (product && product.id) {
+                const resultAction: any = await dispatch(updateProduct(values))
+                unwrapResult(resultAction)
+            } else {
+                const resultAction: any = await dispatch(addProduct(values))
+                unwrapResult(resultAction)
+            }
+        } catch (e) {
+
         }
+
+        if (onClose) onClose()
     }
 
     return (
@@ -107,10 +80,6 @@ const AddStartupProduct = ({onClose, profile, product}: IProps) => {
                         variant={"standard"}
                         margin={"none"}
                     />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <XFileInput name={"attachments"} />
                 </Grid>
 
             </Grid>

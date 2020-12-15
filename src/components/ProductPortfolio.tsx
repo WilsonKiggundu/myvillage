@@ -1,4 +1,4 @@
-import {Box} from "@material-ui/core";
+import {AccordionDetails, Box, createStyles, makeStyles, Theme} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
@@ -19,6 +19,14 @@ import {Endpoints} from "../services/Endpoints";
 import Toast from "../utils/Toast";
 import {format, formatDistanceToNow} from "date-fns";
 import {Add} from "@material-ui/icons";
+import {useDispatch} from "react-redux";
+import EditIcon from "@material-ui/icons/Edit";
+import Divider from "@material-ui/core/Divider";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import Button from "@material-ui/core/Button";
+import clsx from "clsx";
 
 interface IProps {
     canEdit: boolean
@@ -26,32 +34,46 @@ interface IProps {
     profile: IStartup
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            width: '100%',
+        },
+        heading: {
+            fontSize: theme.typography.pxToRem(15),
+            flexBasis: '100%',
+            fontWeight: 'bold',
+            flexShrink: 0,
+        },
+        secondaryHeading: {
+            fontSize: theme.typography.pxToRem(15),
+            color: theme.palette.text.secondary,
+        },
+    }),
+);
+
 const ProductPortfolio = ({canEdit, profile, ...props}: IProps) => {
 
     const classes = globalStyles()
-    const [overlayState, setOverlayState] = useState(false)
+    const styles = useStyles()
     const [openAddProduct, setOpenAddProduct] = useState<boolean>(false)
-    const [products, setProducts] = useState<IProduct[]>([])
+    const [selectedProduct, setSelectedProduct] = useState<IProduct | undefined>(undefined)
+    const [expanded, setExpanded] = React.useState<string | false>(false);
+    const {products} = profile
     const businessId = profile.id
 
-    useEffect(() => {
-        const url = makeUrl("Profiles", Endpoints.business.product)
-
-        get(url, {businessId}, (products) => {
-            setProducts([...products])
-            console.log({...products})
-        }, err => {
-            Toast.error(err.toString())
-        })
-    }, [businessId])
-
-    const handleClick = (image: any) => {
-        setOverlayState(!overlayState)
+    const handleEdit = (product: IProduct) => {
+        setSelectedProduct(product)
+        setOpenAddProduct(true)
     }
+
+    const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
     return (
         <Box mb={2}>
-            <Box mt={6} mb={2}>
+            <Box mt={6}>
 
                 <Grid container>
                     <Grid item xs={6}>
@@ -67,75 +89,49 @@ const ProductPortfolio = ({canEdit, profile, ...props}: IProps) => {
                 </Grid>
             </Box>
 
-            <Grid container spacing={2}>
+            <Box>
                 {products ? products.map((product: IProduct, index: number) => (
-                    <Grid key={index} item xs={12} lg={6}>
+                    <Accordion key={product.id} expanded={expanded === product.id}
+                               onChange={handleChange(product.id)}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon/>}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography className={styles.heading}>{product.name}</Typography>
+                        </AccordionSummary>
 
-                        <Card>
-                            <CardHeader
-                                title={product.name}
-                                subheader={
-                                    <small>{"Uploaded " + formatDistanceToNow(new Date(product.dateCreated)) + " ago"}</small>
-                                }
-                            />
-                            <CardContent>
+                        <AccordionDetails>
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <Typography style={{whiteSpace: 'pre-line'}} variant="body2" component="div">
+                                        {product.description}
+                                    </Typography>
+                                </Grid>
+                                {canEdit ? <Grid item xs={12}>
+                                    <Box mt={2}>
+                                        <Button variant={"contained"}
+                                                color={"default"}
+                                                className={clsx(classes.flat)}
+                                                size={"small"}
+                                                onClick={() => handleEdit(product)}>Edit</Button>
+                                    </Box>
+                                </Grid> : ""}
+                            </Grid>
 
-                                <Typography style={{whiteSpace: 'pre-line'}} variant="body2" component="div">
-                                    {product.description}
-                                </Typography>
-
-                                <Box mt={3}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={6}>
-                                            <img className={classes.clickable}
-                                                 onClick={() => handleClick(product)}
-                                                 style={{width: '100%', height: 'auto'}}
-                                                 src={"https://shop.motivug.org/wp-content/uploads/2020/10/MoTIV-product-122-1-2048x1365.jpg"}
-                                                 alt={product.name}/>
-                                        </Grid>
-
-                                        <Grid item xs={6}>
-                                            <img className={classes.clickable}
-                                                 onClick={() => handleClick(product)}
-                                                 style={{width: '100%', height: 'auto'}}
-                                                 src={"https://shop.motivug.org/wp-content/uploads/2020/10/MoTIV-product-123-2048x1365.jpg"}
-                                                 alt={product.name}/>
-                                        </Grid>
-
-                                        <Grid item xs={6}>
-                                            <img className={classes.clickable}
-                                                 onClick={() => handleClick(product)}
-                                                 style={{width: '100%', height: 'auto'}}
-                                                 src={"https://shop.motivug.org/wp-content/uploads/2020/10/MoTIV-product-123-2048x1365.jpg"}
-                                                 alt={product.name}/>
-                                        </Grid>
-
-                                        <Grid item xs={6}>
-                                            <img className={classes.clickable}
-                                                 onClick={() => handleClick(product)}
-                                                 style={{width: '100%', height: 'auto'}}
-                                                 src={"https://shop.motivug.org/wp-content/uploads/2020/10/MoTIV-product-123-2048x1365.jpg"}
-                                                 alt={product.name}/>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-
-                            </CardContent>
-                        </Card>
-
-                    </Grid>
+                        </AccordionDetails>
+                    </Accordion>
                 )) : (
                     <Typography component={"small"}>No products found</Typography>
                 )}
-            </Grid>
+            </Box>
 
             <XDialog title={"Add a product"}
                      open={openAddProduct}
                      onClose={() => setOpenAddProduct(false)}>
-                <AddStartupProduct profile={profile}/>
+                <AddStartupProduct onClose={() => setOpenAddProduct(false)} product={selectedProduct} profile={profile}/>
             </XDialog>
 
-            {/*<Overlay open={overlayState} items={props.items}/>*/}
         </Box>
     )
 }

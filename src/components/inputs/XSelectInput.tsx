@@ -108,7 +108,7 @@ const XSelectInput = (props: IProps) => {
             autoComplete="off"
         >
             <MenuItem disabled>
-                Select one or more options
+                {rest.multiple ? "Select one or more options" : "Select an option"}
             </MenuItem>
             {
                 options ?

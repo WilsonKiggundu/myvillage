@@ -19,7 +19,7 @@ import palette from "../../theme/palette";
 interface IProps {
     minWidth?: number
     maxWidth?: 'sm' | 'md' | 'lg' | false
-    title: string
+    title?: string
     contentText?: string
     children: any
     open: boolean
@@ -64,9 +64,10 @@ export default function XDialog(props: IProps) {
                             <IconButton edge="start" onClick={props.onClose} aria-label="close">
                                 <CloseIcon style={{color: "white"}}/>
                             </IconButton>
-                            <Typography variant="h6" className={classes.title}>
-                                {props.title}
-                            </Typography>
+                            {props.title ?
+                                <Typography variant="h6" className={classes.title}>
+                                    {props.title}
+                                </Typography> : ""}
                         </Toolbar>
                     </AppBar> :
                     <DialogTitle id="form-dialog-title">
@@ -90,7 +91,7 @@ export default function XDialog(props: IProps) {
                     </DialogTitle>
             }
 
-            <Divider />
+            <Divider/>
 
             <DialogContent>
                 {

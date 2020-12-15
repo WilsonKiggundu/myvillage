@@ -1,7 +1,7 @@
 import {FormikHelpers} from "formik";
 import React, {useState} from "react";
 import * as yup from "yup"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XForm from "../../../components/forms/XForm";
 import {DropzoneArea} from "material-ui-dropzone";
@@ -17,12 +17,19 @@ import {getUser} from "../../../services/User";
 import {format} from "date-fns";
 import {addPost} from "../postsSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
+import {getPerson, selectPerson, updatePerson} from "../../profiles/people/personSlice";
+import {IPerson} from "../../profiles/people/IPerson";
+import {selectStartup, updateStartup} from "../../profiles/startups/startupSlice";
+import {on} from "cluster";
 
 interface IProps {
     done?: () => any
     onClose?: () => any
     id?: string
     acceptedTypes?: any
+    filesLimit?: number
+    type?: UploadType
+    category?: UploadCategory
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,14 +50,23 @@ const initialValues = {
     caption: '',
 }
 
-const UploadFile = ({done, id, acceptedTypes, onClose}: IProps) => {
+type UploadType = 'coverPhoto' | 'profilePhoto' | 'other'
+type UploadCategory = 'person' | 'startup'
+
+const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClose}: IProps) => {
     const dispatch = useDispatch()
     const styles = useStyles()
     const classes = globalStyles()
 
+    const person = useSelector(selectPerson)
+    const startup = useSelector(selectStartup)
+
     const user = getUser()
     const [files, setFiles] = useState<any>([])
     // const [uploads, setUploads] = useState<IUpload[]>([])
+    const captionPlaceholder = filesLimit === 1 ?
+        "Say something about the photo..." :
+        "Say something about the photo(s)..."
 
     const handleDragDrop = (files: any) => {
         setFiles(files)
@@ -61,7 +77,6 @@ const UploadFile = ({done, id, acceptedTypes, onClose}: IProps) => {
         let uploads: IUpload[] = []
 
         if (files.length) {
-
 
             await Promise.all(files.map(async (file: any) => {
                 const {body}: any = await postFileAsync(file)
@@ -76,25 +91,52 @@ const UploadFile = ({done, id, acceptedTypes, onClose}: IProps) => {
                 }
 
                 uploads.push(upload)
+
+                if (type){
+                    const profile: any = category === "person" ? {...person} : {...startup}
+
+                    switch (type) {
+                        case "coverPhoto":
+                            profile.coverPhoto = upload.path
+                            break
+                        case "profilePhoto":
+                            profile.avatar = upload.path
+                            break
+                    }
+
+                    switch (category){
+                        case "person":
+                            await dispatch(updatePerson(profile))
+                            break
+                        case "startup":
+                            await dispatch(updateStartup(profile))
+                            break
+                    }
+
+                }
+
             }))
 
-            const toSave = {
-                details: values.details,
-                authorId: user.profile.sub,
-                uploads: JSON.stringify(uploads),
-            }
+            actions.resetForm()
+            if (onClose) onClose()
 
-            try {
-                const resultAction: any = await dispatch(addPost(toSave))
-                unwrapResult(resultAction)
-            }catch (e) {
-
-            } finally {
-                actions.resetForm()
-                if (onClose) {
-                    onClose()
-                }
-            }
+            // const toSave = {
+            //     details: type ? "#NewProfilePhoto" : values.details,
+            //     authorId: user.profile.sub,
+            //     uploads: JSON.stringify(uploads),
+            // }
+            //
+            // try {
+            //     const resultAction: any = await dispatch(addPost(toSave))
+            //     unwrapResult(resultAction)
+            // }catch (e) {
+            //
+            // } finally {
+            //     actions.resetForm()
+            //     if (onClose) {
+            //         onClose()
+            //     }
+            // }
         }
 
 
@@ -113,6 +155,7 @@ const UploadFile = ({done, id, acceptedTypes, onClose}: IProps) => {
                         acceptedFiles={acceptedTypes}
                         showPreviews={true}
                         previewText={""}
+                        filesLimit={filesLimit}
                         previewGridClasses={{
                             container: styles.previewContainer,
                             item: styles.previewItem,
@@ -130,14 +173,12 @@ const UploadFile = ({done, id, acceptedTypes, onClose}: IProps) => {
                     <XTextInput
                         name={"details"}
                         variant={"standard"}
-                        label={"Say something about the photo(s)..."}
+                        label={captionPlaceholder}
                         multiline
                         rows={2}
                         rowsMax={4}
                     />
                 </Grid>
-
-
             </Grid>
 
         </XForm>

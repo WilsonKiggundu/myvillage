@@ -184,6 +184,21 @@ export const put = (url: string, data: any, callBack: CallbackFunction, errorCal
         .end(handleResponse(callBack, errorCallBack, endCallBack))
 }
 
+export const putAsync = (url: string, data: any) => {
+    return new Promise((resolve, reject) => {
+        return superagent.put(url)
+            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send(data)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
+    })
+}
+
 export const del = (url: string, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     superagent.delete(url)
         .set('Authorization', `Bearer ${ACCESS_TOKEN}`)

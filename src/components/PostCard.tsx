@@ -34,23 +34,14 @@ const PostCard = ({post}: IProps) => {
 
     const [openCommentDialog, setOpenCommentDialog] = useState<boolean>(false)
 
-    // const dispatch = useDispatch()
-    // const error = useSelector((state: any) => state.posts.error)
-    //
-    // const status = useSelector((state: any) => state.posts.status)
-    //
-    // useEffect(() => {
-    //     // if (status === 'idle'){
-    //     //     dispatch(getPosts())
-    //     // }
-    // }, [status, dispatch])
-
     return (
         <Box mb={2}>
             {post ? (
                 <Card>
                     <CardHeader
-                        avatar={<Avatar/>}
+                        avatar={<Avatar src={post.author?.avatar}>
+                            {post.author?.firstname[0].toUpperCase()}{post.author?.lastname[0].toUpperCase()}
+                        </Avatar>}
                         title={<strong>{post.author?.firstname} {post.author?.lastname}</strong>}
                         subheader={<small style={{color: grey[500]}}>
                             {formatDistanceToNow(new Date(post.dateCreated), {
