@@ -37,6 +37,7 @@ import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
 import {IProfile} from "../../interfaces/IProfile";
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {IPerson} from "../../modules/profiles/people/IPerson";
 
 type Anchor = 'left' | 'right';
 
@@ -49,7 +50,7 @@ export default function ApplicationBar() {
     const theme = useTheme();
 
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const user = getProfile()
+    const user: IPerson = getProfile()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -99,7 +100,7 @@ export default function ApplicationBar() {
                             <MenuIcon style={{color: 'white'}}/>
                         </IconButton>
 
-                        {isMobile ? <div className={classes.grow}/> : "" }
+                        {isMobile ? <div className={classes.grow}/> : ""}
 
                         <Logo style={{height: 50, width: 'auto', margin: '10px'}}/>
 
@@ -150,27 +151,31 @@ export default function ApplicationBar() {
 
                         {authService.isAuthenticated() ?
                             <div className={classes.sectionDesktop}>
-                                <IconButton aria-controls="profile-menu"
-                                            aria-haspopup="true"
-                                            onClick={showProfileMenu}
-                                            color="inherit">
-                                    <Avatar src={""} variant={"circle"}/>
-                                </IconButton>
-                                <Menu
-                                    id="profile-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{vertical: "bottom", horizontal: "left"}}
-                                    onClose={closeProfileMenu}
-                                    open={Boolean(anchorEl)}>
-                                    <MenuItem disabled>{user.firstname} {user.lastname}</MenuItem>
-                                    <MenuItem onClick={handleProfileView}>
-                                        My Profile
-                                    </MenuItem>
-                                    <Divider/>
-                                    <MenuItem onClick={() => authService.logout()}>Logout</MenuItem>
-                                </Menu>
+                                {user ? (
+                                    <>
+                                        <IconButton aria-controls="profile-menu"
+                                                    aria-haspopup="true"
+                                                    onClick={showProfileMenu}
+                                                    color="inherit">
+                                            <Avatar src={user.avatar} variant={"circle"}/>
+                                        </IconButton>
+                                        <Menu
+                                            id="profile-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            getContentAnchorEl={null}
+                                            anchorOrigin={{vertical: "bottom", horizontal: "left"}}
+                                            onClose={closeProfileMenu}
+                                            open={Boolean(anchorEl)}>
+                                            <MenuItem disabled>{user.firstname} {user.lastname}</MenuItem>
+                                            <MenuItem onClick={handleProfileView}>
+                                                My Profile
+                                            </MenuItem>
+                                            <Divider/>
+                                            <MenuItem onClick={() => authService.logout()}>Logout</MenuItem>
+                                        </Menu>
+                                    </>
+                                ) : ""}
 
                             </div> : ""
                         }
@@ -190,7 +195,7 @@ export default function ApplicationBar() {
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
 
-                    <div className={classes.grow} />
+                    <div className={classes.grow}/>
 
                     <Logo style={{
                         height: 50,

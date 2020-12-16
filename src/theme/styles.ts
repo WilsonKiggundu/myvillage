@@ -170,4 +170,34 @@ export const globalStyles = makeStyles((theme) => ({
             height: '25vh'
         }
     }
+
+}))
+
+export const homeStyles = makeStyles((theme) => ({
+    root: {
+        backgroundColor: palette.tertiary.main,
+        width: '100%',
+        minHeight: '100vh',
+        margin: 0,
+        padding: 0,
+        position: 'absolute'
+    },
+
+    button: {
+        boxShadow: 'none',
+        textTransform:'inherit',
+        display: "block",
+        width: '80%',
+        borderRadius: 8
+    },
+
+    logo: {
+        width: 300,
+        height: 'auto'
+    },
+
+    headline: {
+        color: white
+    }
+
 }))
