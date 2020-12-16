@@ -36,7 +36,6 @@ export default class AuthService {
                     .set('Accept', 'application/json')
                     .timeout(0)
                     .end(handleResponse((response) => {
-
                         if (response){
                             sessionStorage.setItem(PROFILE_SESSION_KEY, JSON.stringify(response))
                             window.location.replace(Urls.feed)
@@ -60,7 +59,7 @@ export default class AuthService {
 
     signinRedirectCallback = () => {
         this.userManager.signinRedirectCallback().then((user: User) => {
-
+            console.log(user)
         }).catch(error => console.log(error));
     };
 

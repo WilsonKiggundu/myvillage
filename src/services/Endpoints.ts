@@ -1,6 +1,6 @@
 let profileBaseUrl, eventsBaseUrl, jobsBaseUrl, cdnBaseUrl
 
-switch (process.env.NODE_ENV){
+switch (process.env.REACT_APP_ENV){
     case "test":
         profileBaseUrl = "https://profiles-test.innovationvillage.co.ug"
         eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
