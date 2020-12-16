@@ -4,8 +4,7 @@ import {IOption} from "../components/inputs/inputHelpers";
 export const Options = {
     GENDER: [
         { id: "male", name: 'Male' },
-        { id: "female", name: 'Female' },
-        { id: "other", name: 'Other' },
+        { id: "female", name: 'Female' }
     ],
 
     EVENT_TYPES: [
@@ -28,18 +27,54 @@ export const Options = {
         { id: "99", name: "Other" },
     ],
 
+    USER_INTERESTS: [
+        {
+            name: "Investment",
+            id: 'investment'
+        },
+        {
+            name: "Learning",
+            id: 'learning'
+        },
+        {
+            name: "Connections",
+            id: 'connections'
+        },
+        {
+            name: "Events",
+            id: 'events'
+        },
+
+        {
+            name: "Product Sales",
+            id: 'sales'
+        },
+        {
+            name: "Other",
+            id: 'other'
+        }
+    ] as IOption[],
+
     USER_CATEGORIES: [
         {
             name: "Investor",
-            id: "investor"
+            id: 'investor'
         },
         {
             name: "Student",
-            id: "student"
+            id: 'student'
         },
         {
             name: "Entrepreneur",
-            id: "entrepreneur"
+            id: 'entrepreneur'
+        },
+        {
+            name: "Fresh Graduate",
+            id: 'graduate'
+        },
+        {
+            name: "Other",
+            id: 'other'
         }
     ] as IOption[]
 }

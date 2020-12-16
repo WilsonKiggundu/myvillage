@@ -47,37 +47,19 @@ const schema = yup.object().shape(
 
 export const CreateProfile = (props: IProps) => {
 
-    const history = useHistory()
-    const classes = globalStyles()
     const user: User = getUser()
 
     const splitName = user.profile.name?.split(' ') ?? []
 
     const initialValues = {
         firstName: user.profile.first_name ?? splitName.length > 0 ? splitName[0] : "",
-        middleName: user.profile.middle_name ?? splitName.length === 3 ? splitName[2] : "",
         lastName: user.profile.last_name ?? splitName.length === 2 ? splitName[1] : "",
         email: user.profile.email
     }
 
     const [loading, setLoading] = useState<boolean>(false)
-    const [openEditProfilePhotoDialog, setOpenEditProfilePhotoDialog] = useState<boolean>(false)
 
     const interests = Interests.slice(0, 12).map(m => ({id: m.id, name: m.name}))
-    const categories: IOption[] = [
-        {
-            name: "Investor",
-            id: faker.random.uuid()
-        },
-        {
-            name: "Student",
-            id: faker.random.uuid()
-        },
-        {
-            name: "Entrepreneur",
-            id: faker.random.uuid()
-        }
-    ]
 
     const handleSubmit = (values: IProfile) => {
         setLoading(true)
@@ -148,7 +130,7 @@ export const CreateProfile = (props: IProps) => {
                                         name={"categories"}
                                         multiple={true}
                                         helperText={"Select all that apply to you"}
-                                        options={categories}
+                                        options={Options.USER_CATEGORIES}
                                     />
                                 </Grid>
 
@@ -175,7 +157,7 @@ export const CreateProfile = (props: IProps) => {
                                         name={"interests"}
                                         multiple={true}
                                         helperText={"Select all that apply to you"}
-                                        options={interests}
+                                        options={Options.USER_INTERESTS}
                                     />
                                 </Grid>
                             </Grid>
