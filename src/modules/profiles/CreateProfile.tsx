@@ -52,8 +52,8 @@ export const CreateProfile = (props: IProps) => {
     const splitName = user.profile.name?.split(' ') ?? []
 
     const initialValues = {
-        firstName: user.profile.first_name ?? splitName.length > 0 ? splitName[0] : "",
-        lastName: user.profile.last_name ?? splitName.length === 2 ? splitName[1] : "",
+        // firstName: user.profile.first_name ?? splitName.length > 0 ? splitName[0] : "",
+        // lastName: user.profile.last_name ?? splitName.length === 2 ? splitName[1] : "",
         email: user.profile.email
     }
 

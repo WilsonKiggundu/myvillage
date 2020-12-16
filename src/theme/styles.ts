@@ -175,7 +175,7 @@ export const globalStyles = makeStyles((theme) => ({
 
 export const homeStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: palette.tertiary.main,
+        backgroundColor: white,
         width: '100%',
         minHeight: '100vh',
         margin: 0,
@@ -193,11 +193,52 @@ export const homeStyles = makeStyles((theme) => ({
 
     logo: {
         width: 300,
-        height: 'auto'
+        height: 'auto',
+        marginBottom: 20,
     },
 
     headline: {
-        color: white
+        color: white,
+        fontSize: '1.3rem'
+    },
+
+    subHeadline: {
+        color: palette.secondary.main,
+        fontSize: '1rem',
+        padding: '45px 0'
+    },
+
+    container: {
+        margin: '10% auto',
+    },
+
+    flex: {
+        display: 'flex'
+    },
+
+    title: {
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+        padding: '25px 0',
+        fontSize: '1.3rem'
+    },
+
+    subtitle: {
+        fontSize: '1.1rem'
+    },
+
+    main: {
+        backgroundColor: palette.tertiary.main,
+        minHeight: '50vh'
+    },
+
+    footer: {
+        backgroundColor: white,
+        minHeight: '30vh'
+    },
+
+    buttons: {
+        margin: '15% auto'
     }
 
 }))

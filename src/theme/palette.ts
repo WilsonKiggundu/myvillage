@@ -12,9 +12,9 @@ const palette = {
     },
     secondary: {
         contrastText: white,
-        dark: '#DE7B04',
+        dark: '#ff9015',
         main: '#ff9015',
-        light: '#FFAE37'
+        light: '#ff9015'
     },
     tertiary: {
         contrastText: white,
