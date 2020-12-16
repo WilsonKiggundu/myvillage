@@ -67,7 +67,6 @@ export const updateProduct = createAsyncThunk(
     async (product: any) => {
         const url = makeUrl("Profiles", Endpoints.business.product)
         const response: any = await putAsync(url, product)
-
         return response.body
     }
 )
@@ -291,10 +290,8 @@ export const startupSlice = createSlice({
         },
         [updateProduct.fulfilled.toString()]: (state: any, action: any) => {
             const productId = action.payload.id
-            state.startup.products.map((product: IProduct, index: number) => (
-                    product.id === productId ? {...action.payload} : product
-                )
-            )
+            const productIndex = state.startup.products.findIndex((p: any) => p.id === productId);
+            state.startup.products[productIndex] = action.payload
         },
 
         [getAwards.pending.toString()]: (state, action) => {
