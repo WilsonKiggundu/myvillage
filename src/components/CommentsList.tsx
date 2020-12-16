@@ -63,7 +63,7 @@ export default function CommentsList({postId, articleId}: IProps) {
             </Grid>
             <Grid item xs={10} sm={11}>
                 <Typography component={"div"}>
-                    <strong>{c.author.firstname} {c.author.lastname}</strong>
+                    <strong>{c.author?.firstname} {c.author?.lastname}</strong>
                 </Typography>
                 <Typography style={{marginTop: '-5px'}} component={"div"}>
                     <small style={{color: grey[500]}}>
