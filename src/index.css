@@ -7,10 +7,6 @@ body, #root, .fill {
   width: 100%;
 }
 
-*{
-  text-transform: inherit !important;
-}
-
 .ql-editor {
   min-height: 25vh;
   padding: 20px 0 !important;
