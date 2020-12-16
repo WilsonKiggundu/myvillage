@@ -177,18 +177,24 @@ export const homeStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: white,
         width: '100%',
-        minHeight: '100vh',
+        maxHeight: '100vh',
         margin: 0,
         padding: 0,
-        position: 'absolute'
+        position: 'absolute',
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
+        }
     },
 
     button: {
         boxShadow: 'none',
         textTransform:'inherit',
         display: "block",
-        width: '80%',
-        borderRadius: 8
+        width: '100%',
+        borderRadius: 8,
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        }
     },
 
     logo: {
@@ -238,7 +244,12 @@ export const homeStyles = makeStyles((theme) => ({
     },
 
     buttons: {
-        margin: '15% auto'
+        margin: '15% auto',
+        textAlign: 'center'
+    },
+
+    img: {
+        zIndex: theme.zIndex.drawer - 1
     }
 
 }))
