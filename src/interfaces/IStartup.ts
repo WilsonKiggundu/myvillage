@@ -9,6 +9,7 @@ export interface IStartup {
     website: string
     category: string
     coverPhoto?: string
+    avatar?: string
     interests?: []
     awards?: []
     contacts?: []

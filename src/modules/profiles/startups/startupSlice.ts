@@ -27,6 +27,7 @@ export const updateStartup = createAsyncThunk(
             description: startup.description,
             id: startup.id,
             coverPhoto: startup.coverPhoto,
+            avatar: startup.avatar,
             name: startup.name,
             numberOfEmployees: Number(startup.numberOfEmployees),
             website: startup.website

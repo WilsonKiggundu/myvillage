@@ -61,9 +61,7 @@ const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClos
     const person = useSelector(selectPerson)
     const startup = useSelector(selectStartup)
 
-    const user = getUser()
     const [files, setFiles] = useState<any>([])
-    // const [uploads, setUploads] = useState<IUpload[]>([])
     const captionPlaceholder = filesLimit === 1 ?
         "Say something about the photo..." :
         "Say something about the photo(s)..."

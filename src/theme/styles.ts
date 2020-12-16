@@ -71,8 +71,8 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     mediumAvatar: {
-        width: theme.spacing(8),
-        height: theme.spacing(8),
+        width: theme.spacing(14),
+        height: theme.spacing(14),
     },
 
     flex: {
