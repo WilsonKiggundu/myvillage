@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         heading: {
             fontSize: theme.typography.pxToRem(15),
-            flexBasis: '33.33%',
+            flexBasis: '66%',
             fontWeight: 'bold',
             flexShrink: 0,
         },
@@ -98,7 +98,7 @@ const Jobs = ({match}: any) => {
                                 >
                                     <Typography className={classes.heading}>{job.title}</Typography>
                                     <Typography className={classes.secondaryHeading}>
-                                        {job.location} . {job.category.name}
+                                        {job.location}
                                     </Typography>
                                 </AccordionSummary>
 
