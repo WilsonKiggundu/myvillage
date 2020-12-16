@@ -124,15 +124,15 @@ export const CreateProfile = (props: IProps) => {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <XSelectInput
-                                        label={"What of these best describes you?"}
-                                        name={"categories"}
-                                        multiple={true}
-                                        helperText={"Select all that apply to you"}
-                                        options={Options.USER_CATEGORIES}
-                                    />
-                                </Grid>
+                                {/*<Grid item xs={12}>*/}
+                                {/*    <XSelectInput*/}
+                                {/*        label={"What of these best describes you?"}*/}
+                                {/*        name={"categories"}*/}
+                                {/*        multiple={true}*/}
+                                {/*        helperText={"Select all that apply to you"}*/}
+                                {/*        options={Options.USER_CATEGORIES}*/}
+                                {/*    />*/}
+                                {/*</Grid>*/}
 
                                 <Grid item xs={12} sm={12}>
                                     <XRadioInput
@@ -151,15 +151,15 @@ export const CreateProfile = (props: IProps) => {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <XSelectInput
-                                        label={"What are you interested in?"}
-                                        name={"interests"}
-                                        multiple={true}
-                                        helperText={"Select all that apply to you"}
-                                        options={Options.USER_INTERESTS}
-                                    />
-                                </Grid>
+                                {/*<Grid item xs={12}>*/}
+                                {/*    <XSelectInput*/}
+                                {/*        label={"What are you interested in?"}*/}
+                                {/*        name={"interests"}*/}
+                                {/*        multiple={true}*/}
+                                {/*        helperText={"Select all that apply to you"}*/}
+                                {/*        options={Options.USER_INTERESTS}*/}
+                                {/*    />*/}
+                                {/*</Grid>*/}
                             </Grid>
 
                         </Box>

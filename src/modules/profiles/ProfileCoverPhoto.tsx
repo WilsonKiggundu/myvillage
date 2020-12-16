@@ -27,6 +27,7 @@ const ProfileCoverPhoto = ({person, startup, canEdit}: IProps) => {
     return (
         <Grid className={classes.coverPhoto}
               alignItems={"center"}
+              style={{marginTop: -20}}
               alignContent={"center"}
               container>
 

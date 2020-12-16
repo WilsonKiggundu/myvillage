@@ -34,7 +34,7 @@ const Person = ({match}: any) => {
     const person = useSelector(selectPerson)
 
     const user: IPerson = getProfile()
-    const canEdit: boolean = person.id === user.id
+    const canEdit: boolean = person?.id === user.id
 
     const error = useSelector((state: any) => state.person.error)
     const status = useSelector((state: any) => state.person.status)

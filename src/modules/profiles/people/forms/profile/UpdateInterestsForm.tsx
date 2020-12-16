@@ -31,7 +31,6 @@ const UpdateInterestsForm = ({onClose, person, interests}: IProps) => {
     const dispatch = useDispatch()
 
     const [interestsLookup, setInterestsLookup] = useState<IOption[]>([])
-    const [personInterests, setPersonInterests] = useState<IOption[]>([])
 
     useEffect(() => {
 
@@ -93,7 +92,7 @@ const UpdateInterestsForm = ({onClose, person, interests}: IProps) => {
             schema={schema}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                {personInterests ?
+                {interests ?
                     <Grid item xs={12}>
                         {
                             interests.map((i: any) => (
@@ -110,7 +109,7 @@ const UpdateInterestsForm = ({onClose, person, interests}: IProps) => {
                         label={"Select one or more interest"}
                         multiple={true}
                         name={"interests"}
-                        options={interestsLookup.filter(s => !personInterests.includes(s))}
+                        options={interestsLookup}
                     />
                 </Grid>
 
