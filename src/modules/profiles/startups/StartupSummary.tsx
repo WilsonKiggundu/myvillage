@@ -18,8 +18,15 @@ import {XFab} from "../../../components/buttons/XFab";
 import UpdateStartupDetails from "./forms/UpdateStartupDetails";
 import {get, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
-import {getUser} from "../../../services/User";
+import {getProfile, getUser} from "../../../services/User";
 import Toast from "../../../utils/Toast";
+import {IPerson} from "../people/IPerson";
+import Fab from "@material-ui/core/Fab";
+import UpdateProfileForm from "../people/forms/profile/UpdateProfileForm";
+import IconButton from "@material-ui/core/IconButton";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import UploadFile from "../../posts/forms/UploadFile";
+import palette from "../../../theme/palette";
 
 interface IProps {
     profile: IStartup
@@ -30,6 +37,7 @@ export default function StartupSummary({profile, canEdit}: IProps) {
 
     const classes = globalStyles()
     const [openEditProfileDialog, setOpenEditProfileDialog] = useState<boolean>(false)
+    const [openEditProfilePhotoDialog, setOpenEditProfilePhotoDialog] = useState<boolean>(false)
 
     return (
         <>
@@ -37,15 +45,46 @@ export default function StartupSummary({profile, canEdit}: IProps) {
                 <Card>
                     <CardContent style={{textAlign: "center"}}>
                         <div className={classes.profilePhoto}>
-                            <Avatar className={clsx(classes.largeAvatar, classes.avatar)}/>
+                            <Avatar
+                                style={{
+                                    backgroundColor: palette.tertiary.main,
+                                    borderWidth: 1,
+                                    borderColor: palette.primary.main,
+                                    borderStyle: 'solid'
+                                }}
+                                src={profile.avatar}
+                                className={clsx(classes.mediumAvatar, classes.avatar)}/>
+                            {canEdit ?
+                                    <Typography style={{position: "relative"}}>
+                                        <IconButton
+                                            onClick={() => setOpenEditProfilePhotoDialog(true)}
+                                            className={classes.avatarPhotoIcon}>
+                                            <AddAPhotoIcon fontSize={"large"}/>
+                                        </IconButton>
+
+                                        <XDialog title={"Update your profile photo"}
+                                                 maxWidth={"sm"}
+                                                 onClose={() => setOpenEditProfilePhotoDialog(false)}
+                                                 open={openEditProfilePhotoDialog}>
+                                            <UploadFile
+                                                onClose={() => setOpenEditProfilePhotoDialog(false)}
+                                                type={"profilePhoto"}
+                                                category={"startup"}
+                                                filesLimit={1}
+                                                acceptedTypes={['image/*']}/>
+                                        </XDialog>
+
+                                    </Typography> : ""
+
+                            }
                         </div>
 
                         <Typography variant="h6">{profile.name}</Typography>
-                        <Typography style={{whiteSpace: 'pre-line'}} component={"div"} variant={"body2"}>
-                            {profile.description}
-                        </Typography>
+                        {/*<Typography style={{whiteSpace: 'pre-line'}} component={"div"} variant={"body2"}>*/}
+                        {/*    {profile.description}*/}
+                        {/*</Typography>*/}
 
-                        <Box mt={1} mb={1}>
+                        <Box mt={1} mb={2}>
                             <Typography component="div">
                                 <Chip size="small" label={profile.category}/>
                             </Typography>

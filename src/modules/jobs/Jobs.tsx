@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         heading: {
             fontSize: theme.typography.pxToRem(15),
-            flexBasis: '33.33%',
+            flexBasis: '66%',
             fontWeight: 'bold',
             flexShrink: 0,
         },
@@ -59,8 +59,6 @@ const Jobs = ({match}: any) => {
     const {id} = match.params
 
     const [openJobDialog, setOpenJobDialog] = useState<boolean>(false)
-    const [categories, setCategories] = useState<IJobCategory[]>([])
-    const [companies, setCompanies] = useState<IOption[]>([])
 
     const dispatch = useDispatch()
     const jobs = useSelector(selectAllJobs)
@@ -74,7 +72,7 @@ const Jobs = ({match}: any) => {
             dispatch(getJobs())
         }
 
-    }, [status, dispatch, setCompanies, setCategories])
+    }, [status, dispatch])
 
     const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
@@ -100,7 +98,7 @@ const Jobs = ({match}: any) => {
                                 >
                                     <Typography className={classes.heading}>{job.title}</Typography>
                                     <Typography className={classes.secondaryHeading}>
-                                        {job.location} . {job.category.name}
+                                        {job.location}
                                     </Typography>
                                 </AccordionSummary>
 

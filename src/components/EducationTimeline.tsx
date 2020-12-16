@@ -43,7 +43,7 @@ export default function EducationTimeline({person, isMine, awards}: IProps) {
                 awards ?
                     awards.map((it: IEducation, index: number) => (
                         <Grid container key={index}>
-                            <Grid xs={10} item>
+                            <Grid xs={12} item>
                                 <Typography variant={"h6"} component={"div"}>
                                     {it.awardedBy}
                                 </Typography>
@@ -67,41 +67,41 @@ export default function EducationTimeline({person, isMine, awards}: IProps) {
                                 <Divider style={{marginTop: 15, marginBottom: 15}}/>
                             </Grid>
 
-                            <Grid style={{textAlign: "right"}} item xs={2}>
-                                {isMine ? (
-                                    <>
-                                        <IconButton
-                                            onClick={() => handleEditClick(it)}
-                                            style={{marginLeft: 15}} size={"small"}>
-                                            <EditIcon/>
-                                        </IconButton>
+                            {/*<Grid style={{textAlign: "right"}} item xs={2}>*/}
+                            {/*    {isMine ? (*/}
+                            {/*        <>*/}
+                            {/*            <IconButton*/}
+                            {/*                onClick={() => handleEditClick(it)}*/}
+                            {/*                style={{marginLeft: 15}} size={"small"}>*/}
+                            {/*                <EditIcon/>*/}
+                            {/*            </IconButton>*/}
 
-                                        <IconButton
-                                            onClick={() => setOpenDeleteEductionDialog(true)}
-                                            size={"small"}>
-                                            <DeleteIcon/>
-                                        </IconButton>
+                            {/*            <IconButton*/}
+                            {/*                onClick={() => setOpenDeleteEductionDialog(true)}*/}
+                            {/*                size={"small"}>*/}
+                            {/*                <DeleteIcon/>*/}
+                            {/*            </IconButton>*/}
 
-                                        <XDialog title={"Edit education"}
-                                                 maxWidth={"md"}
-                                                 onClose={() => setOpenEditEductionDialog(false)}
-                                                 open={openEditEductionDialog}>
-                                            <UpdateEducationForm education={selectedAward} person={person}/>
-                                        </XDialog>
+                            {/*            <XDialog title={"Edit education"}*/}
+                            {/*                     maxWidth={"md"}*/}
+                            {/*                     onClose={() => setOpenEditEductionDialog(false)}*/}
+                            {/*                     open={openEditEductionDialog}>*/}
+                            {/*                <UpdateEducationForm education={selectedAward} person={person}/>*/}
+                            {/*            </XDialog>*/}
 
-                                        <XConfirmDialog
-                                            open={openDeleteEductionDialog}
-                                            title={"Delete education record?"}
-                                            message={"This means that this record will no longer " +
-                                            "be visible on your profile."}
-                                            onContinue={() => {
-                                            }}
-                                            onClose={() => setOpenDeleteEductionDialog(false)}
-                                        />
+                            {/*            <XConfirmDialog*/}
+                            {/*                open={openDeleteEductionDialog}*/}
+                            {/*                title={"Delete education record?"}*/}
+                            {/*                message={"This means that this record will no longer " +*/}
+                            {/*                "be visible on your profile."}*/}
+                            {/*                onContinue={() => {*/}
+                            {/*                }}*/}
+                            {/*                onClose={() => setOpenDeleteEductionDialog(false)}*/}
+                            {/*            />*/}
 
-                                    </>
-                                ) : ""}
-                            </Grid>
+                            {/*        </>*/}
+                            {/*    ) : ""}*/}
+                            {/*</Grid>*/}
                         </Grid>
                     )) :
                     <Typography>

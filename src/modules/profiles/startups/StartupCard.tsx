@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
 
         tile: {
-          borderRadius: 0
+            borderRadius: 0
         },
 
         flat: {
@@ -55,52 +55,51 @@ const StartupCard = (props: IProps) => {
 
     const styles = globalStyles()
     const classes = useStyles()
-    const history = useHistory()
 
     const handleClick = (id: string) => {
         const url = `${Urls.profiles.startups}/${id}`
-        history.push(url)
+        window.location.replace(url)
     }
 
     return (
         <Card style={{textAlign: "center"}}>
-                <CardContent style={{paddingTop: 25}}>
+            <CardContent style={{paddingTop: 25}}>
 
-                    <Avatar variant={"circle"}
-                            className={clsx(styles.largeAvatar, styles.orange, styles.centerAvatar)}
-                            src={props.logo}/>
+                <Avatar variant={"circle"}
+                        className={clsx(styles.mediumAvatar, styles.centerAvatar)}
+                        src={props.logo}/>
 
-                    <Typography noWrap
-                                variant="h5"
-                                className={classes.truncate}
-                                style={{textAlign: "center", marginTop: 15}}>
-                        {props.name}
+                <Typography noWrap
+                            variant="h6"
+                            className={classes.truncate}
+                            style={{textAlign: "center", marginTop: 15}}>
+                    {props.name}
+                </Typography>
+
+                {props.description ?
+                    <Typography className={styles.maxLines} style={{whiteSpace: 'pre-line'}} variant={"body2"}>
+                        {props.description}
                     </Typography>
+                    : ""}
 
-                    {props.description ?
-                        <Typography style={{whiteSpace: 'pre-line'}} variant={"body2"}>
-                            {props.description}
-                        </Typography>
-                        : ""}
+                <Box mt={1} mb={1}>
+                    <Typography component="div">
+                        <Chip size="small" label={props.category}/>
+                    </Typography>
+                </Box>
 
-                    <Box mt={1} mb={1}>
-                        <Typography component="div">
-                            <Chip size="small" label={props.category} />
-                        </Typography>
-                    </Box>
+                {/*<ProfileRating rating={3} />*/}
 
-                    {/*<ProfileRating rating={3} />*/}
-
-                    <Box mx={"auto"} mb={2}>
-                        <Button
-                            className={clsx(styles.flex, styles.noShadow)}
-                            onClick={() => handleClick(props.id)}
-                            variant="outlined"
-                            color="primary">
-                            <strong>View profile</strong>
-                        </Button>
-                    </Box>
-                </CardContent>
+                <Box mx={"auto"} mb={2} mt={4}>
+                    <Button
+                        className={clsx(styles.flex, styles.noShadow)}
+                        onClick={() => handleClick(props.id)}
+                        variant="contained"
+                        color="primary">
+                        <strong>View profile</strong>
+                    </Button>
+                </Box>
+            </CardContent>
         </Card>
     )
 }

@@ -13,7 +13,7 @@ import {IUpload} from "../../../interfaces/IUpload";
 import {Endpoints} from "../../../services/Endpoints";
 import Toast from "../../../utils/Toast";
 import {IPost} from "../../../interfaces/IPost";
-import {getUser} from "../../../services/User";
+import {getProfile, getUser} from "../../../services/User";
 import {format} from "date-fns";
 import {addPost} from "../postsSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
@@ -61,9 +61,7 @@ const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClos
     const person = useSelector(selectPerson)
     const startup = useSelector(selectStartup)
 
-    const user = getUser()
     const [files, setFiles] = useState<any>([])
-    // const [uploads, setUploads] = useState<IUpload[]>([])
     const captionPlaceholder = filesLimit === 1 ?
         "Say something about the photo..." :
         "Say something about the photo(s)..."
@@ -120,23 +118,24 @@ const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClos
             actions.resetForm()
             if (onClose) onClose()
 
-            // const toSave = {
-            //     details: type ? "#NewProfilePhoto" : values.details,
-            //     authorId: user.profile.sub,
-            //     uploads: JSON.stringify(uploads),
-            // }
-            //
-            // try {
-            //     const resultAction: any = await dispatch(addPost(toSave))
-            //     unwrapResult(resultAction)
-            // }catch (e) {
-            //
-            // } finally {
-            //     actions.resetForm()
-            //     if (onClose) {
-            //         onClose()
-            //     }
-            // }
+            const user: IPerson = getProfile()
+            const toSave = {
+                details: type ? "#NewProfilePhoto" : values.details,
+                authorId: user.id,
+                uploads: JSON.stringify(uploads),
+            }
+
+            try {
+                const resultAction: any = await dispatch(addPost(toSave))
+                unwrapResult(resultAction)
+            }catch (e) {
+
+            } finally {
+                actions.resetForm()
+                if (onClose) {
+                    onClose()
+                }
+            }
         }
 
 

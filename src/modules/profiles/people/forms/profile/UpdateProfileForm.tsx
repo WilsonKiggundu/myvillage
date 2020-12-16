@@ -21,6 +21,7 @@ import {IOption} from "../../../../../components/inputs/inputHelpers";
 import {addCategory, getCategories, updatePerson} from "../../personSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 import {on} from "cluster";
+import {value} from "jsonpath";
 
 interface IProps {
     person: IPerson
@@ -63,6 +64,8 @@ const UpdateProfileForm = ({done, person, onClose}: IProps) => {
 
     const handleSubmit = async (values: IPerson, actions: FormikHelpers<any>) => {
         values.id = person.id
+        values.avatar = person.avatar
+        values.coverPhoto= person.coverPhoto
 
         try {
             const resultAction: any = await dispatch(updatePerson(values))

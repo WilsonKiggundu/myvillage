@@ -122,6 +122,8 @@ const PersonCard = ({person}: IProps) => {
                                          open={openEditProfilePhotoDialog}>
                                     <UploadFile
                                         type={"profilePhoto"}
+                                        category={"person"}
+                                        onClose={() => setOpenEditProfilePhotoDialog(false)}
                                         filesLimit={1}
                                         acceptedTypes={['image/*']}/>
                                 </XDialog>

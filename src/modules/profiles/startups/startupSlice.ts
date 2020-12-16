@@ -14,7 +14,6 @@ const initialState = {
 export const getStartup = createAsyncThunk('startup/fetchStartup', async (startupId: any, {getState, requestId}: any) => {
     const url = makeUrl("Profiles", Endpoints.business.base + '/' + startupId)
     const response: any = await getAsync(url)
-    console.log(response.body)
     return response.body
 })
 
@@ -28,12 +27,11 @@ export const updateStartup = createAsyncThunk(
             description: startup.description,
             id: startup.id,
             coverPhoto: startup.coverPhoto,
+            avatar: startup.avatar,
             name: startup.name,
-            numberOfEmployees: startup.numberOfEmployees,
+            numberOfEmployees: Number(startup.numberOfEmployees),
             website: startup.website
         }
-
-        console.log(toUpdate)
 
         const url = makeUrl("Profiles", Endpoints.business.base)
         const response: any = await putAsync(url, toUpdate)
@@ -70,7 +68,6 @@ export const updateProduct = createAsyncThunk(
     async (product: any) => {
         const url = makeUrl("Profiles", Endpoints.business.product)
         const response: any = await putAsync(url, product)
-
         return response.body
     }
 )
@@ -294,10 +291,8 @@ export const startupSlice = createSlice({
         },
         [updateProduct.fulfilled.toString()]: (state: any, action: any) => {
             const productId = action.payload.id
-            state.startup.products.map((product: IProduct, index: number) => (
-                    product.id === productId ? {...action.payload} : product
-                )
-            )
+            const productIndex = state.startup.products.findIndex((p: any) => p.id === productId);
+            state.startup.products[productIndex] = action.payload
         },
 
         [getAwards.pending.toString()]: (state, action) => {

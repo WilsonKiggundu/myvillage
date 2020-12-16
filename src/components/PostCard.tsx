@@ -101,14 +101,14 @@ const PostCard = ({post}: IProps) => {
 
                         <Box mt={2}>
                             <Grid container>
-                                <Grid item xs={6} className={classes.textCenter}>
-                                    <Button className={clsx(classes.fullWidth, classes.bold)}>
-                                        <ThumbUpAltIcon style={{marginRight: 10}}/> Like
-                                    </Button>
-                                </Grid>
+                                {/*<Grid item xs={6} className={classes.textCenter}>*/}
+                                {/*    <Button disabled className={clsx(classes.fullWidth, classes.bold)}>*/}
+                                {/*        <ThumbUpAltIcon style={{marginRight: 10}}/> Like*/}
+                                {/*    </Button>*/}
+                                {/*</Grid>*/}
 
-                                <Grid item xs={6} className={classes.textCenter}>
-                                    <Button onClick={() => setOpenCommentDialog(true)}
+                                <Grid item xs={4} md={3} className={classes.textCenter}>
+                                    <Button variant={"text"} onClick={() => setOpenCommentDialog(true)}
                                             className={clsx(classes.fullWidth, classes.bold)}>
                                         <InsertCommentIcon style={{marginRight: 10}}/> Reply
                                     </Button>
