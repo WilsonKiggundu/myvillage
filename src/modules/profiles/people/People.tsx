@@ -104,7 +104,7 @@ const People = () => {
 
     const handleViewProfile = (id: string) => {
         const url = `${Urls.profiles.people}/${id}`
-        history.push(url)
+        window.location.replace(url)
     }
 
     const handleConnect = (id: string) => {
