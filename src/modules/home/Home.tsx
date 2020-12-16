@@ -115,7 +115,7 @@ function Home() {
                             </Typography>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <img style={{position: "absolute", maxHeight: 600, width: 'auto', top: 0, left: '10%'}}
+                            <img style={{position: "absolute", maxHeight: 600, width: 'auto', top: 0, left: 0}}
                                  src={BulbsBg}/>
                             <img style={{position: "absolute", maxHeight: 600, width: 'auto', bottom: 0, right: 0}}
                                  src={HandBg}/>
