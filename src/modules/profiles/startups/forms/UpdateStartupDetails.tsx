@@ -41,7 +41,6 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
     const dispatch = useDispatch()
 
     const user: IPerson = getProfile()
-
     const initialValues = {...profile}
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
@@ -81,12 +80,10 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <XSelectInput
+                    <XTextInput
                         name="category"
-                        multiple={false}
                         label={"How do you categorize your startup?"}
-                        options={Options.STARTUP_CATEGORIES}
-                        helperText={"People are always looking for startups in specific categories. Required"}
+                        helperText={"Ex. FinTech, AgriTech, Services"}
                         variant={"standard"}
                         margin={"none"}
                     />
@@ -107,10 +104,10 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
 
                 <Grid item xs={12}>
                     <Box mt={2}>
-                        <XDateInput
-                            disableFuture={true}
-                            helperText={"This helps to know the stage at which your startup."}
+                        <XTextInput
+                            helperText={"Month, Year"}
                             label={"Date of Incorporation"}
+                            placeholder={"month, year"}
                             name={"dateOfIncorporation"}/>
                     </Box>
                 </Grid>
