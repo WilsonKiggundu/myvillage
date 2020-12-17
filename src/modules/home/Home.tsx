@@ -17,7 +17,8 @@ import {Stats} from "../../components/Stats";
 import {PeopleOutline} from "@material-ui/icons";
 import {homeStyles} from "../../theme/styles";
 import Box from "@material-ui/core/Box";
-import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
+// import {ReactComponent as Logo} from "../../assets/images/myvillage-logo.svg"
+import Logo from "../../assets/images/myvillage-logo.png"
 import BulbsBg from "../../assets/images/bulbs-bg.png"
 import HandBg from "../../assets/images/hand-bg.png"
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -47,7 +48,8 @@ function Home() {
                     <Container maxWidth={"md"}>
                         <Grid className={classes.container} container>
                             <Grid item xs={12} md={8}>
-                                <Logo className={classes.logo}/>
+                                {/*<Logo className={classes.logo}/>*/}
+                                <img src={Logo} className={classes.logo}/>
 
                                 <Typography className={classes.headline} variant={"body2"}>
                                     Grow your network. Expand your thinking. <br/>Exchange ideas. Be inspired
@@ -60,7 +62,7 @@ function Home() {
                             </Grid>
                             <Grid className={classes.buttons} item xs={12} md={4}>
                                 <Box mb={2}>
-                                    <Button variant="outlined"
+                                    <Button variant="contained"
                                             size={"large"}
                                             onClick={authService.signupRedirect}
                                             className={classes.button}
@@ -69,7 +71,7 @@ function Home() {
                                     </Button>
                                 </Box>
                                 <Box mb={2}>
-                                    <Button variant="contained"
+                                    <Button variant="outlined"
                                             size={"large"}
                                             onClick={authService.signinRedirect}
                                             className={classes.button}

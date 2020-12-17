@@ -191,14 +191,17 @@ export const homeStyles = makeStyles((theme) => ({
         textTransform:'inherit',
         display: "block",
         width: '100%',
-        borderRadius: 8,
+        borderRadius: 0,
         [theme.breakpoints.down('xs')]: {
             width: '100%',
+        },
+        '&:hover': {
+            backgroundColor: 'none'
         }
     },
 
     logo: {
-        width: 300,
+        width: 250,
         height: 'auto',
         marginBottom: 20,
     },
@@ -240,7 +243,7 @@ export const homeStyles = makeStyles((theme) => ({
     footer: {
         backgroundColor: white,
         minHeight: '30vh',
-        borderTop: 'solid 2px orange'
+        // borderTop: 'solid 2px orange'
     },
 
     buttons: {
