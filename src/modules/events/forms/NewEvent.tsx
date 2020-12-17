@@ -84,7 +84,7 @@ const NewEvent = ({done, onClose}: IProps) => {
             conferenceUrl: values.conferenceUrl,
             details: values.details,
             interval: 0, // this is hardcoded
-            frequency: values.frequency,
+            frequency: 2, // hardcoded
             title: values.title,
             type: values.type,
             location: values.location,
