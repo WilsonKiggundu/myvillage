@@ -224,9 +224,8 @@ export const homeStyles = makeStyles((theme) => ({
 
     title: {
         textTransform: 'uppercase',
-        fontWeight: 'bold',
         padding: '25px 0',
-        fontSize: '1.3rem'
+        fontSize: '1.5rem'
     },
 
     subtitle: {
@@ -240,7 +239,8 @@ export const homeStyles = makeStyles((theme) => ({
 
     footer: {
         backgroundColor: white,
-        minHeight: '30vh'
+        minHeight: '30vh',
+        borderTop: 'solid 2px orange'
     },
 
     buttons: {

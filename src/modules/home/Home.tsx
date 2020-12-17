@@ -88,7 +88,7 @@ function Home() {
                     <Container maxWidth={"md"}>
                         <Grid item xs={12} md={8}>
                             <Typography style={{textTransform: "uppercase"}} className={classes.title}>
-                                Don't be left out again
+                                <strong>Don't be left out again</strong>
                             </Typography>
                             <Typography className={classes.subtitle}>
                                 We are building a vibrant community. A lot is always happening from developer
@@ -102,7 +102,7 @@ function Home() {
                                          className={classes.img}
                                          src={BulbsBg}/>
                                     <img className={classes.img}
-                                         style={{position: "absolute", maxHeight: 600, width: 'auto', bottom: 0, right: 0}}
+                                         style={{position: "absolute", maxHeight: 450, width: 'auto', bottom: -20, right: 0}}
                                          src={HandBg}/>
                                 </>
                             ) : ""}

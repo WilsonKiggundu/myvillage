@@ -3,7 +3,6 @@ import responsiveFontSizes from "@material-ui/core/styles/responsiveFontSizes";
 
 import palette from "./palette";
 
-const font = "'Lora', sans-serif";
 const theme = createMuiTheme({
     overrides: {
       MuiCard: {
@@ -13,7 +12,6 @@ const theme = createMuiTheme({
       }
     },
     typography: {
-        fontFamily: font,
         button: {
             textTransform: "uppercase",
             fontWeight: "bold"

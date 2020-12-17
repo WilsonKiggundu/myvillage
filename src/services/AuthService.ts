@@ -58,9 +58,7 @@ export default class AuthService {
     }
 
     signinRedirectCallback = () => {
-        this.userManager.signinRedirectCallback().then((user: User) => {
-            console.log(user)
-        }).catch(error => console.log(error));
+        return this.userManager.signinRedirectCallback();
     };
 
     public renewToken = async () => {
@@ -69,14 +67,25 @@ export default class AuthService {
 
     parseJwt = (token: string) => {
         const base64Url = token.split(".")[1];
-        const base64 = base64Url.replace("-", "+").replace("_", "/");
-        return JSON.parse(window.atob(base64));
+        if(base64Url) {
+            const base64 = base64Url.replace("-", "+").replace("_", "/");
+            return JSON.parse(window.atob(base64));
+        } else {
+            try {
+                const parsedToken = JSON.parse(window.atob(token))
+                return parsedToken
+            }
+            catch(error) {
+                console.log(error.message)
+                return token
+            }
+        }
     };
 
 
-    public signinRedirect = async () => {
+    public signinRedirect = () => {
         localStorage.setItem("redirectUri", window.location.pathname);
-        await this.userManager.signinRedirect({});
+        this.userManager.signinRedirect({});
     };
 
     public signupRedirect = () => {
@@ -115,12 +124,22 @@ export default class AuthService {
     logout = () => {
         this.userManager.signoutRedirect({
             id_token_hint: sessionStorage.getItem("id_token")
-        }).then(r => {
-            const publicUrl = process.env.REACT_APP_PUBLIC_URL
-            if (publicUrl){
-                window.location.replace(publicUrl);
+        })
+        this.userManager.clearStaleState();
+    };
+
+    signoutRedirectCallback = () => {
+        this.userManager.clearStaleState();
+        this.userManager.signoutRedirectCallback().then(() => {
+            localStorage.clear();
+            sessionStorage.clear();
+
+            if(process.env.REACT_APP_PUBLIC_URL){
+                window.location.replace(process.env.REACT_APP_PUBLIC_URL);
             }
+
+
+            // navigate(process.env.REACT_APP_PUBLIC_URL)
         });
-        this.userManager.clearStaleState().then(r => {});
     };
 }
