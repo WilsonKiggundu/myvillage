@@ -67,7 +67,7 @@ export default function CommentsList({postId, articleId}: IProps) {
                 </Typography>
                 <Typography style={{marginTop: '-5px'}} component={"div"}>
                     <small style={{color: grey[500]}}>
-                        {formatDistanceToNow(new Date(c.dateCreated), {
+                        {formatDistanceToNow(Date.parse(c.dateCreated.replace(/ /g,"T")), {
                             includeSeconds: true,
                             addSuffix: true
                         })}

@@ -40,9 +40,9 @@ const EventCard = ({event}: IProps) => {
                                 </Typography>
                                 <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
                                     <small style={{color: grey[600]}}>
-                                        {format(new Date(event.startDateTime), "eeee, d MMMM")} .
-                                        {format(new Date(event.startDateTime), "HH:mm")} -
-                                        {format(new Date(event.endDateTime), "HH:mm z")}
+                                        {format(Date.parse(event.startDateTime.replace(/ /g,"T")), "eeee, d MMMM")} .
+                                        {format(Date.parse(event.startDateTime.replace(/ /g,"T")), "HH:mm")} -
+                                        {format(Date.parse(event.endDateTime.replace(/ /g,"T")), "HH:mm z")}
                                     </small>
                                 </Typography>
                             </Grid>

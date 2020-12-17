@@ -67,16 +67,16 @@ const EventsView = () => {
         let filtered = results
         switch (filter){
             case "today":
-                filtered = filtered.filter((f: any) => isToday(f.startDateTime))
+                filtered = filtered.filter((f: any) => isToday(f.startDateTime.replace(/ /g,"T")))
                 break
             case "week":
-                filtered = filtered.filter((f: any) => isThisWeek(f.startDateTime))
+                filtered = filtered.filter((f: any) => isThisWeek(f.startDateTime.replace(/ /g,"T")))
                 break
             case "month":
-                filtered = filtered.filter((f: any) => isThisMonth(f.startDateTime))
+                filtered = filtered.filter((f: any) => isThisMonth(f.startDateTime.replace(/ /g,"T")))
                 break
             case "year":
-                filtered = filtered.filter((f: any) => isThisYear(f.startDateTime))
+                filtered = filtered.filter((f: any) => isThisYear(f.startDateTime.replace(/ /g,"T")))
                 break
             default:
                 break

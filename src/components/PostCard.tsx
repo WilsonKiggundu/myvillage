@@ -44,7 +44,7 @@ const PostCard = ({post}: IProps) => {
                         </Avatar>}
                         title={<strong>{post.author?.firstname} {post.author?.lastname}</strong>}
                         subheader={<small style={{color: grey[500]}}>
-                            {formatDistanceToNow(new Date(post.dateCreated), {
+                            {formatDistanceToNow(Date.parse(post.dateCreated.replace(/ /g,"T")), {
                                 includeSeconds: true,
                                 addSuffix: true
                             })}

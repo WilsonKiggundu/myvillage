@@ -116,6 +116,7 @@ export const strToDate = (str: string): Date | null => {
 export const isToday = (str: string) : boolean => {
     const today = new Date()
     const date = new Date(str)
+
     return date.getDate() === today.getDate() &&
         date.getMonth() === today.getMonth() &&
         date.getFullYear() === today.getFullYear()
