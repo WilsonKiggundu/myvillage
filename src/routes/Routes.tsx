@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, Redirect} from "react-router-dom";
 import {Urls} from "./Urls";
 import MainLayout from "../components/layout/MainLayout";
 import Home from "../modules/home/Home";
@@ -17,6 +17,7 @@ import {PrivateRoute} from "./PrivateRoute";
 import {CreateProfile} from "../modules/profiles/CreateProfile";
 import NewArticle from "../modules/articles/NewArticle";
 import Calendar from "../modules/events/Events";
+import NotFound from "../modules/exceptions/NotFound";
 
 export const Routes = (
     <Switch>
@@ -25,38 +26,37 @@ export const Routes = (
         <Route exact path={Urls.logoutCallback} component={LogoutCallback}/>
         <Route exact path={Urls.silentRenew} component={SilentRenew}/>
         <Route exact path={Urls.home} component={Home}/>
-        <Switch>
-            <MainLayout>
-                <Switch>
-                    <PrivateRoute exact path={Urls.feed} component={Feed}/>
 
-                    <PrivateRoute exact path={Urls.profiles.startups} component={Startups}/>
-                    <PrivateRoute exact path={Urls.profiles.singleStartup} component={Startup}/>
-                    <PrivateRoute exact path={Urls.profiles.people} component={People}/>
-                    <PrivateRoute exact path={Urls.profiles.person} component={Person}/>
-                    <PrivateRoute exact path={Urls.profiles.create} component={CreateProfile}/>
+        <MainLayout>
+            <PrivateRoute exact path={Urls.feed} component={Feed}/>
+            <PrivateRoute exact path={Urls.profiles.startups} component={Startups}/>
+            <PrivateRoute exact path={Urls.profiles.singleStartup} component={Startup}/>
+            <PrivateRoute exact path={Urls.profiles.people} component={People}/>
+            <PrivateRoute exact path={Urls.profiles.person} component={Person}/>
+            <PrivateRoute exact path={Urls.profiles.create} component={CreateProfile}/>
 
-                    <PrivateRoute exact path={Urls.jobs.list} component={Jobs}/>
-                    <PrivateRoute exact path={Urls.job} component={Jobs}/>
-                    {/*<PrivateRoute*/}
-                    {/*    exact*/}
-                    {/*    path={Urls.jobs.create}*/}
-                    {/*    component={*/}
-                    {/*        () => <AddJob placeholder={"Details of the job"}/>*/}
-                    {/*    }*/}
-                    {/*/>*/}
+            <PrivateRoute exact path={Urls.jobs.list} component={Jobs}/>
+            <PrivateRoute exact path={Urls.job} component={Jobs}/>
 
-                    <PrivateRoute
-                        exact
-                        path={Urls.articles.create}
-                        component={
-                            () => <NewArticle placeholder={"Start typing your article here..."}/>
-                        }
-                    />
-                    <PrivateRoute exact path={Urls.events} component={() => <Calendar/>}/>
-                </Switch>
-            </MainLayout>
-        </Switch>
+            <PrivateRoute
+                exact
+                path={Urls.articles.create}
+                component={
+                    () => <NewArticle placeholder={"Start typing your article here..."}/>
+                }
+            />
+            <PrivateRoute exact path={Urls.events} component={() => <Calendar/>}/>
+        </MainLayout>
+
+        {/*<Route path={'/404'} component={NotFound} />*/}
+        {/*<Redirect to={'/404'} />*/}
+        {/*<Switch>*/}
+        {/*    <MainLayout>*/}
+        {/*        <Switch>*/}
+
+        {/*        </Switch>*/}
+        {/*    </MainLayout>*/}
+        {/*</Switch>*/}
     </Switch>
 )
 

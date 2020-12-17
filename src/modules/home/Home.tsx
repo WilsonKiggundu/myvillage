@@ -8,7 +8,7 @@ import palette from "../../theme/palette";
 import {RedirectToUrl} from "../../routes/RedirectToUrl";
 import {Urls} from "../../routes/Urls";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {createStyles, Theme} from "@material-ui/core";
+import {createStyles, Theme, useTheme} from "@material-ui/core";
 import {Wrapper} from "@material-ui/pickers/wrappers/Wrapper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -20,6 +20,7 @@ import Box from "@material-ui/core/Box";
 import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
 import BulbsBg from "../../assets/images/bulbs-bg.png"
 import HandBg from "../../assets/images/hand-bg.png"
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface IStat {
     title: string
@@ -36,28 +37,8 @@ function Home() {
         RedirectToUrl(Urls.feed)
     }
 
-    const stats: IStat[] = [
-        {
-            title: "50+",
-            details: "Investors",
-            icon: "MonetizationOnIcon"
-        },
-        {
-            title: "845",
-            details: "Startups",
-            icon: "BusinessIcon"
-        },
-        {
-            title: "1M",
-            details: "Active members",
-            icon: "PeopleOutline"
-        },
-        {
-            title: "20+",
-            details: "Job opportunities",
-            icon: "WorkIcon"
-        }
-    ]
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
         <div className={classes.root}>
@@ -107,7 +88,7 @@ function Home() {
                     <Container maxWidth={"md"}>
                         <Grid item xs={12} md={8}>
                             <Typography style={{textTransform: "uppercase"}} className={classes.title}>
-                                Don't be left out again
+                                <strong>Don't be left out again</strong>
                             </Typography>
                             <Typography className={classes.subtitle}>
                                 We are building a vibrant community. A lot is always happening from developer
@@ -115,10 +96,16 @@ function Home() {
                             </Typography>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <img style={{position: "absolute", maxHeight: 600, width: 'auto', top: 0, left: 0}}
-                                 src={BulbsBg}/>
-                            <img style={{position: "absolute", maxHeight: 600, width: 'auto', bottom: 0, right: 0}}
-                                 src={HandBg}/>
+                            {!isMobile ? (
+                                <>
+                                    <img style={{position: "absolute", maxHeight: 600, width: 'auto', top: 0, left: 0}}
+                                         className={classes.img}
+                                         src={BulbsBg}/>
+                                    <img className={classes.img}
+                                         style={{position: "absolute", maxHeight: 450, width: 'auto', bottom: -20, right: 0}}
+                                         src={HandBg}/>
+                                </>
+                            ) : ""}
                         </Grid>
                     </Container>
                 </Grid>

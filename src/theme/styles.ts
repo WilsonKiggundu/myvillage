@@ -177,18 +177,24 @@ export const homeStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: white,
         width: '100%',
-        minHeight: '100vh',
+        maxHeight: '100vh',
         margin: 0,
         padding: 0,
-        position: 'absolute'
+        position: 'absolute',
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
+        }
     },
 
     button: {
         boxShadow: 'none',
         textTransform:'inherit',
         display: "block",
-        width: '80%',
-        borderRadius: 8
+        width: '100%',
+        borderRadius: 8,
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        }
     },
 
     logo: {
@@ -218,9 +224,8 @@ export const homeStyles = makeStyles((theme) => ({
 
     title: {
         textTransform: 'uppercase',
-        fontWeight: 'bold',
         padding: '25px 0',
-        fontSize: '1.3rem'
+        fontSize: '1.5rem'
     },
 
     subtitle: {
@@ -234,11 +239,17 @@ export const homeStyles = makeStyles((theme) => ({
 
     footer: {
         backgroundColor: white,
-        minHeight: '30vh'
+        minHeight: '30vh',
+        borderTop: 'solid 2px orange'
     },
 
     buttons: {
-        margin: '15% auto'
+        margin: '15% auto',
+        textAlign: 'center'
+    },
+
+    img: {
+        zIndex: theme.zIndex.drawer - 1
     }
 
 }))
