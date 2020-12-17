@@ -17,7 +17,6 @@ import {PrivateRoute} from "./PrivateRoute";
 import {CreateProfile} from "../modules/profiles/CreateProfile";
 import NewArticle from "../modules/articles/NewArticle";
 import Calendar from "../modules/events/Events";
-import NotFound from "../modules/exceptions/NotFound";
 
 export const Routes = (
     <Switch>
