@@ -8,6 +8,10 @@ import deepOrange from "@material-ui/core/colors/deepOrange";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import clsx from "clsx";
 import {getInitials, IPerson} from "../modules/profiles/people/IPerson";
+import CardMedia from "@material-ui/core/CardMedia";
+import Box from "@material-ui/core/Box";
+import palette from "../theme/palette";
+import grey from "@material-ui/core/colors/grey";
 
 interface IProps {
     children?: any
@@ -50,29 +54,35 @@ const useStyles = makeStyles((theme: Theme) =>
 const ContactCard = (props: IProps) => {
 
     const classes = useStyles()
-    const {firstname, lastname, avatar} = props.person
-
+    const {firstname, lastname, avatar, coverPhoto} = props.person
 
 
     return (
         <Card elevation={1}>
-                <CardContent style={{textAlign: 'center'}}>
 
-                    {avatar ?
-                        <Avatar className={clsx(classes.largeAvatar, classes.centerAvatar)} src={avatar}/> :
-                        <Avatar className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
-                            {getInitials(firstname, lastname)}
-                        </Avatar> }
-                    <Typography noWrap component="div" style={{fontSize: '1.1rem', marginTop: 10}}>
-                        <strong>{firstname} {lastname}</strong>
-                    </Typography>
-                    {/*{props.role ? <Typography noWrap component="div">*/}
-                    {/*    <small>{props.role}</small>*/}
-                    {/*</Typography> : ""}*/}
+            {coverPhoto ? <CardMedia
+                style={{height: 180}}
+                image={coverPhoto}
+                title="Contemplative Reptile"
+            /> : <Box style={{height: 180, backgroundColor: grey[300]}}></Box>}
 
-                    {props.children}
+            <CardContent style={{textAlign: 'center', marginTop: -55}}>
 
-                </CardContent>
+                {avatar ?
+                    <Avatar className={clsx(classes.largeAvatar, classes.centerAvatar)} src={avatar}/> :
+                    <Avatar className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
+                        {getInitials(firstname, lastname)}
+                    </Avatar>}
+                <Typography noWrap component="div" style={{fontSize: '1.3rem', marginTop: 10}}>
+                    <strong>{firstname} {lastname}</strong>
+                </Typography>
+                {/*{props.role ? <Typography noWrap component="div">*/}
+                {/*    <small>{props.role}</small>*/}
+                {/*</Typography> : ""}*/}
+
+                {props.children}
+
+            </CardContent>
         </Card>
     )
 }

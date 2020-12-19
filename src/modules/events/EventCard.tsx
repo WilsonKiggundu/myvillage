@@ -24,21 +24,19 @@ const EventCard = ({event}: IProps) => {
     const classes = globalStyles()
 
     return (
-        <Box mb={2}>
+        <Box mb={1}>
             <Card>
                 <CardContent>
 
-                    <Box mt={2}>
+                    <Box mb={4}>
                         <Grid container>
-                            <Grid item xs={1}>
-                                <AccessTimeIcon/>
-                            </Grid>
-                            <Grid item xs={11}>
+                            <Grid item xs={12}>
                                 <Typography
-                                    component={"h6"}>
-                                    {event.title}
+                                    variant={"h4"}
+                                    component={"h4"}>
+                                    <strong>{event.title}</strong>
                                 </Typography>
-                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
+                                <Typography component={"div"}>
                                     <small style={{color: grey[600]}}>
                                         {format(Date.parse(event.startDateTime.replace(/ /g,"T")), "eeee, d MMMM")} .
                                         {format(Date.parse(event.startDateTime.replace(/ /g,"T")), "HH:mm")} -
@@ -50,20 +48,20 @@ const EventCard = ({event}: IProps) => {
                     </Box>
 
                     {event.conferenceUrl ?
-                        <Box mt={2}>
+                        <Box mb={4}>
                             <Grid container>
-                                <Grid item xs={1}>
+                                <Grid item xs={1} style={{textAlign: 'left'}}>
                                     <VideoCallIcon style={{color: green[700]}}/>
                                 </Grid>
                                 <Grid item xs={11}>
 
                                     <Button variant={"contained"}
                                             className={classes.flat}
-                                            color={"secondary"}
+                                            color={"inherit"}
                                             href={event.conferenceUrl}>
                                         Join on Video Call
                                     </Button><br/>
-                                    <small>{event.conferenceUrl}</small>
+                                    <small style={{wordWrap: "break-word", wordBreak: "break-all", fontSize: '0.75rem'}}>{event.conferenceUrl}</small>
 
                                 </Grid>
                             </Grid>
@@ -71,13 +69,13 @@ const EventCard = ({event}: IProps) => {
                     }
 
                     {event.location ?
-                        <Box mt={2}>
+                        <Box mb={4}>
                             <Grid container style={{color: grey[700]}}>
-                                <Grid item xs={1}>
+                                <Grid item xs={1} style={{textAlign: 'left'}}>
                                     <PinDropIcon/>
                                 </Grid>
                                 <Grid item xs={11}>
-                                    <Typography style={{whiteSpace: 'pre-line', fontSize: '0.95rem'}}
+                                    <Typography style={{whiteSpace: 'pre-line', wordWrap: "break-word", wordBreak: "break-all", fontSize: '0.95rem'}}
                                                 component={"div"}>
                                         {event.location}
                                     </Typography>
@@ -86,25 +84,22 @@ const EventCard = ({event}: IProps) => {
                         </Box> : ""
                     }
 
-                    {event.interval ? <Box mt={2}>
-                        <Grid container>
-                            <Grid item xs={1}>
-                                <RepeatIcon/>
-                            </Grid>
-                            <Grid item xs={11}>
-                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                    {event.interval}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Box> : ""}
+                    {/*{event.interval ? <Box mt={2}>*/}
+                    {/*    <Grid container>*/}
+                    {/*        <Grid item xs={1} style={{textAlign: 'center'}}>*/}
+                    {/*            <RepeatIcon/>*/}
+                    {/*        </Grid>*/}
+                    {/*        <Grid item xs={11}>*/}
+                    {/*            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>*/}
+                    {/*                {event.interval}*/}
+                    {/*            </Typography>*/}
+                    {/*        </Grid>*/}
+                    {/*    </Grid>*/}
+                    {/*</Box> : ""}*/}
 
-                    <Box mt={2}>
+                    <Box mb={4}>
                         <Grid container>
-                            <Grid item xs={1}>
-
-                            </Grid>
-                            <Grid item xs={11}>
+                            <Grid item xs={12}>
                                 <Typography style={{whiteSpace: 'pre-line', fontSize: '0.9rem', color: grey[700]}}
                                             component={"div"}>
                                     {event.details}

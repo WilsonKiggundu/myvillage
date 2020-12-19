@@ -19,6 +19,7 @@ import {PleaseWait} from "./PleaseWait";
 import PostCard from "./PostCard";
 import EventCard from "../modules/events/EventCard";
 import {Alert} from "@material-ui/lab";
+import {Urls} from "../routes/Urls";
 
 interface IProps {
     postId?: string
@@ -63,7 +64,9 @@ export default function CommentsList({postId, articleId}: IProps) {
             </Grid>
             <Grid item xs={10} sm={11}>
                 <Typography component={"div"}>
-                    <strong>{c.author?.firstname} {c.author?.lastname}</strong>
+                    <a href={Urls.profiles.onePerson(c.author?.id)}>
+                        <strong>{c.author?.firstname} {c.author?.lastname}</strong>
+                    </a>
                 </Typography>
                 <Typography style={{marginTop: '-5px'}} component={"div"}>
                     <small style={{color: grey[500]}}>

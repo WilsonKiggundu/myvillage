@@ -49,7 +49,7 @@ const PersonPosts = ({person}: IProps) => {
                 case 5:
                     return <EventCard key={index} event={item}/>
                 default:
-                    return ""
+                    return <PostCard key={index} post={item}/>
             }
         }) : ""
 

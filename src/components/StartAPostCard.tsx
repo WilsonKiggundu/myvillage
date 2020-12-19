@@ -81,6 +81,7 @@ const StartAPostCard = (props: IProps) => {
                                     title={"Upload photos"}
                                     open={openPhotoDialog}>
                                     <UploadFile
+                                        filesLimit={10}
                                         onClose={() => setOpenPhotoDialog(false)}
                                         acceptedTypes={['image/jpeg', 'image/png', 'image/bmp']}/>
                                 </XDialog>
@@ -99,7 +100,10 @@ const StartAPostCard = (props: IProps) => {
                                     onClose={() => setOpenVideoDialog(false)}
                                     title={"Upload videos"}
                                     open={openVideoDialog}>
-                                    <UploadFile onClose={() => setOpenVideoDialog(false)}/>
+                                    <UploadFile
+                                        filesLimit={4}
+                                        acceptedTypes={['video/*']}
+                                        onClose={() => setOpenVideoDialog(false)}/>
                                 </XDialog>
                             </Grid>
 

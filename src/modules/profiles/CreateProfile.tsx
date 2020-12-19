@@ -1,32 +1,21 @@
-import React, {ChangeEvent, useState} from "react"
+import React, { useState} from "react"
 import {Card} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import Avatar from "@material-ui/core/Avatar";
-import {globalStyles} from "../../theme/styles";
 import {Urls} from "../../routes/Urls";
-import faker from 'faker'
 import Grid from "@material-ui/core/Grid";
-import {Interests} from "../../data/mockData";
-import {Redirect, useHistory} from "react-router-dom";
 import {getUser} from "../../services/User";
 import XForm from "../../components/forms/XForm";
 import {User} from "oidc-client/dist/oidc-client";
-import {getInitials} from "../../utils/stringHelpers";
-import IconButton from "@material-ui/core/IconButton";
-import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import XDialog from "../../components/dialogs/XDialog";
 import XTextInput from "../../components/inputs/XTextInput";
 import XRadioInput from "../../components/inputs/XRadioInput";
 import {Options} from "../../utils/options";
 import XTextAreaInput from "../../components/inputs/XTextAreaInput";
 import XDateInput from "../../components/inputs/XDateInput";
-import XSelectInput from "../../components/inputs/XSelectInput";
-import {IOption} from "../../components/inputs/inputHelpers";
 import * as yup from "yup";
-import {reqArray, reqString} from "../../data/validations";
+import {reqString} from "../../data/validations";
 import {IProfile} from "../../interfaces/IProfile";
 import {makeUrl, post} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
@@ -49,17 +38,11 @@ export const CreateProfile = (props: IProps) => {
 
     const user: User = getUser()
 
-    const splitName = user.profile.name?.split(' ') ?? []
-
     const initialValues = {
-        // firstName: user.profile.first_name ?? splitName.length > 0 ? splitName[0] : "",
-        // lastName: user.profile.last_name ?? splitName.length === 2 ? splitName[1] : "",
         email: user.profile.email
     }
 
     const [loading, setLoading] = useState<boolean>(false)
-
-    const interests = Interests.slice(0, 12).map(m => ({id: m.id, name: m.name}))
 
     const handleSubmit = (values: IProfile) => {
         setLoading(true)
@@ -124,16 +107,6 @@ export const CreateProfile = (props: IProps) => {
                                     />
                                 </Grid>
 
-                                {/*<Grid item xs={12}>*/}
-                                {/*    <XSelectInput*/}
-                                {/*        label={"What of these best describes you?"}*/}
-                                {/*        name={"categories"}*/}
-                                {/*        multiple={true}*/}
-                                {/*        helperText={"Select all that apply to you"}*/}
-                                {/*        options={Options.USER_CATEGORIES}*/}
-                                {/*    />*/}
-                                {/*</Grid>*/}
-
                                 <Grid item xs={12} sm={12}>
                                     <XRadioInput
                                         label={"What is your gender?"}
@@ -151,15 +124,6 @@ export const CreateProfile = (props: IProps) => {
                                     />
                                 </Grid>
 
-                                {/*<Grid item xs={12}>*/}
-                                {/*    <XSelectInput*/}
-                                {/*        label={"What are you interested in?"}*/}
-                                {/*        name={"interests"}*/}
-                                {/*        multiple={true}*/}
-                                {/*        helperText={"Select all that apply to you"}*/}
-                                {/*        options={Options.USER_INTERESTS}*/}
-                                {/*    />*/}
-                                {/*</Grid>*/}
                             </Grid>
 
                         </Box>

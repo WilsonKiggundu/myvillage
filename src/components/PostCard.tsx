@@ -21,7 +21,8 @@ import XDialog from "./dialogs/XDialog";
 import NewComment from "../modules/posts/forms/NewComment";
 import VideoPoster from "../assets/images/My-Village-Full-logo-02.svg";
 import {useDispatch, useSelector} from "react-redux";
-import { getPosts } from "../modules/posts/postsSlice";
+import {getPosts} from "../modules/posts/postsSlice";
+import {Urls} from "../routes/Urls";
 
 interface IProps {
     post: IPost
@@ -42,9 +43,15 @@ const PostCard = ({post}: IProps) => {
                         avatar={<Avatar src={post.author?.avatar}>
                             {post.author?.firstname[0].toUpperCase()}{post.author?.lastname[0].toUpperCase()}
                         </Avatar>}
-                        title={<strong>{post.author?.firstname} {post.author?.lastname}</strong>}
+                        title={
+                            <Typography component={"div"}>
+                                <strong>
+                                    <a href={Urls.profiles.onePerson(post.authorId)}>{post.author?.firstname} {post.author?.lastname}</a>
+                                </strong>
+                            </Typography>
+                        }
                         subheader={<small style={{color: grey[500]}}>
-                            {formatDistanceToNow(Date.parse(post.dateCreated.replace(/ /g,"T")), {
+                            {formatDistanceToNow(Date.parse(post.dateCreated?.replace(/ /g, "T")), {
                                 includeSeconds: true,
                                 addSuffix: true
                             })}
@@ -61,39 +68,32 @@ const PostCard = ({post}: IProps) => {
 
                         {
                             uploads ?
-                                <Grid style={{marginBottom: 15}} container spacing={1}>
+                                <Box mb={2}>
 
                                     {uploads.map((p, index) => (
 
                                         p.contentType.startsWith('video') ? (
-                                            <Grid key={index} item>
-                                                <video controls
-                                                       poster={VideoPoster}
-                                                       style={{width: "100%", height: "auto"}}
-                                                       autoPlay={false}
-                                                       color={"white"}
-                                                       preload={'auto'}>
-                                                    <source src={p.path} type={p.contentType}/>
-                                                    Your browser does not support videos
-                                                </video>
-                                            </Grid>
+                                            <video controls
+                                                   poster={VideoPoster}
+                                                   style={{width: "100%", height: "auto"}}
+                                                   autoPlay={false}
+                                                   color={"white"}
+                                                   preload={'auto'}>
+                                                <source src={p.path} type={p.contentType}/>
+                                                Your browser does not support videos
+                                            </video>
                                         ) : (
                                             p.contentType.startsWith('image') ? (
-                                                <Grid key={index} item xs={6} sm={4}>
-                                                    <Box style={{
-                                                        backgroundImage: `url(${p.path})`,
-                                                        backgroundPosition: 'center',
-                                                        backgroundSize: 'cover',
-                                                        backgroundRepeat: 'no-repeat',
-                                                        width: '100%', height: 300
-                                                    }}>
-
-                                                    </Box>
-                                                </Grid>
+                                                <img key={index} src={p.path}
+                                                     style={{
+                                                         maxWidth: '100%',
+                                                         margin: "0 15px 15px 0",
+                                                         display: "inline"
+                                                     }}/>
                                             ) : ""
                                         )
                                     ))}
-                                </Grid>
+                                </Box>
                                 : ""
                         }
 

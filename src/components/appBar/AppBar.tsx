@@ -38,6 +38,7 @@ import {IProfile} from "../../interfaces/IProfile";
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {IPerson} from "../../modules/profiles/people/IPerson";
+import Grid from "@material-ui/core/Grid";
 
 type Anchor = 'left' | 'right';
 
@@ -93,6 +94,11 @@ export default function ApplicationBar() {
             <AppBar elevation={0} position="fixed">
                 <Container maxWidth={false}>
                     <Toolbar disableGutters>
+
+                        <Logo style={{height: 50, width: 'auto', margin: '10px'}}/>
+
+                        {isMobile ? <div className={classes.grow}/> : ""}
+
                         <IconButton
                             onClick={toggleDrawer(anchor, true)}
                             className={clsx(classes.menuButton, classes.hide)}
@@ -100,9 +106,6 @@ export default function ApplicationBar() {
                             <MenuIcon style={{color: 'white'}}/>
                         </IconButton>
 
-                        {isMobile ? <div className={classes.grow}/> : ""}
-
-                        <Logo style={{height: 50, width: 'auto', margin: '10px'}}/>
 
                         {/*{authService.isAuthenticated() ?*/}
                         {/*    <div className={classes.search}>*/}
@@ -203,6 +206,32 @@ export default function ApplicationBar() {
                         width: 'auto'
                     }}/>
                 </div>
+                <Divider style={{color: "white"}}/>
+
+                <Box mt={2} mb={2} ml={1}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={3} style={{textAlign: "center"}}>
+                            <Avatar src={user.avatar} variant={"circle"}/>
+                        </Grid>
+                        <Grid item xs={9}>
+                            <Typography component={"div"} style={{lineHeight: '1.1rem'}} variant={"h6"}>
+                                <a style={{color: white}} href={Urls.profiles.onePerson(user.id)}>
+                                    {user.firstname} {user.lastname}
+                                </a>
+                            </Typography>
+
+                            <Typography component={"div"} variant={"body2"}>
+                                <Box mt={2}>
+                                    <Button variant={"outlined"}
+                                            size={"small"}
+                                            color={"default"}
+                                            href={Urls.logout}>Sign out</Button>
+                                </Box>
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Box>
+
                 <Divider style={{color: "white"}}/>
 
                 <List>

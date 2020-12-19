@@ -95,7 +95,7 @@ const StartupCard = (props: IProps) => {
                         className={clsx(styles.flex, styles.noShadow)}
                         onClick={() => handleClick(props.id)}
                         variant="contained"
-                        color="primary">
+                        color="secondary">
                         <strong>View profile</strong>
                     </Button>
                 </Box>

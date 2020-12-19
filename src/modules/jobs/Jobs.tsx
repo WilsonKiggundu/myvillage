@@ -33,6 +33,7 @@ import XSelectInput from "../../components/inputs/XSelectInput";
 import {IStartup} from "../../interfaces/IStartup";
 import {IOption} from "../../components/inputs/inputHelpers";
 import XForm from "../../components/forms/XForm";
+import Job from "./Job";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -88,73 +89,9 @@ const Jobs = ({match}: any) => {
             content = (
                 <Box clone order={{xs: 2, md: 3}}>
                     <Grid item xs={12}>
-                        {jobs ? jobs.map((job: IJob, index: number) => (
-                            <Accordion key={job.id} expanded={expanded === job.id}
-                                       onChange={handleChange(job.id)}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon/>}
-                                    aria-controls="panel1bh-content"
-                                    id="panel1bh-header"
-                                >
-                                    <Typography className={classes.heading}>{job.title}</Typography>
-                                    <Typography className={classes.secondaryHeading}>
-                                        {job.location}
-                                    </Typography>
-                                </AccordionSummary>
-
-                                <AccordionDetails>
-
-                                    <Grid container>
-                                        <Grid item xs={12}>
-                                            <Alert color={
-                                                differenceInCalendarDays(new Date(job.deadline), new Date()) <= 1 ? "warning" : "info"
-                                            } icon={false}>
-                                                Application deadline is
-                                                on <strong>{format(new Date(job.deadline), "PPPP")}</strong> ({formatDistanceToNow(new Date(job.deadline))} from
-                                                now)
-                                            </Alert>
-                                        </Grid>
-
-                                        <Grid xs={12} item>
-                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
-                                                <strong>What you'll do</strong>
-                                            </Typography>
-                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                {job.details}
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item xs={12}>
-                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
-                                                <strong>What you'll bring</strong>
-                                            </Typography>
-                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                {job.qualifications}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
-                                                <strong>The experience</strong>
-                                            </Typography>
-                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                {job.experience}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <Typography style={{margin: '15px 0 0 0'}} variant={"h6"}>
-                                                <strong>How to apply</strong>
-                                            </Typography>
-                                            <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                {job.howToApply}
-                                            </Typography>
-                                        </Grid>
-
-                                    </Grid>
-
-                                </AccordionDetails>
-                            </Accordion>
-
-                        )) : ""
+                        {jobs
+                            ? jobs.map((job: IJob, index: number) => <Job key={index} job={job} />)
+                            : ""
                         }
                     </Grid>
                 </Box>

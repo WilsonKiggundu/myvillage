@@ -27,7 +27,6 @@ const People = () => {
 
     const styles = globalStyles()
     const [people, setPeople] = useState<IPerson[]>([])
-    const history = useHistory()
 
     const profile: IProfile = getProfile()
     const dispatch = useDispatch()
@@ -48,10 +47,10 @@ const People = () => {
     if(status === 'loading') return <PleaseWait />
     else if(status === 'succeeded'){
         content = people.map((person: IPerson) => (
-            <Grid item key={person.id} xs={12} sm={4} lg={3}>
+            <Grid item key={person.id} xs={12} sm={4} lg={4}>
                 <ContactCard person={person}>
                     <Box mt={2}>
-                        <Typography className={styles.maxLines} variant={"body2"}>
+                        <Typography className={styles.maxLines} variant={"body1"}>
                             {person.bio}
                         </Typography>
                         {/*<ProfileRating rating={4}/>*/}
@@ -59,10 +58,10 @@ const People = () => {
                             <Grid item xs={12}>
                                 <Button
                                     onClick={() => handleViewProfile(person.id)}
-                                    className={clsx(styles.fullWidth, styles.flat)}
-                                    variant="outlined"
+                                    className={clsx(styles.flat)}
+                                    variant="contained"
                                     color="secondary"
-                                    size="small">View Profile</Button>
+                                    size="medium">View Profile</Button>
                             </Grid>
                             {/*<Grid item xs={6}>*/}
                             {/*    <Button*/}
@@ -107,18 +106,9 @@ const People = () => {
         window.location.replace(url)
     }
 
-    const handleConnect = (id: string) => {
-
-    }
-
     return (
-        <Container maxWidth="lg">
+        <Container disableGutters maxWidth="lg">
             <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Box mt={2} mb={2}>
-
-                    </Box>
-                </Grid>
                 { content }
             </Grid>
         </Container>

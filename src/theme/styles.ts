@@ -145,6 +145,7 @@ export const globalStyles = makeStyles((theme) => ({
         overflow: "hidden",
         lineHeight: '1.5em',
         height: "3em",
+        marginBottom: 15,
         verticalAlign: "middle",
         '&$:after' : {
             content: '...'
@@ -177,7 +178,7 @@ export const homeStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: white,
         width: '100%',
-        maxHeight: '100vh',
+        minHeight: '100vh',
         margin: 0,
         padding: 0,
         position: 'absolute',
@@ -237,7 +238,8 @@ export const homeStyles = makeStyles((theme) => ({
 
     main: {
         backgroundColor: palette.tertiary.main,
-        minHeight: '50vh'
+        // minHeight: '50vh',
+        height: 'auto'
     },
 
     footer: {
@@ -252,7 +254,10 @@ export const homeStyles = makeStyles((theme) => ({
     },
 
     img: {
-        zIndex: theme.zIndex.drawer - 1
+        zIndex: theme.zIndex.drawer - 1,
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
+        },
     }
 
 }))
