@@ -14,7 +14,7 @@ export default class AuthService {
     constructor() {
         this.userManager = new UserManager({
             ...IDENTITY_CONFIG,
-            userStore: new WebStorageStateStore({store: window.sessionStorage}),
+            userStore: new WebStorageStateStore({store: window.localStorage}),
             metadata: {
                 ...METADATA_OIDC
             }
@@ -37,7 +37,7 @@ export default class AuthService {
                     .timeout(0)
                     .end(handleResponse((response) => {
                         if (response){
-                            sessionStorage.setItem(PROFILE_SESSION_KEY, JSON.stringify(response))
+                            localStorage.setItem(PROFILE_SESSION_KEY, JSON.stringify(response))
                             window.location.replace(Urls.feed)
                         } else{
                             window.location.replace(Urls.profiles.create)
@@ -93,7 +93,7 @@ export default class AuthService {
     }
 
     public isAuthenticated = () => {
-        const item = sessionStorage.getItem(OIDC_SESSION_KEY);
+        const item = localStorage.getItem(OIDC_SESSION_KEY);
 
         if (item){
             const oidcStorage = JSON.parse(item)
@@ -123,7 +123,7 @@ export default class AuthService {
 
     logout = () => {
         this.userManager.signoutRedirect({
-            id_token_hint: sessionStorage.getItem("id_token")
+            id_token_hint: localStorage.getItem("id_token")
         })
         this.userManager.clearStaleState();
     };
@@ -132,7 +132,6 @@ export default class AuthService {
         this.userManager.clearStaleState();
         this.userManager.signoutRedirectCallback().then(() => {
             localStorage.clear();
-            sessionStorage.clear();
 
             if(process.env.REACT_APP_PUBLIC_URL){
                 window.location.replace(process.env.REACT_APP_PUBLIC_URL);

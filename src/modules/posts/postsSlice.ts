@@ -93,9 +93,9 @@ export const postsSlice = createSlice({
         },
         [addPost.fulfilled.toString()]: (state: any, action: any) => {
             const profile: IProfile = getProfile()
-
-            action.payload.dateCreated = new Date()
             action.payload.author = profile
+
+            console.log(action.payload)
 
             if (action.payload.uploads) {
                 action.payload.uploads = JSON.parse(action.payload.uploads)

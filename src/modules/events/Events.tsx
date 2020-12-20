@@ -48,7 +48,7 @@ const EventsView = () => {
         const ordered = events.slice().sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
 
         content = ordered.map((event: IEvent, index: number) => (
-            <Grid key={index} item xs={12} md={4}>
+            <Grid key={index} item xs={12}>
                 <EventCard event={event} />
             </Grid>
         ))
@@ -67,16 +67,16 @@ const EventsView = () => {
         let filtered = results
         switch (filter){
             case "today":
-                filtered = filtered.filter((f: any) => isToday(f.startDateTime))
+                filtered = filtered.filter((f: any) => isToday(f.startDateTime.replace(/ /g,"T")))
                 break
             case "week":
-                filtered = filtered.filter((f: any) => isThisWeek(f.startDateTime))
+                filtered = filtered.filter((f: any) => isThisWeek(f.startDateTime.replace(/ /g,"T")))
                 break
             case "month":
-                filtered = filtered.filter((f: any) => isThisMonth(f.startDateTime))
+                filtered = filtered.filter((f: any) => isThisMonth(f.startDateTime.replace(/ /g,"T")))
                 break
             case "year":
-                filtered = filtered.filter((f: any) => isThisYear(f.startDateTime))
+                filtered = filtered.filter((f: any) => isThisYear(f.startDateTime.replace(/ /g,"T")))
                 break
             default:
                 break
@@ -104,11 +104,11 @@ const EventsView = () => {
                     onClose={() => setOpenAddEventDialog(false)}/>
             </XDialog>
 
-            <Container maxWidth={"lg"}>
+            <Container maxWidth={"md"}>
 
                 <Grid container justify={"center"} spacing={2}>
-                    <Box mt={2} ml={1} mr={1} mb={3}>
-                            <ButtonGroup size={"small"} color="primary" aria-label="outlined primary button group">
+                    <Box ml={2} mr={2} mt={2} mb={2}>
+                            <ButtonGroup size={"small"} color="secondary" aria-label="contained secondary button group">
                                 <Button onClick={() => handleFilter("today")}>Today</Button>
                                 <Button onClick={() => handleFilter("week")}>This Week</Button>
                                 <Button onClick={() => handleFilter("month")}>This Month</Button>

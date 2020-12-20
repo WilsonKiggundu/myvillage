@@ -12,6 +12,16 @@ body, #root, .fill {
   width: 100%;
 }
 
+.MuiCard-root{
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+a{
+  text-decoration: none;
+  color: #636569;
+}
+
 .ql-editor {
   min-height: 25vh;
   padding: 20px 0 !important;

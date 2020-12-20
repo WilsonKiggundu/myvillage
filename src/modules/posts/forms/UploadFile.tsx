@@ -120,12 +120,13 @@ const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClos
 
             const user: IPerson = getProfile()
             const toSave = {
-                details: type ? "#NewProfilePhoto" : values.details,
+                details: values.details ?? "",
                 authorId: user.id,
                 uploads: JSON.stringify(uploads),
             }
 
             try {
+
                 const resultAction: any = await dispatch(addPost(toSave))
                 unwrapResult(resultAction)
             }catch (e) {
