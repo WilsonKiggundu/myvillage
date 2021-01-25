@@ -3,8 +3,7 @@ import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
 import {useDispatch} from "react-redux";
-import {get, makeUrl, post} from "../../../../../utils/ajax";
-import Toast from "../../../../../utils/Toast";
+import {get, getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Grid} from "@material-ui/core";
 import {IPerson} from "../../IPerson";
 import {IOption} from "../../../../../components/inputs/inputHelpers";
@@ -12,12 +11,12 @@ import {Endpoints} from "../../../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import {reqString} from "../../../../../data/validations";
-import {addInterest, addSkill} from "../../personSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 import {getProfile} from "../../../../../services/User";
+import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
+import {editPersonSkills} from "../../redux/peopleActions";
 
 interface IProps {
-    skills: IOption[]
     person: IPerson
     done?: () => any
     onClose?: () => any
@@ -30,41 +29,43 @@ const schema = yup.object().shape(
 )
 
 
-const UpdateSkillsForm = ({done, person, skills, onClose}: IProps) => {
+const UpdateSkillsForm = ({done, person, onClose}: IProps) => {
     const dispatch = useDispatch()
 
-    const [personSkills, setPersonSkills] = useState<IOption[]>([])
+    const {skills} = person
+
+    const [skillsLookup, setSkillsLookup] = useState<any>([])
 
     useEffect(() => {
 
-        // person skills
-        const url = makeUrl("Profiles", Endpoints.person.skill)
-        get(url, {personId: person.id}, (response) => {
+        (async () => {
+            const lookupUrl = makeUrl("Profiles", Endpoints.lookup.skill)
+            const response: any = await getAsync(lookupUrl, {});
 
-            if (response) {
-                const skills = response.map((m: any) => ({id: m.id, name: m.details}))
-                setPersonSkills([...skills])
+            if (response.status === 200){
+                let lookupSkills = response.body.map((m: any) => ({id: m.id, name: m.name}))
+
+                const lookupSkillsFiltered: any = []
+                lookupSkills.forEach((el: any) => {
+                    const exists = skills?.some((i: any) => i.skillId === el.id)
+                    if (!exists) {
+                        lookupSkillsFiltered.push(el)
+                    }
+                })
+
+                setSkillsLookup(lookupSkillsFiltered)
             }
-        })
 
-    }, [])
+        })();
+
+    }, [skills])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        if (values.skills) {
-
-            const skills = values.skills.split(',')
-            const user: IPerson = getProfile()
-
-            await Promise.all(skills.map(async (skill: any) => {
-                const resultAction: any = await dispatch(addSkill({
-                    personId: user.id,
-                    details: skill
-                }))
-                unwrapResult(resultAction)
-            }))
-
-            if (onClose) onClose()
+        dispatch(editPersonSkills({skills: values.skills, personId: person.id}))
+        actions.resetForm()
+        if (onClose) {
+            onClose()
         }
     }
 
@@ -74,21 +75,14 @@ const UpdateSkillsForm = ({done, person, skills, onClose}: IProps) => {
             schema={schema}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                {personSkills ?
-                    <Grid item xs={12}>
-                        {
-                            personSkills.map(i => (
-                                <Chip key={i.id} label={i.name}/>
-                            ))
-                        }
-                    </Grid> : ""}
-
                 <Grid item xs={12}>
-                    <XTextInput
+                    <XSelectInputCreatable
                         variant={"outlined"}
-                        label={"Are you skilled in something else?"}
-                        helperText={"Use (,) to add multiple skills"}
                         name={"skills"}
+                        allowAddNew={true}
+                        multiple={true}
+                        label={"Select or add a skill"}
+                        options={skillsLookup}
                     />
                 </Grid>
             </Grid>

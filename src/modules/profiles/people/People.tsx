@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import ContactCard from "../../../components/ContactCard";
@@ -6,111 +6,114 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import {globalStyles} from "../../../theme/styles";
 import clsx from "clsx";
-import ProfileRating from "../../../components/ProfileRating";
 import Typography from "@material-ui/core/Typography";
 import {Urls} from "../../../routes/Urls";
-import {useHistory} from "react-router-dom";
-import {get, makeUrl} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
-import {getProfile, getUser} from "../../../services/User";
+import {getProfile} from "../../../services/User";
 import {IPerson} from "./IPerson";
 import {useDispatch, useSelector} from "react-redux";
-import {getEvents, selectAllEvents} from "../../events/eventSlice";
-import {IEvent} from "../../../interfaces/IEvent";
-import {getPersons, selectAllPersons} from "./peopleSlice";
 import {PleaseWait} from "../../../components/PleaseWait";
-import EventCard from "../../events/EventCard";
 import {Alert} from "@material-ui/lab";
 import {IProfile} from "../../../interfaces/IProfile";
+import {peopleSelector} from "./redux/peopleSelectors";
+import {loadPeople} from "./redux/peopleActions";
+import _ from "lodash";
+import { grey } from "@material-ui/core/colors";
+import useTheme from "@material-ui/core/styles/useTheme";
+import {useMediaQuery} from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 const People = () => {
 
-    const styles = globalStyles()
-    const [people, setPeople] = useState<IPerson[]>([])
-
-    const profile: IProfile = getProfile()
+    const classes = globalStyles()
+    const people = useSelector(peopleSelector)
     const dispatch = useDispatch()
-    const results = useSelector((state: any) => state.people.people.filter((p: IPerson) => p.id !== profile.userId))
-    const error = useSelector((state: any) => state.people.error)
+    const history = useHistory()
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-    const status = useSelector((state: any) => state.people.status)
-
-    useEffect(() => {
-        if (status === 'idle'){
-            dispatch(getPersons())
+    const handleScroll = (event: any) => {
+        const element = event.target
+        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+            if (people.request.hasMore) {
+                dispatch(loadPeople())
+            }
         }
-        setPeople(results)
-    }, [status, dispatch])
-
-    let content;
-
-    if(status === 'loading') return <PleaseWait />
-    else if(status === 'succeeded'){
-        content = people.map((person: IPerson) => (
-            <Grid item key={person.id} xs={12} sm={4} lg={4}>
-                <ContactCard person={person}>
-                    <Box mt={2}>
-                        <Typography className={styles.maxLines} variant={"body1"}>
-                            {person.bio}
-                        </Typography>
-                        {/*<ProfileRating rating={4}/>*/}
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Button
-                                    onClick={() => handleViewProfile(person.id)}
-                                    className={clsx(styles.flat)}
-                                    variant="contained"
-                                    color="secondary"
-                                    size="medium">View Profile</Button>
-                            </Grid>
-                            {/*<Grid item xs={6}>*/}
-                            {/*    <Button*/}
-                            {/*        onClick={() => handleConnect(person.id)}*/}
-                            {/*        className={clsx(styles.fullWidth, styles.flat)}*/}
-                            {/*        variant="contained"*/}
-                            {/*        color="primary"*/}
-                            {/*        size="small">Connect</Button>*/}
-                            {/*</Grid>*/}
-                        </Grid>
-
-                    </Box>
-
-                    {/*<Box mt={2}>*/}
-                    {/*    <Typography style={{color: grey[500]}}>*/}
-                    {/*        <small>7+ connections</small>*/}
-                    {/*    </Typography>*/}
-                    {/*</Box>*/}
-
-                </ContactCard>
-            </Grid>
-        ))
-    }else if (status === 'error'){
-        content = <Grid item xs={12}>
-            <Alert color={"error"} icon={false}>
-                <Typography variant={"h5"} component={"h5"}>
-                    Ooops. We are unable to get people...
-                </Typography>
-                <Box mt={2}>
-                    <Typography variant={"body2"} component={"div"}>
-                        {error}
-                    </Typography>
-                </Box>
-            </Alert>
-        </Grid>
-    }else{
-        content = ""
     }
 
+    useEffect(() => {
+        dispatch(loadPeople())
+    }, [dispatch])
+
+    if (_.isEmpty(people.data) && people.isLoading) {
+        return <PleaseWait label={"Loading people. Please wait..."}/>
+    }
+
+    if (people.error) return (
+        <Alert color={"error"} icon={false}>
+            <Box mt={2}>
+                <Typography variant={"body2"} component={"div"}>
+                    {people.error}
+                </Typography>
+            </Box>
+        </Alert>
+    )
+
     const handleViewProfile = (id: string) => {
-        const url = `${Urls.profiles.people}/${id}`
-        window.location.replace(url)
+        const url = Urls.profiles.onePerson(id)
+        history.push(url)
+    }
+
+    const handleConnect = (id: string) => {
+
     }
 
     return (
-        <Container disableGutters maxWidth="lg">
-            <Grid container spacing={2}>
-                { content }
-            </Grid>
+        <Container onScroll={handleScroll} className={classes.scrollable} maxWidth={false}>
+            <Box mt={isMobile ? 0 : 4}>
+                <Grid spacing={3} justify={"center"} container>
+                        {people.data.map((person: IPerson) => (
+                            <Grid item key={person.id} xs={12} sm={6} md={4} lg={3}>
+                                <ContactCard person={person}>
+                                    <Box mt={2} pl={3} pr={3}>
+                                        <Typography className={classes.maxLines} variant={"body1"}>
+                                            {person.bio}
+                                        </Typography>
+                                    </Box>
+                                    <Box mt={3} p={2}>
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={12}>
+                                                <ButtonGroup style={{width: '100%'}} color={"default"}>
+                                                    <Button
+                                                        onClick={() => handleViewProfile(person.id)}
+                                                        className={clsx(classes.fullWidth, classes.flat)}
+                                                        variant="outlined"
+                                                        size={"small"}>View</Button>
+
+                                                    <Button
+                                                        onClick={() => handleConnect(person.id)}
+                                                        className={clsx(classes.fullWidth, classes.flat)}
+                                                        variant="outlined"
+                                                        size={"small"}>Connect</Button>
+                                                </ButtonGroup>
+                                            </Grid>
+                                        </Grid>
+
+                                    </Box>
+
+                                    {/*{person.connectionsCount ? (*/}
+                                    {/*    <Box mt={2}>*/}
+                                    {/*        <Typography style={{color: grey[500]}}>*/}
+                                    {/*            <small>{person.connectionsCount } {person.connectionsCount === 1 ? "connection" : "connections"}</small>*/}
+                                    {/*        </Typography>*/}
+                                    {/*    </Box>*/}
+                                    {/*) : ""}*/}
+
+                                </ContactCard>
+                            </Grid>
+                        ))}
+                    </Grid>
+            </Box>
         </Container>
     )
 }

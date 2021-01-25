@@ -1,7 +1,8 @@
-import {withStyles} from "@material-ui/core";
+import {ListItemProps, withStyles} from "@material-ui/core";
 import React from "react";
 import palette from "../theme/palette";
 import MuiListItem from "@material-ui/core/ListItem";
+import { useHistory } from "react-router-dom";
 
 const ListItem = withStyles({
     root: {
@@ -22,4 +23,16 @@ const ListItem = withStyles({
     selected: {}
 })(MuiListItem);
 
-export default (props: any) => <ListItem button component="a" {...props} />
+interface IProps {
+    handleClick: () => void
+    children?: any
+}
+
+const ListItemLink = ({handleClick, ...props}: IProps) => {
+
+    return (
+        <ListItem onClick={handleClick} button {...props} />
+    )
+}
+
+export default ListItemLink

@@ -1,79 +1,68 @@
 import React, {useEffect, useState} from "react";
-import {globalStyles} from "../../theme/styles"
 import {Container} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import StartAPostCard from "../../components/StartAPostCard";
-import PostCard from "../../components/PostCard";
-import {getUser} from "../../services/User";
-import {IPost} from "../../interfaces/IPost";
-import {get, makeUrl} from "../../utils/ajax";
-import {Endpoints} from "../../services/Endpoints";
-import Toast from "../../utils/Toast";
-import {IFeed} from "../../interfaces/IFeed";
-import EventCard from "../events/EventCard";
+import PostCard from "../posts/PostCard";
 import {useDispatch, useSelector} from "react-redux";
 import {PleaseWait} from "../../components/PleaseWait";
-import {IEvent} from "../../interfaces/IEvent";
 import {Alert} from "@material-ui/lab";
-import {selectAllPosts, getPosts} from "../posts/postsSlice";
-import {getComments} from "../posts/commentsSlice";
 import Typography from "@material-ui/core/Typography";
+import {IPost} from "../../interfaces/IPost";
+import {loadPosts} from "../posts/redux/postsActions";
+import _ from "lodash";
+import {postsSelector} from "../posts/redux/postsSelectors";
+import {PostContentLoader} from "../../components/loaders/PostContentLoader";
 
+import {globalStyles} from "../../theme/styles";
+import ErrorPage from "../exceptions/Error";
 
-const Feed = ({match}: any) => {
+interface IProps {
+}
 
+const Feed = () => {
+
+    const classes = globalStyles()
     const dispatch = useDispatch()
-    const feed = useSelector(selectAllPosts)
-    const error = useSelector((state: any) => state.posts.error)
+    const posts = useSelector(postsSelector)
 
-    const status = useSelector((state: any) => state.posts.status)
-
-    useEffect(() => {
-        if (status === 'idle'){
-            dispatch(getPosts())
-        }
-    }, [status, dispatch])
-
-    let content;
-    if(status === 'loading') return <PleaseWait />
-    else if(status === 'succeeded'){
-        const orderedByDate = feed?.slice().sort((a: any, b: any) => b.dateCreated.localeCompare(a.dateCreated))
-
-        content = orderedByDate ? orderedByDate.map((item: any, index: number) => {
-            switch (item.entityType) {
-                case 1:
-                    return <PostCard key={index} post={item}/>
-                case 5:
-                    return <EventCard key={index} event={item}/>
-                default:
-                    return <PostCard key={index} post={item}/>
+    const handleScroll = (event: any) => {
+        const element = event.target
+        if(element.scrollHeight - element.scrollTop === element.clientHeight){
+            if(posts.request.hasMore){
+                dispatch(loadPosts())
             }
-        }) : ""
-
-    }else{
-        content =
-            <Alert color={"error"} icon={false}>
-
-                <Typography variant={"h5"} component={"h5"}>
-                    Ooops. We are unable to get your feed...
-                </Typography>
-
-                <Box mt={2}>
-                    <Typography variant={"body2"} component={"div"}>
-                        {error}
-                    </Typography>
-                </Box>
-            </Alert>
+        }
     }
 
-    return (
+    useEffect(() => {
+        dispatch(loadPosts())
+    }, [dispatch])
+
+    if (_.isEmpty(posts.data) && posts.isLoading) return (
         <Container maxWidth={"md"}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
+            <PostContentLoader />
+        </Container>
+    )
+
+    if (posts.error) return (
+        <ErrorPage title={"Loading feed failed"} message={posts.error} />
+    )
+
+    return (
+        <Container onScroll={handleScroll} className={classes.scrollable} maxWidth={false}>
+            <Grid container spacing={2} justify={"center"}>
+                <Grid item xs={12} md={8}>
                     <StartAPostCard placeholder={"What's on your mind?"}/>
-                    <Box mb={2}>
-                        {content}
+                    <Box>
+                        {_.isEmpty(posts.data) && <p>No results found</p>}
+                        {
+                            posts.data.map((post: IPost, index: number) =>
+                                <PostCard post={post} key={index}/>)
+                        }
+                        {posts.isLoading && (
+                            <PleaseWait/>
+                        )}
                     </Box>
                 </Grid>
             </Grid>

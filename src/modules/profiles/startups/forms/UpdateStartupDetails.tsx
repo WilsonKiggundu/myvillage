@@ -1,25 +1,18 @@
 import XForm from "../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import * as yup from "yup"
 import {reqString} from "../../../../data/validations";
-import {useDispatch} from "react-redux";
-import {makeUrl, post, put} from "../../../../utils/ajax";
-import Toast from "../../../../utils/Toast";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
 import Box from "@material-ui/core/Box";
-import XDateInput from "../../../../components/inputs/XDateInput";
-import {Endpoints} from "../../../../services/Endpoints";
-import {getProfile, getUser} from "../../../../services/User";
-import XSelectInput from "../../../../components/inputs/XSelectInput";
-import {Options} from "../../../../utils/options";
+import {getProfile} from "../../../../services/User";
 import {IStartup} from "../../../../interfaces/IStartup";
-import {addStartup} from "../startupsSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
 import {IPerson} from "../../people/IPerson";
-import {updateStartup} from "../startupSlice";
+import {addStartup, editStartup} from "../redux/startupsActions";
+import {userSelector} from "../../../../data/coreSelectors";
 
 interface IProps {
     onClose?: () => any
@@ -30,8 +23,8 @@ const schema = yup.object().shape(
     {
         name: reqString,
         description: reqString,
-        numberOfEmployees: reqString,
-        dateOfIncorporation: reqString,
+        employeeCount: reqString,
+        incorporationDate: reqString,
         category: reqString
     }
 )
@@ -40,21 +33,25 @@ const schema = yup.object().shape(
 const UpdateStartupDetails = ({onClose, profile}: IProps) => {
     const dispatch = useDispatch()
 
-    const user: IPerson = getProfile()
-    const initialValues = {...profile}
+    const user = useSelector(userSelector)
+    const initialValues = {
+        name: profile?.name,
+        category: profile?.category,
+        description: profile?.description,
+        employeeCount: profile?.employeeCount,
+        incorporationDate: profile?.incorporationDate,
+        website: profile?.website,
+        coverPhoto: profile?.coverPhoto,
+        avatar: profile?.avatar
+    }
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        values.createdBy = user.id
+        values.createdBy = user.profile.sub
+        values.id = profile?.id
 
         try {
-            if (profile && profile.id) {
-                const resultAction: any = await dispatch(updateStartup(values))
-                unwrapResult(resultAction)
-            } else {
-                const resultAction: any = await dispatch(addStartup(values))
-                unwrapResult(resultAction)
-            }
+            dispatch(profile && profile.id ? editStartup(values) : addStartup(values))
         } catch (e) {
 
         } finally {
@@ -65,6 +62,7 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
     return (
         <XForm
             schema={schema}
+            debug={false}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
@@ -108,13 +106,13 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                             helperText={"Month, Year"}
                             label={"Date of Incorporation"}
                             placeholder={"month, year"}
-                            name={"dateOfIncorporation"}/>
+                            name={"incorporationDate"}/>
                     </Box>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
                     <XTextInput
-                        name="numberOfEmployees"
+                        name="employeeCount"
                         label={"How many employees do you have?"}
                         helperText={"It's fine if you just put an approximate number. Required"}
                         type={"text"}

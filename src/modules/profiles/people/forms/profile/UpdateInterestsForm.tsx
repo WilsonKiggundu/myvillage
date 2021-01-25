@@ -3,86 +3,70 @@ import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
 import {useDispatch} from "react-redux";
-import {get, makeUrl, post} from "../../../../../utils/ajax";
-import Toast from "../../../../../utils/Toast";
+import {get, getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Grid} from "@material-ui/core";
-import XSelectInput from "../../../../../components/inputs/XSelectInput";
 import {IPerson} from "../../IPerson";
 import {IOption} from "../../../../../components/inputs/inputHelpers";
 import {Endpoints} from "../../../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
-import XTextInput from "../../../../../components/inputs/XTextInput";
 import {getProfile} from "../../../../../services/User";
-import {addInterest} from "../../personSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
+import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
+import {reqArray} from "../../../../../data/validations";
+import {editPersonInterests} from "../../redux/peopleActions";
 
 interface IProps {
-    interests: any | undefined
     person: IPerson
     onClose?: () => any
 }
 
 const schema = yup.object().shape(
-    {}
+    {
+        interests: reqArray
+    }
 )
 
 
-const UpdateInterestsForm = ({onClose, person, interests}: IProps) => {
+const UpdateInterestsForm = ({onClose, person}: IProps) => {
     const dispatch = useDispatch()
 
-    const [interestsLookup, setInterestsLookup] = useState<IOption[]>([])
+    const {interests} = person
+    const [interestsLookup, setInterestsLookup] = useState<any>([])
 
     useEffect(() => {
 
-        // lookup interests
-        const lookupInterestUrl = makeUrl("Profiles", Endpoints.lookup.interest)
-        get(lookupInterestUrl, {}, (response) => {
-            if (response) {
-                let lookupInterests = response.map((m: any) => ({id: m.id, name: m.category}))
+        (async () => {
+            const lookupUrl = makeUrl("Profiles", Endpoints.lookup.interest)
+            const response: any = await getAsync(lookupUrl, {});
+
+            if (response.status === 200){
+                let lookupInterests = response.body.map((m: any) => ({id: m.id, name: m.category}))
 
                 const lookupInterestsFiltered: any = []
                 lookupInterests.forEach((el: any) => {
-                    const exists = interests.some((i: any) => i.interestId === el.id)
-                    if(!exists){
+                    const exists = interests?.some((i: any) => i.categoryId === el.id)
+                    if (!exists) {
                         lookupInterestsFiltered.push(el)
                     }
                 })
 
-                lookupInterests = lookupInterestsFiltered
-                setInterestsLookup(lookupInterests)
+                setInterestsLookup(lookupInterestsFiltered)
             }
-        })
+
+        })();
 
     }, [interests])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        const {interests, custom} = values
-        const user: IPerson = getProfile()
+        const {interests} = values
 
-        if (custom) {
-            await Promise.all(custom.split(',').map(async (interest: string) => {
-                const resultAction: any = await dispatch(addInterest({
-                    personId: user.id,
-                    name: interest.trimStart().trimEnd()
-                }))
-                unwrapResult(resultAction)
-            }))
-        }
+        dispatch(editPersonInterests({interests, personId: person.id}))
 
-        if (interests) {
-            await Promise.all(interests.map(async (interest: string) => {
-                const resultAction: any = await dispatch(addInterest({
-                    personId: user.id, interestId: interest,
-                    interest: interestsLookup.filter(f => f.id === interest)[0]
-                }))
-                unwrapResult(resultAction)
-            }))
-        }
-
+        actions.resetForm()
         if (onClose) {
             onClose()
         }
+
     }
 
 
@@ -92,35 +76,14 @@ const UpdateInterestsForm = ({onClose, person, interests}: IProps) => {
             schema={schema}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                {interests ?
-                    <Grid item xs={12}>
-                        {
-                            interests.map((i: any) => (
-                                <Chip style={{margin: 3}}
-                                      color={"secondary"}
-                                      key={i.interest.id}
-                                      label={i.interest.category}/>
-                            ))
-                        }
-                    </Grid> : ""}
-                <Grid item xs={12}>
-                    <XSelectInput
-                        multiline={true}
-                        label={"Select one or more interest"}
-                        multiple={true}
-                        name={"interests"}
-                        options={interestsLookup}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <XTextInput
-                        variant={"outlined"}
-                        label={"Are you interested in something else?"}
-                        helperText={"Use (,) to add multiple interests"}
-                        name={"custom"}
-                    />
-                </Grid>
+                <XSelectInputCreatable
+                    variant={"outlined"}
+                    name={"interests"}
+                    allowAddNew={true}
+                    multiple={true}
+                    label={"Select an interest"}
+                    options={interestsLookup}
+                />
             </Grid>
 
         </XForm>

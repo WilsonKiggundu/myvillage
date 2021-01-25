@@ -7,8 +7,9 @@ export interface IJob {
     location: string
     qualifications: string
     title: string
-    // uploads?: [any]
     category: IJobCategory
+    profileId: string
+    companyId: string
 }
 
 export interface IJobCategory {

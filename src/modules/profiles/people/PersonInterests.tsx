@@ -5,25 +5,27 @@ import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import EditIcon from "@material-ui/icons/Edit";
-import React, {useEffect, useState} from "react";
-import {getProfile, getUser} from "../../../services/User";
-import {IOption} from "../../../components/inputs/inputHelpers";
-import {get, makeUrl} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
+import React, {useState} from "react";
 import Chip from "@material-ui/core/Chip";
 import UpdateInterestsForm from "./forms/profile/UpdateInterestsForm";
 import CardHeader from "@material-ui/core/CardHeader";
+import {deletePersonCategories, deletePersonInterests} from "./redux/peopleActions";
+import {useDispatch} from "react-redux";
 
 interface IProps {
     person: IPerson
+    canEdit: boolean
 }
 
-const PersonInterests = ({person}: IProps) => {
+const PersonInterests = ({person, canEdit}: IProps) => {
 
-    const user: IPerson = getProfile()
+    const dispatch = useDispatch()
     const {interests} = person
-    const isMyProfile: boolean = person.id === user.id
     const [openEditInterestsDialog, setOpenEditInterestsDialog] = useState<boolean>(false)
+
+    const handleDeleteInterest = (interestId: string) => {
+        dispatch(deletePersonInterests({interestId, personId: person.id}))
+    }
 
     return (
         <Box mb={2}>
@@ -31,7 +33,7 @@ const PersonInterests = ({person}: IProps) => {
             <Card>
                 <CardHeader
                     action={
-                        isMyProfile ? (
+                        canEdit ? (
                             <IconButton
                                 onClick={() => setOpenEditInterestsDialog(true)}
                                 aria-label="settings">
@@ -40,7 +42,7 @@ const PersonInterests = ({person}: IProps) => {
                         ) : ""
                     }
                     title={
-                        isMyProfile ? "Your interests" : `${person.firstname}'s interests`
+                        canEdit ? "Your interests" : `${person.firstname}'s interests`
                     }
                 />
 
@@ -48,6 +50,7 @@ const PersonInterests = ({person}: IProps) => {
                     <CardContent>
                         {interests ? interests.map((i: any) =>
                             <Chip
+                                onDelete={() => handleDeleteInterest(i.interest.id)}
                                 label={i.interest.category}
                                 key={i.interest.id}
                                 style={{marginRight: 5, marginBottom: 5}}
@@ -57,14 +60,14 @@ const PersonInterests = ({person}: IProps) => {
                     </CardContent>
                 ) : ""}
 
-                {isMyProfile ? (
+                {canEdit ? (
                     <XDialog title={"Update your interests"}
                              maxWidth={"sm"}
                              onClose={() => setOpenEditInterestsDialog(false)}
                              open={openEditInterestsDialog}>
                         <UpdateInterestsForm
-                            onClose={() => setOpenEditInterestsDialog(false)}
-                            interests={interests} person={person}/>
+                            person={person}
+                            onClose={() => setOpenEditInterestsDialog(false)}/>
                     </XDialog>
                 ) : ""}
             </Card>

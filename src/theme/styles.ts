@@ -5,10 +5,11 @@ import palette from "./palette";
 import {teal} from "@material-ui/core/colors";
 import {white} from "./custom-colors";
 import grey from "@material-ui/core/colors/grey";
+import red from "@material-ui/core/colors/red";
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',
+        display: 'flex',
     },
 
     flexWrap: {
@@ -21,9 +22,9 @@ export const globalStyles = makeStyles((theme) => ({
 
     clickable: {
         cursor: 'pointer',
-        background: palette.background.default,
+        // background: palette.background.default,
         '&:hover': {
-            background: palette.background.dark
+            // background: palette.background.dark
         }
     },
 
@@ -32,7 +33,7 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     fullWidth: {
-      width: '100%'
+        width: '100%'
     },
 
     noShadow: {
@@ -40,7 +41,7 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     borderless: {
-      border: 0
+        border: 0
     },
 
     orange: {
@@ -71,8 +72,8 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     mediumAvatar: {
-        width: theme.spacing(14),
-        height: theme.spacing(14),
+        width: theme.spacing(10),
+        height: theme.spacing(10),
     },
 
     flex: {
@@ -138,6 +139,17 @@ export const globalStyles = makeStyles((theme) => ({
         bottom: 1
     },
 
+    ellipsis: {
+        maxWidth: '95%',
+        display: "block",
+        textOverflow: "ellipsis",
+        wordWrap: "break-word",
+        overflow: "hidden",
+        '&$:after': {
+            content: '...'
+        }
+    },
+
     maxLines: {
         display: "block",
         textOverflow: "ellipsis",
@@ -147,7 +159,7 @@ export const globalStyles = makeStyles((theme) => ({
         height: "3em",
         marginBottom: 15,
         verticalAlign: "middle",
-        '&$:after' : {
+        '&$:after': {
             content: '...'
         }
     },
@@ -164,11 +176,38 @@ export const globalStyles = makeStyles((theme) => ({
         backgroundColor: grey[100],
         width: '100%',
         maxHeight: '45vh',
-        minHeight: '20vh',
+        minHeight: '45vh',
         overflow: 'hidden',
-        marginBottom: 15,
         [theme.breakpoints.down('sm')]: {
-            height: '25vh'
+            maxHeight: '25vh',
+            minHeight: '15vh',
+        }
+    },
+
+    whiteSpace: {
+      whiteSpace: 'pre-line'
+    },
+
+    inline: {
+        display: 'inline'
+    },
+
+    scrollable: {
+        marginTop: -25,
+        paddingBottom: 15,
+        overflow: 'auto',
+        height: 'calc(100vh - 70px)',
+        [theme.breakpoints.down('sm')]: {
+            padding: '15px 0'
+        }
+    },
+
+    scrollableDialog: {
+        paddingBottom: 15,
+        overflow: 'auto',
+        height: 'calc(80vh - 70px)',
+        [theme.breakpoints.down('sm')]: {
+            padding: '15px 0'
         }
     }
 
@@ -189,7 +228,7 @@ export const homeStyles = makeStyles((theme) => ({
 
     button: {
         boxShadow: 'none',
-        textTransform:'inherit',
+        textTransform: 'inherit',
         display: "block",
         width: '100%',
         borderRadius: 0,
@@ -227,9 +266,9 @@ export const homeStyles = makeStyles((theme) => ({
     },
 
     title: {
-        textTransform: 'uppercase',
+        textTransform: 'inherit',
         padding: '25px 0',
-        fontSize: '1.5rem'
+        fontSize: '2rem'
     },
 
     subtitle: {

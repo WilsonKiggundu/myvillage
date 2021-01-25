@@ -1,24 +1,11 @@
-import React, {useState, MouseEvent} from "react";
-import {useHistory} from "react-router-dom"
-import {
-    AppBar,
-    Badge,
-    Button,
-    Divider, Drawer,
-    InputBase,
-    Typography,
-    useTheme
-} from "@material-ui/core";
+import React, {MouseEvent, useState} from "react";
+import {AppBar, Button, Divider, Drawer, Typography, useTheme} from "@material-ui/core";
 import Toolbar from "@material-ui/core/Toolbar";
 import {appBarStyles} from "./styles";
-import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
-import MailIcon from "@material-ui/icons/Mail";
 import IconButton from "@material-ui/core/IconButton";
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import {globalStyles} from "../../theme/styles";
 import Container from "@material-ui/core/Container";
-import AuthService from "../../services/AuthService";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import clsx from "clsx";
@@ -31,27 +18,34 @@ import Avatar from "@material-ui/core/Avatar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Urls} from "../../routes/Urls";
-import {getProfile, getUser} from "../../services/User";
 
 import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
-import {IProfile} from "../../interfaces/IProfile";
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {IPerson} from "../../modules/profiles/people/IPerson";
 import Grid from "@material-ui/core/Grid";
+import {useDispatch, useSelector} from "react-redux";
+import {User} from "oidc-client";
+import userManager from "../../utils/userManager";
+import {USER_SIGNED_OUT} from "redux-oidc";
+import {useHistory} from "react-router-dom";
+import {userSelector} from "../../data/coreSelectors";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 
 type Anchor = 'left' | 'right';
 
 export default function ApplicationBar() {
 
-    const authService = new AuthService()
+    const dispatch = useDispatch()
+    const history = useHistory()
 
     const styles = globalStyles();
     const classes = appBarStyles();
     const theme = useTheme();
 
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const user: IPerson = getProfile()
+    const user: User = useSelector(userSelector)
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -86,7 +80,22 @@ export default function ApplicationBar() {
 
     const handleProfileView = () => {
         closeProfileMenu()
-        window.location.replace(Urls.profiles.onePerson(user.id))
+        history.push(Urls.profiles.onePerson(user.profile.sub))
+        setState({left: false, right: false})
+    }
+
+    const handleLogout = async () => {
+        dispatch({
+            type: USER_SIGNED_OUT
+        })
+        await userManager.signoutRedirect({
+            id_token_hint: user.id_token
+        })
+    }
+
+    const handleClick = (href: string) => {
+        history.push(href)
+        setState({left: false, right: false})
     }
 
     return (
@@ -130,7 +139,7 @@ export default function ApplicationBar() {
                             <List className={classes.flexContainer}>
                                 {
                                     MainMenuItems ? MainMenuItems.map((item, index) => (
-                                        <ListItemLink key={index} href={item.url}>
+                                        <ListItemLink handleClick={() => handleClick(item.url)} key={index}>
                                             <ListItemText primary={item.label}/>
                                         </ListItemLink>
                                     )) : ""
@@ -139,20 +148,20 @@ export default function ApplicationBar() {
                         </div>
 
                         {
-                            authService.isAuthenticated() ? '' :
+                            user ? '' :
                                 <div className={classes.sectionDesktop}>
                                     <Button className={`${styles.noShadow} ${styles.capitalize} ${styles.bold}`}
                                             variant="contained"
                                             style={{borderRadius: 30, marginLeft: 15, textTransform: "inherit"}}
                                             size="small"
-                                            onClick={authService.signinRedirect}
+                                            onClick={userManager.signinRedirect}
                                             color="secondary">
                                         Login
                                     </Button>
                                 </div>
                         }
 
-                        {authService.isAuthenticated() ?
+                        {user ?
                             <div className={classes.sectionDesktop}>
                                 {user ? (
                                     <>
@@ -160,7 +169,7 @@ export default function ApplicationBar() {
                                                     aria-haspopup="true"
                                                     onClick={showProfileMenu}
                                                     color="inherit">
-                                            <Avatar src={user.avatar} variant={"circle"}/>
+                                            <Avatar src={user.profile?.picture} variant={"circular"}/>
                                         </IconButton>
                                         <Menu
                                             id="profile-menu"
@@ -170,12 +179,13 @@ export default function ApplicationBar() {
                                             anchorOrigin={{vertical: "bottom", horizontal: "left"}}
                                             onClose={closeProfileMenu}
                                             open={Boolean(anchorEl)}>
-                                            <MenuItem disabled>{user.firstname} {user.lastname}</MenuItem>
+                                            <MenuItem
+                                                disabled>{user.profile.given_name} {user.profile.family_name}</MenuItem>
                                             <MenuItem onClick={handleProfileView}>
                                                 My Profile
                                             </MenuItem>
                                             <Divider/>
-                                            <MenuItem onClick={() => authService.logout()}>Logout</MenuItem>
+                                            <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                                         </Menu>
                                     </>
                                 ) : ""}
@@ -210,24 +220,41 @@ export default function ApplicationBar() {
 
                 <Box mt={2} mb={2} ml={1}>
                     <Grid container spacing={2}>
-                        <Grid item xs={3} style={{textAlign: "center"}}>
-                            <Avatar src={user.avatar} variant={"circle"}/>
-                        </Grid>
-                        <Grid item xs={9}>
-                            <Typography component={"div"} style={{lineHeight: '1.1rem'}} variant={"h6"}>
-                                <a style={{color: white}} href={Urls.profiles.onePerson(user.id)}>
-                                    {user.firstname} {user.lastname}
-                                </a>
-                            </Typography>
-
-                            <Typography component={"div"} variant={"body2"}>
-                                <Box mt={2}>
-                                    <Button variant={"outlined"}
-                                            size={"small"}
-                                            color={"default"}
-                                            href={Urls.logout}>Sign out</Button>
-                                </Box>
-                            </Typography>
+                        <Grid item xs={12}>
+                            <List>
+                                <ListItem
+                                    button
+                                    onClick={() => history.push(Urls.profiles.onePerson(user.profile.sub))}
+                                    alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <Avatar alt={user.profile.given_name} src={user.profile.picture}/>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={
+                                            <Typography
+                                                style={{width: '95%'}}
+                                                noWrap variant={"h6"}>
+                                                {user.profile.given_name} {user.profile.family_name}
+                                            </Typography>
+                                        }
+                                        secondary={
+                                            <Typography
+                                                style={{width: '85%'}}
+                                                noWrap
+                                                component="div"
+                                                variant="body2"
+                                            >
+                                                {user.profile.email}
+                                            </Typography>
+                                        }
+                                    />
+                                    <ListItemSecondaryAction>
+                                        <IconButton edge="end" aria-label="more">
+                                            <ChevronRightIcon/>
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            </List>
                         </Grid>
                     </Grid>
                 </Box>
@@ -237,7 +264,7 @@ export default function ApplicationBar() {
                 <List>
                     {
                         MainMenuItems ? MainMenuItems.map((item, index) => (
-                            <ListItemLink key={index} href={item.url}>
+                            <ListItemLink handleClick={() => handleClick(item.url)} key={index}>
                                 <ListItemText primary={item.label}/>
                             </ListItemLink>
                         )) : ""

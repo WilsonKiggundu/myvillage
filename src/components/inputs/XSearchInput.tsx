@@ -35,7 +35,7 @@ interface IProps {
     disable?: any
 }
 
-export default function XSearchInput({onFilterToggle, onChange = (v: string) => v,disable}: IProps) {
+export default function XSearchInput({onFilterToggle, onChange = (v: string) => v, disable}: IProps) {
     const classes = useStyles();
     return (
         <Box component="form" style={{height: "100%", width: '100%'}}>

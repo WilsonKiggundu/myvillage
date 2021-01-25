@@ -1,9 +1,9 @@
 import * as superagent from 'superagent'
 import Toast from './Toast'
 import {Endpoints} from "../services/Endpoints";
-import {getUser} from "../services/User";
-
-export const ACCESS_TOKEN = getUser()?.access_token
+import userManager from "./userManager";
+import {User} from "oidc-client";
+import apiRequest from "./apiRequest";
 
 type CallbackFunction = (data?: any) => void;
 type ErrorCallback = (err: any, res: superagent.Response) => void;
@@ -37,10 +37,13 @@ export const handleError = (err: any = {}, res: superagent.Response) => {
 const timeout = 0
 export const isAuthError = (err: any = {}, res: superagent.Response) => {
     if (err) {
-        console.log(err)
         return false
     }
     return (res && res.forbidden) || (res && res.unauthorized)
+}
+
+export const isOffline = (): boolean => {
+    return true
 }
 
 export const handleResponse = (callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => (err: any, res: superagent.Response) => {
@@ -82,60 +85,102 @@ export const makeUrl = (service: Services, endpoint: string, params?: object) =>
 }
 
 export const get = (url: string, params: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
-    superagent.get(url)
-        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-        .query(params)
-        .set('Accept', 'application/json')
-        .timeout(timeout)
-        .end(handleResponse(callBack, errorCallBack, endCallBack))
+    userManager.getUser().then((user: User | null) => {
+        if(user){
+            superagent.get(url)
+                .set('Authorization', `Bearer ${user.access_token}`)
+                .query(params)
+                .set('Accept', 'application/json')
+                .timeout(timeout)
+                .end(handleResponse(callBack, errorCallBack, endCallBack))
+        }else{
+            userManager.signinSilent()
+        }
+    }).catch(error => {
+        Toast.error(error.message)
+    })
 }
 
-export  const getAsync = (url: string, params?: any) => {
+export const getAsync = (url: string, params?: any) => {
     return new Promise((resolve, reject) => {
-        return superagent.get(url)
-            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-            .set('Accept', 'application/json')
-            .query(params)
-            .timeout(timeout)
-            .end((err, res) => {
-                if (!err) resolve(res)
-                else reject(err)
-            })
+        userManager.getUser().then((user: User | null) => {
+            if(user){
+                return superagent.get(url)
+                    .set('Authorization', `Bearer ${user.access_token}`)
+                    .set('Accept', 'application/json')
+                    .query(params)
+                    .timeout(timeout)
+                    .end((err, res) => {
+                        if (!err) resolve(res)
+                        else reject(err)
+                    })
+            }else{
+                userManager.signinSilent()
+            }
+        }).catch(error => {
+            Toast.error(error.message)
+        })
     })
 }
 
 export const search = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
-    superagent.get(url)
-        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-        .set('Accept', 'application/json')
-        .query(data)
-        .timeout(timeout)
-        .end(handleResponse(callBack, errorCallBack, endCallBack))
+    userManager.getUser().then((user: User | null) => {
+        if(user){
+            superagent.get(url)
+                .set('Authorization', `Bearer ${user.access_token}`)
+                .set('Accept', 'application/json')
+                .query(data)
+                .timeout(timeout)
+                .end(handleResponse(callBack, errorCallBack, endCallBack))
+        }else{
+            userManager.signinSilent()
+        }
+    }).catch(error => {
+        Toast.error(error.message)
+    })
+
 }
 
-
 export const post = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
-    superagent.post(url)
-        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-        .set('Accept', 'application/json')
-        .set('Content-Type', 'application/json')
-        .send(data)
-        .timeout(timeout)
-        .end(handleResponse(callBack, errorCallBack, endCallBack))
+    userManager.getUser().then((user: User | null) => {
+        if(user){
+            superagent.post(url)
+                .set('Authorization', `Bearer ${user.access_token}`)
+                .set('Accept', 'application/json')
+                .set('Content-Type', 'application/json')
+                .send(data)
+                .timeout(timeout)
+                .end(handleResponse(callBack, errorCallBack, endCallBack))
+        }else{
+            userManager.signinSilent()
+        }
+    }).catch(error => {
+        Toast.error(error.message)
+    })
 }
 
 export const postAsync = (url: string, data: any) => {
     return new Promise((resolve, reject) => {
-        return superagent.post(url)
-            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
-            .send(data)
-            .timeout(timeout)
-            .end((err, res) => {
-                if (!err) resolve(res)
-                else reject(err)
-            })
+
+        userManager.getUser().then((user: User | null) => {
+            if(user){
+                return superagent.post(url)
+                    .set('Authorization', `Bearer ${user.access_token}`)
+                    .set('Accept', 'application/json')
+                    .set('Content-Type', 'application/json')
+                    .send(data)
+                    .timeout(timeout)
+                    .end((err, res) => {
+                        if (!err) resolve(res)
+                        else reject(err)
+                    })
+            }else{
+                userManager.signinSilent()
+            }
+        }).catch(error => {
+            Toast.error(error.message)
+        })
+
     })
 }
 
@@ -145,13 +190,23 @@ export const postFile = (file: any, callBack: CallbackFunction, errorCallBack?: 
     const formData = new FormData();
     formData.append('file', file);
 
-    superagent.post(url)
-        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-        .set('Accept', 'application/octet-stream')
-        .set('APIKEY', 'ea22375e-7836-43ba-9b85-5150c0a973e6')
-        .send(formData)
-        .timeout(timeout)
-        .end(handleResponse(callBack, errorCallBack, endCallBack))
+    userManager.getUser().then((user: User | null) => {
+        if(user){
+            superagent.post(url)
+                .set('Authorization', `Bearer ${user.access_token}`)
+                .set('Accept', 'application/octet-stream')
+                .set('APIKEY', 'ea22375e-7836-43ba-9b85-5150c0a973e6')
+                .send(formData)
+                .timeout(timeout)
+                .end(handleResponse(callBack, errorCallBack, endCallBack))
+        }else{
+            userManager.signinSilent()
+        }
+    }).catch(error => {
+        Toast.error(error.message)
+    })
+
+
 }
 
 export const postFileAsync = (file: any) => {
@@ -161,48 +216,115 @@ export const postFileAsync = (file: any) => {
     formData.append('file', file);
 
     return new Promise((resolve, reject) => {
-        return superagent.post(url)
-            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-            .set('Accept', 'application/octet-stream')
-            .set('APIKEY', 'ea22375e-7836-43ba-9b85-5150c0a973e6')
-            .send(formData)
-            .timeout(timeout)
-            .end((err, res) => {
-                if (!err) resolve(res)
-                else reject(err)
-            })
+
+        userManager.getUser().then((user: User | null) => {
+            if(user){
+                return superagent.post(url)
+                    .set('Authorization', `Bearer ${user.access_token}`)
+                    .set('Accept', 'application/octet-stream')
+                    .set('APIKEY', 'ea22375e-7836-43ba-9b85-5150c0a973e6')
+                    .send(formData)
+                    .timeout(timeout)
+                    .end((err, res) => {
+                        if (!err) resolve(res)
+                        else reject(err)
+                    })
+            }else{
+                userManager.signinSilent()
+            }
+        }).catch(error => {
+            reject(error)
+        })
+
     })
 }
 
 export const put = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
-    superagent.put(url)
-        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json')
-        .send(data)
-        .timeout(timeout)
-        .end(handleResponse(callBack, errorCallBack, endCallBack))
+
+    userManager.getUser().then((user: User | null) => {
+        if(user){
+            superagent.put(url)
+                .set('Authorization', `Bearer ${user.access_token}`)
+                .set('Content-Type', 'application/json')
+                .set('Accept', 'application/json')
+                .send(data)
+                .timeout(timeout)
+                .end(handleResponse(callBack, errorCallBack, endCallBack))
+        }else{
+            userManager.signinSilent()
+        }
+    }).catch(error => {
+        Toast.error(error.message)
+    })
+
 }
 
 export const putAsync = (url: string, data: any) => {
     return new Promise((resolve, reject) => {
-        return superagent.put(url)
-            .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
-            .send(data)
-            .timeout(timeout)
-            .end((err, res) => {
-                if (!err) resolve(res)
-                else reject(err)
-            })
+
+        userManager.getUser().then((user: User | null) => {
+            if(user){
+                return superagent.put(url)
+                    .set('Authorization', `Bearer ${user.access_token}`)
+                    .set('Accept', 'application/json')
+                    .set('Content-Type', 'application/json')
+                    .send(data)
+                    .timeout(timeout)
+                    .end((err, res) => {
+                        if (!err) resolve(res)
+                        else reject(err)
+                    })
+            }else{
+                userManager.signinSilent()
+            }
+        }).catch(error => {
+            Toast.error(error.message)
+        })
+
     })
 }
 
-export const del = (url: string, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
-    superagent.delete(url)
-        .set('Authorization', `Bearer ${ACCESS_TOKEN}`)
-        .set('Accept', 'application/json')
-        .timeout(timeout)
-        .end(handleResponse(callBack, errorCallBack, endCallBack))
+export const deleteAsync = (url: string, params: any) => {
+    return new Promise((resolve, reject) => {
+
+        userManager.getUser().then((user: User | null) => {
+            if(user){
+                return superagent.delete(url)
+                    .set('Authorization', `Bearer ${user.access_token}`)
+                    .set('Accept', 'application/json')
+                    .set('Content-Type', 'application/json')
+                    .query(params)
+                    .timeout(timeout)
+                    .end((err, res) => {
+                        if (!err) resolve(res)
+                        else reject(err)
+                    })
+            }else{
+                userManager.signinSilent()
+            }
+        }).catch(error => {
+            Toast.error(error.message)
+        })
+
+    })
 }
+
+export const del = (url: string,  callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
+
+    userManager.getUser().then((user: User | null) => {
+        if(user){
+            superagent.delete(url)
+                .set('Authorization', `Bearer ${user.access_token}`)
+                .set('Accept', 'application/json')
+                .timeout(timeout)
+                .end(handleResponse(callBack, errorCallBack, endCallBack))
+        }else{
+            userManager.signinSilent()
+        }
+    }).catch(error => {
+        Toast.error(error.message)
+    })
+
+
+}
+

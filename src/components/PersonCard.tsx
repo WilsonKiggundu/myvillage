@@ -1,12 +1,5 @@
 import React from "react";
-import {
-    Avatar,
-    Card,
-    CardActionArea,
-    CardActions,
-    CardContent,
-    CardMedia
-} from "@material-ui/core";
+import {Avatar, Card, CardActions, CardContent} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
 interface IProps {

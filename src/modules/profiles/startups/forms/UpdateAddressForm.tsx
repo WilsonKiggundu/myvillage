@@ -7,16 +7,14 @@ import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
-import {makeUrl, post} from "../../../../utils/ajax";
-import {Endpoints} from "../../../../services/Endpoints";
-import Toast from "../../../../utils/Toast";
 import {IAddress} from "../../../../interfaces/IAddress";
 import {IStartup} from "../../../../interfaces/IStartup";
-import XDateInput from "../../../../components/inputs/XDateInput";
-import {addAddress, addProduct, updateProduct} from "../startupSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 import XSelectInput from "../../../../components/inputs/XSelectInput";
 import {Options} from "../../../../utils/options";
+import {countries} from "../../../../data/Countries";
+import {ICountry} from "../../../../interfaces/ICountry";
+import {addStartupAddress, editStartupAddress} from "../redux/startupsActions";
 
 interface IProps {
     onClose?: () => any
@@ -27,9 +25,7 @@ interface IProps {
 const schema = yup.object().shape(
     {
         type: reqString,
-        country: reqString,
-        city: reqString,
-        addressLine: reqString
+        country: reqString
     }
 )
 
@@ -41,8 +37,7 @@ const UpdateAddressForm = ({onClose, address, profile}: IProps) => {
     const handleSubmit = async (values: IAddress, actions: FormikHelpers<any>) => {
         try {
             values.businessId = profile.id
-            const resultAction: any = await dispatch(addAddress(values))
-            unwrapResult(resultAction)
+            dispatch(address?.id ? editStartupAddress(values) : addStartupAddress(values))
         } catch (e) {
 
         } finally {
@@ -53,6 +48,7 @@ const UpdateAddressForm = ({onClose, address, profile}: IProps) => {
 
     return (
         <XForm
+            debug={false}
             schema={schema}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
@@ -67,16 +63,20 @@ const UpdateAddressForm = ({onClose, address, profile}: IProps) => {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <XTextInput label={"Postal code"} name={"postalCode"} />
+                    <XTextInput label={"Postal code"} name={"postalCode"}/>
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
-                    <XTextInput label={"Country"}
-                                name={"country"}
-                                helperText={"Ex. Uganda, Kenya, Nigeria"} />
+                <Grid item xs={12} sm={6}>
+                    <XSelectInput
+                        multiple={false}
+                        helperText={"Ex. Uganda, Kenya, Remote"}
+                        name={"country"}
+                        label={"Country"}
+                        options={countries.map((c: ICountry) => ({id: c.label, name: c.label}))}
+                    />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={6}>
                     <XTextInput
                         label={"City"}
                         name={"city"}
@@ -84,12 +84,12 @@ const UpdateAddressForm = ({onClose, address, profile}: IProps) => {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
-                    <XTextInput
-                        label={"Region"}
-                        name={"region"}
-                    />
-                </Grid>
+                {/*<Grid item xs={12} sm={4}>*/}
+                {/*    <XTextInput*/}
+                {/*        label={"Region"}*/}
+                {/*        name={"region"}*/}
+                {/*    />*/}
+                {/*</Grid>*/}
 
                 <Grid item xs={12} sm={6}>
                     <XTextInput

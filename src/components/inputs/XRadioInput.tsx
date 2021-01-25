@@ -9,7 +9,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import {hasValue, IOption} from "./inputHelpers";
 
 
-
 interface IProps {
     label: string
     name: string

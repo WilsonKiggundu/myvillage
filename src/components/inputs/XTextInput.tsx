@@ -18,7 +18,7 @@ const XTextInput = ({name, margin = 'normal', ...props}: TextFieldProps & IProps
             margin={margin}
             fullWidth
             error={showError}
-            helperText={showError && error || props.helperText}
+            helperText={(showError && error) || props.helperText}
             value={field.value || ""}
             autoComplete="off"
         />

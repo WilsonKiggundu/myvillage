@@ -1,30 +1,38 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
-import {createLogger} from 'redux-logger'
+import {applyMiddleware, createStore} from "redux";
+import createSagaMiddleware from "redux-saga"
+import {loadUser} from "redux-oidc";
 import thunk from 'redux-thunk'
-import core from "./coreReducer";
-import eventsReducer from "../modules/events/eventSlice";
-import postsReducer from "../modules/posts/postsSlice"
-import jobsReducer from "../modules/jobs/jobsSlice";
-import peopleReducer from "../modules/profiles/people/peopleSlice"
-import personReducer from "../modules/profiles/people/personSlice";
-import startupReducer from "../modules/profiles/startups/startupSlice";
-import startupsReducer from "../modules/profiles/startups/startupsSlice";
+import {createLogger} from 'redux-logger'
+import userManager from "../utils/userManager";
+import {rootReducer} from "./rootReducer";
+import rootSaga from "./rootSaga";
 
+const middlewares = [];
 const myWindow = window as any;
 const toolsName = '__REDUX_DEVTOOLS_EXTENSION__';
 const devTools: any = myWindow[toolsName] ? myWindow[toolsName]() : (f: any) => f;
-const reducers: any = {
-    core,
-    events: eventsReducer,
-    posts:  postsReducer,
-    jobs: jobsReducer,
-    people: peopleReducer,
-    person: personReducer,
-    startup: startupReducer,
-    startups: startupsReducer
-};
-const middleware = applyMiddleware(createLogger(), thunk);
-const store: any = middleware(devTools(createStore))(combineReducers(reducers));
+
+if (process.env.NODE_ENV === 'development') {
+    const logger = createLogger({collapsed: true});
+    middlewares.push(logger)
+}
+
+const sagaMiddleware = createSagaMiddleware();
+middlewares.push(sagaMiddleware)
+// middlewares.push(thunk)
+
+const middleware = applyMiddleware(createLogger({
+    predicate: ((getState, action) => false)
+}), ...middlewares);
+
+const store: any = middleware(devTools(createStore))(rootReducer)
+
+sagaMiddleware.run(rootSaga)
+loadUser(store, userManager).then((user) => {
+
+})
 
 export default store
+
+
 

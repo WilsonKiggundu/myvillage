@@ -1,6 +1,6 @@
 let profileBaseUrl, eventsBaseUrl, jobsBaseUrl, cdnBaseUrl
 
-switch (process.env.REACT_APP_ENV){
+switch (process.env.REACT_APP_ENV) {
     case "test":
         profileBaseUrl = "https://profiles-test.innovationvillage.co.ug"
         eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
@@ -52,6 +52,7 @@ export const Endpoints = {
         article: '/api/blog/articles',
         post: '/api/blog/posts',
         comment: '/api/blog/comments',
+        likes: '/api/blog/posts/likes',
     },
 
     investor: {
@@ -67,14 +68,17 @@ export const Endpoints = {
         award: "/api/person/awards",
         category: "/api/person/categories",
         interest: "/api/person/interests",
-        skill: "/api/person/skills"
+        skill: "/api/person/skills",
+        connection: "/api/person/connections",
     },
 
     contact: "/api/contact",
 
     lookup: {
         category: "/api/lookup/categories",
+        school: "/api/lookup/schools",
         interest: "/api/lookup/interests",
+        skill: "/api/lookup/skills",
         need: "/api/lookup/needs",
         upload: "/api/lookup/uploads",
     },

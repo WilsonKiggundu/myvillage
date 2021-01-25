@@ -1,11 +1,9 @@
 import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import * as yup from "yup"
 import {reqString} from "../../../../../data/validations";
-import {useDispatch} from "react-redux";
-import {get, makeUrl, put} from "../../../../../utils/ajax";
-import Toast from "../../../../../utils/Toast";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
@@ -15,13 +13,8 @@ import XRadioInput from "../../../../../components/inputs/XRadioInput";
 import {Options} from "../../../../../utils/options";
 import XDateInput from "../../../../../components/inputs/XDateInput";
 import {IPerson} from "../../IPerson";
-import {Endpoints} from "../../../../../services/Endpoints";
-import XSelectInput from "../../../../../components/inputs/XSelectInput";
-import {IOption} from "../../../../../components/inputs/inputHelpers";
-import {addCategory, getCategories, updatePerson} from "../../personSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
-import {on} from "cluster";
-import {value} from "jsonpath";
+import {userSelector} from "../../../../../data/coreSelectors";
+import {editPerson} from "../../redux/peopleActions";
 
 interface IProps {
     person: IPerson
@@ -37,45 +30,25 @@ const schema = yup.object().shape(
 )
 
 
-
-const UpdateProfileForm = ({done, person, onClose}: IProps) => {
+const UpdateProfileForm = ({person, onClose}: IProps) => {
     const dispatch = useDispatch()
 
+    const user = useSelector(userSelector)
+
     const initialValues = {
-        firstname: person.firstname,
-        lastname: person.lastname,
+        firstname: user.profile.given_name,
+        lastname: user.profile.family_name,
         gender: person.gender,
         bio: person.bio,
-        dateOfBirth: person.dateOfBirth,
-        categories: person.categories?.map((category: any) => category.categoryId)
+        dateOfBirth: person.dateOfBirth
     }
 
-    const [categories, setCategories] = useState<IOption[]>([]);
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
+        values.id = user.profile.sub
+        dispatch(editPerson(values))
 
-    useEffect(() => {
-        const url = makeUrl("Profiles", Endpoints.lookup.category)
-        get(url, {}, (categories) => {
-            if (categories) {
-                setCategories(categories)
-            }
-        })
-
-    }, [setCategories])
-
-    const handleSubmit = async (values: IPerson, actions: FormikHelpers<any>) => {
-        values.id = person.id
-        values.avatar = person.avatar
-        values.coverPhoto= person.coverPhoto
-
-        try {
-            const resultAction: any = await dispatch(updatePerson(values))
-            await dispatch(getCategories(person.id))
-            unwrapResult(resultAction)
-        } catch (e) {
-
-        }
-
-        if(onClose) onClose()
+        actions.resetForm()
+        if (onClose) onClose()
     }
 
     return (
@@ -86,6 +59,7 @@ const UpdateProfileForm = ({done, person, onClose}: IProps) => {
             <Grid spacing={2} container>
                 <Grid item xs={12} sm={6}>
                     <XTextInput
+                        disabled
                         name="firstname"
                         label={"First name"}
                         type={"text"}
@@ -96,21 +70,12 @@ const UpdateProfileForm = ({done, person, onClose}: IProps) => {
 
                 <Grid item xs={12} sm={6}>
                     <XTextInput
+                        disabled
                         name="lastname"
                         label={"Last name"}
                         type={"text"}
                         variant={"standard"}
                         margin={"none"}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <XSelectInput
-                        options={categories}
-                        label={"Category"}
-                        multiple={true}
-                        helperText={"Select all that apply to you"}
-                        name={"categories"}
                     />
                 </Grid>
 
@@ -124,7 +89,7 @@ const UpdateProfileForm = ({done, person, onClose}: IProps) => {
                     </Box>
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <XDateInput
                         disableFuture={true}
                         label={"Date of birth"}

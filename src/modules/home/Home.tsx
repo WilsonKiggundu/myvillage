@@ -1,20 +1,11 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import BusinessIcon from '@material-ui/icons/Business';
-import WorkIcon from "@material-ui/icons/Work";
-import AuthService from "../../services/AuthService";
-import palette from "../../theme/palette";
 import {RedirectToUrl} from "../../routes/RedirectToUrl";
 import {Urls} from "../../routes/Urls";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {createStyles, Theme, useTheme} from "@material-ui/core";
-import {Wrapper} from "@material-ui/pickers/wrappers/Wrapper";
+import {useTheme} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import {Stats} from "../../components/Stats";
-import {PeopleOutline} from "@material-ui/icons";
 import {homeStyles} from "../../theme/styles";
 import Box from "@material-ui/core/Box";
 // import {ReactComponent as Logo} from "../../assets/images/myvillage-logo.svg"
@@ -22,6 +13,8 @@ import Logo from "../../assets/images/myvillage-logo.png"
 import BulbsBg from "../../assets/images/bulbs-bg.png"
 import HandBg from "../../assets/images/hand-bg.png"
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {useSelector} from "react-redux";
+import userManager from "../../utils/userManager";
 
 interface IStat {
     title: string
@@ -32,14 +25,20 @@ interface IStat {
 function Home() {
 
     const classes = homeStyles();
-    const authService = new AuthService();
+    const {user} = useSelector((state: any) => state.oidc)
 
-    if (authService.isAuthenticated()) {
-        RedirectToUrl(Urls.feed)
+    const isAuthenticated = user != null
+
+    if (isAuthenticated) {
+        window.location.replace(Urls.feed)
     }
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const handleSignup = () => {
+        window.location.replace(`${process.env.REACT_APP_AUTH_URL}/account/signup?returnUrl=${process.env.REACT_APP_SIGNUP_REDIRECT_URL}`)
+    }
 
     return (
         <div className={classes.root}>
@@ -49,22 +48,22 @@ function Home() {
                         <Grid className={classes.container} container>
                             <Grid item xs={12} md={8}>
                                 {/*<Logo className={classes.logo}/>*/}
-                                <img src={Logo} className={classes.logo}/>
+                                <img alt={"logo"} src={Logo} className={classes.logo}/>
 
                                 <Typography className={classes.headline} variant={"body2"}>
                                     Grow your network. Expand your thinking. <br/>Exchange ideas. Be inspired
                                 </Typography>
 
                                 <Typography className={classes.subHeadline} component={"div"}>
-                                    Investors | Startups | Members | Job Opportunities
+                                    Startups | Community | Opportunities | Events
                                 </Typography>
 
                             </Grid>
-                            <Grid className={classes.buttons} item xs={12} md={4}>
+                            <Grid className={classes.buttons} item xs={12} sm={6} md={4}>
                                 <Box mb={2}>
                                     <Button variant="contained"
                                             size={"large"}
-                                            onClick={authService.signupRedirect}
+                                            onClick={handleSignup}
                                             className={classes.button}
                                             color="primary">
                                         Join the community
@@ -73,7 +72,7 @@ function Home() {
                                 <Box mb={2}>
                                     <Button variant="outlined"
                                             size={"large"}
-                                            onClick={authService.signinRedirect}
+                                            onClick={() => userManager.signinRedirect()}
                                             className={classes.button}
                                             color="primary">
                                         Sign in
@@ -89,12 +88,11 @@ function Home() {
                 <Grid item xs={12}>
                     <Container maxWidth={"md"}>
                         <Grid item xs={12} md={8}>
-                            <Typography style={{textTransform: "uppercase"}} className={classes.title}>
-                                <strong>Don't be left out again</strong>
+                            <Typography className={classes.title}>
+                                <strong>Africa's Entrepreneurs meet here.</strong>
                             </Typography>
                             <Typography className={classes.subtitle}>
-                                We are building a vibrant community. A lot is always happening from developer
-                                meetups to founder labs.
+                                We are building a vibrant community.
                             </Typography>
                         </Grid>
                         <Grid item xs={12} md={4}>
@@ -102,9 +100,17 @@ function Home() {
                                 <>
                                     <img style={{position: "absolute", maxHeight: 600, width: 'auto', top: 0, left: 0}}
                                          className={classes.img}
+                                         alt={"bulbs-bg"}
                                          src={BulbsBg}/>
                                     <img className={classes.img}
-                                         style={{position: "absolute", maxHeight: 450, width: 'auto', bottom: -20, right: 0}}
+                                         alt={"hand-bg"}
+                                         style={{
+                                             position: "absolute",
+                                             maxHeight: 450,
+                                             width: 'auto',
+                                             bottom: -20,
+                                             right: 0
+                                         }}
                                          src={HandBg}/>
                                 </>
                             ) : ""}

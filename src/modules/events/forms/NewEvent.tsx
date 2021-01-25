@@ -1,7 +1,7 @@
 import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import {reqDate, reqString} from "../../../data/validations";
 import XForm from "../../../components/forms/XForm";
@@ -11,9 +11,7 @@ import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
 import XDateInput from "../../../components/inputs/XDateInput";
 import XTimeInput from "../../../components/inputs/XTimeInput";
 import {addHours, format} from "date-fns";
-import XCheckBoxInput from "../../../components/inputs/XCheckBoxInput";
 import XSelectInput from "../../../components/inputs/XSelectInput";
-import {IOption} from "../../../components/inputs/inputHelpers";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
@@ -24,17 +22,12 @@ import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
 import {Options} from "../../../utils/options";
 import {IEvent} from "../../../interfaces/IEvent";
-import {makeUrl, post} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
-import Toast from "../../../utils/Toast";
-import {useHistory} from "react-router-dom";
-import {addEventAction} from "../../../data/customActions";
-import {addEvent} from "../eventSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
 import {IPerson} from "../../profiles/people/IPerson";
 import {getProfile} from "../../../services/User";
-import {IPost} from "../../../interfaces/IPost";
-import {addPost} from "../../posts/postsSlice";
+import userManager from "../../../utils/userManager";
+import {userSelector} from "../../../data/coreSelectors";
+import {addEvent} from "../redux/eventsActions";
+import Toast from "../../../utils/Toast";
 
 interface IProps {
     done?: () => any
@@ -58,61 +51,37 @@ const initialValues = {
 }
 
 const NewEvent = ({done, onClose}: IProps) => {
-    const history = useHistory()
     const dispatch = useDispatch()
-
-    const repeatIntervals: IOption[] = [
-        {id: 0, name: "Doesn't repeat"},
-        {id: 1, name: "Daily"},
-        {id: 2, name: "Weekly"},
-        {id: 3, name: "Monthly"},
-        {id: 4, name: "Annually"},
-        {id: 5, name: "Every weekday"},
-    ]
-
-    function toggleDuration() {
-
-    }
+    const user = useSelector(userSelector)
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
         const startDateTime = format(new Date(values.startTime), "yyyy-MM-dd HH:mm:ss")
         const endDateTime = format(new Date(values.endTime), "yyyy-MM-dd HH:mm:ss")
-        const user: IPerson = getProfile()
 
         const event: IEvent = {
             conferenceUrl: values.conferenceUrl,
             details: values.details,
-            interval: 0, // this is hardcoded
-            frequency: 2, // hardcoded
+            interval: 0,
+            frequency: 2,
             title: values.title,
             type: values.type,
             location: values.location,
             startDateTime: startDateTime,
             endDateTime: endDateTime,
             days: [],
-            createdBy: user.id
+            createdBy: user.profile.sub
         }
 
         try {
-            await dispatch(addEvent(event))
+            dispatch(addEvent(event))
 
-            // const post = {
-            //     authorId: user.id,
-            //     type: 5, // 5 = Event
-            //     details: `#Upcoming Event\n\n${event.title}\n\n${event.details}`,
-            //     dateCreated: format(new Date(), "yyyy-MM-dd HH:mm:ss")
+            // actions.resetForm()
+            // if (onClose) {
+            //     onClose()
             // }
-            //
-            // const resultAction: any = await dispatch(addPost(post))
-            // unwrapResult(resultAction)
-        }catch (e) {
-
-        } finally {
-            actions.resetForm()
-            if (onClose) {
-                onClose()
-            }
+        } catch (e) {
+            Toast.error(e.message)
         }
     }
 
@@ -185,26 +154,6 @@ const NewEvent = ({done, onClose}: IProps) => {
                         </Grid>
                     </Grid>
 
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <XCheckBoxInput
-                                onChange={toggleDuration}
-                                name={"allDay"}
-                                label={"All day"}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    {/*<Grid container>*/}
-                    {/*    <Grid item xs={12} sm={6}>*/}
-                    {/*        <XSelectInput*/}
-                    {/*            variant={"standard"}*/}
-                    {/*            name={"frequency"}*/}
-                    {/*            label={"Repeat interval"}*/}
-                    {/*            options={repeatIntervals}*/}
-                    {/*        />*/}
-                    {/*    </Grid>*/}
-                    {/*</Grid>*/}
                 </Grid>
 
             </Grid>
@@ -236,7 +185,7 @@ const NewEvent = ({done, onClose}: IProps) => {
                 </Grid>
 
                 <Grid item xs={11}>
-                    <XFileInput name={"attachments"} />
+                    <XFileInput name={"attachments"}/>
                 </Grid>
 
             </Grid>
@@ -245,7 +194,7 @@ const NewEvent = ({done, onClose}: IProps) => {
 
                 <Grid item xs={1}>
                     <Box mt={5}>
-                        <AddLocationIcon style={{color: red[700]}} />
+                        <AddLocationIcon style={{color: red[700]}}/>
                     </Box>
                 </Grid>
 
@@ -264,7 +213,7 @@ const NewEvent = ({done, onClose}: IProps) => {
 
                 <Grid item xs={1}>
                     <Box mt={5}>
-                        <VideoCallIcon style={{color: green[700]}} />
+                        <VideoCallIcon style={{color: green[700]}}/>
                     </Box>
                 </Grid>
 

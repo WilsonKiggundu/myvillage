@@ -1,20 +1,15 @@
-import React, {createRef, useEffect, useState} from "react"
+import React, {createRef, useEffect} from "react"
 import {Container} from "@material-ui/core";
-import Quill from "quill";
-
 import XForm from "../../components/forms/XForm";
 import Grid from "@material-ui/core/Grid";
 import XTextInput from "../../components/inputs/XTextInput";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
-import "quill/dist/quill.core.css"
-import "quill/dist/quill.snow.css"
-
 import Box from "@material-ui/core/Box";
 import * as yup from "yup";
 import {reqString} from "../../data/validations";
-import {FormikHelpers, Field} from "formik";
+import {FormikHelpers} from "formik";
 import XTextAreaInput from "../../components/inputs/XTextAreaInput";
 
 interface IProps {
@@ -33,47 +28,44 @@ const initialValues = {
 
 const NewArticle = ({placeholder}: IProps) => {
 
-    const [content, setContent] = useState<any>(null)
-
-    let editor: Quill | undefined = undefined
+    // let editor: Quill | undefined = undefined
     const container = createRef<any>()
 
     useEffect(() => {
 
-        const toolbarOptions = [
-            [{'header': [1, 2, 3, 4, 5, 6, false]}],
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block'],
+        // const toolbarOptions = [
+        //     [{'header': [1, 2, 3, 4, 5, 6, false]}],
+        //     ['bold', 'italic', 'underline', 'strike'],
+        //     ['blockquote', 'code-block'],
+        //
+        //     [{'list': 'ordered'}, {'list': 'bullet'}],
+        //     [{'script': 'sub'}, {'script': 'super'}],
+        //     [{'indent': '-1'}, {'indent': '+1'}],
+        //
+        //     [{'align': []}],
+        // ];
 
-            [{'list': 'ordered'}, {'list': 'bullet'}],
-            [{'script': 'sub'}, {'script': 'super'}],
-            [{'indent': '-1'}, {'indent': '+1'}],
-
-            [{'align': []}],
-        ];
-
-        editor = new Quill(container.current, {
-            theme: 'snow',
-            placeholder: placeholder,
-            readOnly: false,
-            formats: [
-                'header', 'underline', 'strike', 'blockquote', 'code-block',
-                'bold', 'italic', 'list', 'script', 'indent', 'align'
-            ],
-            modules: {
-                toolbar: toolbarOptions
-            }
-        })
-
-        const delta: any = {
-            ops: []
-        }
-
-        editor.setContents(delta)
+        // editor = new Quill(container.current, {
+        //     theme: 'snow',
+        //     placeholder: placeholder,
+        //     readOnly: false,
+        //     formats: [
+        //         'header', 'underline', 'strike', 'blockquote', 'code-block',
+        //         'bold', 'italic', 'list', 'script', 'indent', 'align'
+        //     ],
+        //     modules: {
+        //         toolbar: toolbarOptions
+        //     }
+        // })
+        //
+        // const delta: any = {
+        //     ops: []
+        // }
+        //
+        // editor.setContents(delta)
     })
 
     const handleSubmit = (values: any, actions: FormikHelpers<any>) => {
-        const toSave = {}
 
         // post('', toSave,
         //     (data) => {
@@ -113,7 +105,11 @@ const NewArticle = ({placeholder}: IProps) => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Box mt={2}>
-                                    <div ref={container}/>
+                                    <XTextAreaInput
+                                        name={"details"}
+                                        label={"Details"}
+                                        placeholder={"Start typing here..."}
+                                        />
                                 </Box>
                             </Grid>
                         </Grid>

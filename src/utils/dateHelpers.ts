@@ -1,9 +1,11 @@
-import {format, getISOWeek, getMonth, getYear, isValid, parseISO} from "date-fns";
+import {format, formatDistanceToNow, getISOWeek, getMonth, getYear, isValid, parseISO} from "date-fns";
 
 export const dateFormat = 'dd.MM.yyyy'
 export const dateTimeFormat = 'dd.MM.yyyy HH:mm'
 export const standardDateTimeFormat = 'dd-MM-yyyy HH:mm'
 export const standardDateFormat = 'dd-MM-yyyy'
+const longDateFormat = 'E, MMMM Mo, yyyy'
+
 export const printDateTime = (value: any): string => {
     if (typeof value === 'string') {
         return printDateTime(strToDate(value))
@@ -16,7 +18,7 @@ export const printDateTime = (value: any): string => {
 
 export const isoDateString = (value: any): string => {
     if (typeof value === 'string') {
-        return strToDate(value)?.toISOString()||""
+        return strToDate(value)?.toISOString() || ""
     }
     if (isValid(value))
         return value?.toISOString()
@@ -113,7 +115,7 @@ export const strToDate = (str: string): Date | null => {
     }
 }
 
-export const isToday = (str: string) : boolean => {
+export const isToday = (str: string): boolean => {
     const today = new Date()
     const date = new Date(str)
 
@@ -122,20 +124,27 @@ export const isToday = (str: string) : boolean => {
         date.getFullYear() === today.getFullYear()
 }
 
-export const isThisWeek = (str: string) : boolean => {
+export const isThisWeek = (str: string): boolean => {
     const today = new Date()
     const date = new Date(str)
     return getISOWeek(today) === getISOWeek(date)
 }
 
-export const isThisMonth = (str: string) : boolean => {
+export const isThisMonth = (str: string): boolean => {
     const today = new Date()
     const date = new Date(str)
     return getMonth(today) === getMonth(date)
 }
 
-export const isThisYear = (str: string) : boolean => {
+export const isThisYear = (str: string): boolean => {
     const today = new Date()
     const date = new Date(str)
     return getYear(today) === getYear(date)
+}
+
+export const longDate = (date: any): string => {
+    return format(Date.parse(date), longDateFormat)
+}
+export const timeAgo = (date: any): string => {
+    return formatDistanceToNow(Date.parse(date), { includeSeconds: true, addSuffix: true })
 }

@@ -9,14 +9,14 @@ import XTextAreaInput from "./XTextAreaInput";
 
 export interface IOption {
     name: string
-    id: any
+    id: any | undefined
 }
 
 export const toOptions = (data: string[]): IOption[] => {
     return data.map(it => ({name: it, id: it}))
 }
 
-export const comboParser = ({id, name}: any):IOption => ({id, name})
+export const comboParser = ({id, name}: any): IOption => ({id, name})
 
 
 export const hasValue = (text: any) => {

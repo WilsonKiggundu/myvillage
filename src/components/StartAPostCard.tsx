@@ -7,44 +7,28 @@ import Button from "@material-ui/core/Button";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import EventIcon from "@material-ui/icons/Event";
-import DescriptionIcon from "@material-ui/icons/Description";
 import Card from "@material-ui/core/Card";
 import React, {useState} from "react";
 import {globalStyles} from "../theme/styles";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import XDialog from "./dialogs/XDialog";
 import UploadFile from "../modules/posts/forms/UploadFile";
 import NewPost from "../modules/posts/forms/NewPost";
 import NewEvent from "../modules/events/forms/NewEvent";
-import {Urls} from "../routes/Urls";
+import grey from "@material-ui/core/colors/grey";
 
 interface IProps {
     placeholder: string
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        previewContainer: {
-            margin: 5,
-            width: '100%'
-        },
-        previewItem: {}
-    }),
-);
-
-type DialogType = 'uploadPhoto' | 'uploadVideo'
-
 const StartAPostCard = (props: IProps) => {
-    const styles = useStyles()
     const classes = globalStyles()
     const [openPhotoDialog, setOpenPhotoDialog] = useState(false);
     const [openVideoDialog, setOpenVideoDialog] = useState(false);
     const [openNewPostDialog, setOpenNewPostDialog] = useState(false);
     const [openNewEventDialog, setOpenNewEventDialog] = useState(false);
 
-
     return (
-        <Box mb={2}>
+        <Box mb={1}>
             <Card>
                 <CardContent>
                     <Typography
@@ -53,7 +37,8 @@ const StartAPostCard = (props: IProps) => {
                         style={{
                             textAlign: 'left',
                             padding: 25,
-                            borderRadius: 5
+                            borderRadius: 5,
+                            backgroundColor: grey[100]
                         }}
                         className={clsx(classes.fullWidth, classes.clickable)}>
                         {props.placeholder}
@@ -63,12 +48,12 @@ const StartAPostCard = (props: IProps) => {
                         title={"New Post"}
                         open={openNewPostDialog}
                         onClose={() => setOpenNewPostDialog(false)}>
-                        <NewPost onClose={() => setOpenNewPostDialog(false)} />
+                        <NewPost onClose={() => setOpenNewPostDialog(false)}/>
                     </XDialog>
 
                     <Box mt={2}>
                         <Grid container spacing={2}>
-                            <Grid className={classes.textCenter} item xs={6} sm={4}>
+                            <Grid className={classes.textCenter} item xs={4} sm={4}>
                                 <Button
                                     onClick={() => setOpenPhotoDialog(true)}
                                     style={{padding: 5}}
@@ -81,13 +66,14 @@ const StartAPostCard = (props: IProps) => {
                                     title={"Upload photos"}
                                     open={openPhotoDialog}>
                                     <UploadFile
+                                        addToFeed={true}
                                         filesLimit={10}
                                         onClose={() => setOpenPhotoDialog(false)}
                                         acceptedTypes={['image/jpeg', 'image/png', 'image/bmp']}/>
                                 </XDialog>
                             </Grid>
 
-                            <Grid className={classes.textCenter} item xs={6} sm={4}>
+                            <Grid className={classes.textCenter} item xs={4} sm={4}>
                                 <Button
                                     onClick={() => setOpenVideoDialog(true)}
                                     size={"large"}
@@ -101,13 +87,14 @@ const StartAPostCard = (props: IProps) => {
                                     title={"Upload videos"}
                                     open={openVideoDialog}>
                                     <UploadFile
+                                        addToFeed={true}
                                         filesLimit={4}
                                         acceptedTypes={['video/*']}
                                         onClose={() => setOpenVideoDialog(false)}/>
                                 </XDialog>
                             </Grid>
 
-                            <Grid className={classes.textCenter} item xs={6} sm={4}>
+                            <Grid className={classes.textCenter} item xs={4} sm={4}>
                                 <Button
                                     onClick={() => setOpenNewEventDialog(true)}
                                     style={{padding: 5}}
@@ -119,7 +106,7 @@ const StartAPostCard = (props: IProps) => {
                                     maxWidth={"md"}
                                     open={openNewEventDialog}
                                     onClose={() => setOpenNewEventDialog(false)}>
-                                    <NewEvent onClose={() => setOpenNewEventDialog(false)} />
+                                    <NewEvent onClose={() => setOpenNewEventDialog(false)}/>
                                 </XDialog>
                             </Grid>
 

@@ -21,7 +21,7 @@ export default function ({name, ...props}: ButtonProps & IProps) {
 
     return (
         <Button
-            type={"submit"}
+            type={"button"}
             className={classes.flat}
             {...props}
             onClick={props.onClick}

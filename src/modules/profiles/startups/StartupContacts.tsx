@@ -1,91 +1,147 @@
-import React, {Fragment, useState} from 'react';
+import React, {useState} from 'react';
 import Typography from '@material-ui/core/Typography';
-import Button from "@material-ui/core/Button";
-import {globalStyles} from "../../../theme/styles"
-import clsx from "clsx";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import grey from "@material-ui/core/colors/grey";
-import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {IStartup} from "../../../interfaces/IStartup";
-import {IAward} from "../../../interfaces/IAward";
 import XDialog from "../../../components/dialogs/XDialog";
-import UpdateAwardForm from "./forms/UpdateAwardForm";
+import {CardHeader} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
+import UpdateContactForm from "./forms/UpdateContactForm";
+import {IContact} from "../../../interfaces/IContact";
+import {getContactCategoryLabel, getContactTypeLabel} from "../../../utils/enumHelpers";
+import {useDispatch, useSelector} from "react-redux";
+import {userSelector} from "../../../data/coreSelectors";
+import {deleteStartupAddress, deleteStartupContact} from "./redux/startupsActions";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import red from "@material-ui/core/colors/red";
+import Chip from "@material-ui/core/Chip";
 
 interface IProps {
-    profile: IStartup
-    canEdit: boolean
+    startup: IStartup
 }
 
-export default function StartupContacts({canEdit, profile}: IProps) {
-    const styles = globalStyles();
-    const [awards, setAwards] = useState<IAward[] | undefined>(undefined)
-    const [openAddAwardDialog, setOpenAddAwardDialog] = useState<boolean>(false)
+export default function StartupContacts({startup}: IProps) {
+
+    const dispatch = useDispatch()
+    const [openDialog, setOpenDialog] = useState<boolean>(false)
+    const [selected, setSelected] = useState<IContact>(Object.create({}))
+    const {contacts} = startup
+
+    const user = useSelector(userSelector)
+    const canEdit = startup.roles?.some((role: any) => role.personId === user?.profile.sub) ?? false
+
+    const handleEdit = (contact: IContact) => {
+        setSelected(contact)
+        setOpenDialog(true)
+    }
 
     return (
         <Box mb={2}>
-            <Typography style={{padding: '15px 0'}}>Awards &amp; Achievements</Typography>
             <Card>
-                <CardContent style={{paddingTop: 25}}>
-                    {awards ?
-                        <Grid spacing={1} container>
-                            {
-                                awards.map((award: any, index: number) => (
-                                    <Fragment key={index}>
-                                        <Grid xs={2} sm={1} item>
-                                            <Avatar variant={"square"}/>
-                                        </Grid>
-                                        <Grid xs={10} sm={11} item>
-                                            <Typography component={"h5"}>
-                                                <strong>{award.awardedBy}</strong>
-                                            </Typography>
-                                            <Typography variant={"body2"}>
-                                                {award.award}
-                                            </Typography>
-                                            <Typography variant={"body2"} style={{color: grey[800]}}>
-                                                <small>{award.date}</small>
-                                            </Typography>
-                                            <Typography style={{color: grey[700]}} variant={"body2"}>
-                                                {award.details}
-                                            </Typography>
-                                            <Divider
-                                                variant={"fullWidth"}
-                                                style={{
-                                                    margin: '15px 0',
-                                                    display: index + 1 < awards.length ? 'block' : 'none'
-                                                }}/>
-                                        </Grid>
-
-                                    </Fragment>
-                                ))
-                            }
-                        </Grid> :
+                <CardHeader
+                    title={"Contacts"}
+                    action={
                         canEdit ? (
-                            <Typography style={{textAlign: "center"}}>
-                                Have you received any awards? <br/>
-                                <Button color="secondary"
-                                        onClick={() => setOpenAddAwardDialog(true)}
-                                        variant="outlined"
-                                        style={{marginLeft: 15, marginTop: 15}}
-                                        className={clsx(styles.noShadow)}>Boost your profile</Button>
-
-                                <XDialog title={"Add an award"}
-                                         open={openAddAwardDialog}
-                                         onClose={() => setOpenAddAwardDialog(false)} >
-                                    <UpdateAwardForm
-                                        onClose={() => setOpenAddAwardDialog(false)}
-                                        profile={profile} />
-                                </XDialog>
-
-                            </Typography>
+                            <IconButton onClick={() => setOpenDialog(true)}>
+                                <AddIcon/>
+                            </IconButton>
                         ) : ""
-
                     }
-                </CardContent>
+                />
             </Card>
+            <Box mt={2} mb={2}>
+                {contacts?.length ? (
+                    <Grid container spacing={2}>
+                        {
+                            contacts.map((item: any, index: number) => (
+                                <Grid style={{position: 'relative'}} item xs={12} md={6} lg={4} key={index}>
+                                    <Card>
+
+                                        <CardHeader title={
+                                            <Grid container justify={"space-between"}>
+                                                <Grid item>
+                                                    <Typography variant={"h6"}>
+                                                        {getContactTypeLabel(item.contact.type)}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Chip size={"small"} label={getContactCategoryLabel(item.contact.category)} />
+                                                </Grid>
+                                            </Grid>
+                                        }
+                                        />
+
+                                        <Divider />
+
+                                        <CardContent>
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={12}>
+                                                    <Typography style={{textAlign: 'left', wordBreak: 'break-all'}}>
+                                                        {item.contact.value}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={12}>
+                                                    <Typography style={{whiteSpace: 'pre-line', fontSize: '0.9em', textAlign: 'left'}}>
+                                                        <em>{item.contact.details}</em>
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+
+
+                                        </CardContent>
+
+                                        <Divider />
+
+                                        <CardContent>
+                                            <Box pt={1}>
+                                                <Grid container justify={"center"} spacing={3}>
+                                                    <ButtonGroup size={"small"}>
+                                                        <Button onClick={() => handleEdit(item.contact)}>
+                                                            <EditIcon/>
+                                                        </Button>
+                                                        <Button onClick={() => dispatch(deleteStartupContact(
+                                                            {
+                                                            belongsTo: item.contact.belongsTo,
+                                                            contactId: item.contact.id
+                                                        }
+                                                        ))}>
+                                                            <DeleteIcon color={"error"}/>
+                                                        </Button>
+                                                    </ButtonGroup>
+                                                </Grid>
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))
+                        }
+                    </Grid>
+                ) : ""}
+
+                {canEdit ? (
+                    <XDialog
+                        title={"Update contacts"}
+                        maxWidth={"sm"}
+                        open={openDialog}
+                        onClose={() => setOpenDialog(false)}>
+                        <UpdateContactForm
+                            contact={selected}
+                            onClose={() => setOpenDialog(false)}
+                            profile={startup}/>
+                    </XDialog>
+                ) : ""}
+            </Box>
         </Box>
     );
 }

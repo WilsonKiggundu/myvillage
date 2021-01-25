@@ -1,6 +1,6 @@
 import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import * as yup from "yup"
 import {reqString} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
@@ -9,88 +9,82 @@ import {IEducation} from "../../../../../interfaces/IEducation";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
 import {IPerson} from "../../IPerson";
-import {makeUrl, post} from "../../../../../utils/ajax";
+import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
+import {getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Endpoints} from "../../../../../services/Endpoints";
-import Toast from "../../../../../utils/Toast";
-import {getProfile} from "../../../../../services/User";
-import {addEducation, addCategory} from "../../personSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
+import {editPersonEducation} from "../../redux/peopleActions";
 
 interface IProps {
     onClose?: () => any
     id?: string
     person: IPerson
-    education?: IEducation
+    education?: any
 }
 
 const schema = yup.object().shape(
     {
-        awardedBy: reqString,
+        school: reqString,
         title: reqString,
         startYear: reqString,
+        endYear: reqString,
         description: reqString
     }
 )
-
 
 const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
     const dispatch = useDispatch()
 
     const initialValues = {...education}
 
-    const handleSubmit = async (values: IEducation, actions: FormikHelpers<any>) => {
+    const [schools, setSchools] = useState<any>([])
+
+    useEffect(() => {
+        (async () => {
+            const lookupUrl = makeUrl("Profiles", Endpoints.lookup.school)
+            const response: any = await getAsync(lookupUrl, {});
+
+            if (response.status === 200) {
+                setSchools(response.body.map((m: any) => ({id: m.id, name: m.name})))
+            }
+
+        })();
+    })
+
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
         values.personId = person.id
-
-        try {
-            const resultAction: any = await dispatch(addEducation(values))
-            unwrapResult(resultAction)
-
-            if (onClose) onClose()
-        } catch (e) {
-
-        }
+        dispatch(editPersonEducation(values))
+        actions.resetForm()
+        if (onClose) onClose()
     }
 
     return (
         <XForm
-            debug={false}
+            debug={true}
             schema={schema}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
                 <Grid item xs={12}>
-                    <XTextInput
-                        label={"School"}
-                        name={"awardedBy"}
-                        helperText={"Ex. Makerere University Kampala. Required"}
-                    />
+                    <XSelectInputCreatable
+                        variant={"standard"}
+                        name={"school"}
+                        allowAddNew={true}
+                        multiple={false}
+                        label={"Select or add a school"}
+                        options={schools}/>
                 </Grid>
                 <Grid item xs={6}>
                     <XTextInput
-                        label={"Degree"}
+                        label={"Degree / Diploma / Certificate"}
                         name={"title"}
-                        helperText={"Ex. BSc. Electrical Engineering. Optional"}
+                        helperText={"Ex. BSc. Electrical Engineering"}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <XTextInput
                         label={"Field of study"}
                         name={"fieldOfStudy"}
-                        helperText={"Electronics and telecommunications. Required"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <XTextInput
-                        label={"Start year"}
-                        name={"startYear"}
-                        helperText={"Ex. 2007. Optional"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <XTextInput
-                        label={"End year (or expected)"}
-                        name={"endYear"}
-                        helperText={"Ex. 2011. Optional"}
+                        helperText={"Ex. Electronics"}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -100,13 +94,18 @@ const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
                         helperText={"Ex. First class honors. Optional"}
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <XTextAreaInput
-                        rows={1}
-                        rowsMax={4}
-                        label={"Activities"}
-                        name={"activities"}
-                        helperText={"Ex. Volleyball, debating club"}
+                <Grid item xs={12} md={3}>
+                    <XTextInput
+                        label={"Start year"}
+                        name={"startYear"}
+                        helperText={"Ex. 2007"}
+                    />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <XTextInput
+                        label={"End year (or expected)"}
+                        name={"endYear"}
+                        helperText={"Ex. 2011"}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -115,6 +114,16 @@ const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
                         rowsMax={12}
                         label={"Description"}
                         name={"description"}
+                    />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <XTextAreaInput
+                        rows={1}
+                        multiline={true}
+                        rowsMax={4}
+                        label={"Activities"}
+                        name={"activities"}
+                        helperText={"Ex. Volleyball, debating club"}
                     />
                 </Grid>
             </Grid>

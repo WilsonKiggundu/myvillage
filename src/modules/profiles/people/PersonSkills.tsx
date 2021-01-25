@@ -6,41 +6,28 @@ import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import EditIcon from "@material-ui/icons/Edit";
-import React, {useEffect, useState} from "react";
-import {getUser} from "../../../services/User";
-import {IOption} from "../../../components/inputs/inputHelpers";
-import {get, makeUrl} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
+import React, {useState} from "react";
 import Chip from "@material-ui/core/Chip";
 import UpdateSkillsForm from "./forms/profile/UpdateSkillsForm";
 import CardHeader from "@material-ui/core/CardHeader";
+import grey from "@material-ui/core/colors/grey";
+import {useDispatch} from "react-redux";
+import {deletePersonSkills} from "./redux/peopleActions";
 
 interface IProps {
     person: IPerson
+    canEdit: boolean
 }
 
-const PersonSkills = ({person}: IProps) => {
+const PersonSkills = ({person, canEdit}: IProps) => {
 
-    const [user, setUser] = useState<any>(null)
-    const [skills, setSkills] = useState<IOption[]>([])
-    const isMyProfile: boolean = person.id === user?.profile?.sub
+    const dispatch = useDispatch()
+    const {skills} = person
     const [openEditSkillsDialog, setOpenEditSkillsDialog] = useState<boolean>(false)
 
-
-    useEffect(() => {
-        const loggedInUser = getUser()
-        setUser(loggedInUser)
-
-        // person skills
-        const url = makeUrl("Profiles", Endpoints.person.skill)
-        get(url, {personId: person.id}, (response) => {
-            if (response) {
-                const skills = response.map((m: any) => ({id: m.id, name: m.details}))
-                setSkills([...skills])
-            }
-        })
-
-    }, [get, person, setSkills])
+    const handleSkillDelete = (skillId: string) => {
+        dispatch(deletePersonSkills({skillId, personId: person.id}))
+    }
 
     return (
         <Box mb={2}>
@@ -48,7 +35,7 @@ const PersonSkills = ({person}: IProps) => {
             <Card>
                 <CardHeader
                     action={
-                        isMyProfile ? (
+                        canEdit ? (
                             <IconButton
                                 onClick={() => setOpenEditSkillsDialog(true)}
                                 aria-label="settings">
@@ -56,21 +43,20 @@ const PersonSkills = ({person}: IProps) => {
                             </IconButton>
                         ) : ""
                     }
-                    title={
-                        isMyProfile ? "Your skills" : `${person.firstname}'s skills`
-                    }
+                    title={"Personal skills"}
                 />
 
-                {skills.length ? (
+                {skills?.length ? (
                     <CardContent>
-                        {skills ? skills.map(i =>
-                            <Chip
-                                label={i.name}
-                                key={i.id}
+                        {skills ? skills.map((item: any) =>
+                            item.skill ? <Chip
+                                label={item.skill.name}
+                                onDelete={() => handleSkillDelete(item.skillId)}
+                                key={item.skillId}
                                 style={{marginRight: 5, marginBottom: 5}}
                                 clickable
-                                color="primary"
-                                variant="outlined"/>) : (
+                                variant="outlined"/> : ""
+                        ) : (
                             <Typography>
                                 Not found
                             </Typography>
@@ -86,7 +72,7 @@ const PersonSkills = ({person}: IProps) => {
                          open={openEditSkillsDialog}>
                     <UpdateSkillsForm
                         onClose={() => setOpenEditSkillsDialog(false)}
-                        skills={skills} person={person}/>
+                        person={person}/>
                 </XDialog>
             </Card>
         </Box>

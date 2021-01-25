@@ -8,19 +8,15 @@ import {DropzoneArea} from "material-ui-dropzone";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {globalStyles} from "../../../theme/styles";
 import XTextInput from "../../../components/inputs/XTextInput";
-import {makeUrl, post, postFile, postFileAsync} from "../../../utils/ajax";
+import {postFileAsync} from "../../../utils/ajax";
 import {IUpload} from "../../../interfaces/IUpload";
 import {Endpoints} from "../../../services/Endpoints";
+import {userSelector} from "../../../data/coreSelectors";
+import {addPost} from "../redux/postsActions";
 import Toast from "../../../utils/Toast";
-import {IPost} from "../../../interfaces/IPost";
-import {getProfile, getUser} from "../../../services/User";
-import {format} from "date-fns";
-import {addPost} from "../postsSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
-import {getPerson, selectPerson, updatePerson} from "../../profiles/people/personSlice";
-import {IPerson} from "../../profiles/people/IPerson";
-import {selectStartup, updateStartup} from "../../profiles/startups/startupSlice";
-import {on} from "cluster";
+import {startupSelector} from "../../profiles/startups/redux/startupsSelectors";
+import {editStartup} from "../../profiles/startups/redux/startupsActions";
+import {editPerson} from "../../profiles/people/redux/peopleActions";
 
 interface IProps {
     done?: () => any
@@ -30,6 +26,7 @@ interface IProps {
     filesLimit?: number
     type?: UploadType
     category?: UploadCategory
+    addToFeed?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -50,35 +47,41 @@ const initialValues = {
     caption: '',
 }
 
-type UploadType = 'coverPhoto' | 'profilePhoto' | 'other'
+export type UploadType = 'coverPhoto' | 'profilePhoto' | 'other'
 type UploadCategory = 'person' | 'startup'
 
-const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClose}: IProps) => {
+const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTypes, onClose}: IProps) => {
     const dispatch = useDispatch()
     const styles = useStyles()
     const classes = globalStyles()
 
-    const person = useSelector(selectPerson)
-    const startup = useSelector(selectStartup)
+    const user = useSelector(userSelector)
+    const startup = useSelector((state) => startupSelector(state, id))
 
     const [files, setFiles] = useState<any>([])
     const captionPlaceholder = filesLimit === 1 ?
         "Say something about the photo..." :
         "Say something about the photo(s)..."
 
+
+    const [loading, setLoading] = useState<boolean>(true)
+
     const handleDragDrop = (files: any) => {
+        if (files.length) {
+            setLoading(false)
+        }
         setFiles(files)
     }
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
         let uploads: IUpload[] = []
+        setLoading(true)
 
         if (files.length) {
 
-            await Promise.all(files.map(async (file: any) => {
+            Promise.all(files.map(async (file: any) => {
                 const {body}: any = await postFileAsync(file)
-
                 const upload: IUpload = {
                     contentType: body.attachment_content_type,
                     dateCreated: body.created_at,
@@ -90,55 +93,44 @@ const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClos
 
                 uploads.push(upload)
 
-                if (type){
-                    const profile: any = category === "person" ? {...person} : {...startup}
+                if (type) {
+                    const profile: any =
+                        category === "person" ?
+                            { userId: user.profile.sub } :
+                            { id: startup?.id }
 
-                    switch (type) {
-                        case "coverPhoto":
-                            profile.coverPhoto = upload.path
-                            break
-                        case "profilePhoto":
-                            profile.avatar = upload.path
-                            break
-                    }
+                    type === "coverPhoto" ?
+                        profile.coverPhoto = upload.path :
+                        profile.avatar = upload.path
 
-                    switch (category){
-                        case "person":
-                            await dispatch(updatePerson(profile))
-                            break
-                        case "startup":
-                            await dispatch(updateStartup(profile))
-                            break
-                    }
+                    category === "person" ?
+                        dispatch(editPerson(profile, type)) :
+                        dispatch(editStartup(profile, type))
 
                 }
 
             }))
+                .then(() => {
+                    if (addToFeed && values.details) {
+                        const post = {
+                            details: values.details ?? "",
+                            authorId: user.profile.sub,
+                            uploads: uploads.length ? JSON.stringify(uploads) : ""
+                        }
 
-            actions.resetForm()
-            if (onClose) onClose()
+                        dispatch(addPost(post))
+                    }
 
-            const user: IPerson = getProfile()
-            const toSave = {
-                details: values.details ?? "",
-                authorId: user.id,
-                uploads: JSON.stringify(uploads),
-            }
-
-            try {
-
-                const resultAction: any = await dispatch(addPost(toSave))
-                unwrapResult(resultAction)
-            }catch (e) {
-
-            } finally {
-                actions.resetForm()
-                if (onClose) {
-                    onClose()
-                }
-            }
+                    actions.resetForm()
+                    if (onClose) onClose()
+                })
+                .catch(error => {
+                    Toast.error(error.message)
+                    setLoading(false)
+                })
+        } else {
+            Toast.error("Please select photos to upload.")
         }
-
 
     }
 
@@ -146,6 +138,7 @@ const UploadFile = ({done, id, type, category, filesLimit, acceptedTypes, onClos
         <XForm
             submitButtonLabel={"Upload"}
             schema={schema}
+            loading={loading}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>

@@ -47,7 +47,7 @@ const XForm = (props: IProps) => {
         validationSchema={props.schema}
         validateOnBlur
         enableReinitialize
-    >{({submitForm, isSubmitting, values, errors, touched, submitCount}) => (
+    >{({ submitForm, isSubmitting, values, errors, touched, submitCount}) => (
         <Form>
             <Grid container spacing={0} className={classes.root}>
                 <Grid item xs={12}>
@@ -86,7 +86,7 @@ const XForm = (props: IProps) => {
                                     color={"primary"}
                                     label={props.submitButtonLabel ?? "Submit"}
                                     onClick={submitForm}
-                                    disabled={isSubmitting || props.loading} />
+                                    disabled={isSubmitting || props.loading}/>
                             </Grid>
                         </Grid>
                     </Box>

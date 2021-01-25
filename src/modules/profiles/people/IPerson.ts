@@ -3,10 +3,12 @@ export interface IPerson {
     firstname: string
     lastname: string
     dateOfBirth?: string
-    categories?: []
-    interests?: []
-    skills?: []
-    awards?: []
+    connections?: []
+    connectionsCount?: number
+    categories: []
+    interests: []
+    skills: []
+    awards: []
     bio: string
     avatar?: string
     gender?: string

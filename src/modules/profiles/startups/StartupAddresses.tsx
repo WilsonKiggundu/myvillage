@@ -1,13 +1,10 @@
-import React, {Fragment, useState} from 'react';
+import React, {useState} from 'react';
 import Typography from '@material-ui/core/Typography';
-import Button from "@material-ui/core/Button";
 import {globalStyles} from "../../../theme/styles"
-import clsx from "clsx";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import grey from "@material-ui/core/colors/grey";
-import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {IStartup} from "../../../interfaces/IStartup";
@@ -18,16 +15,34 @@ import {CardHeader} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import {Alert} from "@material-ui/lab";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete"
+import {getAddressTypeLabel} from "../../../utils/enumHelpers";
+import {useDispatch, useSelector} from "react-redux";
+import {userSelector} from "../../../data/coreSelectors";
+import palette from "../../../theme/palette";
+import {white} from "../../../theme/custom-colors";
+import {deleteStartupAddress, removeStartupAddress} from "./redux/startupsActions";
 
 interface IProps {
-    profile: IStartup
-    canEdit: boolean
+    startup: IStartup
 }
 
-export default function StartupAddresses({canEdit, profile}: IProps) {
-    const classes = globalStyles();
-    const {addresses} = profile
+export default function StartupAddresses({startup}: IProps) {
+    const classes = globalStyles()
+    const dispatch = useDispatch()
+    const {addresses} = startup
     const [openAddAddressDialog, setOpenAddAddressDialog] = useState<boolean>(false)
+    const [selected, setSelected] = useState<IAddress>(Object.create({}))
+
+    const user = useSelector(userSelector)
+    const canEdit = startup.roles?.some((role: any) => role.personId === user?.profile.sub) ?? false
+
+
+    const handleEdit = (address: IAddress) => {
+        setSelected(address)
+        setOpenAddAddressDialog(true)
+    }
 
     return (
         <Box mb={2}>
@@ -38,96 +53,110 @@ export default function StartupAddresses({canEdit, profile}: IProps) {
                             <IconButton
                                 onClick={() => setOpenAddAddressDialog(true)}
                                 aria-label="settings">
-                                <AddIcon/>
+                                <AddIcon style={{color: white}}/>
                             </IconButton>
                         ) : ""
                     }
                     title={"Addresses"}
                 />
-                <CardContent>
-                    {addresses ?
-                        addresses.map((address: IAddress, index: number) => (
-                            <Box mb={2} key={index}>
-                                <Grid spacing={1} container>
-                                    <Grid item xs={12} sm={6}>
-                                        <Typography component={"h6"} variant={"h6"}>
-                                            Address Type
-                                        </Typography>
-                                        <Typography component={"div"} variant={"body2"}>
-                                            {address.type}
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} sm={6}>
-                                        <Typography component={"h6"} variant={"h6"}>
-                                            Country, City
-                                        </Typography>
-                                        <Typography component={"div"} variant={"body2"}>
-                                            {address.country}, {address.city}
-                                        </Typography>
-                                    </Grid>
-
-                                    {address.building ? <Grid item xs={12} sm={6}>
-                                        <Typography component={"h6"} variant={"h6"}>
-                                            Building
-                                        </Typography>
-                                        <Typography component={"div"} variant={"body2"}>
-                                            {address.building} {address.floor}
-                                        </Typography>
-                                    </Grid> : ""}
-
-                                    {address.street ? <Grid item xs={12} sm={6}>
-                                        <Typography component={"h6"} variant={"h6"}>
-                                            Street address
-                                        </Typography>
-                                        <Typography component={"div"} variant={"body2"}>
-                                            {address.street}
-                                        </Typography>
-                                    </Grid> : ""}
-
-                                    {address.postalCode ? <Grid item xs={12} sm={6}>
-                                        <Typography component={"h6"} variant={"h6"}>
-                                            Postal code
-                                        </Typography>
-                                        <Typography component={"div"} variant={"body2"}>
-                                            {address.postalCode}
-                                        </Typography>
-                                    </Grid> : ""}
-
-                                    <Grid item xs={12}>
-                                        <Typography component={"h6"} variant={"h6"}>
-                                            Address line
-                                        </Typography>
-                                        <Typography style={{whiteSpace: 'pre-line'}} component={"div"} variant={"body2"}>
-                                            {address.addressLine}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-
-                                <Divider />
-                            </Box>
-                        )) : (
-                            <Alert onClick={() => setOpenAddAddressDialog(true)}
-                                   className={classes.clickable}
-                                   color={"info"}
-                                   icon={<AddIcon/>}>
-                                Add your address so you can easily be found
-                            </Alert>
-                        )
-                    }
-
-                    <XDialog
-                        open={openAddAddressDialog}
-                        maxWidth={"md"}
-                        title={"Add an address"}
-                        onClose={() => setOpenAddAddressDialog(false)}>
-                        <UpdateAddressForm
-                            profile={profile}
-                            onClose={() => setOpenAddAddressDialog(false)}/>
-                    </XDialog>
-
-                </CardContent>
             </Card>
+
+            <Box mt={2} mb={2}>
+                {addresses?.length ?
+                    <Grid container spacing={2}>
+                        {
+                            addresses.map((address: IAddress, index: number) => (
+                                <Grid style={{position: 'relative'}} item xs={12} md={6} lg={4} key={index}>
+                                    <Card>
+                                        <CardHeader
+                                            action={
+                                                canEdit ? (
+                                                    <>
+                                                        <IconButton onClick={() => handleEdit(address)}>
+                                                            <EditIcon/>
+                                                        </IconButton>
+                                                        <IconButton onClick={() => dispatch(deleteStartupAddress({
+                                                            businessId: address.businessId,
+                                                            addressId: address.id
+                                                        }))}>
+                                                            <DeleteIcon/>
+                                                        </IconButton>
+                                                    </>
+                                                ) : ""
+                                            }
+                                            title={
+                                            <Typography>{getAddressTypeLabel(address.type)}</Typography>
+                                        } />
+
+                                        <Divider />
+
+                                        <CardContent>
+
+                                            <Grid spacing={2} container>
+                                                <Grid item xs={12}>
+                                                    <strong>Country, City</strong><br/>
+                                                    <Typography>
+                                                        {address.country}, {address.city}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid spacing={2} container>
+                                                <Grid item xs={12}>
+                                                    <strong>Building, Floor</strong><br/>
+                                                    <Typography>
+                                                        {address.building || '--'}, {address.floor || '--'}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid spacing={2} container>
+                                                <Grid item xs={12}>
+                                                    <strong>Street address</strong><br/>
+                                                    <Typography>
+                                                        {address.street || '--'}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid spacing={2} container>
+                                                <Grid item xs={12}>
+                                                    <strong>Postal code</strong><br/>
+                                                    <Typography>
+                                                        {address.postalCode || '--'}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid spacing={2} container>
+                                                <Grid item xs={12}>
+                                                    <strong>Address line</strong><br/>
+                                                    <Typography style={{whiteSpace: 'pre-line'}}>
+                                                        {address.addressLine || '--'}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))
+                        }
+                    </Grid> : <Alert onClick={() => setOpenAddAddressDialog(true)}
+                                     className={classes.clickable}
+                                     color={"info"}
+                                     icon={<AddIcon/>}>
+                        Add your address so you can easily be found
+                    </Alert>
+                }
+
+                <XDialog
+                    open={openAddAddressDialog}
+                    maxWidth={"sm"}
+                    title={"Add an address"}
+                    onClose={() => setOpenAddAddressDialog(false)}>
+                    <UpdateAddressForm
+                        profile={startup}
+                        address={selected}
+                        onClose={() => setOpenAddAddressDialog(false)}/>
+                </XDialog>
+
+            </Box>
         </Box>
     );
 }

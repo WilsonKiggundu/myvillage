@@ -6,7 +6,7 @@ export const getInitials = (fullName = '') => {
     }
 }
 
-export function getRandomStr(max=16) {
+export function getRandomStr(max = 16) {
     const letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let str = '';
     for (let i = 0; i < max; i++) {
