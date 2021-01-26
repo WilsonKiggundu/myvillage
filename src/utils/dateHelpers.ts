@@ -146,5 +146,6 @@ export const longDate = (date: any): string => {
     return format(Date.parse(date), longDateFormat)
 }
 export const timeAgo = (date: any): string => {
-    return formatDistanceToNow(parseISO(date), { includeSeconds: true, addSuffix: true })
+    return parseISO(date).toISOString()
+    // return formatDistanceToNow(parseISO(date), { includeSeconds: true, addSuffix: true })
 }
