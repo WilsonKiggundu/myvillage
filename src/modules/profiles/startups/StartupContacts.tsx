@@ -16,12 +16,10 @@ import {IContact} from "../../../interfaces/IContact";
 import {getContactCategoryLabel, getContactTypeLabel} from "../../../utils/enumHelpers";
 import {useDispatch, useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
-import {deleteStartupAddress, deleteStartupContact} from "./redux/startupsActions";
+import {deleteStartupContact} from "./redux/startupsActions";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import red from "@material-ui/core/colors/red";
 import Chip from "@material-ui/core/Chip";
 
 interface IProps {
@@ -73,13 +71,14 @@ export default function StartupContacts({startup}: IProps) {
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item>
-                                                    <Chip size={"small"} label={getContactCategoryLabel(item.contact.category)} />
+                                                    <Chip size={"small"}
+                                                          label={getContactCategoryLabel(item.contact.category)}/>
                                                 </Grid>
                                             </Grid>
                                         }
                                         />
 
-                                        <Divider />
+                                        <Divider/>
 
                                         <CardContent>
                                             <Grid container spacing={2}>
@@ -92,7 +91,11 @@ export default function StartupContacts({startup}: IProps) {
 
                                             <Grid container spacing={2}>
                                                 <Grid item xs={12}>
-                                                    <Typography style={{whiteSpace: 'pre-line', fontSize: '0.9em', textAlign: 'left'}}>
+                                                    <Typography style={{
+                                                        whiteSpace: 'pre-line',
+                                                        fontSize: '0.9em',
+                                                        textAlign: 'left'
+                                                    }}>
                                                         <em>{item.contact.details}</em>
                                                     </Typography>
                                                 </Grid>
@@ -101,27 +104,31 @@ export default function StartupContacts({startup}: IProps) {
 
                                         </CardContent>
 
-                                        <Divider />
+                                        {canEdit ? (
+                                            <>
+                                                <Divider/>
 
-                                        <CardContent>
-                                            <Box pt={1}>
-                                                <Grid container justify={"center"} spacing={3}>
-                                                    <ButtonGroup size={"small"}>
-                                                        <Button onClick={() => handleEdit(item.contact)}>
-                                                            <EditIcon/>
-                                                        </Button>
-                                                        <Button onClick={() => dispatch(deleteStartupContact(
-                                                            {
-                                                            belongsTo: item.contact.belongsTo,
-                                                            contactId: item.contact.id
-                                                        }
-                                                        ))}>
-                                                            <DeleteIcon color={"error"}/>
-                                                        </Button>
-                                                    </ButtonGroup>
-                                                </Grid>
-                                            </Box>
-                                        </CardContent>
+                                                <CardContent>
+                                                    <Box pt={1}>
+                                                        <Grid container justify={"center"} spacing={3}>
+                                                            <ButtonGroup size={"small"}>
+                                                                <Button onClick={() => handleEdit(item.contact)}>
+                                                                    <EditIcon/>
+                                                                </Button>
+                                                                <Button onClick={() => dispatch(deleteStartupContact(
+                                                                    {
+                                                                        belongsTo: item.contact.belongsTo,
+                                                                        contactId: item.contact.id
+                                                                    }
+                                                                ))}>
+                                                                    <DeleteIcon color={"error"}/>
+                                                                </Button>
+                                                            </ButtonGroup>
+                                                        </Grid>
+                                                    </Box>
+                                                </CardContent>
+                                            </>
+                                        ) : ""}
                                     </Card>
                                 </Grid>
                             ))

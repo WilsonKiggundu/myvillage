@@ -51,14 +51,24 @@ const StartupInterests = ({startup}: IProps) => {
                 {interests?.length ? (
                     <CardContent>
                         {interests ? interests.map((i: any, index: number) =>
-                            <Chip
-                                label={i.interest?.category}
-                                key={index}
-                                onDelete={() => handleDelete(i.interestId)}
-                                style={{marginRight: 5, marginBottom: 5}}
-                                clickable
-                                color="secondary"
-                                variant="default"/>) : ""}
+                                (
+                                    canEdit ?
+                                        <Chip
+                                            label={i.interest?.category}
+                                            key={index}
+                                            onDelete={() => handleDelete(i.interestId)}
+                                            style={{marginRight: 5, marginBottom: 5}}
+                                            clickable
+                                            color="secondary"
+                                            variant="default"/> :
+                                        <Chip
+                                            label={i.interest?.category}
+                                            key={index}
+                                            style={{marginRight: 5, marginBottom: 5}}
+                                            color="secondary"
+                                            variant="default"/>
+                                )
+                        ) : ""}
                     </CardContent>
                 ) : ""}
 

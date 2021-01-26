@@ -36,7 +36,6 @@ const UpdateContactForm = ({onClose, contact, profile}: IProps) => {
         try {
             values.belongsTo = profile.id
             dispatch(editStartupContact(values))
-
         } catch (e) {
 
         } finally {

@@ -211,7 +211,6 @@ export default function reducer(state = initialState, action: any) {
 
         state.data = update(state.data, {[startupIndex]: {addresses: {$splice: [[addressIndex, 1]]}}})
 
-
         return {
             ...state
         }
@@ -225,16 +224,14 @@ export default function reducer(state = initialState, action: any) {
             ...state
         }
     } else if (action.type === EDIT_STARTUP_CONTACT_SUCCEEDED) {
-        const startup = state.data.find((f: any) => f.id === action.payload.body.belongsTo)
-        const index = state.data.indexOf(startup)
+        const startup = state.data.find((f: any) => f.id === action.payload.body.businessId)
+        const startupIndex = state.data.indexOf(startup)
 
-        const contact = startup.contacts.find((f: any) => f.id === action.payload.body.id)
+        const contact = startup.contacts.find((f: any) => f.contactId === action.payload.body.contactId)
         const contactIndex = startup.contacts.indexOf(contact)
 
-        console.log({index, contactIndex, contact})
-
         state.data = update(state.data, {
-            [index]: {
+            [startupIndex]: {
                 contacts: {
                     [contactIndex]: {
                         $set: action.payload.body
@@ -255,10 +252,11 @@ export default function reducer(state = initialState, action: any) {
             ...state
         }
     } else if (action.type === DELETE_STARTUP_CONTACT_SUCCEEDED) {
+
         const startup = state.data.find((f: any) => f.id === action.payload.belongsTo)
         const startupIndex = state.data.indexOf(startup)
 
-        const contact = startup.contacts.find((f: any) => f.id === action.payload.contactId)
+        const contact = startup.contacts.find((f: any) => f.contactId === action.payload.contactId)
         const contactIndex = startup.contacts.indexOf(contact)
 
         state.data = update(state.data, {
