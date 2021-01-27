@@ -43,7 +43,7 @@ export const isAuthError = (err: any = {}, res: superagent.Response) => {
 }
 
 export const isOffline = (): boolean => {
-    return true
+    return !window.navigator.onLine
 }
 
 export const handleResponse = (callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => (err: any, res: superagent.Response) => {
