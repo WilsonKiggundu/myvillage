@@ -280,7 +280,7 @@ export default function reducer(state = initialState, action: any) {
         }
     } else if (action.type === ADD_STARTUP_CONTACT_SUCCEEDED) {
 
-        const startup = state.data.find((f: any) => f.id === action.payload.body.belongsTo)
+        const startup = state.data.find((f: any) => f.id === action.payload.body.businessId)
         const index = state.data.indexOf(startup)
 
         state.data = update(state.data, {[index]: {contacts: {$push: [action.payload.body]}}})
@@ -415,6 +415,12 @@ export default function reducer(state = initialState, action: any) {
             ...state
         }
     } else if (action.type === EDIT_STARTUP_ROLES_SUCCEEDED) {
+
+        const startup = state.data.find((f: any) => f.id === action.payload.body.businessId)
+        const index = state.data.indexOf(startup)
+
+        state.data = update(state.data, {[index]: {roles: {$push: [action.payload.body]}}})
+
         return {
             ...state,
         }
@@ -427,6 +433,15 @@ export default function reducer(state = initialState, action: any) {
             ...state
         }
     } else if (action.type === DELETE_STARTUP_ROLES_SUCCEEDED) {
+
+        const startup = state.data.filter((f: any) => f.id === action.payload.businessId)[0]
+        const startupIndex = state.data.indexOf(startup)
+
+        const toRemove = startup.roles.find((f: any) => f.personId === action.payload.personId)
+        const roleIndex = startup.roles.indexOf(toRemove)
+
+        state.data = update(state.data, {[startupIndex]: {roles: {$splice: [[roleIndex, 1]]}}})
+
         return {
             ...state,
         }

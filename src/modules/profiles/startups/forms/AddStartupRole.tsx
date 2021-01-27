@@ -2,7 +2,7 @@ import XForm from "../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
-import {reqArray, reqString} from "../../../../data/validations";
+import {reqArray, reqObject, reqString} from "../../../../data/validations";
 import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
@@ -24,7 +24,7 @@ interface IProps {
 const schema = yup.object().shape(
     {
         personId: reqString,
-        roles: reqArray
+        role: reqObject
     }
 )
 
@@ -67,8 +67,8 @@ const AddStartupRole = ({onClose, profile}: IProps) => {
 
                 <Grid item xs={12}>
                     <XSelectInputCreatable
-                        name="roles"
-                        multiple={true}
+                        name="role"
+                        multiple={false}
                         allowAddNew={true}
                         label={"What is their role?"}
                         options={Options.STARTUP_ROLES}

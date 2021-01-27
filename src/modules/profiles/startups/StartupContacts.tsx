@@ -34,7 +34,8 @@ export default function StartupContacts({startup}: IProps) {
     const {contacts} = startup
 
     const user = useSelector(userSelector)
-    const canEdit = startup.roles?.some((role: any) => role.personId === user?.profile.sub) ?? false
+    let canEdit = startup.roles?.some((role: any) => role.personId === user?.profile.sub) ?? false
+    // canEdit = true
 
     const handleEdit = (contact: IContact) => {
         setSelected(contact)

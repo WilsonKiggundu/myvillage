@@ -87,7 +87,8 @@ export const putStartupRoles = async (payload: any) => {
 
 export const delStartupRoles = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.business.role)
-    return await deleteAsync(url, payload)
+    await deleteAsync(url, payload)
+    return payload
 }
 
 export const getStartups = async (params?: any) => {

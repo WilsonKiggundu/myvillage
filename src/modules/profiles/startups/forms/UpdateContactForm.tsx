@@ -12,7 +12,8 @@ import {IStartup} from "../../../../interfaces/IStartup";
 import {unwrapResult} from "@reduxjs/toolkit";
 import XSelectInput from "../../../../components/inputs/XSelectInput";
 import {Options} from "../../../../utils/options";
-import {editStartupContact} from "../redux/startupsActions";
+import {addStartupContact, editStartupContact} from "../redux/startupsActions";
+import Toast from "../../../../utils/Toast";
 
 interface IProps {
     onClose?: () => any
@@ -35,7 +36,15 @@ const UpdateContactForm = ({onClose, contact, profile}: IProps) => {
     const handleSubmit = async (values: IContact, actions: FormikHelpers<any>) => {
         try {
             values.belongsTo = profile.id
-            dispatch(editStartupContact(values))
+
+            if(contact?.id){
+                dispatch(editStartupContact(values))
+            }else
+            {
+                dispatch(addStartupContact(values))
+            }
+
+
         } catch (e) {
 
         } finally {
