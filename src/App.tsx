@@ -17,32 +17,6 @@ const App: React.FC = () => {
 
     const {user, isLoadingUser} = oidcState
 
-    const isServiceWorkerInitialized = useSelector(
-        (state: any) => state.serviceWorkerInitialized,
-    )
-
-    const isServiceWorkerUpdated = useSelector(
-        (state: any) => state.serviceWorkerUpdated,
-    )
-
-    const serviceWorkerRegistration = useSelector(
-        (state: any) => state.serviceWorkerRegistration,
-    )
-
-    const updateServiceWorker = () => {
-        const registrationWaiting = serviceWorkerRegistration.waiting;
-
-        if (registrationWaiting) {
-            registrationWaiting.postMessage({ type: 'SKIP_WAITING' });
-
-            registrationWaiting.addEventListener('statechange', (e: any) => {
-                if (e.target.state === 'activated') {
-                    window.location.reload();
-                }
-            });
-        }
-    };
-
     if (isLoadingUser) {
         return <PleaseWait/>
     } else {
@@ -50,19 +24,6 @@ const App: React.FC = () => {
         return <>
             <ToastContainer enableMultiContainer={false} hideProgressBar/>
             <>
-                {isServiceWorkerInitialized && (
-                        <XAlert text="Service Worker is initialized for the first time"
-                                type={coreConstants.swInit} />
-                    )}
-                    {isServiceWorkerUpdated && (
-                        <XAlert
-                            text="There is a new version available."
-                            buttonText="Update"
-                            type={coreConstants.swUpdate}
-                            onClick={updateServiceWorker}
-                        />
-                    )}
-
                 {/*{<LoaderDialog open={globalLoader}/>}*/}
                 <BrowserRouter children={Routes} basename={"/"}/>
             </>

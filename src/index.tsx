@@ -26,7 +26,4 @@ ReactDOM.render(
         </OidcProvider>
     </Provider>, document.getElementById('root'));
 
-serviceWorker.register({
-    onSuccess: () => store.dispatch({ type: coreConstants.swInit }),
-    onUpdate: reg => store.dispatch({ type: coreConstants.swUpdate, payload: reg }),
-});
+serviceWorker.unregister();
