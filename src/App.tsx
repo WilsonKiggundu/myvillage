@@ -8,7 +8,6 @@ import Splash from "./modules/login/Splash";
 import {AuthProvider} from "./modules/auth/AuthProvider";
 import {PleaseWait} from "./components/PleaseWait";
 import {Alert} from "@material-ui/lab";
-import XAlert from "./components/alerts/XAlert";
 import {coreConstants} from "./data/coreReducer";
 import {withSnackbar} from "notistack";
 
