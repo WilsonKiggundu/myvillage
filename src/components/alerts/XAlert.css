@@ -1,0 +1,10 @@
+.alert {
+    width: 20rem;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 3px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10000;
+}
