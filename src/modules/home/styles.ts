@@ -80,17 +80,17 @@ export const homeStyles = makeStyles((theme) => ({
         display: 'flex'
     },
 
-    title: {
-        textTransform: 'inherit',
-        padding: '40px 0',
-        color: orange[600],
-        lineHeight: '4rem',
-        fontSize: '4rem',
-        [theme.breakpoints.down("xs")]: {
-            fontSize: '2.5rem',
-            lineHeight: '3rem'
-        }
-    },
+    // title: {
+    //     textTransform: 'inherit',
+    //     padding: '40px 0',
+    //     color: orange[600],
+    //     lineHeight: '4rem',
+    //     fontSize: '4rem',
+    //     [theme.breakpoints.down("xs")]: {
+    //         fontSize: '2.5rem',
+    //         lineHeight: '3rem'
+    //     }
+    // },
 
     subtitle: {
         fontSize: '1.1rem'
@@ -101,7 +101,6 @@ export const homeStyles = makeStyles((theme) => ({
         backgroundImage: `url(${Africa})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'bottom 100px right 100px',
-        height: 'auto',
         minHeight: '100vh',
         [theme.breakpoints.down("xs")]: {
             backgroundPosition: 'bottom -100px right -100px'

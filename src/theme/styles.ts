@@ -193,6 +193,19 @@ export const globalStyles = makeStyles((theme) => ({
         display: 'inline'
     },
 
+    title: {
+        textTransform: 'inherit',
+        padding: '40px 0',
+        color: orange[600],
+        lineHeight: '4rem',
+        fontSize: '4rem',
+        [theme.breakpoints.down("xs")]: {
+            fontSize: '2.5rem',
+            lineHeight: '3rem'
+        }
+    },
+
+
     scrollable: {
         marginTop: -25,
         paddingBottom: 15,

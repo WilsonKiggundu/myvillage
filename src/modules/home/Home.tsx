@@ -15,6 +15,7 @@ import userManager from "../../utils/userManager";
 import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import {homeStyles} from "./styles";
+import {globalStyles} from "../../theme/styles";
 
 interface IStat {
     title: string
@@ -25,6 +26,7 @@ interface IStat {
 function Home() {
 
     const styles = homeStyles();
+    const classes = globalStyles();
 
     const history = useHistory()
     const {user} = useSelector((state: any) => state.oidc)
@@ -43,7 +45,7 @@ function Home() {
     }
 
     return (
-        <div className={clsx(styles.root, styles.scrollable)}>
+        <Container maxWidth={false} className={clsx(styles.root, styles.scrollable)}>
             <Grid className={styles.main} container>
                 <Grid item xs={12}>
                     <Container maxWidth={"md"}>
@@ -51,7 +53,7 @@ function Home() {
                             <Grid item xs={12} md={8}>
                                 <img alt={"logo"} src={Logo} className={styles.logo}/>
 
-                                <Typography className={styles.title}>
+                                <Typography className={classes.title}>
                                     <strong>Africa's Entrepreneurs <br/>meet here.</strong>
                                 </Typography>
 
@@ -93,7 +95,7 @@ function Home() {
                 </Grid>
             </Grid>
 
-        </div>
+        </Container>
     )
 }
 
