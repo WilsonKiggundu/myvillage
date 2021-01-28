@@ -1,14 +1,12 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import {RedirectToUrl} from "../../routes/RedirectToUrl";
 import {Urls} from "../../routes/Urls";
 import {useTheme, Chip} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import {globalStyles, homeStyles} from "../../theme/styles";
+
 import Box from "@material-ui/core/Box";
-import Africa from "../../assets/images/africa.png"
 
 import Logo from "../../assets/images/myvillage-logo.png"
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -16,8 +14,7 @@ import {useSelector} from "react-redux";
 import userManager from "../../utils/userManager";
 import { useHistory } from "react-router-dom";
 import clsx from "clsx";
-import {red} from "@material-ui/core/colors";
-import {white} from "../../theme/custom-colors";
+import {homeStyles} from "./styles";
 
 interface IStat {
     title: string
@@ -28,7 +25,6 @@ interface IStat {
 function Home() {
 
     const styles = homeStyles();
-    const classes = globalStyles()
 
     const history = useHistory()
     const {user} = useSelector((state: any) => state.oidc)
@@ -47,7 +43,7 @@ function Home() {
     }
 
     return (
-        <div className={clsx(styles.root, classes.scrollable)}>
+        <div className={clsx(styles.root, styles.scrollable)}>
             <Grid className={styles.main} container>
                 <Grid item xs={12}>
                     <Container maxWidth={"md"}>
@@ -76,11 +72,11 @@ function Home() {
                                             </Button>
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
-                                            <Button variant="outlined"
+                                            <Button variant="contained"
                                                     size={"large"}
                                                     onClick={() => userManager.signinRedirect()}
                                                     className={styles.button}
-                                                    color="primary">
+                                                    color="default">
                                                 Sign in
                                             </Button>
                                         </Grid>
