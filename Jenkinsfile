@@ -27,7 +27,7 @@ pipeline {
             }
             post {
                 success {
-                    mail to: 'builds@innovationvillage.co.ug', from: 'TIV DEVOPS <noreply@devops.innovationvillage.co.ug>', subject: '[MYVILLAGE-UI-PROD] New build available!', body: 'Check it out!'
+                    mail to: 'builds@innovationvillage.co.ug', from: 'TIV DEVOPS <noreply@devops.innovationvillage.co.ug>', subject: '[MYVILLAGE-UI-TEST] New build available!', body: 'Check it out!'
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
     post {
         failure {
             // Notify developer team of the failure
-            mail to: 'builds@innovationvillage.co.ug', from: 'TIV DEVOPS <noreply@devops.innovationvillage.co.ug>', subject: '[YAW-WEB-PROD] Build error', body: "[MYVILLAGE-UI-PROD] Build ${env.BUILD_NUMBER} failed; ${env.BUILD_URL}"
+            mail to: 'builds@innovationvillage.co.ug', from: 'TIV DEVOPS <noreply@devops.innovationvillage.co.ug>', subject: '[MYVILLAGE-UI-TEST] Build error', body: "[MYVILLAGE-UI-PROD] Build ${env.BUILD_NUMBER} failed; ${env.BUILD_URL}"
         }
     }
 }
