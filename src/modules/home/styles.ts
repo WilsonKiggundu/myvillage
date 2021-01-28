@@ -34,9 +34,10 @@ export const homeStyles = makeStyles((theme) => ({
     },
 
     scrollable: {
-        overflow: 'auto',
+        overflowY: 'auto',
+        overflowX: 'hidden',
         marginTop: '-20px',
-        height: 'calc(100vh - 70px)',
+        height: 'calc(100vh - 60px)',
         [theme.breakpoints.down('sm')]: {
             padding: '0'
         }
