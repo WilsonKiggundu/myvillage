@@ -180,8 +180,8 @@ export const globalStyles = makeStyles((theme) => ({
         minHeight: '45vh',
         overflow: 'hidden',
         [theme.breakpoints.down('sm')]: {
-            maxHeight: '25vh',
-            minHeight: '15vh',
+            maxHeight: '35vh',
+            minHeight: '25vh',
         }
     },
 
