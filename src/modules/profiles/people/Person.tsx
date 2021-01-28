@@ -24,9 +24,10 @@ import {IStartup} from "../../../interfaces/IStartup";
 import {personSelector} from "./redux/peopleSelectors";
 import {userSelector} from "../../../data/coreSelectors";
 import {loadPeople} from "./redux/peopleActions";
+import {homeStyles} from "../../home/styles";
 
 const Person = ({match}: any) => {
-    const classes = globalStyles()
+    const styles = homeStyles()
     const {id} = match.params
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -50,7 +51,7 @@ const Person = ({match}: any) => {
     const canEdit: boolean = id === user?.profile.sub
 
     return (
-        <Container className={classes.scrollable} maxWidth={false}>
+        <Container className={styles.scrollable} maxWidth={false}>
             <Grid container justify={"center"} spacing={2}>
                 <Grid item xs={12} sm={12} lg={8}>
                     {person ? (

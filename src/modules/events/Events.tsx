@@ -18,6 +18,7 @@ import {loadEvents} from "./redux/eventsActions";
 import Typography from "@material-ui/core/Typography";
 import {globalStyles} from "../../theme/styles";
 import ErrorPage from "../exceptions/Error";
+import {homeStyles} from "../home/styles";
 
 type EventFilter = 'today' | 'week' | 'month' | 'year'
 
@@ -25,7 +26,7 @@ const EventsView = () => {
 
     const [openAddEventDialog, setOpenAddEventDialog] = useState<boolean>(false)
 
-    const classes = globalStyles()
+    const styles = homeStyles()
     const dispatch = useDispatch()
     const events = useSelector(eventsSelector)
 
@@ -69,7 +70,7 @@ const EventsView = () => {
     )
 
     return (
-        <Container onScroll={handleScroll} className={classes.scrollable} maxWidth={false}>
+        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
             <Grid container spacing={2} justify={"center"}>
 
                 <Grid item xs={12} md={10} lg={8}>

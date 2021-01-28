@@ -21,6 +21,7 @@ import {useHistory} from "react-router-dom";
 import {Urls} from "../../routes/Urls";
 import {longDate} from "../../utils/dateHelpers";
 import ErrorPage from "../exceptions/Error";
+import {homeStyles} from "../home/styles";
 
 
 const Jobs = () => {
@@ -28,6 +29,7 @@ const Jobs = () => {
     const [openJobDialog, setOpenJobDialog] = useState<boolean>(false)
 
     const classes = globalStyles()
+    const styles = homeStyles()
     const history = useHistory()
     const dispatch = useDispatch()
     const jobs = useSelector(jobsSelector)
@@ -56,7 +58,7 @@ const Jobs = () => {
     )
 
     return (
-        <Container onScroll={handleScroll} className={classes.scrollable} maxWidth={false}>
+        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
             <Grid container spacing={2} justify={"center"}>
                 <Grid item xs={12} lg={9}>
                     {jobs ?

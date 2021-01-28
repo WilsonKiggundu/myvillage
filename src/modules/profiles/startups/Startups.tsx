@@ -19,10 +19,13 @@ import {loadPosts} from "../../posts/redux/postsActions";
 import {globalStyles} from "../../../theme/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ErrorPage from "../../exceptions/Error";
+import {homeStyles} from "../../home/styles";
 
 const Startups = () => {
 
     const classes = globalStyles()
+    const styles = homeStyles()
+
     const startups = useSelector(startupsSelector)
     const dispatch = useDispatch()
     const theme = useTheme()
@@ -52,7 +55,7 @@ const Startups = () => {
     )
 
     return (
-        <Container onScroll={handleScroll} className={classes.scrollable} maxWidth={false}>
+        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
             <Grid container spacing={2} justify={"center"}>
                 <Grid item xs={12}>
                     <Box mt={isMobile ? 0 : 3}>

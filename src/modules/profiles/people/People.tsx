@@ -22,10 +22,12 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import {useMediaQuery} from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import {homeStyles} from "../../home/styles";
 
 const People = () => {
 
     const classes = globalStyles()
+    const styles = homeStyles()
     const people = useSelector(peopleSelector)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -69,7 +71,7 @@ const People = () => {
     }
 
     return (
-        <Container onScroll={handleScroll} className={classes.scrollable} maxWidth={false}>
+        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
             <Box mt={isMobile ? 0 : 4}>
                 <Grid spacing={3} justify={"center"} container>
                         {people.data.map((person: IPerson) => (
