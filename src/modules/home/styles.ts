@@ -1,7 +1,7 @@
 import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import {white} from "../../theme/custom-colors";
 import palette from "../../theme/palette";
-import {orange} from "@material-ui/core/colors";
+import {orange, teal} from "@material-ui/core/colors";
 import Africa from "../../assets/images/africa.png";
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -80,17 +80,36 @@ export const homeStyles = makeStyles((theme) => ({
         display: 'flex'
     },
 
-    // title: {
-    //     textTransform: 'inherit',
-    //     padding: '40px 0',
-    //     color: orange[600],
-    //     lineHeight: '4rem',
-    //     fontSize: '4rem',
-    //     [theme.breakpoints.down("xs")]: {
-    //         fontSize: '2.5rem',
-    //         lineHeight: '3rem'
-    //     }
-    // },
+    smallAvatar: {
+        width: theme.spacing(5),
+        height: theme.spacing(5),
+    },
+
+    largeAvatar: {
+        width: 150,
+        height: 150,
+    },
+
+    mediumAvatar: {
+        width: theme.spacing(10),
+        height: theme.spacing(10),
+    },
+
+    avatar: {
+        backgroundColor: teal[900]
+    },
+
+    title: {
+        textTransform: 'inherit',
+        padding: '40px 0',
+        color: orange[600],
+        lineHeight: '4rem',
+        fontSize: '4rem',
+        [theme.breakpoints.down("xs")]: {
+            fontSize: '2.5rem',
+            lineHeight: '3rem'
+        }
+    },
 
     subtitle: {
         fontSize: '1.1rem'

@@ -20,6 +20,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import AddIcon from '@material-ui/icons/Add';
 import {useDispatch} from "react-redux";
 import {deletePersonCategories} from "./redux/peopleActions";
+import {homeStyles} from "../../home/styles";
 
 interface IProps {
     person: IPerson
@@ -28,6 +29,7 @@ interface IProps {
 
 const PersonCard = ({person, canEdit}: IProps) => {
 
+    const styles = homeStyles()
     const classes = globalStyles()
     const dispatch = useDispatch()
 
@@ -70,7 +72,7 @@ const PersonCard = ({person, canEdit}: IProps) => {
                 <CardContent style={{padding: 30, marginTop: -80}}>
                     <div className={classes.profilePhoto}>
 
-                        <Avatar className={clsx(classes.largeAvatar, classes.avatar)}
+                        <Avatar className={clsx(styles.largeAvatar, styles.avatar)}
                                 style={{
                                     backgroundColor: palette.tertiary.main,
                                     borderWidth: 1,
