@@ -16,12 +16,14 @@ import {PostContentLoader} from "../../components/loaders/PostContentLoader";
 
 import {globalStyles} from "../../theme/styles";
 import ErrorPage from "../exceptions/Error";
+import {homeStyles} from "../home/styles";
 
 interface IProps {
 }
 
 const Feed = () => {
 
+    const styles = homeStyles()
     const classes = globalStyles()
     const dispatch = useDispatch()
     const posts = useSelector(postsSelector)
@@ -50,7 +52,7 @@ const Feed = () => {
     )
 
     return (
-        <Container onScroll={handleScroll} className={classes.scrollable} maxWidth={false}>
+        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
             <Grid container spacing={2} justify={"center"}>
                 <Grid item xs={12} md={8}>
                     <StartAPostCard placeholder={"What's on your mind?"}/>

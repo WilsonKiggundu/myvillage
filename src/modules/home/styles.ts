@@ -142,6 +142,15 @@ export const homeStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('md')]: {
             display: 'none',
         },
-    }
+    },
+
+    // scrollable: {
+    //     overflow: 'auto',
+    //     marginTop: '-20px',
+    //     height: 'calc(100vh - 70px)',
+    //     [theme.breakpoints.down('sm')]: {
+    //         padding: '0'
+    //     }
+    // },
 
 }))
