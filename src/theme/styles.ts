@@ -2,10 +2,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import palette from "./palette";
-import {teal} from "@material-ui/core/colors";
+import {orange, teal} from "@material-ui/core/colors";
 import {white} from "./custom-colors";
 import grey from "@material-ui/core/colors/grey";
 import red from "@material-ui/core/colors/red";
+import Africa from "../assets/images/africa.png"
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
@@ -241,7 +242,7 @@ export const homeStyles = makeStyles((theme) => ({
     },
 
     logo: {
-        width: 250,
+        width: 150,
         height: 'auto',
         marginBottom: 20,
     },
@@ -258,7 +259,7 @@ export const homeStyles = makeStyles((theme) => ({
     },
 
     container: {
-        margin: '10% auto',
+        margin: '5% auto',
     },
 
     flex: {
@@ -267,8 +268,14 @@ export const homeStyles = makeStyles((theme) => ({
 
     title: {
         textTransform: 'inherit',
-        padding: '25px 0',
-        fontSize: '2rem'
+        padding: '40px 0',
+        color: orange[600],
+        lineHeight: '4rem',
+        fontSize: '4rem',
+        [theme.breakpoints.down("xs")]: {
+            fontSize: '3rem',
+            lineHeight: '3rem'
+        }
     },
 
     subtitle: {
@@ -277,8 +284,14 @@ export const homeStyles = makeStyles((theme) => ({
 
     main: {
         backgroundColor: palette.tertiary.main,
-        // minHeight: '50vh',
-        height: 'auto'
+        backgroundImage: `url(${Africa})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'bottom 100px right 100px',
+        height: 'auto',
+        minHeight: '100vh',
+        [theme.breakpoints.down("xs")]: {
+            backgroundPosition: 'bottom -100px right -100px'
+        }
     },
 
     footer: {
