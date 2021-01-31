@@ -64,8 +64,8 @@ const ContactCard = (props: IProps) => {
 
             {
                 coverPhoto ?
-                    <CardMedia style={{height: 180}} image={coverPhoto}/> :
-                    <Box style={{height: 180, backgroundColor: grey[300]}}/>
+                    <CardMedia style={{height: 150}} image={coverPhoto}/> :
+                    <Box style={{height: 150, backgroundColor: grey[300]}}/>
             }
 
             <CardContent style={{textAlign: 'center', marginTop: -80}}>

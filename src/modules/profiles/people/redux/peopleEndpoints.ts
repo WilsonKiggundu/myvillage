@@ -36,7 +36,8 @@ export const putPersonCategories = async (payload: any) => {
 
 export const delPersonCategories = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.category)
-    return await deleteAsync(url, payload)
+    await deleteAsync(url, payload)
+    return payload
 }
 
 export const putPersonInterests = async (payload: any) => {
@@ -46,7 +47,8 @@ export const putPersonInterests = async (payload: any) => {
 
 export const delPersonInterests = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.interest)
-    return await deleteAsync(url, payload)
+    await deleteAsync(url, payload)
+    return payload
 }
 
 export const putPersonSkills = async (payload: any) => {
@@ -56,17 +58,29 @@ export const putPersonSkills = async (payload: any) => {
 
 export const delPersonSkills = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.skill)
-    return await deleteAsync(url, payload)
+    await deleteAsync(url, payload)
+    return payload
 }
 
-export const putPersonEducation = async (payload: any) => {
+export const postPersonEducation = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.award)
     return await postAsync(url, payload)
 }
 
+export const putPersonEducation = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.award)
+    return await putAsync(url, payload)
+}
+
 export const delPersonEducation = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.award)
-    return await deleteAsync(url, payload)
+    await deleteAsync(url, payload)
+    return payload
+}
+
+export const getPersonConnection = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.connection)
+    return await getAsync(url, payload)
 }
 
 export const putPersonConnection = async (payload: any) => {

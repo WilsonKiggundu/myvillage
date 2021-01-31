@@ -54,7 +54,7 @@ const Feed = () => {
     return (
         <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={6}>
                     <StartAPostCard placeholder={"What's on your mind?"}/>
                     <Box>
                         {_.isEmpty(posts.data) && <p>No results found</p>}

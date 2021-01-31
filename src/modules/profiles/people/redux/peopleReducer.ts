@@ -1,4 +1,5 @@
 import Toast from "../../../../utils/Toast";
+import update from "immutability-helper";
 
 export const EDIT_PERSON = 'people/UPDATE_PERSON';
 export const EDIT_PERSON_SUCCEEDED = 'people/UPDATE_PERSON_SUCCESS';
@@ -32,9 +33,17 @@ export const EDIT_PERSON_EDUCATION = 'people/EDIT_PERSON_EDUCATION';
 export const EDIT_PERSON_EDUCATION_SUCCEEDED = 'people/EDIT_PERSON_EDUCATION_SUCCEEDED';
 export const EDIT_PERSON_EDUCATION_FAILED = 'people/EDIT_PERSON_EDUCATION_FAILED';
 
+export const ADD_PERSON_EDUCATION = 'people/ADD_PERSON_EDUCATION';
+export const ADD_PERSON_EDUCATION_SUCCEEDED = 'people/ADD_PERSON_EDUCATION_SUCCEEDED';
+export const ADD_PERSON_EDUCATION_FAILED = 'people/ADD_PERSON_EDUCATION_FAILED';
+
 export const DELETE_PERSON_EDUCATION = 'people/DELETE_PERSON_EDUCATION';
 export const DELETE_PERSON_EDUCATION_SUCCEEDED = 'people/DELETE_PERSON_EDUCATION_SUCCEEDED';
 export const DELETE_PERSON_EDUCATION_FAILED = 'people/DELETE_PERSON_EDUCATION_FAILED';
+
+export const FETCH_PERSON_CONNECTION = 'people/FETCH_PERSON_CONNECTION';
+export const FETCH_PERSON_CONNECTION_SUCCEEDED = 'people/FETCH_PERSON_CONNECTION_SUCCEEDED';
+export const FETCH_PERSON_CONNECTION_FAILED = 'people/FETCH_PERSON_CONNECTION_FAILED';
 
 export const EDIT_PERSON_CONNECTION = 'people/EDIT_PERSON_CONNECTION';
 export const EDIT_PERSON_CONNECTION_SUCCEEDED = 'people/EDIT_PERSON_CONNECTION_SUCCEEDED';
@@ -63,225 +72,373 @@ const initialState: any = {
 }
 
 export default function reducer(state = initialState, action: any) {
-    switch (action.type) {
+    if (action.type === FETCH_PEOPLE) {
+        return {
+            ...state,
+            isLoading: true
+        }
+    } else if (action.type === FETCH_PEOPLE_SUCCEEDED) {
+        const {persons, request, hasMore} = action.payload.body
 
-        case FETCH_PEOPLE:
-            return {
-                ...state,
-                isLoading: true
+        return {
+            ...state,
+            data: [...state.data, ...persons],
+            request: {
+                prevPage: request.page,
+                nextPage: hasMore ? request.page + 1 : request.page,
+                hasMore
+            },
+            isLoading: false
+        }
+    } else if (action.type === FETCH_PEOPLE_FAILED) {
+        return {
+            ...state,
+            error: action.payload,
+        }
+    } else if (action.type === EDIT_PERSON) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_SUCCEEDED) {
+        const {
+            id,
+            firstName,
+            lastName,
+            bio,
+            dateOfBirth,
+            gender,
+            avatar,
+            coverPhoto
+        } = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === id)
+        const index = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [index]: {
+                firstname: {$set: firstName},
+                lastname: {$set: lastName},
+                bio: {$set: bio},
+                dateOfBirth: {$set: dateOfBirth},
+                gender: {$set: gender},
+                avatar: {$set: avatar},
+                coverPhoto: {$set: coverPhoto}
             }
+        })
 
-        case FETCH_PEOPLE_SUCCEEDED:
-            const {persons, request, hasMore} = action.payload.body
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_CATEGORIES) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_CATEGORIES_SUCCEEDED) {
 
-            return {
-                ...state,
-                data: [...state.data, ...persons],
-                request: {
-                    prevPage: request.page,
-                    nextPage: hasMore ? request.page + 1 : request.page,
-                    hasMore
-                },
-                isLoading: false
+        const categories = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === categories[0].personId)
+        const index = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [index]: {
+                categories: {
+                    $push: [...categories]
+                }
             }
+        })
 
-        case FETCH_PEOPLE_FAILED:
-            return {
-                ...state,
-                error: action.payload,
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_CATEGORIES_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_CATEGORIES) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_CATEGORIES_SUCCEEDED) {
+
+        const {personId, categoryId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.categories.find((f: any) => f.categoryId === categoryId)
+        const categoryIndex = person.categories.indexOf(toRemove)
+
+        state.data = update(state.data, {[personIndex]: {categories: {$splice: [[categoryIndex, 1]]}}})
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_CATEGORIES_FAILED) {
+
+        Toast.error(action.payload)
+
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_INTERESTS) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_INTERESTS_SUCCEEDED) {
+
+        const interests = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === interests[0].personId)
+        const index = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [index]: {
+                interests: {
+                    $push: [...interests]
+                }
             }
+        })
 
-        case EDIT_PERSON:
-            return {
-                ...state
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_INTERESTS_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_INTERESTS) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_INTERESTS_SUCCEEDED) {
+
+        const {personId, interestId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.interests.find((f: any) => f.interestId === interestId)
+        const interestIndex = person.interests.indexOf(toRemove)
+
+        state.data = update(state.data, {[personIndex]: {interests: {$splice: [[interestIndex, 1]]}}})
+
+        return {
+            ...state,
+        }
+
+    } else if (action.type === DELETE_PERSON_INTERESTS_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_SKILLS) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_SKILLS_SUCCEEDED) {
+
+        const skills = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === skills[0].personId)
+        const index = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [index]: {
+                skills: {
+                    $push: [...skills]
+                }
             }
+        })
 
-        case EDIT_PERSON_SUCCEEDED:
-            const person = action.payload.body
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_SKILLS_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_SKILLS) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_SKILLS_SUCCEEDED) {
 
-            return {
-                ...state,
+        const {personId, skillId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.skills.find((f: any) => f.skillId === skillId)
+        const skillIndex = person.skills.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                skills: {
+                    $splice: [[skillIndex, 1]]
+                }
             }
+        })
 
-        case EDIT_PERSON_FAILED:
-            return {
-                ...state
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_SKILLS_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_EDUCATION) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_EDUCATION_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const award = person.awards.find((f: any) => f.id === id)
+        const awardIndex = person.awards.indexOf(award)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    [awardIndex]: {
+                        $set: action.payload.body
+                    }
+                }
             }
+        })
 
-        // Categories
-        case EDIT_PERSON_CATEGORIES:
-            return {
-                ...state
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_EDUCATION_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_EDUCATION) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_EDUCATION_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $push: [action.payload.body]
+                }
             }
+        })
 
-        case EDIT_PERSON_CATEGORIES_SUCCEEDED:
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_EDUCATION_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_EDUCATION) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_EDUCATION_SUCCEEDED) {
 
-            return {
-                ...state,
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.awards.find((f: any) => f.id === awardId)
+        const awardIndex = person.awards.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $splice: [[awardIndex, 1]]
+                }
             }
+        })
 
-        case EDIT_PERSON_CATEGORIES_FAILED:
-            return {
-                ...state
-            }
-        case DELETE_PERSON_CATEGORIES:
-            return {
-                ...state
-            }
 
-        case DELETE_PERSON_CATEGORIES_SUCCEEDED:
-            Toast.success("Category removed")
-            return {
-                ...state,
-            }
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_EDUCATION_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === FETCH_PERSON_CONNECTION) {
+        return {
+            ...state
+        }
+    } else if (action.type === FETCH_PERSON_CONNECTION_SUCCEEDED) {
 
-        case DELETE_PERSON_CATEGORIES_FAILED:
-            return {
-                ...state
-            }
+        const personId = action.payload.body[0].followerId
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
 
-        // Interests
-        case EDIT_PERSON_INTERESTS:
-            return {
-                ...state
+        state.data = update(state.data, {
+            [personIndex]: {
+                connections: {
+                    $set: [...action.payload.body]
+                }
             }
+        })
 
-        case EDIT_PERSON_INTERESTS_SUCCEEDED:
-
-            return {
-                ...state,
-            }
-
-        case EDIT_PERSON_INTERESTS_FAILED:
-            return {
-                ...state
-            }
-        case DELETE_PERSON_INTERESTS:
-            return {
-                ...state
-            }
-
-        case DELETE_PERSON_INTERESTS_SUCCEEDED:
-            Toast.success("Category removed")
-            return {
-                ...state,
-            }
-
-        case DELETE_PERSON_INTERESTS_FAILED:
-            return {
-                ...state
-            }
-
-        // Skills
-        case EDIT_PERSON_SKILLS:
-            return {
-                ...state
-            }
-
-        case EDIT_PERSON_SKILLS_SUCCEEDED:
-
-            return {
-                ...state,
-            }
-
-        case EDIT_PERSON_SKILLS_FAILED:
-            return {
-                ...state
-            }
-        case DELETE_PERSON_SKILLS:
-            return {
-                ...state
-            }
-
-        case DELETE_PERSON_SKILLS_SUCCEEDED:
-            Toast.success("Skill removed")
-            return {
-                ...state,
-            }
-
-        case DELETE_PERSON_SKILLS_FAILED:
-            return {
-                ...state
-            }
-
-        // Education
-        case EDIT_PERSON_EDUCATION:
-            return {
-                ...state
-            }
-
-        case EDIT_PERSON_EDUCATION_SUCCEEDED:
-
-            return {
-                ...state,
-            }
-
-        case EDIT_PERSON_EDUCATION_FAILED:
-            return {
-                ...state
-            }
-        case DELETE_PERSON_EDUCATION:
-            return {
-                ...state
-            }
-
-        case DELETE_PERSON_EDUCATION_SUCCEEDED:
-            Toast.success("Education removed")
-            return {
-                ...state,
-            }
-
-        case DELETE_PERSON_EDUCATION_FAILED:
-            return {
-                ...state
-            }
-
-        // Education
-        case EDIT_PERSON_CONNECTION:
-            return {
-                ...state
-            }
-
-        case EDIT_PERSON_CONNECTION_SUCCEEDED:
-
-            return {
-                ...state,
-            }
-
-        case EDIT_PERSON_CONNECTION_FAILED:
-            return {
-                ...state
-            }
-        case DELETE_PERSON_CONNECTION:
-            return {
-                ...state
-            }
-
-        case DELETE_PERSON_CONNECTION_SUCCEEDED:
-            Toast.success("Connection removed")
-            return {
-                ...state,
-            }
-
-        case DELETE_PERSON_CONNECTION_FAILED:
-            Toast.error("Connection failed")
-            return {
-                ...state
-            }
-
-        case DISPLAY_MORE_PEOPLE_BEGIN:
-            return {
-                ...state,
-                isLoading: true,
-            }
-
-        case DISPLAY_MORE_PEOPLE_END:
-            return {
-                ...state,
-                isLoading: false,
-            }
-
-        default:
-            return state;
+        return {
+            ...state,
+        }
+    } else if (action.type === FETCH_PERSON_CONNECTION_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_CONNECTION) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_CONNECTION_SUCCEEDED) {
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_CONNECTION_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_CONNECTION) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_CONNECTION_SUCCEEDED) {
+        Toast.success("Connection removed")
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_CONNECTION_FAILED) {
+        Toast.error("Connection failed")
+        return {
+            ...state
+        }
+    } else if (action.type === DISPLAY_MORE_PEOPLE_BEGIN) {
+        return {
+            ...state,
+            isLoading: true,
+        }
+    } else if (action.type === DISPLAY_MORE_PEOPLE_END) {
+        return {
+            ...state,
+            isLoading: false,
+        }
+    } else {
+        return state;
     }
 }

@@ -1,5 +1,6 @@
 import {takeLatest} from "redux-saga/effects";
 import {
+    ADD_PERSON_EDUCATION,
     DELETE_PERSON_CATEGORIES,
     DELETE_PERSON_CONNECTION,
     DELETE_PERSON_EDUCATION,
@@ -11,10 +12,11 @@ import {
     EDIT_PERSON_EDUCATION,
     EDIT_PERSON_INTERESTS,
     EDIT_PERSON_SKILLS,
-    FETCH_PEOPLE
+    FETCH_PEOPLE, FETCH_PERSON_CONNECTION
 } from "./peopleReducer";
 import {
-    fetchPeople,
+    createPersonEducation,
+    fetchPeople, fetchPersonConnections,
     removePersonCategories, removePersonConnection, removePersonEducation,
     removePersonInterests, removePersonSkills,
     updatePerson,
@@ -53,12 +55,20 @@ export function* deletePersonSkillsWatcher(){
     yield takeLatest(DELETE_PERSON_SKILLS, removePersonSkills)
 }
 
+export function* addPersonEducationWatcher(){
+    yield takeLatest(ADD_PERSON_EDUCATION, createPersonEducation)
+}
+
 export function* updatePersonEducationWatcher(){
     yield takeLatest(EDIT_PERSON_EDUCATION, updatePersonEducation)
 }
 
 export function* deletePersonEducationWatcher(){
     yield takeLatest(DELETE_PERSON_EDUCATION, removePersonEducation)
+}
+
+export function* fetchPersonConnectionWatcher(){
+    yield takeLatest(FETCH_PERSON_CONNECTION, fetchPersonConnections)
 }
 
 export function* updatePersonConnectionWatcher(){

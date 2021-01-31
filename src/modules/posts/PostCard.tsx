@@ -22,10 +22,10 @@ import {formatDistanceToNow} from "date-fns";
 import {likePost, loadComments} from "./redux/postsActions";
 import CommentsList from "../../components/CommentsList";
 import {useHistory} from "react-router-dom";
-import XImage from "../../components/XImage";
 import XVideo from "../../components/XVideo";
 import {timeAgo} from "../../utils/dateHelpers";
 import {userSelector} from "../../data/coreSelectors";
+import XImageGridList from "../../components/XImageGridList";
 
 interface IProps {
     post: IPost
@@ -93,18 +93,20 @@ const PostCard = ({post}: IProps) => {
 
                         {
                             uploads ?
-                                <Box mb={2}>
+                                <Box mb={2} ml={1} mr={1}>
 
-                                    {uploads.map((p, index) => (
+                                    <XImageGridList images={uploads} />
 
-                                        p.contentType.startsWith('video') ? (
-                                            <XVideo key={index} src={p.path}/>
-                                        ) : (
-                                            p.contentType.startsWith('image') ? (
-                                                <XImage key={index} src={p.path}/>
-                                            ) : ""
-                                        )
-                                    ))}
+                                    {/*{uploads.map((p, index) => (*/}
+
+                                    {/*    p.contentType.startsWith('video') ? (*/}
+                                    {/*        <XVideo key={index} src={p.path}/>*/}
+                                    {/*    ) : (*/}
+                                    {/*        p.contentType.startsWith('image') ? (*/}
+                                    {/*            <img key={index} src={p.path}/>*/}
+                                    {/*        ) : ""*/}
+                                    {/*    )*/}
+                                    {/*))}*/}
                                 </Box>
                                 : ""
                         }

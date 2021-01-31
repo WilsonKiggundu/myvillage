@@ -322,8 +322,6 @@ export default function reducer(state = initialState, action: any) {
         const product = startup.products.find((f: any) => f.id === action.payload.body.id)
         const productIndex = startup.products.indexOf(product)
 
-        console.log({index, productIndex, product})
-
         state.data = update(state.data, {
             [index]: {
                 products: {

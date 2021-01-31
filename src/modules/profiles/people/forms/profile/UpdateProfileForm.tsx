@@ -40,6 +40,8 @@ const UpdateProfileForm = ({person, onClose}: IProps) => {
         lastname: user.profile.family_name,
         gender: person.gender,
         bio: person.bio,
+        avatar: person.avatar,
+        coverPhoto: person.coverPhoto,
         dateOfBirth: person.dateOfBirth
     }
 

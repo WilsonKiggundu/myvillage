@@ -48,15 +48,23 @@ const PersonInterests = ({person, canEdit}: IProps) => {
 
                 {interests?.length ? (
                     <CardContent>
-                        {interests ? interests.map((i: any) =>
-                            <Chip
-                                onDelete={() => handleDeleteInterest(i.interest.id)}
-                                label={i.interest.category}
-                                key={i.interest.id}
-                                style={{marginRight: 5, marginBottom: 5}}
-                                clickable
-                                color="secondary"
-                                variant="default"/>) : ""}
+                        {interests ? interests.map((i: any) => (
+                                canEdit ? <Chip
+                                    onDelete={() => handleDeleteInterest(i.interest.id)}
+                                    label={i.interest.category}
+                                    key={i.interest.id}
+                                    style={{marginRight: 5, marginBottom: 5}}
+                                    clickable
+                                    color="default"
+                                    variant="default"/> :
+                                    <Chip
+                                        label={i.interest.category}
+                                        key={i.interest.id}
+                                        style={{marginRight: 5, marginBottom: 5}}
+                                        clickable
+                                        color="default"
+                                        variant="default"/>
+                            )) : ""}
                     </CardContent>
                 ) : ""}
 

@@ -35,12 +35,18 @@ import {
     EDIT_PERSON_CONNECTION_SUCCEEDED,
     EDIT_PERSON_CONNECTION_FAILED,
     DELETE_PERSON_CONNECTION,
-    DELETE_PERSON_CONNECTION_SUCCEEDED, DELETE_PERSON_CONNECTION_FAILED
+    DELETE_PERSON_CONNECTION_SUCCEEDED,
+    DELETE_PERSON_CONNECTION_FAILED,
+    ADD_PERSON_EDUCATION,
+    ADD_PERSON_EDUCATION_SUCCEEDED,
+    ADD_PERSON_EDUCATION_FAILED,
+    FETCH_PERSON_CONNECTION,
+    FETCH_PERSON_CONNECTION_SUCCEEDED, FETCH_PERSON_CONNECTION_FAILED
 } from "./peopleReducer";
 import {
     delPersonCategories, delPersonConnection, delPersonEducation,
     delPersonInterests, delPersonSkills,
-    getPeople,
+    getPeople, getPersonConnection, postPersonEducation,
     putPerson,
     putPersonCategories, putPersonConnection, putPersonEducation,
     putPersonInterests, putPersonSkills
@@ -170,6 +176,18 @@ export function editPersonEducationFailed(payload: any) {
     return { type: EDIT_PERSON_EDUCATION_FAILED, payload };
 }
 
+export function addPersonEducation(payload?: any) {
+    return { type: ADD_PERSON_EDUCATION, payload };
+}
+
+export function addPersonEducationSuccess(payload: any) {
+    return { type: ADD_PERSON_EDUCATION_SUCCEEDED, payload };
+}
+
+export function addPersonEducationFailed(payload: any) {
+    return { type: ADD_PERSON_EDUCATION_FAILED, payload };
+}
+
 export function deletePersonEducation(payload?: any) {
     return { type: DELETE_PERSON_EDUCATION, payload };
 }
@@ -180,6 +198,18 @@ export function deletePersonEducationSuccess(payload: any) {
 
 export function deletePersonEducationFailed(payload: any) {
     return { type: DELETE_PERSON_EDUCATION_FAILED, payload };
+}
+
+export function loadPersonConnection(payload?: any) {
+    return { type: FETCH_PERSON_CONNECTION, payload };
+}
+
+export function loadPersonConnectionSuccess(payload: any) {
+    return { type: FETCH_PERSON_CONNECTION_SUCCEEDED, payload };
+}
+
+export function loadPersonConnectionFailed(payload: any) {
+    return { type: FETCH_PERSON_CONNECTION_FAILED, payload };
 }
 
 export function editPersonConnection(payload?: any) {
@@ -273,12 +303,31 @@ export function* updatePersonEducation(action: any){
     }
 }
 
+export function* createPersonEducation(action: any){
+    try {
+
+        const response = yield call<any>(postPersonEducation, action.payload)
+        yield put(addPersonEducationSuccess(response))
+    } catch (error) {
+        yield put(addPersonEducationFailed(error.message));
+    }
+}
+
 export function* removePersonEducation(action: any){
     try {
         const response = yield call<any>(delPersonEducation, action.payload)
         yield put(deletePersonEducationSuccess(response))
     } catch (error) {
         yield put(deletePersonEducationFailed(error.message));
+    }
+}
+
+export function* fetchPersonConnections(action: any){
+    try {
+        const response = yield call<any>(getPersonConnection, action.payload)
+        yield put(loadPersonConnectionSuccess(response))
+    } catch (error) {
+        yield put(loadPersonConnectionFailed(error.message));
     }
 }
 

@@ -58,7 +58,7 @@ const UpdateSkillsForm = ({done, person, onClose}: IProps) => {
 
         })();
 
-    }, [skills])
+    }, [])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 

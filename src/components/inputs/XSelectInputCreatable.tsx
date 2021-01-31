@@ -36,6 +36,7 @@ interface IProps {
     dialogTitle?: string
     dialogSubtitle?: string
     allowAddNew?: boolean
+    defaultValue?: any
 }
 
 export default function XSelectInputCreatable(props: IProps) {
@@ -98,6 +99,7 @@ export default function XSelectInputCreatable(props: IProps) {
                     return filtered;
                 }}
                 options={options}
+                defaultValue={props.defaultValue}
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys

@@ -77,6 +77,7 @@ const StartAPostCard = (props: IProps) => {
                                 <Button
                                     onClick={() => setOpenVideoDialog(true)}
                                     size={"large"}
+                                    disabled
                                     style={{padding: 5}}
                                     className={clsx(classes.bold, classes.fullWidth)}>
                                     <VideocamIcon style={{marginRight: 10}}/> Video

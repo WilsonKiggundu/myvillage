@@ -1,6 +1,7 @@
 import {IPost, IPostLike} from "../../../interfaces/IPost";
 import {IComment} from "../../../interfaces/IComment";
 import {IEvent} from "../../../interfaces/IEvent";
+import update from 'immutability-helper'
 
 export const LIKE_POST = 'posts/LIKE_POST'
 export const LIKE_POST_SUCCEEDED = 'posts/LIKE_POST_SUCCEEDED'
@@ -38,142 +39,134 @@ const initialState: any = {
 }
 
 export default function reducer(state = initialState, action: any) {
-    switch (action.type) {
+    if (action.type === LIKE_POST) {
+        return {
+            ...state
+        }
+    } else if (action.type === LIKE_POST_SUCCEEDED) {
+        const like: IPostLike = action.payload.body
 
-        case LIKE_POST:
-            return {
-                ...state
+        console.log(like)
+
+        state.data.find((p: IPost) => p.id === like.entityId).likes.push(like)
+        state.data.find((p: IPost) => p.id === like.entityId).likesCount += 1
+        state.data.find((p: IPost) => p.id === like.entityId).alreadyLikedByUser = true
+
+        return {
+            ...state
+        }
+    } else if (action.type === LIKE_POST_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_POST) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_POST_SUCCEEDED) {
+        const post = action.payload.body
+
+        post.uploads = JSON.parse(post.uploads)
+        post.comments = []
+        post.commentsCount = 0
+        post.likes = []
+        post.likesCount = 0
+        post.alreadyLikedByUser = false
+
+        state.data = [post, ...state.data]
+
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_POST_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_POST_COMMENT) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_POST_COMMENT_SUCCEEDED) {
+        const comment: IComment = action.payload.body
+        state.data.find((p: IPost) => p.id === comment.postId).comments.push(comment)
+        state.data.find((p: IPost) => p.id === comment.postId).commentsCount += 1
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_POST_COMMENT_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === INCREMENT) {
+        return {
+            ...state,
+            request: {
+                prevPage: state.request.prevPage,
+                nextPage: state.request.prevPage + 1,
+                hasMore: state.request.hasMore
             }
+        }
+    } else if (action.type === FETCH_POSTS) {
+        return {
+            ...state,
+            isLoading: true
+        }
+    } else if (action.type === FETCH_POSTS_SUCCEEDED) {
+        const {posts, request, hasMore} = action.payload.body
 
-        case LIKE_POST_SUCCEEDED:
-            const like: IPostLike = action.payload.body
+        return {
+            ...state,
+            data: [...state.data, ...posts],
+            request: {
+                prevPage: request.page,
+                nextPage: hasMore ? request.page + 1 : request.page,
+                hasMore: hasMore
+            },
+            isLoading: false
+        }
+    } else if (action.type === FETCH_POSTS_FAILED) {
+        return {
+            ...state,
+            error: action.payload,
+            isLoading: false
+        }
+    } else if (action.type === FETCH_COMMENTS) {
+        return {
+            ...state,
+            isLoading: true
+        }
+    } else if (action.type === FETCH_COMMENTS_SUCCEEDED) {
+        const response = action.payload.body
+        const {comments, postId} = response
+        state.data.find((p: IPost) => p.id === postId).comments = comments
 
-            state.data.find((p:IPost) => p.id === like.entityId).likes.push(like)
-            state.data.find((p:IPost) => p.id === like.entityId).likesCount += 1
-            state.data.find((p:IPost) => p.id === like.entityId).alreadyLikedByUser = true
-
-            return {
-                ...state
-            }
-
-        case LIKE_POST_FAILED:
-            return {
-                ...state
-            }
-
-        case ADD_POST:
-            return {
-                ...state
-            }
-
-        case ADD_POST_SUCCEEDED:
-            return {
-                ...state,
-                data: [action.payload.body, ...state.data]
-            }
-
-        case ADD_POST_FAILED:
-            return {
-                ...state
-            }
-
-        case ADD_POST_COMMENT:
-            return {
-                ...state
-            }
-
-        case ADD_POST_COMMENT_SUCCEEDED:
-            const comment : IComment = action.payload.body
-            state.data.find((p:IPost) => p.id === comment.postId).comments.push(comment)
-            state.data.find((p:IPost) => p.id === comment.postId).commentsCount += 1
-            return {
-                ...state
-            }
-
-        case ADD_POST_COMMENT_FAILED:
-            return {
-                ...state
-            }
-
-        case INCREMENT:
-            return {
-                ...state,
-                request: {
-                    prevPage: state.request.prevPage,
-                    nextPage: state.request.prevPage + 1,
-                    hasMore: state.request.hasMore
-                }
-            }
-
-        case FETCH_POSTS:
-            return {
-                ...state,
-                isLoading: true
-            }
-
-        case FETCH_POSTS_SUCCEEDED:
-            const {posts, request, hasMore} = action.payload.body
-
-            return {
-                ...state,
-                data: [...state.data, ...posts],
-                request: {
-                    prevPage: request.page,
-                    nextPage: hasMore ? request.page + 1 : request.page,
-                    hasMore: hasMore
-                },
-                isLoading: false
-            }
-
-        case FETCH_POSTS_FAILED:
-            return {
-                ...state,
-                error: action.payload,
-                isLoading: false
-            }
-
-        case FETCH_COMMENTS:
-            return {
-                ...state,
-                isLoading: true
-            }
-
-        case FETCH_COMMENTS_SUCCEEDED:
-            const response = action.payload.body
-            const {comments, postId} = response
-            state.data.find((p:IPost) => p.id === postId).comments = comments
-
-            return {
-                ...state,
-                // data: [...state.data, ...posts],
-                // request: {
-                //     prevPage: request.page,
-                //     nextPage: hasMore ? request.page + 1 : request.page,
-                //     hasMore: hasMore
-                // }
-                isLoading: false
-            }
-
-        case FETCH_COMMENTS_FAILED:
-            return {
-                ...state,
-                error: action.payload,
-                isLoading: false
-            }
-
-        case DISPLAY_MORE_POSTS_BEGIN:
-            return {
-                ...state,
-                isLoading: true,
-            }
-
-        case DISPLAY_MORE_POSTS_END:
-            return {
-                ...state,
-                isLoading: false,
-            }
-
-        default:
-            return state;
+        return {
+            ...state,
+            // data: [...state.data, ...posts],
+            // request: {
+            //     prevPage: request.page,
+            //     nextPage: hasMore ? request.page + 1 : request.page,
+            //     hasMore: hasMore
+            // }
+            isLoading: false
+        }
+    } else if (action.type === FETCH_COMMENTS_FAILED) {
+        return {
+            ...state,
+            error: action.payload,
+            isLoading: false
+        }
+    } else if (action.type === DISPLAY_MORE_POSTS_BEGIN) {
+        return {
+            ...state,
+            isLoading: true,
+        }
+    } else if (action.type === DISPLAY_MORE_POSTS_END) {
+        return {
+            ...state,
+            isLoading: false,
+        }
+    } else {
+        return state;
     }
 }

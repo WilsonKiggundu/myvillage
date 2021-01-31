@@ -2,7 +2,7 @@ import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
-import {reqString} from "../../../../../data/validations";
+import {reqObject, reqString} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
 import {IEducation} from "../../../../../interfaces/IEducation";
@@ -12,7 +12,7 @@ import {IPerson} from "../../IPerson";
 import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
 import {getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Endpoints} from "../../../../../services/Endpoints";
-import {editPersonEducation} from "../../redux/peopleActions";
+import {addPersonEducation, editPersonEducation} from "../../redux/peopleActions";
 
 interface IProps {
     onClose?: () => any
@@ -23,7 +23,7 @@ interface IProps {
 
 const schema = yup.object().shape(
     {
-        school: reqString,
+        institute: reqObject,
         title: reqString,
         startYear: reqString,
         endYear: reqString,
@@ -48,39 +48,53 @@ const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
             }
 
         })();
-    })
+    }, [setSchools])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
         values.personId = person.id
-        dispatch(editPersonEducation(values))
-        actions.resetForm()
+
+        dispatch(values.id ? editPersonEducation(values) : addPersonEducation(values))
+
         if (onClose) onClose()
+
+        //actions.resetForm()
     }
 
     return (
         <XForm
-            debug={true}
+            debug={false}
             schema={schema}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
                 <Grid item xs={12}>
-                    <XSelectInputCreatable
-                        variant={"standard"}
-                        name={"school"}
-                        allowAddNew={true}
-                        multiple={false}
-                        label={"Select or add a school"}
-                        options={schools}/>
+                    {education?.institute ? (
+                        <XSelectInputCreatable
+                            variant={"standard"}
+                            name={"institute"}
+                            defaultValue={education?.institute}
+                            allowAddNew={true}
+                            multiple={false}
+                            label={"Select or add a school"}
+                            options={schools}/>
+                    ) : (
+                        <XSelectInputCreatable
+                            variant={"standard"}
+                            name={"institute"}
+                            allowAddNew={true}
+                            multiple={false}
+                            label={"Select or add a school"}
+                            options={schools}/>
+                    )}
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <XTextInput
                         label={"Degree / Diploma / Certificate"}
                         name={"title"}
                         helperText={"Ex. BSc. Electrical Engineering"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <XTextInput
                         label={"Field of study"}
                         name={"fieldOfStudy"}

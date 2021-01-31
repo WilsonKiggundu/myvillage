@@ -1,5 +1,5 @@
 import {isOffline} from "../utils/ajax";
-import {ImageLoader} from "./loaders/ImageLoader";
+import {PostLoader} from "./loaders/PostLoader";
 import React from "react";
 import VideoPoster from "../assets/images/My-Village-Full-logo-02.svg";
 import {VideoLoader} from "./loaders/VideoLoader";

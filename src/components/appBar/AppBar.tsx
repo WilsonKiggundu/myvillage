@@ -224,7 +224,7 @@ export default function ApplicationBar() {
                             <List>
                                 <ListItem
                                     button
-                                    onClick={() => history.push(Urls.profiles.onePerson(user.profile.sub))}
+                                    onClick={() => handleProfileView()}
                                     alignItems="flex-start">
                                     <ListItemAvatar>
                                         <Avatar alt={user.profile.given_name} src={user.profile.picture}/>

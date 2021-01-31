@@ -49,13 +49,22 @@ const PersonSkills = ({person, canEdit}: IProps) => {
                 {skills?.length ? (
                     <CardContent>
                         {skills ? skills.map((item: any) =>
-                            item.skill ? <Chip
-                                label={item.skill.name}
-                                onDelete={() => handleSkillDelete(item.skillId)}
-                                key={item.skillId}
-                                style={{marginRight: 5, marginBottom: 5}}
-                                clickable
-                                variant="outlined"/> : ""
+                            item.skill ? (
+                             canEdit ? <Chip
+                                 label={item.skill.name}
+                                 onDelete={() => handleSkillDelete(item.skillId)}
+                                 key={item.skillId}
+                                 style={{marginRight: 5, marginBottom: 5}}
+                                 clickable
+                                 variant="outlined"/> :
+                                 <Chip
+                                     label={item.skill.name}
+                                     key={item.skillId}
+                                     style={{marginRight: 5, marginBottom: 5}}
+                                     clickable
+                                     variant="outlined"/>
+
+                            ) : ""
                         ) : (
                             <Typography>
                                 Not found

@@ -23,7 +23,7 @@ import store from "../../../data/store";
 import {IStartup} from "../../../interfaces/IStartup";
 import {personSelector} from "./redux/peopleSelectors";
 import {userSelector} from "../../../data/coreSelectors";
-import {loadPeople} from "./redux/peopleActions";
+import {loadPeople, loadPersonConnection} from "./redux/peopleActions";
 import {homeStyles} from "../../home/styles";
 
 const Person = ({match}: any) => {
@@ -41,7 +41,7 @@ const Person = ({match}: any) => {
         (async () => {
             await dispatch(loadPeople())
         })()
-    })
+    },[id])
 
     if(!person) {
         person = store.getState().people.data.find((person: IPerson) => person.id === id)
@@ -58,10 +58,10 @@ const Person = ({match}: any) => {
                         <>
                             <ProfileCoverPhoto person={person}/>
                             <PersonCard canEdit={canEdit} person={person}/>
-                            <PersonInterests canEdit={canEdit} person={person}/>
                             <PersonAwards canEdit={canEdit} person={person}/>
-                            <PersonSkills canEdit={canEdit} person={person}/>
+                            <PersonInterests canEdit={canEdit} person={person}/>
                             <PersonConnections canEdit={canEdit} person={person}/>
+                            <PersonSkills canEdit={canEdit} person={person}/>
                             <PersonPosts canEdit={canEdit} person={person}/>
                         </>
                     ) : <PleaseWait label={"Loading person.Please wait..."} /> }

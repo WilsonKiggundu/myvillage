@@ -12,7 +12,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import grey from "@material-ui/core/colors/grey";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
+import {useDispatch} from "react-redux";
+import {deletePersonEducation} from "./redux/peopleActions";
 
 interface IProps {
     person: IPerson
@@ -21,6 +24,7 @@ interface IProps {
 
 const PersonAwards = ({person, canEdit}: IProps) => {
 
+    const dispatch = useDispatch()
     const {awards} = person
     const [openAddEductionDialog, setOpenAddEductionDialog] = useState<boolean>(false)
     const [selectedAward, setSelectedAward] = useState<any>(null)
@@ -28,6 +32,10 @@ const PersonAwards = ({person, canEdit}: IProps) => {
     const handleUpdate = (award: any) => {
         setSelectedAward(award)
         setOpenAddEductionDialog(true)
+    }
+
+    const handleDelete = (award: any) => {
+        dispatch(deletePersonEducation({awardId: award.id, personId: award.personId}))
     }
 
     const handleClose = () => {
@@ -59,7 +67,7 @@ const PersonAwards = ({person, canEdit}: IProps) => {
                                     <Grid container key={index}>
                                         <Grid xs={11} item>
                                             <Typography variant={"h6"} component={"div"}>
-                                                {it.institute?.name}
+                                                {it.institute?.name || it.school?.name}
                                             </Typography>
                                             <Typography component={"div"}>
                                                 {it.title}, {it.fieldOfStudy}
@@ -67,16 +75,32 @@ const PersonAwards = ({person, canEdit}: IProps) => {
                                             <Typography component={"div"} style={{color: grey[400]}}>
                                                 {it.grade}, {it.startYear} - {it.endYear}
                                             </Typography>
-                                            <Typography
-                                                component={"div"}
-                                                style={{color: grey[400], fontSize: '0.9rem'}}>
-                                                {it.activities}
-                                            </Typography>
-                                            <Typography
-                                                style={{paddingTop: 5, fontSize: '0.9rem'}}
-                                                component={"div"}>
-                                                {it.description}
-                                            </Typography>
+
+                                            <Box mt={2}>
+                                                <Typography style={{color: grey[400]}}>
+                                                    <small>Details</small>
+                                                </Typography>
+                                                <Typography
+                                                    style={{
+                                                        whiteSpace:'pre-line',
+                                                        paddingTop: 5,
+                                                        color: grey[700],
+                                                        fontSize: '0.9rem'}}
+                                                    component={"div"}>
+                                                    {it.description}
+                                                </Typography>
+                                            </Box>
+
+                                            {it.activities && <Box mt={2}>
+                                                <Typography style={{color: grey[400]}}>
+                                                    <small>Activities</small>
+                                                </Typography>
+                                                <Typography
+                                                    component={"div"}
+                                                    style={{color: grey[700], fontSize: '0.9rem'}}>
+                                                    {it.activities}
+                                                </Typography>
+                                            </Box>}
 
                                         </Grid>
 
@@ -84,6 +108,9 @@ const PersonAwards = ({person, canEdit}: IProps) => {
                                             <Grid xs={1} style={{textAlign: "right"}} item>
                                                 <IconButton onClick={() => handleUpdate(it)}>
                                                     <EditIcon/>
+                                                </IconButton>
+                                                <IconButton onClick={() => handleDelete(it)}>
+                                                    <DeleteIcon/>
                                                 </IconButton>
                                             </Grid> : ""}
 

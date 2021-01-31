@@ -43,7 +43,7 @@ const UpdateInterestsForm = ({onClose, person}: IProps) => {
 
                 const lookupInterestsFiltered: any = []
                 lookupInterests.forEach((el: any) => {
-                    const exists = interests?.some((i: any) => i.categoryId === el.id)
+                    const exists = interests?.some((i: any) => i.interestId === el.id)
                     if (!exists) {
                         lookupInterestsFiltered.push(el)
                     }
@@ -54,7 +54,7 @@ const UpdateInterestsForm = ({onClose, person}: IProps) => {
 
         })();
 
-    }, [interests])
+    }, [])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 

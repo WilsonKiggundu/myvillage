@@ -22,9 +22,10 @@ import {
     updateStartupWatcher
 } from "../modules/profiles/startups/redux/startupsWatchers";
 import {
+    addPersonEducationWatcher,
     deletePersonCategoriesWatcher, deletePersonConnectionWatcher, deletePersonEducationWatcher,
     deletePersonInterestsWatcher,
-    deletePersonSkillsWatcher,
+    deletePersonSkillsWatcher, fetchPersonConnectionWatcher,
     peopleListWatcher,
     updatePersonCategoriesWatcher, updatePersonConnectionWatcher,
     updatePersonEducationWatcher,
@@ -41,14 +42,21 @@ export default function* rootSaga(){
         // people
         peopleListWatcher(),
         updatePersonWatcher(),
+
         updatePersonCategoriesWatcher(),
         deletePersonCategoriesWatcher(),
+
         updatePersonInterestsWatcher(),
         deletePersonInterestsWatcher(),
+
         updatePersonSkillsWatcher(),
         deletePersonSkillsWatcher(),
+
+        addPersonEducationWatcher(),
         updatePersonEducationWatcher(),
         deletePersonEducationWatcher(),
+
+        fetchPersonConnectionWatcher(),
         updatePersonConnectionWatcher(),
         deletePersonConnectionWatcher(),
 

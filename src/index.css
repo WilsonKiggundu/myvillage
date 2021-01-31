@@ -15,8 +15,8 @@ body, #root, .fill {
 }
 
 .MuiCard-root {
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    /*border-radius: 0 !important;*/
+    /*box-shadow: none !important;*/
 }
 
 a {
