@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-around',
         overflow: 'hidden',
         backgroundColor: theme.palette.background.paper,
+        marginLeft: -25,
+        marginRight: -25
     },
     gridList: {
         width: '100%',
@@ -34,7 +36,7 @@ const XImageGridList = ({images}: IProps) => {
 
     return (
         <div className={classes.root}>
-            <GridList cellHeight={"auto"} className={classes.gridList} cols={columns()}>
+            <GridList cellHeight={"auto"} spacing={0} className={classes.gridList} cols={columns()}>
                 {images.map((image: IUpload, index: number) => (
                     <GridListTile key={index} cols={1}>
                         <img width={'100%'} src={image.path} alt={image.fileName} />

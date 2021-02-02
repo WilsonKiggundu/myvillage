@@ -130,7 +130,8 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     dropzone: {
-        maxHeight: 100
+        maxHeight: 150,
+        minHeight: '150px !important'
     },
 
     avatarPhotoIcon: {

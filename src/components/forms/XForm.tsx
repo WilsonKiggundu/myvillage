@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core/styles";
 import XSubmitButton from "../buttons/XSubmitButton";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface IProps {
     schema?: any
@@ -85,8 +86,9 @@ const XForm = (props: IProps) => {
                                     style={{textTransform: "inherit"}}
                                     color={"primary"}
                                     label={props.submitButtonLabel ?? "Submit"}
-                                    onClick={submitForm}
-                                    disabled={isSubmitting || props.loading}/>
+                                    onClick={submitForm}>
+                                    <CircularProgress variant={"indeterminate"} color={"primary"} />
+                                </XSubmitButton>
                             </Grid>
                         </Grid>
                     </Box>

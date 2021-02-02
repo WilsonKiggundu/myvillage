@@ -11,19 +11,15 @@ import {OidcProvider} from "redux-oidc";
 import userManager from "./utils/userManager";
 import App from "./App";
 import {Provider} from "react-redux";
-import {coreConstants} from "./data/coreReducer";
-import {SnackbarProvider} from "notistack";
 
 ReactDOM.render(
     <Provider store={store}>
         <OidcProvider store={store} userManager={userManager}>
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
-                <SnackbarProvider>
-                    <App />
-                </SnackbarProvider>
+                <App/>
             </ThemeProvider>
         </OidcProvider>
     </Provider>, document.getElementById('root'));
 
-serviceWorker.unregister();
+serviceWorker.register();

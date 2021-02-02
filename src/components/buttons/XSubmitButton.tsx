@@ -5,6 +5,8 @@ import React from "react";
 
 interface IProps {
     label: string
+    children?: any
+    loading?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -16,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function ({name, ...props}: ButtonProps & IProps) {
+export default function ({name, label, loading, children, ...props}: ButtonProps & IProps) {
     const classes = useStyles()
 
     return (
@@ -26,7 +28,7 @@ export default function ({name, ...props}: ButtonProps & IProps) {
             {...props}
             onClick={props.onClick}
             variant={"contained"}>
-            {props.label}
+            {loading ? children : label}
         </Button>
     )
 }

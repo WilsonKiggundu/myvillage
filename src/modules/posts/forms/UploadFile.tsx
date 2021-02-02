@@ -111,7 +111,7 @@ const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTy
 
             }))
                 .then(() => {
-                    if (addToFeed && values.details) {
+                    if (addToFeed) {
                         const post = {
                             details: values.details ?? "",
                             authorId: user.profile.sub,
@@ -138,7 +138,7 @@ const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTy
         <XForm
             submitButtonLabel={"Upload"}
             schema={schema}
-            loading={loading}
+            loading={true}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
@@ -155,7 +155,7 @@ const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTy
                         }}
                         showPreviewsInDropzone={false}
                         showFileNamesInPreview={false}
-                        useChipsForPreview
+                        useChipsForPreview={false}
                         showAlerts={false}
                         dropzoneClass={classes.dropzone}
                         dropzoneText={"Drag and drop files"}

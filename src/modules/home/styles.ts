@@ -37,9 +37,10 @@ export const homeStyles = makeStyles((theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         marginTop: '-20px',
+        paddingTop: 20,
         height: 'calc(100vh - 60px)',
         [theme.breakpoints.down('sm')]: {
-            padding: '0'
+            //padding: '0'
         }
     },
 
