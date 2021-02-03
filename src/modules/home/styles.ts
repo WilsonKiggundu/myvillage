@@ -35,7 +35,6 @@ export const homeStyles = makeStyles((theme) => ({
     scrollable: {
         overflowY: 'auto',
         overflowX: 'hidden',
-        paddingTop: 20,
         height: `calc(100vh - 80px)`,
         [theme.breakpoints.down('sm')]: {
             //padding: '0'
@@ -44,8 +43,8 @@ export const homeStyles = makeStyles((theme) => ({
 
     link: {
         color: palette.primary.main,
-        fontWeight: 'bold',
-        fontSize: '1rem'
+        fontSize: '1rem',
+        textTransform: 'inherit'
     },
 
     button: {

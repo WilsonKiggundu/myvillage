@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import {Urls} from "../../routes/Urls";
-import {useTheme, Chip} from "@material-ui/core";
+import {useTheme} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -12,7 +12,7 @@ import Logo from "../../assets/images/myvillage-logo.png"
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {useSelector} from "react-redux";
 import userManager from "../../utils/userManager";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import clsx from "clsx";
 import {homeStyles} from "./styles";
 import {white} from "../../theme/custom-colors";
@@ -80,17 +80,12 @@ function Home() {
 
                                     <Grid container spacing={2} justify={"flex-start"}>
                                         <Grid item>
-                                            <Typography style={{color: white}}>
-                                                Already a member?
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <a href="#"
-                                               onClick={() => userManager.signinRedirect()}
-                                                    className={styles.link}
-                                                    color="secondary">
-                                                Sign in
-                                            </a>
+                                            <Button
+                                                onClick={() => userManager.signinRedirect()}
+                                                className={styles.link}
+                                                color="primary">
+                                                Already a member? Sign in
+                                            </Button>
                                         </Grid>
                                     </Grid>
 
