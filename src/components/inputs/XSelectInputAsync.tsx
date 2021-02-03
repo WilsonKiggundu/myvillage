@@ -16,7 +16,7 @@ interface IProps {
     helperText?: string
     multiple?: boolean
     multiline?: boolean
-    variant: any
+    variant?: any
     size?: 'small' | 'medium'
     margin?: 'none' | 'dense' | 'normal',
     data: {
@@ -57,7 +57,7 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
                     {
                         id: item.id,
                         name: item[data.label],
-                        // avatar: data.avatar ? item[data.avatar] : ''
+                        avatar: data.avatar ? item[data.avatar] : ''
                     }
                 )));
             }

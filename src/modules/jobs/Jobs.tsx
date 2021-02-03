@@ -22,6 +22,8 @@ import {Urls} from "../../routes/Urls";
 import {longDate} from "../../utils/dateHelpers";
 import ErrorPage from "../exceptions/Error";
 import {homeStyles} from "../home/styles";
+import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
+import {userSelector} from "../../data/coreSelectors";
 
 
 const Jobs = () => {
@@ -33,10 +35,26 @@ const Jobs = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const jobs = useSelector(jobsSelector)
+    const user = useSelector(userSelector)
+
+    const [canCreateJob, setCanCreateJob] = useState<boolean>(false)
 
     useEffect(() => {
         dispatch(loadJobs())
     }, [dispatch])
+
+    useEffect(() => {
+        (async () => {
+            getStartups({personId: user.profile.sub})
+                .then((response: any) => {
+                    if(response.status === 200 && response.body.startups.length){
+                        setCanCreateJob(true)
+                    }else{
+                        setOpenJobDialog(false)
+                    }
+                })
+        })()
+    }, [setCanCreateJob])
 
     const handleViewJob = (id: string) => {
         const url = Urls.jobs.singleJob(id)
@@ -60,7 +78,7 @@ const Jobs = () => {
     return (
         <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12} lg={9}>
+                <Grid item xs={12} lg={6}>
                     {jobs ?
                         jobs.data.map((job: IJob, index: number) =>
                             (
@@ -111,22 +129,24 @@ const Jobs = () => {
                 </Grid>
             </Grid>
 
-            <XFab
-                onClick={() => setOpenJobDialog(true)}
-                position={"fixed"}
-                bottom={20}
-                right={20}
-                color={"secondary"}>
-                <AddIcon/>
-            </XFab>
+            {canCreateJob ? <>
+                <XFab
+                    onClick={() => setOpenJobDialog(true)}
+                    position={"fixed"}
+                    bottom={20}
+                    right={20}
+                    color={"secondary"}>
+                    <AddIcon/>
+                </XFab>
 
-            <XDialog
-                maxWidth={"md"}
-                title={"Add a new job"}
-                open={openJobDialog}
-                onClose={() => setOpenJobDialog(false)}>
-                <NewJob onClose={() => setOpenJobDialog(false)}/>
-            </XDialog>
+                <XDialog
+                    maxWidth={"md"}
+                    title={"Add a new job"}
+                    open={openJobDialog}
+                    onClose={() => setOpenJobDialog(false)}>
+                    <NewJob onClose={() => setOpenJobDialog(false)}/>
+                </XDialog>
+            </> : ""}
 
         </Container>
     )

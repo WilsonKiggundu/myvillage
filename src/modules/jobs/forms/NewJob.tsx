@@ -19,6 +19,8 @@ import {userSelector} from "../../../data/coreSelectors";
 import {jobCategoriesSelector} from "../redux/jobsSelectors";
 import {addJob, loadJobCategories} from "../redux/jobsActions";
 import {getStartups} from "../../profiles/startups/redux/startupsEndpoints";
+import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
+import {Endpoints} from "../../../services/Endpoints";
 
 interface IProps {
     done?: () => any
@@ -39,15 +41,7 @@ const schema = yup.object().shape(
 )
 
 const initialValues = {
-    title: "Senior Software Engineer",
-    companyId: "f4ffcb16-7f58-4a10-b4cb-877f22612076",
-    category: 12,
-    location: "Armenia",
-    deadline: "2021-01-30T14:29:00.000Z",
-    details: "Some description of the job",
-    qualifications: "Some qualifications",
-    experience: "5 years",
-    howToApply: "Send an email to info@email.com"
+
 }
 
 const NewJob = ({done, onClose}: IProps) => {
@@ -73,13 +67,12 @@ const NewJob = ({done, onClose}: IProps) => {
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        const user: IPerson = getProfile()
         const job = {...values}
         job.category = {id: values.category}
-        job.profileId = user.id
+        job.profileId = user.profile.sub
 
         try {
-            await dispatch(addJob(job))
+            dispatch(addJob(job))
         } catch (e) {
 
         } finally {
@@ -108,11 +101,18 @@ const NewJob = ({done, onClose}: IProps) => {
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <XSelectInput
+                    <XSelectInputAsync
+                        name="companyId"
                         label={"Company"}
-                        name={"companyId"}
-                        helperText={"Select a company"}
-                        options={companies}/>
+                        helperText={"Start typing your company name."}
+                        data={{
+                            label: 'name',
+                            field: 'startups',
+                            params: {page: 1, pageSize: 25, personId: user.profile.sub},
+                            avatar: 'avatar',
+                            endpoint: Endpoints.base + Endpoints.business.base
+                        }}
+                        variant={"standard"} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <XSelectInput

@@ -85,7 +85,7 @@ const NewEvent = ({done, onClose}: IProps) => {
 
     return (
         <XForm
-            debug={true}
+            debug={false}
             submitButtonLabel={"Add Event"}
             schema={schema}
             initialValues={initialValues}
