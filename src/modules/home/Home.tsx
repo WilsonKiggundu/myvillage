@@ -15,6 +15,7 @@ import userManager from "../../utils/userManager";
 import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import {homeStyles} from "./styles";
+import {white} from "../../theme/custom-colors";
 
 interface IStat {
     title: string
@@ -61,24 +62,35 @@ function Home() {
 
                                 <Box mt={6}>
 
-                                    <Grid container spacing={2} justify={"center"}>
+                                    <Grid container justify={"flex-start"}>
                                         <Grid item xs={12} sm={6}>
                                             <Button variant="contained"
                                                     size={"large"}
                                                     onClick={handleSignup}
                                                     className={styles.button}
-                                                    color="primary">
+                                                    color="secondary">
                                                 Join the community
                                             </Button>
                                         </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            <Button variant="contained"
-                                                    size={"large"}
-                                                    onClick={() => userManager.signinRedirect()}
-                                                    className={styles.button}
-                                                    color="default">
+                                    </Grid>
+
+                                </Box>
+
+                                <Box mt={6}>
+
+                                    <Grid container spacing={2} justify={"flex-start"}>
+                                        <Grid item>
+                                            <Typography style={{color: white}}>
+                                                Already a member?
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <a href="#"
+                                               onClick={() => userManager.signinRedirect()}
+                                                    className={styles.link}
+                                                    color="secondary">
                                                 Sign in
-                                            </Button>
+                                            </a>
                                         </Grid>
                                     </Grid>
 

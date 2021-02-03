@@ -1,8 +1,7 @@
 import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import {white} from "../../theme/custom-colors";
 import palette from "../../theme/palette";
-import {orange, teal} from "@material-ui/core/colors";
-import Africa from "../../assets/images/africa.png";
+import {teal} from "@material-ui/core/colors";
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,7 +28,7 @@ export const homeStyles = makeStyles((theme) => ({
         padding: 0,
         position: 'absolute',
         [theme.breakpoints.down('sm')]: {
-            textAlign: 'center',
+            //textAlign: 'center',
         }
     },
 
@@ -38,10 +37,16 @@ export const homeStyles = makeStyles((theme) => ({
         overflowX: 'hidden',
         marginTop: '-20px',
         paddingTop: 20,
-        height: 'calc(100vh - 60px)',
+        minHeight: 'calc(100vh - 60px)',
         [theme.breakpoints.down('sm')]: {
             //padding: '0'
         }
+    },
+
+    link: {
+        color: palette.primary.main,
+        fontWeight: 'bold',
+        fontSize: '1rem'
     },
 
     button: {
@@ -59,9 +64,12 @@ export const homeStyles = makeStyles((theme) => ({
     },
 
     logo: {
-        width: 150,
+        width: 200,
         height: 'auto',
         marginBottom: 20,
+        [theme.breakpoints.down("sm")]: {
+            maxWidth: 150
+        }
     },
 
     headline: {
@@ -105,7 +113,7 @@ export const homeStyles = makeStyles((theme) => ({
     title: {
         textTransform: 'inherit',
         padding: '40px 0',
-        color: orange[600],
+        color: white,
         lineHeight: '4rem',
         fontSize: '4rem',
         [theme.breakpoints.down("xs")]: {
@@ -120,12 +128,12 @@ export const homeStyles = makeStyles((theme) => ({
 
     main: {
         backgroundColor: palette.tertiary.main,
-        backgroundImage: `url(${Africa})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'bottom 100px right 100px',
+        // backgroundImage: `url(${Africa})`,
+        // backgroundRepeat: 'no-repeat',
+        // backgroundPosition: 'bottom 100px right 100px',
         minHeight: '100vh',
         [theme.breakpoints.down("xs")]: {
-            backgroundPosition: 'bottom -100px right -100px'
+            // backgroundPosition: 'bottom -100px right -100px'
         }
     },
 
