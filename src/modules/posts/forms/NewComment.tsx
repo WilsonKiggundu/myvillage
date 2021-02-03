@@ -1,16 +1,19 @@
 import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import {reqString} from "../../../data/validations";
 import XForm from "../../../components/forms/XForm";
 import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
-import {getUser} from "../../../services/User";
+import {getProfile, getUser} from "../../../services/User";
 import {IPost} from "../../../interfaces/IPost";
 import {IComment} from "../../../interfaces/IComment";
 import {unwrapResult} from "@reduxjs/toolkit";
-import {addComment} from "../postsSlice";
+// import {addComment} from "../postsSlice";
+import {IPerson} from "../../profiles/people/IPerson";
+import {addComment, saveCommentAction} from "../redux/postsActions";
+import {userSelector} from "../../../data/coreSelectors";
 
 interface IProps {
     done?: () => any
@@ -30,7 +33,7 @@ const initialValues = {
 
 const NewComment = ({done, onClose, ...props}: IProps) => {
     const dispatch = useDispatch()
-    const user = getUser();
+    const user = useSelector(userSelector);
 
     const handleSubmit = async (comment: IComment, actions: FormikHelpers<any>) => {
 
@@ -38,9 +41,8 @@ const NewComment = ({done, onClose, ...props}: IProps) => {
         if (props.post) comment.postId = props.post.id
 
         try {
-            const resultAction: any = await dispatch(addComment(comment))
-            unwrapResult(resultAction)
-        }catch (e) {
+            dispatch(addComment(comment))
+        } catch (e) {
 
         } finally {
             actions.resetForm()

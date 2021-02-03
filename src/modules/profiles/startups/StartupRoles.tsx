@@ -1,91 +1,115 @@
-import React, {Fragment, useState} from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from "@material-ui/core/Button";
-import {globalStyles} from "../../../theme/styles"
-import clsx from "clsx";
+import React, {useState} from 'react';
 import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import grey from "@material-ui/core/colors/grey";
 import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {IStartup} from "../../../interfaces/IStartup";
-import {IAward} from "../../../interfaces/IAward";
 import XDialog from "../../../components/dialogs/XDialog";
-import UpdateAwardForm from "./forms/UpdateAwardForm";
+import {CardHeader, List} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add"
+import AddStartupRole from "./forms/AddStartupRole";
+import {useDispatch, useSelector} from "react-redux";
+import {userSelector} from "../../../data/coreSelectors";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
+import {useHistory} from 'react-router-dom';
+import {Urls} from "../../../routes/Urls";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight"
+import DeleteIcon from "@material-ui/icons/Delete"
+import {deleteStartupRoles} from "./redux/startupsActions";
 
 interface IProps {
-    profile: IStartup
-    canEdit: boolean
+    startup: IStartup
 }
 
-export default function StartupRoles({canEdit, profile}: IProps) {
-    const styles = globalStyles();
-    const [awards, setAwards] = useState<IAward[] | undefined>(undefined)
-    const [openAddAwardDialog, setOpenAddAwardDialog] = useState<boolean>(false)
+export default function StartupRoles({startup}: IProps) {
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const {roles} = startup
+    const [addDialog, setAddDialog] = useState<boolean>(false)
+
+    const user = useSelector(userSelector)
+    let canEdit = startup.roles?.some((role: any) => role.personId === user?.profile.sub) ?? false
+
+    const handleDelete = (personId: string) => {
+        dispatch(deleteStartupRoles({businessId: startup.id, personId: personId}))
+    }
 
     return (
         <Box mb={2}>
-            <Typography style={{padding: '15px 0'}}>Awards &amp; Achievements</Typography>
             <Card>
-                <CardContent style={{paddingTop: 25}}>
-                    {awards ?
-                        <Grid spacing={1} container>
-                            {
-                                awards.map((award: any, index: number) => (
-                                    <Fragment key={index}>
-                                        <Grid xs={2} sm={1} item>
-                                            <Avatar variant={"square"}/>
-                                        </Grid>
-                                        <Grid xs={10} sm={11} item>
-                                            <Typography component={"h5"}>
-                                                <strong>{award.awardedBy}</strong>
-                                            </Typography>
-                                            <Typography variant={"body2"}>
-                                                {award.award}
-                                            </Typography>
-                                            <Typography variant={"body2"} style={{color: grey[800]}}>
-                                                <small>{award.date}</small>
-                                            </Typography>
-                                            <Typography style={{color: grey[700]}} variant={"body2"}>
-                                                {award.details}
-                                            </Typography>
-                                            <Divider
-                                                variant={"fullWidth"}
-                                                style={{
-                                                    margin: '15px 0',
-                                                    display: index + 1 < awards.length ? 'block' : 'none'
-                                                }}/>
-                                        </Grid>
-
-                                    </Fragment>
-                                ))
-                            }
-                        </Grid> :
+                <CardHeader
+                    title={"Our people"}
+                    action={
                         canEdit ? (
-                            <Typography style={{textAlign: "center"}}>
-                                Have you received any awards? <br/>
-                                <Button color="secondary"
-                                        onClick={() => setOpenAddAwardDialog(true)}
-                                        variant="outlined"
-                                        style={{marginLeft: 15, marginTop: 15}}
-                                        className={clsx(styles.noShadow)}>Boost your profile</Button>
-
-                                <XDialog title={"Add an award"}
-                                         open={openAddAwardDialog}
-                                         onClose={() => setOpenAddAwardDialog(false)} >
-                                    <UpdateAwardForm
-                                        onClose={() => setOpenAddAwardDialog(false)}
-                                        profile={profile} />
-                                </XDialog>
-
-                            </Typography>
+                            <IconButton onClick={() => setAddDialog(true)}>
+                                <AddIcon/>
+                            </IconButton>
                         ) : ""
-
                     }
+                />
+                <Divider/>
+                <CardContent style={{paddingTop: 15}}>
+                    {roles && roles.length > 0 ? (
+                        <List>
+                            {roles?.map((role: any, index: number) => {
+                                return (
+                                    <Box key={index}>
+                                        <ListItem
+                                            button
+                                            onClick={() => history.push(Urls.profiles.onePerson(role.personId))}
+                                            alignItems="flex-start">
+                                            <ListItemAvatar>
+                                                <Avatar alt={role.person.firstname} src={role.person.avatar}/>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={`${role.person.firstname} ${role.person.lastname}`}
+                                                secondary={
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body2"
+                                                        color="textPrimary"
+                                                    >
+                                                        {role.role}
+                                                    </Typography>
+                                                }
+                                            />
+                                            <ListItemSecondaryAction>
+                                                {canEdit ? (
+                                                    <IconButton onClick={() => handleDelete(role.personId)} edge="end" aria-label="more">
+                                                        <DeleteIcon style={{color: "red"}}/>
+                                                    </IconButton>
+                                                ) : ""}
+                                                <IconButton
+                                                    onClick={() => history.push(Urls.profiles.onePerson(role.personId))}
+                                                    edge="end"
+                                                    aria-label="more">
+                                                    <ChevronRightIcon/>
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                        <Divider variant="fullWidth" component="li"/>
+                                    </Box>
+                                )
+                            })}
+                        </List>
+                    ) : "No persons found"}
                 </CardContent>
             </Card>
+
+            <XDialog
+                maxWidth={"sm"}
+                title={"Add a person to your profile"}
+                open={addDialog}
+                onClose={() => setAddDialog(false)}>
+                <AddStartupRole profile={startup} onClose={() => setAddDialog(false)}/>
+            </XDialog>
+
         </Box>
     );
 }

@@ -4,8 +4,8 @@ export interface IStartup {
     id: string
     name: string
     description: string
-    numberOfEmployees: number
-    dateOfIncorporation: string
+    employeeCount: any
+    incorporationDate: string
     website: string
     category: string
     coverPhoto?: string

@@ -8,10 +8,14 @@ import {globalStyles} from "../../../theme/styles";
 import clsx from "clsx";
 import Chip from "@material-ui/core/Chip";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {useHistory} from 'react-router-dom';
 import Avatar from "@material-ui/core/Avatar";
-import ProfileRating from "../../../components/ProfileRating";
 import Box from "@material-ui/core/Box";
+import palette from "../../../theme/palette";
+import { useHistory } from "react-router-dom";
+import {Endpoints} from "../../../services/Endpoints";
+import CardMedia from "@material-ui/core/CardMedia";
+import grey from "@material-ui/core/colors/grey";
+import {white} from "../../../theme/custom-colors";
 
 interface IProps {
     id: string
@@ -20,6 +24,7 @@ interface IProps {
     interests?: [string]
     category?: string
     logo?: string
+    coverPhoto?: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -51,21 +56,29 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const StartupCard = (props: IProps) => {
+const StartupCard = ({coverPhoto, ...props}: IProps) => {
 
     const styles = globalStyles()
     const classes = useStyles()
+    const history = useHistory()
 
     const handleClick = (id: string) => {
-        const url = `${Urls.profiles.startups}/${id}`
-        window.location.replace(url)
+        const route = Urls.profiles.singleStartup(id)
+        history.push(route)
     }
 
     return (
         <Card style={{textAlign: "center"}}>
+
+            {/*{coverPhoto ? <CardMedia*/}
+            {/*    style={{height: 180}}*/}
+            {/*    image={coverPhoto}*/}
+            {/*    title={props.name}*/}
+            {/*/> : <Box style={{height: 100, backgroundColor: white}}></Box>}*/}
+
             <CardContent style={{paddingTop: 25}}>
 
-                <Avatar variant={"circle"}
+                <Avatar variant={"circular"}
                         className={clsx(styles.mediumAvatar, styles.centerAvatar)}
                         src={props.logo}/>
 
@@ -82,11 +95,11 @@ const StartupCard = (props: IProps) => {
                     </Typography>
                     : ""}
 
-                <Box mt={1} mb={1}>
-                    <Typography component="div">
-                        <Chip size="small" label={props.category}/>
-                    </Typography>
-                </Box>
+                {/*<Box mt={1} mb={1}>*/}
+                {/*    <Typography component="div">*/}
+                {/*        <Chip size="small" label={props.category}/>*/}
+                {/*    </Typography>*/}
+                {/*</Box>*/}
 
                 {/*<ProfileRating rating={3} />*/}
 
@@ -95,7 +108,9 @@ const StartupCard = (props: IProps) => {
                         className={clsx(styles.flex, styles.noShadow)}
                         onClick={() => handleClick(props.id)}
                         variant="contained"
-                        color="secondary">
+                        style={{
+                            color: palette.tertiary.main
+                        }}>
                         <strong>View profile</strong>
                     </Button>
                 </Box>

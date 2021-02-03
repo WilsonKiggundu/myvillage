@@ -2,23 +2,17 @@ import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
-import {useDispatch} from "react-redux";
-import {get, makeUrl, post} from "../../../../../utils/ajax";
-import Toast from "../../../../../utils/Toast";
+import {useDispatch, useSelector} from "react-redux";
+import {getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Grid} from "@material-ui/core";
 import {IPerson} from "../../IPerson";
 import {IOption} from "../../../../../components/inputs/inputHelpers";
 import {Endpoints} from "../../../../../services/Endpoints";
-import Chip from "@material-ui/core/Chip";
-import XTextInput from "../../../../../components/inputs/XTextInput";
-import {reqArray, reqString} from "../../../../../data/validations";
-import XSelectInput from "../../../../../components/inputs/XSelectInput";
-import {Options} from "../../../../../utils/options";
-import {IProfileCategory} from "../../../../../interfaces/IProfileCategory";
-import {addCategory} from "../../personSlice";
-import {addComment} from "../../../../posts/postsSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
-import {getProfile, getUser} from "../../../../../services/User";
+import {reqArray} from "../../../../../data/validations";
+import {getProfile} from "../../../../../services/User";
+import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
+import {personSelector} from "../../redux/peopleSelectors";
+import {editPersonCategories} from "../../redux/peopleActions";
 
 interface IProps {
     person: IPerson
@@ -34,30 +28,39 @@ const schema = yup.object().shape(
 
 const UpdateCategoryForm = ({person, onClose}: IProps) => {
     const dispatch = useDispatch()
-    const [categories, setCategories] = useState<IOption[]>([]);
+    const categories = person.categories
+    const [categoriesLookup, setCategoriesLookup] = useState<any>([])
 
     useEffect(() => {
-        const url = makeUrl("Profiles", Endpoints.lookup.category)
-        get(url, {}, (categories) => {
-            if (categories) {
-                setCategories(categories.map((category: any) => ({
-                    id: category.id,
-                    name: category.name
-                })))
-            }
-        })
 
-    }, [setCategories])
+
+        (async () => {
+            const lookupUrl = makeUrl("Profiles", Endpoints.lookup.category)
+            const response: any = await getAsync(lookupUrl, {});
+
+            if (response.status === 200){
+                let lookupCategories = response.body.map((m: any) => ({id: m.id, name: m.name}))
+
+                const lookupCategoriesFiltered: any = []
+                lookupCategories.forEach((el: any) => {
+                    const exists = categories?.some((i: any) => i.categoryId === el.id)
+                    if (!exists) {
+                        lookupCategoriesFiltered.push(el)
+                    }
+                })
+
+                setCategoriesLookup(lookupCategoriesFiltered)
+            }
+
+        })();
+
+    }, [categories])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
         const {categories} = values
-        const user: IPerson = getProfile()
 
-        await Promise.all(categories.map(async (category: string) => {
-            const resultAction: any = dispatch(addCategory({personId: user.id, categoryId: category}))
-            unwrapResult(resultAction)
-        }))
+        dispatch(editPersonCategories({categories, personId: person.id}))
 
         actions.resetForm()
         if (onClose) {
@@ -73,12 +76,15 @@ const UpdateCategoryForm = ({person, onClose}: IProps) => {
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
                 <Grid item xs={12}>
-                    <XSelectInput
-                        options={categories}
-                        label={"Category"}
-                        multiple={true}
-                        helperText={"Select all that apply to you"}
+                    <XSelectInputCreatable
+                        variant={"outlined"}
                         name={"categories"}
+                        allowAddNew={true}
+                        multiple={true}
+                        label={"Select a category"}
+                        options={categoriesLookup}
+                        dialogTitle={"Add a category"}
+                        dialogSubtitle={"Did you miss a category in our list? Please, add it!"}
                     />
                 </Grid>
             </Grid>

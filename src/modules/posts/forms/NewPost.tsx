@@ -1,21 +1,17 @@
 import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
-import {useDispatch} from "react-redux";
-import {useHistory} from "react-router-dom"
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import {reqString} from "../../../data/validations";
 import XForm from "../../../components/forms/XForm";
 import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
-import {getUser} from "../../../services/User";
+import {getProfile} from "../../../services/User";
 import {IPost} from "../../../interfaces/IPost";
-import {makeUrl, post} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
-import Toast from "../../../utils/Toast";
-import {addEvent} from "../../events/eventSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
-import {addPost} from "../postsSlice";
-import {format} from "date-fns";
+// import {addPost} from "../postsSlice";
+import {IPerson} from "../../profiles/people/IPerson";
+import {addPost, savePostAction} from "../redux/postsActions";
+import {userSelector} from "../../../data/coreSelectors";
 
 interface IProps {
     done?: () => any
@@ -32,20 +28,17 @@ const initialValues = {
     details: '',
 }
 
-const NewPost = ({done, onClose}: IProps) => {
+const NewPost = ({onClose}: IProps) => {
     const dispatch = useDispatch()
-    const history = useHistory()
 
-    const user = getUser();
+    const user = useSelector(userSelector);
 
     const handleSubmit = async (values: IPost, actions: FormikHelpers<any>) => {
         values.authorId = user.profile.sub
-        values.dateCreated = format(new Date(), "yyyy-MM-dd HH:mm:ss")
 
         try {
-            const resultAction: any = await dispatch(addPost(values))
-            unwrapResult(resultAction)
-        }catch (e) {
+            dispatch(addPost(values))
+        } catch (e) {
 
         } finally {
             actions.resetForm()

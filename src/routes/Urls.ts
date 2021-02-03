@@ -14,15 +14,17 @@ export const Urls = ({
         onePerson: (id: string) => `/profiles/people/${id}`,
         people: "/profiles/people",
         startups: "/profiles/startups",
-        singleStartup: "/profiles/startups/:id",
+        startup: "/profiles/startups/:id",
+        singleStartup: (id: string) => `/profiles/startups/${id}`,
         investors: "/profiles/investors",
         entrepreneurs: "/profiles/entrepreneurs",
     },
     jobs: {
+        singleJob: (id: string) => `/jobs/${id}/details`,
         create: "/jobs/create",
         list: "/jobs"
     },
-    job: '/jobs/:id',
+    job: '/jobs/:id/details',
     events: "/events",
     event: '/events/:id'
 })

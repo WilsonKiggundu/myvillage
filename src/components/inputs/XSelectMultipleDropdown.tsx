@@ -77,7 +77,7 @@ export default function XSelectMultipleDropdown(props: IProps) {
                 onChange={handleChange}
                 multiple
                 name={"selected"}
-                input={<Input />}
+                input={<Input/>}
                 MenuProps={MenuProps}
                 renderValue={(selected) => (
                     <div className={classes.chips}>
@@ -99,7 +99,7 @@ export default function XSelectMultipleDropdown(props: IProps) {
                     props.options ?
                         props.options.map((option, index) =>
                             <MenuItem key={index} value={option.value}>
-                                <Checkbox checked={value.indexOf(option.value) > -1} />
+                                <Checkbox checked={value.indexOf(option.value) > -1}/>
                                 <ListItemText primary={option.label}/>
                             </MenuItem>) :
                         ""

@@ -1,27 +1,21 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import BusinessIcon from '@material-ui/icons/Business';
-import WorkIcon from "@material-ui/icons/Work";
-import AuthService from "../../services/AuthService";
-import palette from "../../theme/palette";
-import {RedirectToUrl} from "../../routes/RedirectToUrl";
 import {Urls} from "../../routes/Urls";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {createStyles, Theme, useTheme} from "@material-ui/core";
-import {Wrapper} from "@material-ui/pickers/wrappers/Wrapper";
+import {useTheme, Chip} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import {Stats} from "../../components/Stats";
-import {PeopleOutline} from "@material-ui/icons";
-import {homeStyles} from "../../theme/styles";
+
 import Box from "@material-ui/core/Box";
-// import {ReactComponent as Logo} from "../../assets/images/myvillage-logo.svg"
+
 import Logo from "../../assets/images/myvillage-logo.png"
-import BulbsBg from "../../assets/images/bulbs-bg.png"
-import HandBg from "../../assets/images/hand-bg.png"
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {useSelector} from "react-redux";
+import userManager from "../../utils/userManager";
+import { useHistory } from "react-router-dom";
+import clsx from "clsx";
+import {homeStyles} from "./styles";
+import {white} from "../../theme/custom-colors";
 
 interface IStat {
     title: string
@@ -31,89 +25,87 @@ interface IStat {
 
 function Home() {
 
-    const classes = homeStyles();
-    const authService = new AuthService();
+    const styles = homeStyles();
 
-    if (authService.isAuthenticated()) {
-        RedirectToUrl(Urls.feed)
+    const history = useHistory()
+    const {user} = useSelector((state: any) => state.oidc)
+
+    const isAuthenticated = user != null
+
+    if (isAuthenticated) {
+        history.push(Urls.feed)
     }
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+    const handleSignup = () => {
+        history.push(`${process.env.REACT_APP_AUTH_URL}/account/signup?returnUrl=${process.env.REACT_APP_SIGNUP_REDIRECT_URL}`)
+    }
+
     return (
-        <div className={classes.root}>
-            <Grid className={classes.main} container>
+        <Container maxWidth={false} className={clsx(styles.root, styles.scrollable)}>
+            <Grid className={styles.main} container>
                 <Grid item xs={12}>
                     <Container maxWidth={"md"}>
-                        <Grid className={classes.container} container>
+                        <Grid className={styles.container} container>
                             <Grid item xs={12} md={8}>
-                                {/*<Logo className={classes.logo}/>*/}
-                                <img src={Logo} className={classes.logo}/>
+                                <img alt={"logo"} src={Logo} className={styles.logo}/>
 
-                                <Typography className={classes.headline} variant={"body2"}>
-                                    Grow your network. Expand your thinking. <br/>Exchange ideas. Be inspired
+                                <Typography className={styles.title}>
+                                    <strong>Africa's Entrepreneurs <br/>meet here.</strong>
                                 </Typography>
 
-                                <Typography className={classes.subHeadline} component={"div"}>
-                                    Investors | Startups | Members | Job Opportunities
+                                <Typography className={styles.headline} variant={"body2"}>
+                                    Grow your network. Expand your thinking. Exchange ideas. Be inspired
                                 </Typography>
+
+                                <Box mt={6}>
+
+                                    <Grid container justify={"flex-start"}>
+                                        <Grid item xs={12} sm={6}>
+                                            <Button variant="contained"
+                                                    size={"large"}
+                                                    onClick={handleSignup}
+                                                    className={styles.button}
+                                                    color="secondary">
+                                                Join the community
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+
+                                </Box>
+
+                                <Box mt={6}>
+
+                                    <Grid container spacing={2} justify={"flex-start"}>
+                                        <Grid item>
+                                            <Typography style={{color: white}}>
+                                                Already a member?
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <a href="#"
+                                               onClick={() => userManager.signinRedirect()}
+                                                    className={styles.link}
+                                                    color="secondary">
+                                                Sign in
+                                            </a>
+                                        </Grid>
+                                    </Grid>
+
+                                </Box>
 
                             </Grid>
-                            <Grid className={classes.buttons} item xs={12} md={4}>
-                                <Box mb={2}>
-                                    <Button variant="contained"
-                                            size={"large"}
-                                            onClick={authService.signupRedirect}
-                                            className={classes.button}
-                                            color="primary">
-                                        Join the community
-                                    </Button>
-                                </Box>
-                                <Box mb={2}>
-                                    <Button variant="outlined"
-                                            size={"large"}
-                                            onClick={authService.signinRedirect}
-                                            className={classes.button}
-                                            color="primary">
-                                        Sign in
-                                    </Button>
-                                </Box>
+                            <Grid item xs={12} md={4}>
+
                             </Grid>
                         </Grid>
                     </Container>
                 </Grid>
             </Grid>
 
-            <Grid className={classes.footer} container>
-                <Grid item xs={12}>
-                    <Container maxWidth={"md"}>
-                        <Grid item xs={12} md={8}>
-                            <Typography style={{textTransform: "uppercase"}} className={classes.title}>
-                                <strong>Don't be left out again</strong>
-                            </Typography>
-                            <Typography className={classes.subtitle}>
-                                We are building a vibrant community. A lot is always happening from developer
-                                meetups to founder labs.
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            {!isMobile ? (
-                                <>
-                                    <img style={{position: "absolute", maxHeight: 600, width: 'auto', top: 0, left: 0}}
-                                         className={classes.img}
-                                         src={BulbsBg}/>
-                                    <img className={classes.img}
-                                         style={{position: "absolute", maxHeight: 450, width: 'auto', bottom: -20, right: 0}}
-                                         src={HandBg}/>
-                                </>
-                            ) : ""}
-                        </Grid>
-                    </Container>
-                </Grid>
-            </Grid>
-
-        </div>
+        </Container>
     )
 }
 

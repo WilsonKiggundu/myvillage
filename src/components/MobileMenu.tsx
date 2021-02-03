@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
-export default function MobileMenu(){
+export default function MobileMenu() {
     const classes = useStyles();
     const [state, setState] = useState({
         top: false,
@@ -25,16 +25,16 @@ export default function MobileMenu(){
 
     const toggleDrawer =
         (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (
-            event.type === 'keydown' &&
-            ((event as React.KeyboardEvent).key === 'Tab' ||
-                (event as React.KeyboardEvent).key === 'Shift')
-        ) {
-            return;
-        }
+            if (
+                event.type === 'keydown' &&
+                ((event as React.KeyboardEvent).key === 'Tab' ||
+                    (event as React.KeyboardEvent).key === 'Shift')
+            ) {
+                return;
+            }
 
-        setState({ ...state, [anchor]: open });
-    };
+            setState({...state, [anchor]: open});
+        };
 
     const list = (anchor: Anchor) => (
         <div
@@ -48,15 +48,15 @@ export default function MobileMenu(){
             <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem button key={text}>
-                        <ListItemText primary={text} />
+                        <ListItemText primary={text}/>
                     </ListItem>
                 ))}
             </List>
-            <Divider />
+            <Divider/>
             <List>
                 {['All mail', 'Trash', 'Spam'].map((text, index) => (
                     <ListItem button key={text}>
-                        <ListItemText primary={text} />
+                        <ListItemText primary={text}/>
                     </ListItem>
                 ))}
             </List>

@@ -7,13 +7,9 @@ import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
-import {makeUrl, post} from "../../../../utils/ajax";
-import {Endpoints} from "../../../../services/Endpoints";
-import Toast from "../../../../utils/Toast";
 import {IAward} from "../../../../interfaces/IAward";
 import {IStartup} from "../../../../interfaces/IStartup";
 import XDateInput from "../../../../components/inputs/XDateInput";
-import {addAward, addProduct, updateProduct} from "../startupSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 
 interface IProps {
@@ -43,8 +39,8 @@ const UpdateAwardForm = ({onClose, id, award, profile}: IProps) => {
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
         try {
-            const resultAction: any = await dispatch(addAward(values))
-            unwrapResult(resultAction)
+            // const resultAction: any = await dispatch(addAward(values))
+            // unwrapResult(resultAction)
         } catch (e) {
 
         }

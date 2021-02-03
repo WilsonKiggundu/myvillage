@@ -4,8 +4,6 @@ import MuiListItem from "@material-ui/core/ListItem";
 import React, {useState} from "react";
 import {List} from "@material-ui/icons";
 import {ListItemText} from "@material-ui/core";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import InboxIcon from "@material-ui/icons/Inbox"
 import palette from "../theme/palette";
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +36,7 @@ const ListItem = withStyles({
     selected: {},
 })(MuiListItem);
 
-export default function TopBarNav(){
+export default function TopBarNav() {
     const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = useState(1)
 
@@ -50,16 +48,16 @@ export default function TopBarNav(){
         <div className="">
             <List className={classes.flexContainer}>
                 <ListItem button selected={selectedIndex === 0} onClick={event => handleListItemClick(event, 0)}>
-                    <ListItemText primary="Startups" />
+                    <ListItemText primary="Startups"/>
                 </ListItem>
                 <ListItem button selected={selectedIndex === 1} onClick={event => handleListItemClick(event, 1)}>
-                    <ListItemText primary="Startups" />
+                    <ListItemText primary="Startups"/>
                 </ListItem>
                 <ListItem button selected={selectedIndex === 2} onClick={event => handleListItemClick(event, 2)}>
-                    <ListItemText primary="Startups" />
+                    <ListItemText primary="Startups"/>
                 </ListItem>
                 <ListItem button selected={selectedIndex === 3} onClick={event => handleListItemClick(event, 3)}>
-                    <ListItemText primary="Startups" />
+                    <ListItemText primary="Startups"/>
                 </ListItem>
             </List>
         </div>

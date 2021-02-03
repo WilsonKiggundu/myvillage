@@ -5,11 +5,11 @@ import palette from "./palette";
 
 const theme = createMuiTheme({
     overrides: {
-      MuiCard: {
-          root: {
-              borderRadius: 8,
-          }
-      }
+        MuiCard: {
+            root: {
+                borderRadius: 8,
+            }
+        }
     },
     typography: {
         button: {
@@ -21,8 +21,6 @@ const theme = createMuiTheme({
 })
 
 theme.props = {
-    MuiLink: {
-
-    }
+    MuiLink: {}
 }
 export default responsiveFontSizes(theme)

@@ -2,13 +2,15 @@ import {makeStyles} from "@material-ui/core/styles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import deepPurple from "@material-ui/core/colors/deepPurple";
 import palette from "./palette";
-import {teal} from "@material-ui/core/colors";
+import {orange, teal} from "@material-ui/core/colors";
 import {white} from "./custom-colors";
 import grey from "@material-ui/core/colors/grey";
+import red from "@material-ui/core/colors/red";
+import Africa from "../assets/images/africa.png"
 
 export const globalStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',
+        display: 'flex',
     },
 
     flexWrap: {
@@ -21,9 +23,9 @@ export const globalStyles = makeStyles((theme) => ({
 
     clickable: {
         cursor: 'pointer',
-        background: palette.background.default,
+        // background: palette.background.default,
         '&:hover': {
-            background: palette.background.dark
+            // background: palette.background.dark
         }
     },
 
@@ -32,7 +34,7 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     fullWidth: {
-      width: '100%'
+        width: '100%'
     },
 
     noShadow: {
@@ -40,7 +42,7 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     borderless: {
-      border: 0
+        border: 0
     },
 
     orange: {
@@ -66,13 +68,13 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     largeAvatar: {
-        width: theme.spacing(20),
-        height: theme.spacing(20),
+        width: 150,
+        height: 150,
     },
 
     mediumAvatar: {
-        width: theme.spacing(14),
-        height: theme.spacing(14),
+        width: theme.spacing(10),
+        height: theme.spacing(10),
     },
 
     flex: {
@@ -128,7 +130,8 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     dropzone: {
-        maxHeight: 100
+        maxHeight: 150,
+        minHeight: '150px !important'
     },
 
     avatarPhotoIcon: {
@@ -136,6 +139,17 @@ export const globalStyles = makeStyles((theme) => ({
         position: "absolute",
         left: -40,
         bottom: 1
+    },
+
+    ellipsis: {
+        maxWidth: '95%',
+        display: "block",
+        textOverflow: "ellipsis",
+        wordWrap: "break-word",
+        overflow: "hidden",
+        '&$:after': {
+            content: '...'
+        }
     },
 
     maxLines: {
@@ -147,7 +161,7 @@ export const globalStyles = makeStyles((theme) => ({
         height: "3em",
         marginBottom: 15,
         verticalAlign: "middle",
-        '&$:after' : {
+        '&$:after': {
             content: '...'
         }
     },
@@ -164,100 +178,38 @@ export const globalStyles = makeStyles((theme) => ({
         backgroundColor: grey[100],
         width: '100%',
         maxHeight: '45vh',
-        minHeight: '20vh',
+        minHeight: '45vh',
         overflow: 'hidden',
-        marginBottom: 15,
         [theme.breakpoints.down('sm')]: {
-            height: '25vh'
+            maxHeight: '35vh',
+            minHeight: '25vh',
         }
-    }
+    },
 
-}))
+    whiteSpace: {
+      whiteSpace: 'pre-line'
+    },
 
-export const homeStyles = makeStyles((theme) => ({
-    root: {
-        backgroundColor: white,
-        width: '100%',
-        minHeight: '100vh',
-        margin: 0,
-        padding: 0,
-        position: 'absolute',
+    inline: {
+        display: 'inline'
+    },
+
+    scrollable: {
+        overflow: 'auto',
+        marginTop: '-20px',
+        height: 'calc(100vh - 70px)',
         [theme.breakpoints.down('sm')]: {
-            textAlign: 'center',
+            padding: '0'
         }
     },
 
-    button: {
-        boxShadow: 'none',
-        textTransform:'inherit',
-        display: "block",
-        width: '100%',
-        borderRadius: 0,
-        [theme.breakpoints.down('xs')]: {
-            width: '100%',
-        },
-        '&:hover': {
-            backgroundColor: 'none'
+    scrollableDialog: {
+        paddingBottom: 15,
+        overflow: 'auto',
+        height: 'calc(80vh - 70px)',
+        [theme.breakpoints.down('sm')]: {
+            padding: '15px 0'
         }
-    },
-
-    logo: {
-        width: 250,
-        height: 'auto',
-        marginBottom: 20,
-    },
-
-    headline: {
-        color: white,
-        fontSize: '1.3rem'
-    },
-
-    subHeadline: {
-        color: palette.secondary.main,
-        fontSize: '1rem',
-        padding: '45px 0'
-    },
-
-    container: {
-        margin: '10% auto',
-    },
-
-    flex: {
-        display: 'flex'
-    },
-
-    title: {
-        textTransform: 'uppercase',
-        padding: '25px 0',
-        fontSize: '1.5rem'
-    },
-
-    subtitle: {
-        fontSize: '1.1rem'
-    },
-
-    main: {
-        backgroundColor: palette.tertiary.main,
-        // minHeight: '50vh',
-        height: 'auto'
-    },
-
-    footer: {
-        backgroundColor: white,
-        minHeight: '30vh',
-        // borderTop: 'solid 2px orange'
-    },
-
-    buttons: {
-        margin: '15% auto',
-        textAlign: 'center'
-    },
-
-    img: {
-        zIndex: theme.zIndex.drawer - 1,
-        [theme.breakpoints.down('md')]: {
-            display: 'none',
-        },
     }
 
 }))

@@ -42,8 +42,20 @@ export const useLayoutStyles = makeStyles((theme: Theme) =>
         },
         content: {
             flexGrow: 1,
-            height: "100%",
+            // height: "100%",
         },
+
+        scrollable: {
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            marginTop: '-20px',
+            paddingTop: 20,
+            height: 'calc(100vh - 60px)',
+            [theme.breakpoints.down('sm')]: {
+                //padding: '0'
+            }
+        },
+
         body: {
             backgroundColor: grey[50],
             padding: theme.spacing(0),

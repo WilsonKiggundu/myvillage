@@ -6,6 +6,10 @@ const initialState: any = {
     user: null,
     isLoadingUser: true,
     globalLoader: false,
+    search: {},
+    serviceWorkerInitialized: false,
+    serviceWorkerUpdated: false,
+    serviceWorkerRegistration: null,
 }
 
 export const coreConstants = {
@@ -15,11 +19,32 @@ export const coreConstants = {
     stopLoading: "CORE_STOP_LOADING",
     coreLogout: "CORE_LOGOUT",
     coreStartGlobalLoader: "coreStartGlobalLoader",
-    coreStopGlobalLoader: "coreStopGlobalLoader"
+    coreStopGlobalLoader: "coreStopGlobalLoader",
+    updateSearch: "UPDATE_SEARCH",
+    swInit: "SW_INIT",
+    swUpdate: "SW_UPDATE"
 }
 
 export default function reducer(state = initialState, action: any) {
     switch (action.type) {
+
+        case coreConstants.swInit:
+            return {
+                ...state,
+                serviceWorkerInitialized: !state.serviceWorkerInitialized
+            }
+
+        case coreConstants.swUpdate:
+            return {
+                ...state,
+                serviceWorkerUpdated: !state.serviceWorkerUpdated,
+                serviceWorkerRegistration: action.payload
+            }
+
+        case coreConstants.updateSearch: {
+            return {...state, search: action.payload}
+        }
+
         case coreConstants.coreStartGlobalLoader: {
             return {...state, globalLoader: true}
         }
@@ -41,8 +66,6 @@ export default function reducer(state = initialState, action: any) {
         }
 
         case coreConstants.coreLogout: {
-            localStorage.removeItem(AUTH_TOKEN_KEY)
-            localStorage.removeItem(AUTH_USER_KEY)
             return {...state, user: null, isLoadingUser: false, splash: false}
         }
 

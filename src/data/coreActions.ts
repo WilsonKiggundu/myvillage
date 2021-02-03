@@ -36,3 +36,10 @@ export const coreStopGlobalLoader = () => {
         type: coreConstants.coreStopGlobalLoader,
     }
 }
+
+export const coreUpdateSearch = (payload: any) => {
+    return {
+        type: coreConstants.updateSearch,
+        payload
+    }
+}

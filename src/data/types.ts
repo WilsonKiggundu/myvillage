@@ -29,8 +29,8 @@ export interface ICoreState {
     token: string
 }
 
-export interface ISearch {
-    limit: number ,
-    skip: number,
-    query?: string
-}
+// export interface ISearch {
+//     limit: number,
+//     skip: number,
+//     query?: string
+// }

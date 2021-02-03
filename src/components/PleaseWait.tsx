@@ -3,12 +3,16 @@ import {CircularProgress} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import React from "react";
 
-export const PleaseWait = () => {
+interface IProps{
+    label?: string
+}
+
+export const PleaseWait = ({label}: IProps) => {
     return (
-        <Container style={{textAlign: "center"}} maxWidth={"lg"}>
+        <Container style={{textAlign: "center"}} maxWidth={false}>
             <Box mt={5}>
-                <CircularProgress variant={"indeterminate"} /><br/>
-                <span>Please wait...</span>
+                <CircularProgress variant={"indeterminate"}/><br/>
+                <span>{label}</span>
             </Box>
         </Container>
     )

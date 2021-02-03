@@ -1,12 +1,9 @@
 import React from "react";
 import {AuthConsumer} from "./AuthProvider";
 import {PleaseWait} from "../../components/PleaseWait";
+import {processSilentRenew} from "redux-oidc"
 
-export const SilentRenew = () => (
-    <AuthConsumer>
-        {({ signinSilentCallback }) => {
-            signinSilentCallback();
-            return <PleaseWait />
-        }}
-    </AuthConsumer>
-)
+export const SilentRenew = () => {
+    processSilentRenew()
+    return <PleaseWait/>
+}

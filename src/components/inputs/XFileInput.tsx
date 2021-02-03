@@ -1,17 +1,12 @@
 import * as React from 'react'
+import {createRef, useState} from 'react'
 import {useField} from 'formik';
-import TextField, {TextFieldProps} from '@material-ui/core/TextField';
-import {hasValue} from "./inputHelpers";
-import {Button, createStyles, Theme} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import {createStyles, Theme} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import deepOrange from "@material-ui/core/colors/deepOrange";
-import deepPurple from "@material-ui/core/colors/deepPurple";
-import grey from "@material-ui/core/colors/grey";
 import blue from "@material-ui/core/colors/blue";
-import {createRef, useRef, useState} from "react";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 
 interface IProps {
     name: string
@@ -44,8 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const XFileInput = ({name, ...props}: IProps) => {
-    const [field, meta] = useField({name});
-    const error = hasValue(meta.error) ? meta.error : undefined
+    const [field] = useField({name});
 
     const inputRef = createRef<any>()
     const [files, setFiles] = useState<any>([])
@@ -56,7 +50,7 @@ const XFileInput = ({name, ...props}: IProps) => {
         inputRef.current.click()
     }
 
-    const handleFileSelect = (event: any)  => {
+    const handleFileSelect = (event: any) => {
         const uploads = event.target.files
         setFiles([...uploads])
     }
@@ -76,9 +70,9 @@ const XFileInput = ({name, ...props}: IProps) => {
             />
 
             <Box>
-                <a onClick={handleClick} className={classes.label}>
+                <Button onClick={handleClick} className={classes.label}>
                     Add attachments
-                </a>
+                </Button>
             </Box>
 
             <Box mt={1}>
@@ -86,7 +80,7 @@ const XFileInput = ({name, ...props}: IProps) => {
                     <Chip key={index}
                           label={file.name}
                           size={"small"}
-                          style={{maxWidth: 120, marginRight: 2, marginBottom: 2}} />)) : ""}
+                          style={{maxWidth: 120, marginRight: 2, marginBottom: 2}}/>)) : ""}
             </Box>
 
         </Box>

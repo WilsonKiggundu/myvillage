@@ -1,67 +1,65 @@
 import React, {useEffect, useState} from "react"
 import StartupCard from "./StartupCard";
-import {AccordionDetails, Grid} from "@material-ui/core";
+import {Grid, useTheme} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
 import {XFab} from "../../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add";
 import UpdateStartupDetails from "./forms/UpdateStartupDetails";
 import XDialog from "../../../components/dialogs/XDialog";
 import {useDispatch, useSelector} from "react-redux";
-import {getStartups, selectAllStartups} from "./startupsSlice";
 import {PleaseWait} from "../../../components/PleaseWait";
-import {Alert} from "@material-ui/lab";
-
-type Visibility = 'hide' | 'show'
+import {startupsSelector} from "./redux/startupsSelectors";
+import {loadStartups} from "./redux/startupsActions";
+import _ from "lodash";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ErrorPage from "../../exceptions/Error";
+import {homeStyles} from "../../home/styles";
 
 const Startups = () => {
 
+    const styles = homeStyles()
+
+    const startups = useSelector(startupsSelector)
+    const dispatch = useDispatch()
+    const theme = useTheme()
     const [addStartupDialog, setAddStartupDialog] = useState<boolean>(false)
 
-    const dispatch = useDispatch()
-    const startups = useSelector(selectAllStartups)
-    const error = useSelector((state: any) => state.startups.error)
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-    const status = useSelector((state: any) => state.startups.status)
-
-    useEffect(() => {
-        if(status === 'idle'){
-            dispatch(getStartups())
+    const handleScroll = (event: any) => {
+        const element = event.target
+        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+            if (startups.request.hasMore) {
+                dispatch(loadStartups())
+            }
         }
-    }, [status, dispatch])
-
-    let content;
-    switch (status) {
-        case 'loading':
-            return <PleaseWait/>
-        case 'succeeded':
-            content = (
-                <Grid spacing={3} container>
-                    {startups.map((s: any) => (
-                        <Grid item key={s.id} xs={12} sm={6} md={4}>
-                            <StartupCard {...s} />
-                        </Grid>
-                    ))}
-                </Grid>
-            )
-            break;
-        case 'error':
-            content = <Grid item xs={12}>
-                <Alert
-                    color={"error"} icon={false}>
-                    {error}
-                </Alert>
-            </Grid>
-            break
-        default:
-            return <></>
     }
 
+    useEffect(() => {
+        dispatch(loadStartups())
+    }, [dispatch])
+
+    if (_.isEmpty(startups.data) && startups.isLoading) {
+        return <PleaseWait label={"Loading startups. Please wait..."}/>
+    }
+
+    if (startups.error) return (
+        <ErrorPage title={"Unable to load startups"} message={startups.error}/>
+    )
+
     return (
-        <Container maxWidth="lg">
-            <Box mb={2}>
-                {content}
-            </Box>
+        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
+            <Grid container spacing={2} justify={"flex-start"}>
+                <Grid item xs={12}>
+                    <Grid spacing={2} container>
+                        {startups.data.map((startup: any) => (
+                            <Grid item key={startup.id} xs={12} sm={6} md={4} lg={3}>
+                                <StartupCard {...startup} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Grid>
+            </Grid>
 
             <XFab right={15}
                   bottom={15}
@@ -75,7 +73,7 @@ const Startups = () => {
                      maxWidth={"md"}
                      open={addStartupDialog}
                      onClose={() => setAddStartupDialog(false)}>
-                <UpdateStartupDetails onClose={() => setAddStartupDialog(false)} />
+                <UpdateStartupDetails onClose={() => setAddStartupDialog(false)}/>
             </XDialog>
 
         </Container>

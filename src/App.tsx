@@ -6,22 +6,27 @@ import {useSelector} from 'react-redux'
 import LoaderDialog from "./components/LoaderDialog";
 import Splash from "./modules/login/Splash";
 import {AuthProvider} from "./modules/auth/AuthProvider";
+import {PleaseWait} from "./components/PleaseWait";
+import {Alert} from "@material-ui/lab";
+import {coreConstants} from "./data/coreReducer";
+import {withSnackbar} from "notistack";
 
 const App: React.FC = () => {
-    const coreState: any = useSelector((state: any) => state.core)
+    const oidcState: any = useSelector((state: any) => state.oidc)
 
-    const {globalLoader, isUserLoading} = coreState
+    const {user, isLoadingUser} = oidcState
 
-    if (isUserLoading) {
-        return <Splash />
+    if (isLoadingUser) {
+        return <PleaseWait/>
     } else {
-        return <AuthProvider>
+
+        return <>
             <ToastContainer enableMultiContainer={false} hideProgressBar/>
             <>
-                {<LoaderDialog open={globalLoader}/>}
-                <BrowserRouter children={Routes} basename={"/"} />
+                {/*{<LoaderDialog open={globalLoader}/>}*/}
+                <BrowserRouter children={Routes} basename={"/"}/>
             </>
-        </AuthProvider>;
+        </>;
     }
 }
 

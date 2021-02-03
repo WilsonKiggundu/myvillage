@@ -1,4 +1,3 @@
-
 export const customConstants = {
     addedEvent: "ADDED_EVENT_ACTION",
 }

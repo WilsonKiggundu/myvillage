@@ -1,22 +1,23 @@
 import React from "react";
-import PersonIcon from "@material-ui/icons/Person";
-import {hasValue} from "./inputs/inputHelpers";
-import {Avatar} from "@material-ui/core";
+import {Avatar, AvatarProps} from "@material-ui/core";
+import {IPerson} from "../modules/profiles/people/IPerson";
 
 interface IProps {
-    data: any
+    person?: IPerson
 }
 
-const XAvatar = ({data}: IProps) => {
-    return hasValue(data.avatar) ?
-        <Avatar
-            alt="Avatar"
-            src={data.avatar}
-        /> :
-        <Avatar>
-            <PersonIcon/>
-        </Avatar>
-        ;
+const XAvatar = (props: IProps & AvatarProps) => {
+    const {person, ...rest} = props
+
+    console.log(props)
+
+    return <Avatar
+        {...rest}
+        alt={`${person?.firstname} ${person?.lastname}`}
+        src={person?.avatar}>
+        {person?.firstname[0].toUpperCase()}
+        {person?.lastname[0].toUpperCase()}
+    </Avatar>
 }
 
 export default XAvatar;

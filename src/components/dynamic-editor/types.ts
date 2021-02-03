@@ -1,7 +1,7 @@
 export interface IColumn {
     name: string
     inputType?: InputType
-    inputProps?:any
+    inputProps?: any
     label: string
     render?: (value: any, row: any) => any
 }

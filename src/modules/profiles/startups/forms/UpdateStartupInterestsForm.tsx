@@ -2,9 +2,8 @@ import XForm from "../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
-import {useDispatch} from "react-redux";
-import {get, makeUrl, post} from "../../../../utils/ajax";
-import Toast from "../../../../utils/Toast";
+import {useDispatch, useSelector} from "react-redux";
+import {get, makeUrl} from "../../../../utils/ajax";
 import {Grid} from "@material-ui/core";
 import XSelectInput from "../../../../components/inputs/XSelectInput";
 import {IOption} from "../../../../components/inputs/inputHelpers";
@@ -12,10 +11,9 @@ import {Endpoints} from "../../../../services/Endpoints";
 import Chip from "@material-ui/core/Chip";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import {IStartup} from "../../../../interfaces/IStartup";
-import {IPerson} from "../../people/IPerson";
-import {getProfile} from "../../../../services/User";
-import {addInterest} from "../startupSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
+import XSelectInputCreatable from "../../../../components/inputs/XSelectInputCreatable";
+import {editStartupInterests} from "../redux/startupsActions";
+import {startupSelector} from "../redux/startupsSelectors";
 
 interface IProps {
     interests: any | undefined
@@ -32,19 +30,19 @@ const UpdateStartupInterestsForm = ({onClose, profile, interests}: IProps) => {
     const dispatch = useDispatch()
 
     const [interestsLookup, setInterestsLookup] = useState<IOption[]>([])
-    const [startupInterests, setStartupInterests] = useState<IOption[]>([])
+    const startupInterests = useSelector((state) => startupSelector(state, profile.id)).interests
 
     useEffect(() => {
 
         const lookupInterestUrl = makeUrl("Profiles", Endpoints.lookup.interest)
         get(lookupInterestUrl, {}, (response) => {
             if (response) {
-                let lookupInterests = response.map((m: any) => ({id: m.id, name: m.category}))
+                let lookupInterests = response.map((m: any) => ({interestId: m.id, name: m.category}))
 
                 const lookupInterestsFiltered: any = []
                 lookupInterests.forEach((el: any) => {
-                    const exists = interests.some((i: any) => i.interestId === el.id)
-                    if(!exists){
+                    const exists = interests.some((i: any) => i.interestId === el.interestId)
+                    if (!exists) {
                         lookupInterestsFiltered.push(el)
                     }
                 })
@@ -54,30 +52,14 @@ const UpdateStartupInterestsForm = ({onClose, profile, interests}: IProps) => {
             }
         })
 
-    }, [interests])
+    }, [])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        const {interests, custom} = values
-
-        if (custom) {
-            await Promise.all(custom.split(',').map(async (interest: string) => {
-                const resultAction: any = await dispatch(addInterest({
-                    businessId: profile.id,
-                    name: interest.trimStart().trimEnd()
-                }))
-                unwrapResult(resultAction)
-            }))
-        }
+        const {interests} = values
 
         if (interests) {
-            await Promise.all(interests.map(async (interest: string) => {
-                const resultAction: any = await dispatch(addInterest({
-                    businessId: profile.id, interestId: interest,
-                    interest: interestsLookup.filter(f => f.id === interest)[0]
-                }))
-                unwrapResult(resultAction)
-            }))
+            dispatch(editStartupInterests({interests: JSON.stringify(interests), businessId: profile.id}))
         }
 
         if (onClose) {
@@ -92,32 +74,19 @@ const UpdateStartupInterestsForm = ({onClose, profile, interests}: IProps) => {
             schema={schema}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                {startupInterests ?
-                    <Grid item xs={12}>
-                        {
-                            startupInterests.map(i => (
-                                <Chip key={i.id} label={i.name}/>
-                            ))
-                        }
-                    </Grid> : ""}
                 <Grid item xs={12}>
-                    <XSelectInput
+                    <XSelectInputCreatable
+                        variant={"outlined"}
+                        allowAddNew={true}
                         multiline={true}
-                        label={"Select one or more interest"}
+                        label={"Select one or more interests"}
+                        helperText={"You can also add a new interest if the suggested list is not exhaustive"}
                         multiple={true}
                         name={"interests"}
                         options={interestsLookup.filter(s => !startupInterests.includes(s))}
                     />
                 </Grid>
 
-                <Grid item xs={12}>
-                    <XTextInput
-                        variant={"outlined"}
-                        label={"Is your startup interested in something else?"}
-                        helperText={"Use (,) to add multiple interests"}
-                        name={"custom"}
-                    />
-                </Grid>
             </Grid>
 
         </XForm>

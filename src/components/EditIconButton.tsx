@@ -29,7 +29,7 @@ export const EditIconButton = ({onClick, style}: IProps) => {
 
 export const DeleteIconButton = ({onClick, style}: IProps) => {
     return (
-        <IconButton aria-label="delete" size="small" title='Edit' style={{color: errorColor,...style}}
+        <IconButton aria-label="delete" size="small" title='Edit' style={{color: errorColor, ...style}}
                     onClick={onClick}>
             <DeleteIcon style={{fontSize: '1rem', margin: 4}}/>
         </IconButton>

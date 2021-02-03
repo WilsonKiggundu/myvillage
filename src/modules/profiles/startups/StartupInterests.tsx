@@ -4,28 +4,32 @@ import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import EditIcon from "@material-ui/icons/Edit";
-import React, {useEffect, useState} from "react";
-import {getUser} from "../../../services/User";
-import {IOption} from "../../../components/inputs/inputHelpers";
-import {get, makeUrl} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
+import React, {useState} from "react";
 import Chip from "@material-ui/core/Chip";
 import CardHeader from "@material-ui/core/CardHeader";
 import {IStartup} from "../../../interfaces/IStartup";
 import UpdateStartupInterestsForm from "./forms/UpdateStartupInterestsForm";
+import {useDispatch, useSelector} from "react-redux";
+import {userSelector} from "../../../data/coreSelectors";
+import {deleteStartupInterests} from "./redux/startupsActions";
+import {startupInterestsSelector} from "./redux/startupsSelectors";
 
 interface IProps {
-    profile: IStartup,
-    canEdit: boolean
+    startup: IStartup
 }
 
-const StartupInterests = ({profile, canEdit}: IProps) => {
+const StartupInterests = ({startup}: IProps) => {
 
-    const user = getUser()
-    const {id} = profile
-    const {interests} = profile
+    const dispatch = useDispatch()
+    const interests = useSelector((state) => startupInterestsSelector(state, startup.id))
+    const user = useSelector(userSelector)
+    const canEdit = startup.roles?.some((role: any) => role.personId === user?.profile.sub) ?? false
 
     const [openEditInterestsDialog, setOpenEditInterestsDialog] = useState<boolean>(false)
+
+    const handleDelete = (interestId: string) => {
+        dispatch(deleteStartupInterests({id: interestId, businessId: startup?.id}))
+    }
 
     return (
         <Box mb={2}>
@@ -47,13 +51,24 @@ const StartupInterests = ({profile, canEdit}: IProps) => {
                 {interests?.length ? (
                     <CardContent>
                         {interests ? interests.map((i: any, index: number) =>
-                            <Chip
-                                label={i.label}
-                                key={index}
-                                style={{marginRight: 5, marginBottom: 5}}
-                                clickable
-                                color="secondary"
-                                variant="default"/>) : ""}
+                                (
+                                    canEdit ?
+                                        <Chip
+                                            label={i.interest?.category}
+                                            key={index}
+                                            onDelete={() => handleDelete(i.interestId)}
+                                            style={{marginRight: 5, marginBottom: 5}}
+                                            clickable
+                                            color="secondary"
+                                            variant="default"/> :
+                                        <Chip
+                                            label={i.interest?.category}
+                                            key={index}
+                                            style={{marginRight: 5, marginBottom: 5}}
+                                            color="secondary"
+                                            variant="default"/>
+                                )
+                        ) : ""}
                     </CardContent>
                 ) : ""}
 
@@ -64,7 +79,7 @@ const StartupInterests = ({profile, canEdit}: IProps) => {
                              open={openEditInterestsDialog}>
                         <UpdateStartupInterestsForm
                             onClose={() => setOpenEditInterestsDialog(false)}
-                            interests={interests} profile={profile}/>
+                            interests={interests} profile={startup}/>
                     </XDialog>
                 ) : ""}
             </Card>

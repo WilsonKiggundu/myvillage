@@ -10,7 +10,6 @@ import clsx from "clsx";
 import {getInitials, IPerson} from "../modules/profiles/people/IPerson";
 import CardMedia from "@material-ui/core/CardMedia";
 import Box from "@material-ui/core/Box";
-import palette from "../theme/palette";
 import grey from "@material-ui/core/colors/grey";
 
 interface IProps {
@@ -29,6 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
         orange: {
             color: theme.palette.getContrastText(deepOrange[500]),
             backgroundColor: deepOrange[500],
+            borderColor: deepOrange[500],
+            borderWidth: 1,
+            borderStyle: 'solid'
         },
         purple: {
             color: theme.palette.getContrastText(deepPurple[500]),
@@ -40,8 +42,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
 
         largeAvatar: {
-            width: theme.spacing(10),
-            height: theme.spacing(10),
+            width: theme.spacing(15),
+            height: theme.spacing(15),
         },
 
         mediumAvatar: {
@@ -58,27 +60,23 @@ const ContactCard = (props: IProps) => {
 
 
     return (
-        <Card elevation={1}>
+        <Card>
 
-            {coverPhoto ? <CardMedia
-                style={{height: 180}}
-                image={coverPhoto}
-                title="Contemplative Reptile"
-            /> : <Box style={{height: 180, backgroundColor: grey[300]}}></Box>}
+            {
+                coverPhoto ?
+                    <CardMedia style={{height: 150}} image={coverPhoto}/> :
+                    <Box style={{height: 150, backgroundColor: grey[300]}}/>
+            }
 
-            <CardContent style={{textAlign: 'center', marginTop: -55}}>
+            <CardContent style={{textAlign: 'center', marginTop: -80}}>
 
-                {avatar ?
-                    <Avatar className={clsx(classes.largeAvatar, classes.centerAvatar)} src={avatar}/> :
-                    <Avatar className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
-                        {getInitials(firstname, lastname)}
-                    </Avatar>}
+                <Avatar src={avatar} className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
+                    {getInitials(firstname, lastname)}
+                </Avatar>
+
                 <Typography noWrap component="div" style={{fontSize: '1.3rem', marginTop: 10}}>
                     <strong>{firstname} {lastname}</strong>
                 </Typography>
-                {/*{props.role ? <Typography noWrap component="div">*/}
-                {/*    <small>{props.role}</small>*/}
-                {/*</Typography> : ""}*/}
 
                 {props.children}
 

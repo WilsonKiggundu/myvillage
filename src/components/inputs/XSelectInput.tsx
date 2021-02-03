@@ -8,11 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {hasValue, IOption} from "./inputHelpers";
 import {Chip} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {useState} from "react";
 import Input from "@material-ui/core/Input";
-import Checkbox from "@material-ui/core/Checkbox";
 import ListItemText from "@material-ui/core/ListItemText";
-import TextField from "@material-ui/core/TextField";
 
 interface IProps {
     label: string
@@ -60,11 +57,11 @@ const XSelectInput = (props: IProps) => {
         setLabelWidth(inputLabel.current!.offsetWidth);
     }, []);
 
-    const [chipData, setChipData] = useState<IOption[]>([])
-
-    const handleDelete = (chipToDelete: IOption) => () => {
-        setChipData((chips) => chips.filter((chip) => chip.id !== chipToDelete.id))
-    }
+    // const [chipData, setChipData] = useState<IOption[]>([])
+    //
+    // const handleDelete = (chipToDelete: IOption) => () => {
+    //     setChipData((chips) => chips.filter((chip) => chip.id !== chipToDelete.id))
+    // }
 
     return <FormControl error={showError} fullWidth variant={variant} margin={margin} size={props.size}>
         <InputLabel htmlFor={name} ref={inputLabel}>{rest.label}</InputLabel>
@@ -86,8 +83,8 @@ const XSelectInput = (props: IProps) => {
                         Array.isArray(selected) ? (
                                 (selected as string[]).map((value, index) => (
                                     <Chip
-                                        size={"medium"}
-                                        onDelete={handleDelete}
+                                        size={"small"}
+                                        // onDelete={handleDelete}
                                         color={"secondary"}
                                         key={index}
                                         label={options?.filter(q => q.id === value)[0]?.name}
@@ -96,8 +93,8 @@ const XSelectInput = (props: IProps) => {
                                 ))
                             ) :
                             <Chip
-                                size={"medium"}
-                                onDelete={handleDelete}
+                                size={"small"}
+                                // onDelete={handleDelete}
                                 color={"secondary"}
                                 label={options?.filter(q => q.id === selected)[0]?.name}
                                 className={classes.chip}

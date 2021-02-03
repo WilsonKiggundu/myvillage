@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-function CreateDialog(props: IProps){
+function CreateDialog(props: IProps) {
     const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("xs"));
 
     const dialogProps = {
@@ -67,8 +67,8 @@ function CreateDialog(props: IProps){
                 <>
                     <DialogTitle id="dialog-title">{props.title}</DialogTitle>
                     <DialogContent dividers={true}>
-                        { props.contentText ? <DialogContentText>{props.contentText}</DialogContentText> : "" }
-                        { props.children }
+                        {props.contentText ? <DialogContentText>{props.contentText}</DialogContentText> : ""}
+                        {props.children}
                     </DialogContent>
                     <DialogActions>
                         <Button style={{textTransform: "uppercase"}}
@@ -87,7 +87,7 @@ function CreateDialog(props: IProps){
                     <AppBar className={classes.appBar}>
                         <Toolbar>
                             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-                                <CloseIcon />
+                                <CloseIcon/>
                             </IconButton>
                             <Typography variant="h6" className={classes.title}>
                                 {props.title}

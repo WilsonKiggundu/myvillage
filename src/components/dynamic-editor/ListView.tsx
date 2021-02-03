@@ -67,7 +67,7 @@ const ListView = (props: IProps) => {
                                 {props.title}
                             </Typography>
                         </Box>
-                        <Box >
+                        <Box>
                             {
                                 props.onAdd ?
                                     <Button startIcon={<AddIcon/>} size='small' variant='text'

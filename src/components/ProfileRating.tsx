@@ -11,15 +11,15 @@ export default function ProfileRating(props: IProps) {
     const [value, setValue] = React.useState<number | null>(props.rating);
 
     return (
-            <Box component="fieldset" mb={1} mt={1} borderColor="transparent">
-                <Rating
-                    readOnly={props.readonly}
-                    name="simple-controlled"
-                    value={value}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
-                    }}
-                />
-            </Box>
+        <Box component="fieldset" mb={1} mt={1} borderColor="transparent">
+            <Rating
+                readOnly={props.readonly}
+                name="simple-controlled"
+                value={value}
+                onChange={(event, newValue) => {
+                    setValue(newValue);
+                }}
+            />
+        </Box>
     );
 }

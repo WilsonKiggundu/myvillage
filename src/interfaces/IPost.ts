@@ -5,10 +5,20 @@ import {IComment} from "./IComment";
 export interface IPost {
     id: string
     type: any
-    details: string
+    details: string | undefined
     dateCreated: string
     authorId: string
-    author: IPerson
+    author?: IPerson
     uploads?: IUpload[]
     comments?: IComment[]
+    likes: IPostLike[]
+    commentsCount: number,
+    likesCount: number,
+    alreadyLikedByUser: boolean
+}
+
+export interface IPostLike {
+    entityId: string
+    personId: string
+    person?: IPerson
 }

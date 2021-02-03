@@ -1,7 +1,7 @@
 import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import {reqDate, reqString} from "../../../data/validations";
 import XForm from "../../../components/forms/XForm";
@@ -9,15 +9,18 @@ import XTextInput from "../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
 import XDateInput from "../../../components/inputs/XDateInput";
 import XSelectInput from "../../../components/inputs/XSelectInput";
-import {IJobCategory} from "../../../interfaces/IJob";
-import {get, makeUrl} from "../../../utils/ajax";
-import {Endpoints} from "../../../services/Endpoints";
 import {getProfile} from "../../../services/User";
 import {IPerson} from "../../profiles/people/IPerson";
-import {unwrapResult} from "@reduxjs/toolkit";
-import {addJob} from "../jobsSlice";
 import {IOption} from "../../../components/inputs/inputHelpers";
 import {IStartup} from "../../../interfaces/IStartup";
+import {countries} from "../../../data/Countries";
+import {ICountry} from "../../../interfaces/ICountry";
+import {userSelector} from "../../../data/coreSelectors";
+import {jobCategoriesSelector} from "../redux/jobsSelectors";
+import {addJob, loadJobCategories} from "../redux/jobsActions";
+import {getStartups} from "../../profiles/startups/redux/startupsEndpoints";
+import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
+import {Endpoints} from "../../../services/Endpoints";
 
 interface IProps {
     done?: () => any
@@ -43,35 +46,34 @@ const initialValues = {
 
 const NewJob = ({done, onClose}: IProps) => {
     const dispatch = useDispatch()
+    const user = useSelector(userSelector)
+    const categories = useSelector(jobCategoriesSelector)
 
-    const [categories, setCategories] = useState<IJobCategory[]>([])
     const [companies, setCompanies] = useState<IOption[]>([])
 
     useEffect(() => {
-        const url = makeUrl("Jobs", Endpoints.jobs.api + "/categories")
-        get(url, {}, (categories) => {
-            setCategories(categories)
-        }, err => {
 
-        })
+        dispatch(loadJobCategories())
 
-        const companiesUrl = makeUrl("Profiles", Endpoints.business.base)
-        get(companiesUrl, {}, (companies) => {
-            console.log(companies)
-            setCompanies(companies.map((c: IStartup) => ({id: c.id, name: c.name})))
-        }, undefined, undefined)
-    }, [setCategories, setCompanies])
+        getStartups({personId: user.profile.sub})
+            .then((response: any) => {
+                setCompanies(response.body.startups.map((c: IStartup) => (
+                        {id: c.id, name: c.name}
+                    )
+                ))
+            })
+
+    }, [dispatch, getStartups, setCompanies])
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
-        const user: IPerson = getProfile()
+
         const job = {...values}
         job.category = {id: values.category}
-        job.profileId = user.id
+        job.profileId = user.profile.sub
 
         try {
-            const resultAction: any = await dispatch(addJob(job))
-            unwrapResult(resultAction)
-        }catch (e) {
+            dispatch(addJob(job))
+        } catch (e) {
 
         } finally {
             actions.resetForm()
@@ -99,26 +101,34 @@ const NewJob = ({done, onClose}: IProps) => {
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <XSelectInput
+                    <XSelectInputAsync
+                        name="companyId"
                         label={"Company"}
-                        name={"companyId"}
-                        helperText={"Select a company"}
-                        options={companies} />
+                        helperText={"Start typing your company name."}
+                        data={{
+                            label: 'name',
+                            field: 'startups',
+                            params: {page: 1, pageSize: 25, personId: user.profile.sub},
+                            avatar: 'avatar',
+                            endpoint: Endpoints.base + Endpoints.business.base
+                        }}
+                        variant={"standard"} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <XSelectInput
                         label={"Category"}
                         name={"category"}
                         helperText={"Ex. Information Technology"}
-                        options={categories} />
+                        options={categories}/>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <XTextInput
+                    <XSelectInput
+                        multiple={false}
                         helperText={"Ex. Uganda, Kenya, Remote"}
                         name={"location"}
                         label={"Location"}
-                        variant={"standard"}
+                        options={countries.map((c: ICountry) => ({id: c.label, name: c.label}))}
                     />
                 </Grid>
 
@@ -135,11 +145,11 @@ const NewJob = ({done, onClose}: IProps) => {
 
                 <Grid item xs={12}>
                     <XTextAreaInput
-                        rows={1}
+                        rows={4}
                         rowsMax={6}
                         helperText={"Briefly describe the job so that candidates know what to expect.."}
                         label={"Job description"}
-                        name={"details"} />
+                        name={"details"}/>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
@@ -148,7 +158,7 @@ const NewJob = ({done, onClose}: IProps) => {
                         rowsMax={6}
                         helperText={"What qualifications should a potential candidate have?"}
                         label={"Qualifications"}
-                        name={"qualifications"} />
+                        name={"qualifications"}/>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
@@ -157,7 +167,7 @@ const NewJob = ({done, onClose}: IProps) => {
                         rowsMax={6}
                         helperText={"How many years of experience are you looking for? You can specify a range."}
                         label={"Experience"}
-                        name={"experience"} />
+                        name={"experience"}/>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -165,8 +175,8 @@ const NewJob = ({done, onClose}: IProps) => {
                         rows={1}
                         rowsMax={4}
                         helperText={"Describe what the application process is like."}
-                        label={"How should the candidates apply for the job?"}
-                        name={"howToApply"} />
+                        label={"How to apply"}
+                        name={"howToApply"}/>
                 </Grid>
 
             </Grid>

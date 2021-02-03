@@ -1,161 +1,153 @@
-import {Box, AccordionDetails, createStyles, makeStyles, Theme} from "@material-ui/core";
+import {Box} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import {Alert} from "@material-ui/lab";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemLink from "../../components/ListItemLink";
-import {differenceInCalendarDays, format, formatDistanceToNow} from "date-fns"
-import {useHistory} from "react-router-dom";
 import {XFab} from "../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add"
 import NewJob from "./forms/NewJob";
 import XDialog from "../../components/dialogs/XDialog";
-import {IJob, IJobCategory} from "../../interfaces/IJob";
-import {get, makeUrl} from "../../utils/ajax";
-import {Endpoints} from "../../services/Endpoints";
-import Toast from "../../utils/Toast";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CustomAccordion from "../../components/CustomAccordion";
-import XSelectDropdown from "../../components/inputs/XSelectDropdown";
+import {IJob} from "../../interfaces/IJob";
 import {useDispatch, useSelector} from "react-redux";
-import {getPosts, selectAllPosts} from "../posts/postsSlice";
-import {getJobs, selectAllJobs} from "./jobsSlice";
 import {PleaseWait} from "../../components/PleaseWait";
-import Chip from "@material-ui/core/Chip";
-import XSelectInput from "../../components/inputs/XSelectInput";
-import {IStartup} from "../../interfaces/IStartup";
-import {IOption} from "../../components/inputs/inputHelpers";
-import XForm from "../../components/forms/XForm";
-import Job from "./Job";
+import {jobsSelector} from "./redux/jobsSelectors";
+import Typography from "@material-ui/core/Typography";
+import {globalStyles} from "../../theme/styles";
+import {loadJobs} from "./redux/jobsActions";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import {useHistory} from "react-router-dom";
+import {Urls} from "../../routes/Urls";
+import {longDate} from "../../utils/dateHelpers";
+import ErrorPage from "../exceptions/Error";
+import {homeStyles} from "../home/styles";
+import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
+import {userSelector} from "../../data/coreSelectors";
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-        },
-        heading: {
-            fontSize: theme.typography.pxToRem(15),
-            flexBasis: '66%',
-            fontWeight: 'bold',
-            flexShrink: 0,
-        },
-        secondaryHeading: {
-            fontSize: theme.typography.pxToRem(15),
-            color: theme.palette.text.secondary,
-        },
-    }),
-);
 
-const Jobs = ({match}: any) => {
-
-    const classes = useStyles()
-
-    const {id} = match.params
+const Jobs = () => {
 
     const [openJobDialog, setOpenJobDialog] = useState<boolean>(false)
 
+    const classes = globalStyles()
+    const styles = homeStyles()
+    const history = useHistory()
     const dispatch = useDispatch()
-    const jobs = useSelector(selectAllJobs)
-    const error = useSelector((state: any) => state.jobs.error)
+    const jobs = useSelector(jobsSelector)
+    const user = useSelector(userSelector)
 
-    const status = useSelector((state: any) => state.jobs.status)
-    const [expanded, setExpanded] = React.useState<string | false>(false);
+    const [canCreateJob, setCanCreateJob] = useState<boolean>(false)
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(getJobs())
-        }
+        dispatch(loadJobs())
+    }, [dispatch])
 
-    }, [status, dispatch])
+    useEffect(() => {
+        (async () => {
+            getStartups({personId: user.profile.sub})
+                .then((response: any) => {
+                    if(response.status === 200 && response.body.startups.length){
+                        setCanCreateJob(true)
+                    }else{
+                        setOpenJobDialog(false)
+                    }
+                })
+        })()
+    }, [setCanCreateJob])
 
-    const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
-        setExpanded(isExpanded ? panel : false);
-    };
-
-
-    let content;
-    switch (status) {
-        case 'loading':
-            return <PleaseWait/>
-        case 'succeeded':
-
-            content = (
-                <Box clone order={{xs: 2, md: 3}}>
-                    <Grid item xs={12}>
-                        {jobs
-                            ? jobs.map((job: IJob, index: number) => <Job key={index} job={job} />)
-                            : ""
-                        }
-                    </Grid>
-                </Box>
-            )
-            break;
-        case 'error':
-            content = <Grid item xs={12}>
-                <Alert
-                    title={"We failed to get the jobs..."}
-                    color={"error"} icon={false}>
-                    {error}
-                </Alert>
-            </Grid>
-            break
-        default:
-            return <></>
+    const handleViewJob = (id: string) => {
+        const url = Urls.jobs.singleJob(id)
+        history.push(url)
     }
 
+    const handleScroll = (e: any) => {
+        const element = e.target
+        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+            if (jobs.request.hasMore) {
+                dispatch(loadJobs())
+            }
+        }
+    }
+
+    if (jobs.isLoading) return <PleaseWait/>
+    if (jobs.error) return (
+        <ErrorPage title={"Loading jobs failed"} message={jobs.error} />
+    )
+
     return (
-        <Container maxWidth={"md"}>
+        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
+            <Grid container spacing={2} justify={"center"}>
+                <Grid item xs={12} lg={6}>
+                    {jobs ?
+                        jobs.data.map((job: IJob, index: number) =>
+                            (
+                                <Box key={index} mt={2}>
+                                    <Card>
+                                        <CardContent>
+                                            <Grid spacing={3} container>
+                                                <Grid item xs={12}>
+                                                    <Typography variant={"h5"}>
+                                                        {job.title}
+                                                    </Typography>
+                                                    <Typography variant={"caption"}>
+                                                        {job.category?.name} {job.location}
+                                                    </Typography>
+                                                    <Box mt={2}>
+                                                        <Typography
+                                                            variant={"body2"}
+                                                            className={classes.maxLines}>
+                                                            {job.details}
+                                                        </Typography>
+                                                    </Box>
+                                                    {job.deadline ? (
+                                                        <Typography variant={"caption"}>
+                                                            <strong>Application deadline</strong><br/>
+                                                            {longDate(job.deadline)}
+                                                        </Typography>
+                                                    ) : ""}
 
-            <XFab
-                onClick={() => setOpenJobDialog(true)}
-                position={"fixed"}
-                bottom={20}
-                right={20}
-                color={"secondary"}>
-                <AddIcon/>
-            </XFab>
+                                                    <Box mt={4}>
+                                                        <Button
+                                                            onClick={() => handleViewJob(job.id)}
+                                                            color={"secondary"}
+                                                            size={"small"}
+                                                            variant={"outlined"}>
+                                                            View details
+                                                        </Button>
+                                                    </Box>
 
-            <XDialog
-                maxWidth={"md"}
-                title={"Add a new job"}
-                open={openJobDialog}
-                onClose={() => setOpenJobDialog(false)}>
-                <NewJob onClose={() => setOpenJobDialog(false)}/>
-            </XDialog>
-
-            <Grid spacing={2} container justify={"flex-start"}>
-
-                {/*<Grid item xs={12}>*/}
-                {/*    <Card style={{width: '100%'}}>*/}
-                {/*        <CardContent>*/}
-                {/*            <Grid container spacing={4}>*/}
-                {/*                <Grid item xs={12} md={4}>*/}
-                {/*                    <XSelectDropdown*/}
-                {/*                        helperText={"Filter by category"}*/}
-                {/*                        placeholder={"Category"}*/}
-                {/*                        options={categories}/>*/}
-                {/*                </Grid>*/}
-                {/*                <Grid item xs={12} md={4}>*/}
-                {/*                    <XSelectDropdown*/}
-                {/*                        helperText={"Filter by company"}*/}
-                {/*                        placeholder={"Company"}*/}
-                {/*                        options={companies}/>*/}
-                {/*                </Grid>*/}
-                {/*            </Grid>*/}
-                {/*        </CardContent>*/}
-                {/*    </Card>*/}
-                {/*</Grid>*/}
-
-                {content}
-
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            )
+                        )
+                        : ""
+                    }
+                </Grid>
             </Grid>
+
+            {canCreateJob ? <>
+                <XFab
+                    onClick={() => setOpenJobDialog(true)}
+                    position={"fixed"}
+                    bottom={20}
+                    right={20}
+                    color={"secondary"}>
+                    <AddIcon/>
+                </XFab>
+
+                <XDialog
+                    maxWidth={"md"}
+                    title={"Add a new job"}
+                    open={openJobDialog}
+                    onClose={() => setOpenJobDialog(false)}>
+                    <NewJob onClose={() => setOpenJobDialog(false)}/>
+                </XDialog>
+            </> : ""}
+
         </Container>
     )
 }

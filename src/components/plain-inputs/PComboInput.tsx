@@ -1,5 +1,4 @@
 import React, {ChangeEvent} from 'react';
-import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {AutocompleteProps} from "@material-ui/lab/Autocomplete/Autocomplete";
 import {TextFieldProps} from "@material-ui/core/TextField/TextField";
@@ -46,16 +45,17 @@ const PComboInput = (props: PComboProps) => {
         onChange(value)
     }
 
-    function getOptionLabel(o: string | IOption):string {
+    function getOptionLabel(o: string | IOption): string {
         if (typeof o === 'string') {
             return o
         }
-        if (typeof o === 'object' ) {
+        if (typeof o === 'object') {
             const obj = o as IOption
             return obj?.name
         }
         return ''
     }
+
     return (
         <Autocomplete
             {...extraProps}
