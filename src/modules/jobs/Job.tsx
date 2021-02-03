@@ -25,10 +25,11 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import grey from "@material-ui/core/colors/grey";
 import teal from "@material-ui/core/colors/teal";
+import {homeStyles} from "../home/styles";
 
 const Job = ({match}: any) => {
 
-    const classes = globalStyles()
+    const classes = homeStyles()
     const jobId = match.params.id
     const id = parseInt(jobId, 10)
     const theme = useTheme()
@@ -58,9 +59,8 @@ const Job = ({match}: any) => {
 
     return (
         <Container className={classes.scrollable} maxWidth={false}>
-            <Box mt={isMobile ? 0 : 2}>
-                <Grid justify={"center"} container spacing={2}>
-                    <Grid item xs={12} lg={7}>
+            <Grid justify={"center"} container spacing={2}>
+                    <Grid item xs={12} lg={6}>
                         {job ? (
                             <Card>
                                 <CardHeader
@@ -97,7 +97,7 @@ const Job = ({match}: any) => {
                                         <Grid style={{marginBottom: 15}} xs={12} lg={10} item>
                                             <Typography style={{margin: '15px 0'}} variant={"h6"}>
                                                 <strong>Job Description</strong>
-                                                <Typography className={classes.whiteSpace} component={"div"}>
+                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
                                                     {job.details}
                                                 </Typography>
                                             </Typography>
@@ -138,7 +138,6 @@ const Job = ({match}: any) => {
                         <StartupCard {...company} />
                     </Grid>
                 </Grid>
-            </Box>
         </Container>
     )
 }

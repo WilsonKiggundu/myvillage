@@ -12,15 +12,14 @@ import {IPerson} from "./IPerson";
 import {useDispatch, useSelector} from "react-redux";
 import {PleaseWait} from "../../../components/PleaseWait";
 import {Alert} from "@material-ui/lab";
-import {peopleSelector, personSelector} from "./redux/peopleSelectors";
-import {editPersonConnection, loadPeople, loadPersonConnection} from "./redux/peopleActions";
+import {peopleSelector} from "./redux/peopleSelectors";
+import {loadPeople} from "./redux/peopleActions";
 import _ from "lodash";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {useMediaQuery} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {homeStyles} from "../../home/styles";
-import {userSelector} from "../../../data/coreSelectors";
 
 const People = () => {
 
@@ -67,38 +66,36 @@ const People = () => {
 
     return (
         <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
-            <Box mt={isMobile ? 0 : 4}>
-                <Grid spacing={3} justify={"flex-start"} container>
-                    {people.data.map((person: IPerson) => (
-                        <Grid item key={person.id} xs={12} sm={6} md={4} lg={3}>
-                            <ContactCard person={person}>
-                                <Box mt={2} pl={3} pr={3}>
-                                    <Typography className={classes.maxLines} variant={"body1"}>
-                                        {person.bio}
-                                    </Typography>
-                                </Box>
-                                <Box mt={3} p={2}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12}>
-                                            <ButtonGroup style={{width: '100%'}} color={"default"}>
-                                                <Button
-                                                    onClick={() => handleViewProfile(person.id)}
-                                                    className={clsx(classes.fullWidth, classes.flat)}
-                                                    variant="contained"
-                                                    style={{textTransform: 'inherit'}}
-                                                    color={"primary"}
-                                                    size={"medium"}>View Profile</Button>
-                                            </ButtonGroup>
-                                        </Grid>
+            <Grid spacing={3} justify={"flex-start"} container>
+                {people.data.map((person: IPerson) => (
+                    <Grid item key={person.id} xs={12} sm={6} md={4} lg={3}>
+                        <ContactCard person={person}>
+                            <Box mt={2} pl={3} pr={3}>
+                                <Typography className={classes.maxLines} variant={"body1"}>
+                                    {person.bio}
+                                </Typography>
+                            </Box>
+                            <Box mt={3} p={2}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <ButtonGroup style={{width: '100%'}} color={"default"}>
+                                            <Button
+                                                onClick={() => handleViewProfile(person.id)}
+                                                className={clsx(classes.fullWidth, classes.flat)}
+                                                variant="contained"
+                                                style={{textTransform: 'inherit'}}
+                                                color={"primary"}
+                                                size={"medium"}>View Profile</Button>
+                                        </ButtonGroup>
                                     </Grid>
+                                </Grid>
 
-                                </Box>
+                            </Box>
 
-                            </ContactCard>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
+                        </ContactCard>
+                    </Grid>
+                ))}
+            </Grid>
         </Container>
     )
 }

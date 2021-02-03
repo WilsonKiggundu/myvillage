@@ -7,6 +7,7 @@ import userManager from "../../utils/userManager";
 import { Redirect } from 'react-router-dom';
 import {Urls} from "../../routes/Urls";
 import {isOffline} from "../../utils/ajax";
+import clsx from "clsx";
 
 interface IProps {
     user?: any
@@ -21,8 +22,6 @@ function MainLayout(props: IProps) {
     const {user} = useSelector((state: any) => state.oidc)
     const isAuthenticated = user != null
 
-    isOffline()
-
     if (!isAuthenticated) {
         userManager.signinRedirect()
     }
@@ -33,11 +32,9 @@ function MainLayout(props: IProps) {
             <header>
                 <ApplicationBar/>
             </header>
-            <main className={classes.content}>
+            <main className={clsx(classes.content)}>
                 <div className={classes.toolbar}/>
-                <div style={{paddingBottom: 25, paddingTop: 25}}>
-                    {props.children}
-                </div>
+                {props.children}
             </main>
         </div>
     );

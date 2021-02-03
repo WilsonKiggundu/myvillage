@@ -11,7 +11,8 @@ body, #root, .fill {
     padding: 0;
     height: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .MuiCard-root {

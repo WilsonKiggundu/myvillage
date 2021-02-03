@@ -99,12 +99,12 @@ export default function ApplicationBar() {
     }
 
     return (
-        <div className={classes.grow}>
+        <>
             <AppBar elevation={0} position="fixed">
                 <Container maxWidth={false}>
                     <Toolbar disableGutters>
 
-                        <Logo style={{height: 50, width: 'auto', margin: '10px'}}/>
+                        <Logo style={{height: isMobile ? 35 : 50, width: 'auto', margin: isMobile ? 5 : 10}}/>
 
                         {isMobile ? <div className={classes.grow}/> : ""}
 
@@ -114,24 +114,6 @@ export default function ApplicationBar() {
                             edge="start">
                             <MenuIcon style={{color: 'white'}}/>
                         </IconButton>
-
-
-                        {/*{authService.isAuthenticated() ?*/}
-                        {/*    <div className={classes.search}>*/}
-                        {/*        <div className={classes.searchIcon}>*/}
-                        {/*            <SearchIcon/>*/}
-                        {/*        </div>*/}
-                        {/*        <InputBase*/}
-                        {/*            placeholder="Search…"*/}
-                        {/*            classes={{*/}
-                        {/*                root: classes.inputRoot,*/}
-                        {/*                input: classes.inputInput,*/}
-                        {/*            }}*/}
-                        {/*            inputProps={{'aria-label': 'search'}}*/}
-                        {/*        />*/}
-                        {/*    </div> : ""*/}
-                        {/*}*/}
-
 
                         {!isMobile ? <div className={classes.grow}/> : ""}
 
@@ -273,6 +255,6 @@ export default function ApplicationBar() {
 
             </Drawer>
 
-        </div>
+        </>
     );
 }
