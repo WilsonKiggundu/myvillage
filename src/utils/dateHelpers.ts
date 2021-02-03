@@ -1,4 +1,5 @@
-import {format, formatDistanceToNow, getISOWeek, getMonth, getYear, isValid, parseISO} from "date-fns";
+import {format, formatDistanceToNow, getISOWeek, getMonth, getYear, isBefore, isValid, parseISO} from "date-fns";
+import {string} from "yup";
 
 export const dateFormat = 'dd.MM.yyyy'
 export const dateTimeFormat = 'dd.MM.yyyy HH:mm'
@@ -113,6 +114,10 @@ export const strToDate = (str: string): Date | null => {
     } catch (e) {
         return null
     }
+}
+
+export const isPast = (date: string): boolean => {
+    return isBefore(Date.parse(date), Date.now())
 }
 
 export const isToday = (str: string): boolean => {

@@ -33,7 +33,7 @@ export default function reducer(state = initialState, action: any) {
         case ADD_EVENT_SUCCEEDED:
             return {
                 ...state,
-                data: [...state.data, action.payload.body]
+                data: [action.payload.body, ...state.data]
             }
 
         case ADD_EVENT_FAILED:

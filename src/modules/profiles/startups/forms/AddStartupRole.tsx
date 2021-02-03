@@ -44,7 +44,7 @@ const AddStartupRole = ({onClose, profile}: IProps) => {
 
     return (
         <XForm
-            debug={true}
+            debug={false}
             schema={schema}
             initialValues={initialValues}
             onSubmit={handleSubmit}>

@@ -12,7 +12,7 @@ import {Alert} from "@material-ui/lab";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import {isThisMonth, isThisWeek, isThisYear, isToday} from "../../utils/dateHelpers";
+import {isPast, isThisMonth, isThisWeek, isThisYear, isToday} from "../../utils/dateHelpers";
 import {eventsSelector} from "./redux/eventsSelectors";
 import {loadEvents} from "./redux/eventsActions";
 import Typography from "@material-ui/core/Typography";
@@ -87,6 +87,7 @@ const EventsView = () => {
                             events.data
                                 .slice()
                                 .sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
+                                .filter((event: IEvent) => !isPast(event.startDateTime))
                                 .map((event: IEvent, index: number) => (
                                     <Grid key={index} item xs={12}>
                                         <Box mb={4}>

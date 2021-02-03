@@ -22,9 +22,6 @@ import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
 import {Options} from "../../../utils/options";
 import {IEvent} from "../../../interfaces/IEvent";
-import {IPerson} from "../../profiles/people/IPerson";
-import {getProfile} from "../../../services/User";
-import userManager from "../../../utils/userManager";
 import {userSelector} from "../../../data/coreSelectors";
 import {addEvent} from "../redux/eventsActions";
 import Toast from "../../../utils/Toast";
@@ -56,8 +53,12 @@ const NewEvent = ({done, onClose}: IProps) => {
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        const startDateTime = format(new Date(values.startTime), "yyyy-MM-dd HH:mm:ss")
-        const endDateTime = format(new Date(values.endTime), "yyyy-MM-dd HH:mm:ss")
+        const startTime = format(new Date(values.startTime), "HH:mm:ss")
+        const endTime = format(new Date(values.endTime), "HH:mm:ss")
+        const date = format(Date.parse(values.date), "yyyy-MM-dd")
+
+        const startDateTime = `${date}T${startTime}`
+        const endDateTime = `${date}T${endTime}`
 
         const event: IEvent = {
             conferenceUrl: values.conferenceUrl,
@@ -73,21 +74,18 @@ const NewEvent = ({done, onClose}: IProps) => {
             createdBy: user.profile.sub
         }
 
-        try {
-            dispatch(addEvent(event))
+        dispatch(addEvent(event))
 
-            // actions.resetForm()
-            // if (onClose) {
-            //     onClose()
-            // }
-        } catch (e) {
-            Toast.error(e.message)
+        actions.resetForm()
+        if (onClose) {
+            Toast.info("Event added successfully")
+            onClose()
         }
     }
 
     return (
         <XForm
-            debug={false}
+            debug={true}
             submitButtonLabel={"Add Event"}
             schema={schema}
             initialValues={initialValues}
