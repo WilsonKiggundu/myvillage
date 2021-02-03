@@ -18,7 +18,6 @@ if (process.env.NODE_ENV === 'development') {
 
 const sagaMiddleware = createSagaMiddleware();
 middlewares.push(sagaMiddleware)
-// middlewares.push(thunk)
 
 const middleware = applyMiddleware(createLogger({
     predicate: ((getState, action) => false)
