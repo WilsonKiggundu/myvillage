@@ -58,7 +58,7 @@ const XForm = (props: IProps) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Box p={1} pt={2}>
-                        <Grid container spacing={1} alignContent='flex-end' justify='flex-end'>
+                        <Grid container spacing={1} alignContent='flex-end' justify='flex-start'>
                             {
                                 props.onDelete &&
                                 <Grid item>
@@ -83,7 +83,7 @@ const XForm = (props: IProps) => {
                             }
                             <Grid item>
                                 <XSubmitButton
-                                    style={{textTransform: "inherit"}}
+                                    style={{textTransform: "inherit", fontSize: '17px'}}
                                     color={"primary"}
                                     label={props.submitButtonLabel ?? "Submit"}
                                     onClick={submitForm}>
