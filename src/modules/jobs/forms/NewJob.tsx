@@ -9,8 +9,6 @@ import XTextInput from "../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../components/inputs/XTextAreaInput";
 import XDateInput from "../../../components/inputs/XDateInput";
 import XSelectInput from "../../../components/inputs/XSelectInput";
-import {getProfile} from "../../../services/User";
-import {IPerson} from "../../profiles/people/IPerson";
 import {IOption} from "../../../components/inputs/inputHelpers";
 import {IStartup} from "../../../interfaces/IStartup";
 import {countries} from "../../../data/Countries";
