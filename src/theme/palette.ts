@@ -19,8 +19,9 @@ const palette = {
     tertiary: {
         contrastText: white,
         dark: '#636569',
-        main: '#636569',
-        light: '#636569'
+        main: '#1C1C1C',
+        light: '#2C2A2A'
+
     },
     error: {
         contrastText: white,

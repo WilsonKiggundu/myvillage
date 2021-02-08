@@ -210,6 +210,24 @@ export const globalStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             padding: '15px 0'
         }
+    },
+    bottomDesign:{
+        marginBottom: '0', 
+        position: 'absolute',
+        bottom: '-0.5em',
+        left: '0',
+        right: '0',
+        width: '100vw',
+        height: '10vh',
+        borderLeft: '45vw solid transparent',
+        borderRight: '45vw solid transparent',
+        borderBottom: `11.9vh solid ${palette.tertiary.light}`
+    },
+    largestText: {
+        color: '#E98A2B', 
+        fontWeight: 'bolder',
+        marginRight: '20px',
     }
+
 
 }))

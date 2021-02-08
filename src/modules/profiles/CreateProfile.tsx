@@ -7,7 +7,6 @@ import Box from "@material-ui/core/Box";
 import {Urls} from "../../routes/Urls";
 import Grid from "@material-ui/core/Grid";
 import XForm from "../../components/forms/XForm";
-import XTextInput from "../../components/inputs/XTextInput";
 import XRadioInput from "../../components/inputs/XRadioInput";
 import {Options} from "../../utils/options";
 import XTextAreaInput from "../../components/inputs/XTextAreaInput";
@@ -23,6 +22,7 @@ import palette from "../../theme/palette";
 import {useSelector} from "react-redux";
 import {globalStyles} from "../../theme/styles";
 import {white} from "../../theme/custom-colors";
+import Hidden from '@material-ui/core/Hidden';
 
 interface IProps {
     history: any
@@ -66,99 +66,117 @@ export const CreateProfile = (props: IProps) => {
     }
 
     return (
-        <Container style={{overflow: 'auto', height: '100vh'}} maxWidth={false}>
+        <Container  
+        style={{
+            overflow: 'auto', 
+            height: '100vh', 
+            backgroundColor: 
+            palette.tertiary.main
+            }} maxWidth={false}>
 
-            <Grid justify={"center"} container spacing={2}>
-                <Grid item xs={12} lg={9}>
-                    <Box style={{backgroundColor: palette.tertiary.main, color: white}} p={3}>
-                        <Grid container spacing={4}>
-                            <Grid item>
-                                <img alt={"logo"} src={Logo} style={{height: 100, width: 'auto'}}/>
+            <Grid 
+            justify={"center"} 
+            alignItems={'center'} 
+            container spacing={2} 
+            style={{
+                height: '100vh', 
+                position: 'relative'
+            }}>
+                <Grid container lg={11} 
+                justify={"center"}
+                style={{height: '78vh'}}>
+                    <Grid item lg={5}>
+                        <Box style={{backgroundColor: palette.tertiary.light, color: white, height:'100%'}} p={3}>
+                            <Grid container spacing={4}>
+                                <Grid item>
+                                    <img alt={"logo"} src={Logo} style={{height: 100, width: 'auto'}}/>
+                                </Grid>
+                                <Grid item>
+                                    <Box mb={3}>
+                                        <Typography className={classes.largestText} variant={'h3'}>
+                                            Start<br/> creating your <br/> profile
+                                        </Typography>
+                                        <Typography style={{marginTop: '4em'}} variant={"subtitle2"}>
+                                            A profile helps you get noticed as well as get
+                                            notified about things that you are interested in.
+                                        </Typography>
+                                    </Box>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <Box mb={3}>
-                                    <Typography variant={"h5"}>
-                                        <strong>Welcome, {user.profile.given_name}</strong>
-                                    </Typography><br/>
-                                    <Typography variant={"h6"}>Start creating your profile.</Typography>
-                                    <Typography variant={"body2"}>A profile helps you get noticed as well as get
-                                        notified <br/>about things that you are interested in.</Typography>
-                                </Box>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Card>
-                        <CardContent>
-                            <XForm
-                                debug={false}
-                                schema={schema}
-                                initialValues={initialValues}
-                                submitButtonLabel={"Create profile"}
-                                loading={loading}
-                                onSubmit={handleSubmit}>
+                        </Box>
+                    </Grid>
+                    <Grid item lg={5}>
+                        <Card className={classes.tile} style={{height: '100%'}}>
+                            <CardContent style={{ marginLeft: '20px'}}>
+                                <XForm
+                                    debug={false}
+                                    schema={schema}
+                                    initialValues={initialValues}
+                                    submitButtonLabel={"Save and continue"}
+                                    loading={loading}
+                                    onSubmit={handleSubmit}                                    
+                                    >
 
-                                <Box mb={3}>
-                                    <Grid container spacing={4}>
-                                        <Grid item xs={12} sm={6}>
-                                            <XTextInput
-                                                name={"firstName"}
-                                                disabled
-                                                helperText={"Ex. John"}
-                                                label={"First name"}/>
+                                    <Box mb={3}>
+                                        <Grid container spacing={4} style={{marginLeft: '-20px'}}>
+                                            <Grid item lg={12}>
+                                                <Typography variant={"h6"}>
+                                                {`${user.profile.given_name} ${user.profile.family_name}`}
+                                                </Typography>
+
+                                                <Typography variant={"subtitle2"}>
+                                                    {user.profile.email}
+                                                </Typography>
+                                            </Grid>
+
+                                            <Grid item xs={12} sm={12}>
+                                                <XRadioInput
+                                                    label={"What is your gender?"}
+                                                    name={"gender"}
+                                                    options={Options.GENDER}/>
+                                            </Grid>
+
+                                            <Grid 
+                                                item 
+                                                xs={12} 
+                                                sm={12} 
+                                                lg={12}
+                                                style={{
+                                                    marginTop: '-30px',
+                                                    marginBottom: '-30px',                                              
+                                                }}>
+                                                <XDateInput
+                                                    disableFuture
+                                                    label={"Date of birth"}
+                                                    name={"dateOfBirth"}
+                                                    variant={'outlined'}                                         
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <XTextAreaInput
+                                                    name={"bio"}
+                                                    rows={4}
+                                                    variant={'outlined'}
+                                                    style={{
+                                                        marginBottom: '-20px'
+                                                    }}
+                                                    label={"Say something about your self"}
+                                                />
+                                            </Grid>
                                         </Grid>
 
-                                        <Grid item xs={12} sm={6}>
-                                            <XTextInput
-                                                name={"lastName"}
-                                                disabled
-                                                helperText={"Ex. Joe"}
-                                                label={"Last name"}/>
-                                        </Grid>
-
-                                        <Grid item xs={12} sm={6}>
-                                            <XTextInput
-                                                name={"email"}
-                                                disabled
-                                                helperText={"We shall use your email to communicate to you. We don't share it with anyone"}
-                                                label={"Email address"}/>
-                                        </Grid>
-
-                                        <Grid item xs={12} sm={6}>
-                                            <XDateInput
-                                                disableFuture
-                                                label={"Date of birth"}
-                                                name={"dateOfBirth"}
-                                                helperText={"Knowing your age will help us give you age appropriate content."}
-                                            />
-                                        </Grid>
-
-                                        <Grid item xs={12} sm={12}>
-                                            <XRadioInput
-                                                label={"What is your gender?"}
-                                                name={"gender"}
-                                                helperText={"Your gender will help us give you the most relevant content. It's optional."}
-                                                options={Options.GENDER}/>
-                                        </Grid>
-
-                                        <Grid item xs={12}>
-                                            <XTextAreaInput
-                                                name={"bio"}
-                                                rows={6}
-                                                label={"Say something about your self"}
-                                                helperText={"Write a brief description about you. Press enter to start a new line."}
-                                            />
-                                        </Grid>
-
-                                    </Grid>
-
-                                </Box>
-                            </XForm>
-                        </CardContent>
-                    </Card>
+                                    </Box>
+                                </XForm>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    
                 </Grid>
+                <Hidden only={['sm', 'md', 'xs']}>
+                    <Grid lg={12} className={classes.bottomDesign}>
+                    </Grid>
+                </Hidden>
             </Grid>
-
-
         </Container>
     )
 }
