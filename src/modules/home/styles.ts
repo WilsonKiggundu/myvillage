@@ -2,6 +2,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import {white} from "../../theme/custom-colors";
 import palette from "../../theme/palette";
 import {teal} from "@material-ui/core/colors";
+import Africa from "../../assets/images/africa1.png"
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,24 +42,34 @@ export const homeStyles = makeStyles((theme) => ({
         }
     },
 
-    link: {
-        color: palette.primary.main,
-        fontSize: '1rem',
-        textTransform: 'inherit'
+    // link: {
+    //     color: palette.primary.main,
+    //     fontSize: '1rem',
+    //     textTransform: 'inherit'
+    // },
+
+    buttons: {
+        marginTop: '35px',
     },
 
     button: {
         boxShadow: 'none',
         textTransform: 'inherit',
-        display: "block",
-        width: '100%',
-        borderRadius: 0,
+        width: '45%',
+        fontSize: '20px',
+        fontWeight: 'bold',
+        backgroundColor: '#E98A2B',
+        color:'white',
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
         '&:hover': {
-            backgroundColor: 'none'
+            backgroundColor: '#E98A2B'
         }
+    },
+
+    signupbutton: {
+        backgroundColor: 'transparent !important',
     },
 
     logo: {
@@ -69,10 +80,16 @@ export const homeStyles = makeStyles((theme) => ({
             maxWidth: 150
         }
     },
+    africa: {
+
+        left: '30px'
+
+    },
 
     headline: {
-        color: white,
-        fontSize: '1.3rem'
+        color: '#E98A2B',
+        fontSize: '1.3rem',
+        width: '80%',
     },
 
     subHeadline: {
@@ -83,6 +100,8 @@ export const homeStyles = makeStyles((theme) => ({
 
     container: {
         margin: '5% auto',
+        position: 'relative'
+        
     },
 
     flex: {
@@ -126,9 +145,9 @@ export const homeStyles = makeStyles((theme) => ({
 
     main: {
         backgroundColor: palette.tertiary.main,
-        // backgroundImage: `url(${Africa})`,
-        // backgroundRepeat: 'no-repeat',
-        // backgroundPosition: 'bottom 100px right 100px',
+        backgroundImage: `url(${Africa})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'bottom 40px right 150px',
         minHeight: '100vh',
         [theme.breakpoints.down("xs")]: {
             // backgroundPosition: 'bottom -100px right -100px'
@@ -139,11 +158,6 @@ export const homeStyles = makeStyles((theme) => ({
         backgroundColor: white,
         minHeight: '30vh',
         // borderTop: 'solid 2px orange'
-    },
-
-    buttons: {
-        margin: '15% auto',
-        textAlign: 'center'
     },
 
     img: {

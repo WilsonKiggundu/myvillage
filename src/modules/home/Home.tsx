@@ -6,16 +6,13 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
-import Box from "@material-ui/core/Box";
-
-import Logo from "../../assets/images/myvillage-logo.png"
+import Logo from "../../assets/images/myvillage-logo.png";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {useSelector} from "react-redux";
 import userManager from "../../utils/userManager";
 import {useHistory} from "react-router-dom";
 import clsx from "clsx";
 import {homeStyles} from "./styles";
-import {white} from "../../theme/custom-colors";
 
 interface IStat {
     title: string
@@ -45,7 +42,7 @@ function Home() {
 
     return (
         <Container maxWidth={false} className={clsx(styles.root, styles.scrollable)}>
-            <Grid className={styles.main} container>
+            <Grid className={styles.main} container >
                 <Grid item xs={12}>
                     <Container maxWidth={"md"}>
                         <Grid className={styles.container} container>
@@ -60,46 +57,28 @@ function Home() {
                                     Grow your network. Expand your thinking. Exchange ideas. Be inspired
                                 </Typography>
 
-                                <Box mt={6}>
-
-                                    <Grid container justify={"flex-start"}>
-                                        <Grid item xs={12} sm={6}>
-                                            <Button variant="contained"
-                                                    size={"large"}
-                                                    onClick={handleSignup}
-                                                    className={styles.button}
-                                                    color="secondary">
-                                                Join the community
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-
-                                </Box>
-
-                                <Box mt={6}>
-
-                                    <Grid container spacing={2} justify={"flex-start"}>
-                                        <Grid item>
-                                            <Button
-                                                onClick={() => userManager.signinRedirect()}
-                                                className={styles.link}
-                                                color="primary">
-                                                Already a member? Sign in
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-
-                                </Box>
-
+                                <Grid container justify='space-between' className={styles.buttons} >
+                                
+                                    <Button variant="contained"
+                                        onClick={() => userManager.signinRedirect()}
+                                        className={styles.button}>
+                                        Sign in
+                                    </Button>   
+                                    <Button variant="outlined"
+                                        onClick={handleSignup}
+                                        className={`${styles.button} ${styles.signupbutton}`}
+                                        color="secondary">
+                                        Create an account
+                                    </Button>
+                                </Grid>
                             </Grid>
                             <Grid item xs={12} md={4}>
 
-                            </Grid>
+                            </Grid> 
                         </Grid>
                     </Container>
                 </Grid>
             </Grid>
-
         </Container>
     )
 }
