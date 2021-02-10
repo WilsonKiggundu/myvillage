@@ -42,15 +42,15 @@ const PersonCard = ({person, canEdit}: IProps) => {
 
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-    const [isConnected, setIsConnected] = useState<boolean>(false)
+    const [isConnected, setIsConnected] = useState<boolean | undefined>(false)
     const [openEditProfileDialog, setOpenEditProfileDialog] = useState<boolean>(false)
     const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState<boolean>(false)
     const [openEditProfilePhotoDialog, setOpenEditProfilePhotoDialog] = useState<boolean>(false)
 
     const user = useSelector(userSelector)
-    const {connections} = useSelector((state) => personSelector(state, user.profile.sub))
+    const {connections} = person
 
-    if(!connections.length) dispatch(loadPersonConnection({personId: user.profile.sub}))
+    if(!connections?.length) dispatch(loadPersonConnection({personId: user.profile.sub}))
 
     const handleDeleteCategory = (categoryId: string) => {
         dispatch(deletePersonCategories({categoryId, personId: person.id}))

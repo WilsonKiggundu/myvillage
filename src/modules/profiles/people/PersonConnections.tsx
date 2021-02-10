@@ -25,7 +25,7 @@ const PersonConnections = ({person, canEdit}: IProps) => {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const {connections} = useSelector((state: any) => personSelector(state, person.id))
+    const {connections} = person
 
     useEffect(() => {
         dispatch(loadPersonConnection({personId: person.id}))

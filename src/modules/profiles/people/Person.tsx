@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Container} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
@@ -19,30 +19,27 @@ import {personSelector} from "./redux/peopleSelectors";
 import {userSelector} from "../../../data/coreSelectors";
 import { loadPeople } from "./redux/peopleActions";
 import {homeStyles} from "../../home/styles";
+import {getAsync, makeUrl} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
 
 const Person = ({match}: any) => {
     const styles = homeStyles()
     const {id} = match.params
-    const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-    let person = useSelector((state) => personSelector(state, id))
-
-    const dispatch = useDispatch()
-
-
-    useEffect(() => {
-        (async () => {
-            await dispatch(loadPeople())
-        })()
-    },[id])
-
-    if(!person) {
-        person = store.getState().people.data.find((person: IPerson) => person.id === id)
-    }
+    const [person, setPerson] = useState<any>(undefined)
 
     const user = useSelector(userSelector)
     const canEdit: boolean = id === user?.profile.sub
+    const dispatch = useDispatch()
+    dispatch(loadPeople())
+
+    useEffect(() => {
+        (async () => {
+            const url = makeUrl("Profiles", Endpoints.person.base)
+            const response: any = await getAsync(url, {id})
+            setPerson(response.body.persons[0])
+        })()
+    }, [id])
 
     return (
         <Container className={styles.scrollable} maxWidth={false}>

@@ -6,9 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {Urls} from "../../routes/Urls";
 import Grid from "@material-ui/core/Grid";
-import {getUser} from "../../services/User";
 import XForm from "../../components/forms/XForm";
-import {User} from "oidc-client/dist/oidc-client";
 import XTextInput from "../../components/inputs/XTextInput";
 import XRadioInput from "../../components/inputs/XRadioInput";
 import {Options} from "../../utils/options";
@@ -20,7 +18,6 @@ import {IProfile} from "../../interfaces/IProfile";
 import {makeUrl, post} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import Toast from "../../utils/Toast";
-import {PROFILE_SESSION_KEY} from "../../data/constants";
 import Logo from "../../assets/images/myvillage-logo.png"
 import palette from "../../theme/palette";
 import {useSelector} from "react-redux";

@@ -53,7 +53,6 @@ import {
 } from "./peopleEndpoints";
 import {UploadType} from "../../../posts/forms/UploadFile";
 
-export type PersonData = 'avatar' | 'coverPhoto' | 'bioData'
 
 export function loadPeople(payload?: any) {
     return { type: FETCH_PEOPLE, payload };
@@ -225,7 +224,6 @@ export function deletePersonConnectionFailed(payload: any) {
 
 export function* updatePersonCategories(action: any){
     try {
-
         const response = yield call<any>(putPersonCategories, action.payload)
         yield put(editPersonCategoriesSuccess(response))
     } catch (error) {
