@@ -8,15 +8,10 @@ import {PleaseWait} from "../../components/PleaseWait";
 import {useDispatch, useSelector} from "react-redux";
 import {IEvent} from "../../interfaces/IEvent";
 import EventCard from "./EventCard";
-import {Alert} from "@material-ui/lab";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import {isPast, isThisMonth, isThisWeek, isThisYear, isToday} from "../../utils/dateHelpers";
+import {isPast} from "../../utils/dateHelpers";
 import {eventsSelector} from "./redux/eventsSelectors";
 import {loadEvents} from "./redux/eventsActions";
-import Typography from "@material-ui/core/Typography";
-import {globalStyles} from "../../theme/styles";
 import ErrorPage from "../exceptions/Error";
 import {homeStyles} from "../home/styles";
 
@@ -43,7 +38,7 @@ const EventsView = () => {
         }
     }
 
-    const handleFilter = (filter: EventFilter) => {
+    // const handleFilter = (filter: EventFilter) => {
         // let filtered = events
         // switch (filter) {
         //     case "today":
@@ -62,7 +57,7 @@ const EventsView = () => {
         //         break
         // }
         // setEvents(filtered)
-    }
+    // }
 
     if (events.isLoading) return <PleaseWait/>
     if (events.error) return (
