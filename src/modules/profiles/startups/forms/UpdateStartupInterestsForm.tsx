@@ -5,11 +5,8 @@ import * as yup from "yup"
 import {useDispatch, useSelector} from "react-redux";
 import {get, makeUrl} from "../../../../utils/ajax";
 import {Grid} from "@material-ui/core";
-import XSelectInput from "../../../../components/inputs/XSelectInput";
 import {IOption} from "../../../../components/inputs/inputHelpers";
 import {Endpoints} from "../../../../services/Endpoints";
-import Chip from "@material-ui/core/Chip";
-import XTextInput from "../../../../components/inputs/XTextInput";
 import {IStartup} from "../../../../interfaces/IStartup";
 import XSelectInputCreatable from "../../../../components/inputs/XSelectInputCreatable";
 import {editStartupInterests} from "../redux/startupsActions";

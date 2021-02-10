@@ -1,6 +1,3 @@
-import { takeLatest } from "redux-saga/effects"
-import {createStartup, fetchStartups} from "./startupsActions";
-import {ADD_STARTUP, FETCH_STARTUPS} from "./startupsReducer";
 import {IStartup} from "../../../../interfaces/IStartup";
 
 export const startupsSelector = (state: any) =>
