@@ -7,24 +7,19 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {Alert} from "@material-ui/lab";
 import {differenceInCalendarDays} from "date-fns";
-import Box from "@material-ui/core/Box";
-import useTheme from "@material-ui/core/styles/useTheme";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {useDispatch, useSelector} from "react-redux";
 import store from "../../data/store";
-import {jobSelector, jobsSelector} from "./redux/jobsSelectors";
+import {jobSelector} from "./redux/jobsSelectors";
 import {loadJobs} from "./redux/jobsActions";
 import {PleaseWait} from "../../components/PleaseWait";
 import {longDate, timeAgo} from "../../utils/dateHelpers";
 import Container from "@material-ui/core/Container";
-import {globalStyles} from "../../theme/styles";
 import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
 import Divider from "@material-ui/core/Divider";
 import StartupCard from "../profiles/startups/StartupCard";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import grey from "@material-ui/core/colors/grey";
-import teal from "@material-ui/core/colors/teal";
 import {homeStyles} from "../home/styles";
 
 const Job = ({match}: any) => {
@@ -32,11 +27,8 @@ const Job = ({match}: any) => {
     const classes = homeStyles()
     const jobId = match.params.id
     const id = parseInt(jobId, 10)
-    const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const [company, setCompany] = useState<any | undefined>(undefined)
 
-    const jobs = useSelector(jobsSelector)
     let job = useSelector((state) => jobSelector(state, id))
 
     const dispatch = useDispatch()

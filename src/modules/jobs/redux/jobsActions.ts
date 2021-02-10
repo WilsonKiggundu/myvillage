@@ -1,4 +1,4 @@
-import {call, put, delay} from "redux-saga/effects"
+import {call, put} from "redux-saga/effects"
 
 import {
     ADD_JOB,
@@ -12,7 +12,7 @@ import {
     FETCH_JOBS_SUCCEEDED
 } from "./jobsReducer";
 import {getJobCategories, getJobs, postJob} from "./jobsEndpoints";
-import {IJob} from "../../../interfaces/IJob";
+
 
 export function addJob(payload?: any) {
     return { type: ADD_JOB, payload };

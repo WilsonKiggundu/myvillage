@@ -2,7 +2,6 @@ import {Box} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import {Alert} from "@material-ui/lab";
 import {XFab} from "../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add"
 import NewJob from "./forms/NewJob";
