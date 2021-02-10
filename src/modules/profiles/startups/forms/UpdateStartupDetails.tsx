@@ -8,9 +8,7 @@ import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
 import Box from "@material-ui/core/Box";
-import {getProfile} from "../../../../services/User";
 import {IStartup} from "../../../../interfaces/IStartup";
-import {IPerson} from "../../people/IPerson";
 import {addStartup, editStartup} from "../redux/startupsActions";
 import {userSelector} from "../../../../data/coreSelectors";
 

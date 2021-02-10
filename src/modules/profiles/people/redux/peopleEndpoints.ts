@@ -2,7 +2,6 @@
 import {Endpoints} from "../../../../services/Endpoints";
 import {deleteAsync, getAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
 import store from "../../../../data/store";
-import {PersonData} from "./peopleActions";
 import {UploadType} from "../../../posts/forms/UploadFile";
 
 export const getPeople = async (params?: any) => {

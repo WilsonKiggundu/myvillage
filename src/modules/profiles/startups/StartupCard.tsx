@@ -6,16 +6,12 @@ import Typography from "@material-ui/core/Typography";
 import {Urls} from "../../../routes/Urls";
 import {globalStyles} from "../../../theme/styles";
 import clsx from "clsx";
-import Chip from "@material-ui/core/Chip";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import palette from "../../../theme/palette";
 import { useHistory } from "react-router-dom";
-import {Endpoints} from "../../../services/Endpoints";
-import CardMedia from "@material-ui/core/CardMedia";
-import grey from "@material-ui/core/colors/grey";
-import {white} from "../../../theme/custom-colors";
+
 
 interface IProps {
     id: string

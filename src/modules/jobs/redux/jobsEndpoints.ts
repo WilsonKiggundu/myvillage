@@ -1,7 +1,6 @@
 
 import {Endpoints} from "../../../services/Endpoints";
 import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
-import store from "../../../data/store";
 import {IJob} from "../../../interfaces/IJob";
 
 export const postJob = async (job: IJob) => {

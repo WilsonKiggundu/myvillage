@@ -9,7 +9,7 @@ import React, {useState} from "react";
 import Chip from "@material-ui/core/Chip";
 import UpdateInterestsForm from "./forms/profile/UpdateInterestsForm";
 import CardHeader from "@material-ui/core/CardHeader";
-import {deletePersonCategories, deletePersonInterests} from "./redux/peopleActions";
+import { deletePersonInterests } from "./redux/peopleActions";
 import {useDispatch} from "react-redux";
 
 interface IProps {

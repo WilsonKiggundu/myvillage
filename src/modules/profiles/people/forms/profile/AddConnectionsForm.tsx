@@ -20,8 +20,6 @@ import {globalStyles} from "../../../../../theme/styles";
 import Toast from "../../../../../utils/Toast";
 import {useDispatch, useSelector} from "react-redux";
 import {userSelector} from "../../../../../data/coreSelectors";
-import {personSelector} from "../../redux/peopleSelectors";
-import {IConnection} from "../../../../../interfaces/IConnection";
 import {editPersonConnection} from "../../redux/peopleActions";
 
 interface IProps {

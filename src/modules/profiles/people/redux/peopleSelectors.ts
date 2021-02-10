@@ -1,6 +1,3 @@
-import { takeLatest } from "redux-saga/effects"
-import {fetchPeople} from "./peopleActions"
-import { FETCH_PEOPLE } from "./peopleReducer"
 import {IPerson} from "../IPerson"
 
 export const peopleSelector = (state: any) => state.people
