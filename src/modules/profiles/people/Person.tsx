@@ -9,21 +9,15 @@ import PersonAwards from "./PersonAwards";
 import PersonSkills from "./PersonSkills";
 import {useDispatch, useSelector} from "react-redux";
 import {PleaseWait} from "../../../components/PleaseWait";
-import {Alert} from "@material-ui/lab";
 import PersonPosts from "./PersonPosts";
 import ProfileCoverPhoto from "../ProfileCoverPhoto";
-import {getProfile} from "../../../services/User";
 import PersonConnections from "./PersonConnections";
-import {globalStyles} from "../../../theme/styles";
 import useTheme from "@material-ui/core/styles/useTheme";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {startupSelector} from "../startups/redux/startupsSelectors";
-import {loadStartups} from "../startups/redux/startupsActions";
 import store from "../../../data/store";
-import {IStartup} from "../../../interfaces/IStartup";
 import {personSelector} from "./redux/peopleSelectors";
 import {userSelector} from "../../../data/coreSelectors";
-import {loadPeople, loadPersonConnection} from "./redux/peopleActions";
+import { loadPeople } from "./redux/peopleActions";
 import {homeStyles} from "../../home/styles";
 
 const Person = ({match}: any) => {

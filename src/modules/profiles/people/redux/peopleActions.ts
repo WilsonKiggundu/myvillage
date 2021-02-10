@@ -1,4 +1,4 @@
-import {call, put, delay} from "redux-saga/effects"
+import {call, put} from "redux-saga/effects"
 
 import {
     FETCH_PEOPLE,
@@ -52,19 +52,6 @@ import {
     putPersonInterests, putPersonSkills
 } from "./peopleEndpoints";
 import {UploadType} from "../../../posts/forms/UploadFile";
-import {
-    DELETE_STARTUP_INTERESTS, DELETE_STARTUP_INTERESTS_FAILED, DELETE_STARTUP_INTERESTS_SUCCEEDED,
-    EDIT_STARTUP_INTERESTS,
-    EDIT_STARTUP_INTERESTS_FAILED,
-    EDIT_STARTUP_INTERESTS_SUCCEEDED
-} from "../../startups/redux/startupsReducer";
-import {delStartupInterests, putStartupInterests} from "../../startups/redux/startupsEndpoints";
-import {
-    deleteStartupInterestsFailed,
-    deleteStartupInterestsSuccess,
-    editStartupInterestsFailed,
-    editStartupInterestsSuccess
-} from "../../startups/redux/startupsActions";
 
 export type PersonData = 'avatar' | 'coverPhoto' | 'bioData'
 

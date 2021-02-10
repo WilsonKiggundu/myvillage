@@ -9,11 +9,9 @@ import XDialog from "../../components/dialogs/XDialog";
 import UploadFile from "../posts/forms/UploadFile";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {IStartup} from "../../interfaces/IStartup";
-import palette from "../../theme/palette";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../data/coreSelectors";
 import grey from "@material-ui/core/colors/grey";
-import {start} from "repl";
 
 interface IProps {
     person?: IPerson
