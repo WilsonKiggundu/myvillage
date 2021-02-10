@@ -2,7 +2,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import {white} from "../../theme/custom-colors";
 import palette from "../../theme/palette";
 import {teal} from "@material-ui/core/colors";
-import Africa from "../../assets/images/africa1.png"
+import Africa from "../../assets/images/map-of-africa.png"
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
