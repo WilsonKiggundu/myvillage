@@ -4,7 +4,6 @@ import {globalStyles} from "../../../theme/styles"
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import grey from "@material-ui/core/colors/grey";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {IStartup} from "../../../interfaces/IStartup";
@@ -20,9 +19,8 @@ import DeleteIcon from "@material-ui/icons/Delete"
 import {getAddressTypeLabel} from "../../../utils/enumHelpers";
 import {useDispatch, useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
-import palette from "../../../theme/palette";
 import {white} from "../../../theme/custom-colors";
-import {deleteStartupAddress, removeStartupAddress} from "./redux/startupsActions";
+import {deleteStartupAddress} from "./redux/startupsActions";
 
 interface IProps {
     startup: IStartup

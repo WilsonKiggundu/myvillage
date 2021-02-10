@@ -1,10 +1,9 @@
 
 import {Endpoints} from "../../../../services/Endpoints";
-import {del, deleteAsync, getAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
+import { deleteAsync, getAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
 import store from "../../../../data/store";
 import {IAddress} from "../../../../interfaces/IAddress";
 import {UploadType} from "../../../posts/forms/UploadFile";
-import {start} from "repl";
 
 export const postStartup = async (startup: any) => {
     const url = makeUrl("Profiles", Endpoints.business.base)

@@ -3,14 +3,12 @@ import {FormikHelpers} from "formik";
 import React from "react";
 import * as yup from "yup"
 import {reqString} from "../../../../data/validations";
-import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../components/inputs/XTextAreaInput";
 import {IAward} from "../../../../interfaces/IAward";
 import {IStartup} from "../../../../interfaces/IStartup";
 import XDateInput from "../../../../components/inputs/XDateInput";
-import {unwrapResult} from "@reduxjs/toolkit";
 
 interface IProps {
     onClose?: () => any
@@ -28,7 +26,6 @@ const schema = yup.object().shape(
 )
 
 const UpdateAwardForm = ({onClose, id, award, profile}: IProps) => {
-    const dispatch = useDispatch()
 
     const initialValues = {
         date: new Date().toISOString(),
