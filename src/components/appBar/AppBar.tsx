@@ -80,7 +80,7 @@ export default function ApplicationBar() {
 
     const handleProfileView = () => {
         closeProfileMenu()
-        history.push(Urls.profiles.onePerson(user.profile.sub))
+        history.push(Urls.profiles.onePerson(user?.profile?.sub))
         setState({left: false, right: false})
     }
 
@@ -151,7 +151,7 @@ export default function ApplicationBar() {
                                                     aria-haspopup="true"
                                                     onClick={showProfileMenu}
                                                     color="inherit">
-                                            <Avatar src={user.profile?.picture} variant={"circular"}/>
+                                            <Avatar src={user?.profile?.picture} variant={"circular"}/>
                                         </IconButton>
                                         <Menu
                                             id="profile-menu"
@@ -162,7 +162,7 @@ export default function ApplicationBar() {
                                             onClose={closeProfileMenu}
                                             open={Boolean(anchorEl)}>
                                             <MenuItem
-                                                disabled>{user.profile.given_name} {user.profile.family_name}</MenuItem>
+                                                disabled>{user?.profile?.given_name} {user?.profile?.family_name}</MenuItem>
                                             <MenuItem onClick={handleProfileView}>
                                                 My Profile
                                             </MenuItem>
@@ -209,14 +209,14 @@ export default function ApplicationBar() {
                                     onClick={() => handleProfileView()}
                                     alignItems="flex-start">
                                     <ListItemAvatar>
-                                        <Avatar alt={user.profile.given_name} src={user.profile.picture}/>
+                                        <Avatar alt={user?.profile?.given_name} src={user?.profile?.picture}/>
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary={
                                             <Typography
                                                 style={{width: '95%'}}
                                                 noWrap variant={"h6"}>
-                                                {user.profile.given_name} {user.profile.family_name}
+                                                {user?.profile?.given_name} {user?.profile?.family_name}
                                             </Typography>
                                         }
                                         secondary={
@@ -226,7 +226,7 @@ export default function ApplicationBar() {
                                                 component="div"
                                                 variant="body2"
                                             >
-                                                {user.profile.email}
+                                                {user?.profile?.email}
                                             </Typography>
                                         }
                                     />

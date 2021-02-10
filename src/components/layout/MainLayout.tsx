@@ -23,7 +23,7 @@ function MainLayout(props: IProps) {
     const isAuthenticated = user != null
 
     if (!isAuthenticated) {
-        userManager.signinRedirect()
+        // userManager.signinRedirect()
     }
 
     return (

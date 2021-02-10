@@ -46,8 +46,6 @@ export default function reducer(state = initialState, action: any) {
     } else if (action.type === LIKE_POST_SUCCEEDED) {
         const like: IPostLike = action.payload.body
 
-        console.log(like)
-
         state.data.find((p: IPost) => p.id === like.entityId).likes.push(like)
         state.data.find((p: IPost) => p.id === like.entityId).likesCount += 1
         state.data.find((p: IPost) => p.id === like.entityId).alreadyLikedByUser = true

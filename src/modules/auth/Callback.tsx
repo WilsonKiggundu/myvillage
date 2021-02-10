@@ -1,6 +1,6 @@
 import React from "react";
 import {PleaseWait} from "../../components/PleaseWait";
-import {CallbackComponent} from "redux-oidc";
+import {CallbackComponent, USER_SIGNED_OUT} from "redux-oidc";
 import userManager from "../../utils/userManager";
 import {Urls} from "../../routes/Urls";
 import Toast from "../../utils/Toast";
@@ -8,10 +8,13 @@ import {handleResponse, makeUrl} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import * as superagent from "superagent";
 import { useHistory } from "react-router-dom";
+import {useDispatch} from "react-redux";
 
 const Callback = () => {
 
     const history = useHistory()
+    const dispatch = useDispatch()
+
     return (
         <CallbackComponent
             userManager={userManager}
@@ -34,7 +37,10 @@ const Callback = () => {
             }}
             errorCallback={async error => {
                 Toast.error(error.message)
-                await userManager.signoutRedirect()
+                // dispatch({
+                //     type: USER_SIGNED_OUT
+                // })
+                // await userManager.signoutRedirect()
             }}
         >
             <PleaseWait/>

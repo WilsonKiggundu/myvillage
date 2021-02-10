@@ -24,7 +24,6 @@ interface IProps {
 const Feed = () => {
 
     const styles = homeStyles()
-    const classes = globalStyles()
     const dispatch = useDispatch()
     const posts = useSelector(postsSelector)
 
