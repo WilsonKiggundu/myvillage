@@ -24,6 +24,8 @@ import {globalStyles} from "../../theme/styles";
 import {white} from "../../theme/custom-colors";
 import Hidden from '@material-ui/core/Hidden';
 
+import './CreateProfile.css'
+
 interface IProps {
     history: any
 }
