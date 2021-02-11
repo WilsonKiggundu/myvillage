@@ -1,25 +1,18 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import {Urls} from "../../routes/Urls";
-import {useTheme} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-
 import Logo from "../../assets/images/myvillage-logo.png";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {useSelector} from "react-redux";
 import userManager from "../../utils/userManager";
 import {useHistory} from "react-router-dom";
-import {homeStyles} from "./styles";
 import AfricaMap from "../../assets/images/map-of-africa.png"
 
 import './Home.css'
 
 
 function Home() {
-
-    const styles = homeStyles();
 
     const history = useHistory()
     const {user} = useSelector((state: any) => state.oidc)
@@ -75,7 +68,7 @@ function Home() {
                                 </Grid>
                             </Grid>
                             <Grid className="map-holder" item xs={12} sm={6} md={4} lg={6}>
-                                <img src={AfricaMap}/>
+                                <img src={AfricaMap} alt="africa"/>
                             </Grid>
                         </Grid>
                     </Container>
