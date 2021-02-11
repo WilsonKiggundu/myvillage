@@ -23,6 +23,7 @@ import {useSelector} from "react-redux";
 import {globalStyles} from "../../theme/styles";
 import {white} from "../../theme/custom-colors";
 import Hidden from '@material-ui/core/Hidden';
+import './CreateProfile.css'
 
 interface IProps {
     history: any
@@ -36,6 +37,7 @@ const schema = yup.object().shape(
         gender: reqString
     }
 )
+
 
 export const CreateProfile = (props: IProps) => {
 
@@ -82,11 +84,11 @@ export const CreateProfile = (props: IProps) => {
                 height: '100vh', 
                 position: 'relative'
             }}>
-                <Grid container lg={11} 
+                <Grid  container md={12} lg={11} 
                 justify={"center"}
                 style={{height: '78vh'}}>
                     <Grid item lg={5}>
-                        <Box style={{backgroundColor: palette.tertiary.light, color: white, height:'100%'}} p={3}>
+                        <Box className='box' style={{backgroundColor: palette.tertiary.light, color: white, height:'100%'}} p={3}>
                             <Grid container spacing={4}>
                                 <Grid item>
                                     <img alt={"logo"} src={Logo} style={{height: 100, width: 'auto'}}/>
@@ -106,7 +108,7 @@ export const CreateProfile = (props: IProps) => {
                         </Box>
                     </Grid>
                     <Grid item lg={5}>
-                        <Card className={classes.tile} style={{height: '100%'}}>
+                        <Card className={classes.tile}  style={{height: '100%'}}>
                             <CardContent style={{ marginLeft: '20px'}}>
                                 <XForm
                                     debug={false}
