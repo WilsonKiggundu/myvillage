@@ -6,22 +6,16 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
-import Box from "@material-ui/core/Box";
-
-import Logo from "../../assets/images/myvillage-logo.png"
+import Logo from "../../assets/images/myvillage-logo.png";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {useSelector} from "react-redux";
 import userManager from "../../utils/userManager";
 import {useHistory} from "react-router-dom";
-import clsx from "clsx";
 import {homeStyles} from "./styles";
-import {white} from "../../theme/custom-colors";
+import AfricaMap from "../../assets/images/map-of-africa.png"
 
-interface IStat {
-    title: string
-    details: string
-    icon: any
-}
+import './Home.css'
+
 
 function Home() {
 
@@ -44,62 +38,49 @@ function Home() {
     }
 
     return (
-        <Container maxWidth={false} className={clsx(styles.root, styles.scrollable)}>
-            <Grid className={styles.main} container>
+        <Container className="body" maxWidth={false}>
+            <Grid container >
                 <Grid item xs={12}>
-                    <Container maxWidth={"md"}>
-                        <Grid className={styles.container} container>
-                            <Grid item xs={12} md={8}>
-                                <img alt={"logo"} src={Logo} className={styles.logo}/>
+                    <Container maxWidth={"lg"}>
+                        <Grid spacing={2} container>
+                            <Grid item xs={12} sm={6} md={8} lg={6}>
+                                <img className="logo" alt={"logo"} src={Logo}/>
 
-                                <Typography className={styles.title}>
-                                    <strong>Africa's Entrepreneurs <br/>meet here.</strong>
-                                </Typography>
+                                <div className="title">
+                                    Africa's Entrepreneurs meet here.
+                                </div>
 
-                                <Typography className={styles.headline} variant={"body2"}>
+                                <div className="subtitle">
                                     Grow your network. Expand your thinking. Exchange ideas. Be inspired
-                                </Typography>
+                                </div>
 
-                                <Box mt={6}>
-
-                                    <Grid container justify={"flex-start"}>
-                                        <Grid item xs={12} sm={6}>
-                                            <Button variant="contained"
-                                                    size={"large"}
-                                                    onClick={handleSignup}
-                                                    className={styles.button}
-                                                    color="secondary">
-                                                Join the community
-                                            </Button>
-                                        </Grid>
+                                <Grid container justify='flex-start' >
+                                    <Grid item xs={12} md={4}>
+                                        <Button
+                                            color={"secondary"}
+                                            className="signin-button"
+                                            variant={"contained"}
+                                            onClick={() => userManager.signinRedirect()}>
+                                            Sign in
+                                        </Button>
                                     </Grid>
-
-                                </Box>
-
-                                <Box mt={6}>
-
-                                    <Grid container spacing={2} justify={"flex-start"}>
-                                        <Grid item>
-                                            <Button
-                                                onClick={() => userManager.signinRedirect()}
-                                                className={styles.link}
-                                                color="primary">
-                                                Already a member? Sign in
-                                            </Button>
-                                        </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <Button variant="text"
+                                                className="signup-button"
+                                                onClick={handleSignup}
+                                                color="secondary">
+                                            Create an account
+                                        </Button>
                                     </Grid>
-
-                                </Box>
-
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} md={4}>
-
+                            <Grid className="map-holder" item xs={12} sm={6} md={4} lg={6}>
+                                <img src={AfricaMap}/>
                             </Grid>
                         </Grid>
                     </Container>
                 </Grid>
             </Grid>
-
         </Container>
     )
 }

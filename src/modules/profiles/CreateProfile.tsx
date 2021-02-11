@@ -24,8 +24,6 @@ import {globalStyles} from "../../theme/styles";
 import {white} from "../../theme/custom-colors";
 import Hidden from '@material-ui/core/Hidden';
 
-import './CreateProfile.css'
-
 interface IProps {
     history: any
 }
@@ -176,6 +174,14 @@ export const CreateProfile = (props: IProps) => {
                 </Grid>
                 <Hidden only={['sm', 'md', 'xs']}>
                     <Grid lg={12} className={classes.bottomDesign}>
+                    </Grid>
+                </Hidden>
+                <Hidden only={['sm', 'md', 'xs']}>
+                    <Grid lg={3} className={classes.leftBottomDesign}>
+                    </Grid>
+                </Hidden>
+                <Hidden only={['sm', 'md', 'xs']}>
+                    <Grid lg={3} className={classes.rightBottomDesign}>
                     </Grid>
                 </Hidden>
             </Grid>
