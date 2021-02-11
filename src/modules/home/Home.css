@@ -1,9 +1,8 @@
 .body{
     background: #1C1C1C;
-    position: fixed;
     width: 100%;
-    min-height: 100%;
     padding-top: 10vh;
+    min-height: 100vh;
 }
 
 .logo{
@@ -45,6 +44,7 @@
         background-position-x: right;
         background-position-y: 5vh;
         padding-top: 5vh;
+        background-attachment: fixed;
     }
 }
 
