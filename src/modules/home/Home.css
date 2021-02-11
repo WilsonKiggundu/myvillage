@@ -30,7 +30,7 @@
     display: block;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1024px){
     .map-holder{
         display: none;
     }
@@ -72,5 +72,5 @@
     width: 100%;
     text-transform: inherit !important;
     color: white !important;
-    padding: 15px !important;
+    padding: 20px !important;
 }
