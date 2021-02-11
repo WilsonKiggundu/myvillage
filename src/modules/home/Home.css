@@ -3,6 +3,7 @@
     width: 100%;
     padding-top: 10vh;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .logo{
@@ -12,7 +13,7 @@
 }
 
 .title{
-    font-family: 'Montserrat', sans-serif !important;;
+    font-family: 'Montserrat', sans-serif !important;
     font-style: normal;
     font-weight: 800;
     font-size: 65px;
@@ -33,8 +34,9 @@
     .map-holder{
         display: none;
     }
+
     .title{
-        font-size: 39px;
+        font-size: 35px;
         line-height: 48px;
     }
 
