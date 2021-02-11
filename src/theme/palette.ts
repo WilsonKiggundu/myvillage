@@ -20,7 +20,8 @@ const palette = {
         contrastText: white,
         dark: '#636569',
         main: '#1C1C1C',
-        light: '#636569'
+        light: '#2C2A2A'
+
     },
     error: {
         contrastText: white,

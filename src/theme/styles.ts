@@ -210,6 +210,42 @@ export const globalStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             padding: '15px 0'
         }
+    },
+    bottomDesign:{
+        marginBottom: '0', 
+        position: 'absolute',
+        bottom: '-0.5em',
+        left: '0',
+        right: '0',
+        width: '100vw',
+        height: '10vh',
+        borderLeft: '45vw solid transparent',
+        borderRight: '45vw solid transparent',
+        borderBottom: `11.9vh solid ${palette.tertiary.light}`
+    },
+    leftBottomDesign:{
+        marginBottom: '0', 
+        position: 'absolute',
+        bottom: '-0.5em',
+        left: '0',
+        width: '17vw',
+        height: '4.5vh',
+        backgroundImage: `linear-gradient(to left top, ${palette.tertiary.light}, ${palette.tertiary.main})`
+    },
+    rightBottomDesign:{
+        marginBottom: '0', 
+        position: 'absolute',
+        bottom: '-0.5em',
+        right: '0',
+        width: '17vw',
+        height: '4.5vh',
+        backgroundImage: `linear-gradient(to left bottom, ${palette.tertiary.main}, ${palette.tertiary.light})`
+    },
+    largestText: {
+        color: '#E98A2B', 
+        fontWeight: 'bolder',
+        marginRight: '20px',
     }
+
 
 }))
