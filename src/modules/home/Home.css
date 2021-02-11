@@ -1,8 +1,8 @@
 .body{
     background: #1C1C1C;
-    position: absolute;
+    position: fixed;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100%;
     padding-top: 10vh;
 }
 
