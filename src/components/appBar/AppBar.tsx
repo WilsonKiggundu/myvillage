@@ -104,7 +104,7 @@ export default function ApplicationBar() {
     return (
         <>
             <AppBar elevation={0} position="absolute">
-                <Container maxWidth="lg">
+                <Container maxWidth={false}>
                     <Toolbar id="back-to-top-anchor" variant={"dense"} disableGutters>
 
                         <Logo style={{height: isMobile ? 35 : 50, width: 'auto', margin: isMobile ? 5 : 10}}/>
@@ -178,12 +178,6 @@ export default function ApplicationBar() {
                             </div> : ""
                         }
                     </Toolbar>
-
-                    <BackToTop>
-                        <Fab color="secondary" size="large" aria-label="scroll back to top">
-                            <KeyboardArrowUp/>
-                        </Fab>
-                    </BackToTop>
                 </Container>
             </AppBar>
 
