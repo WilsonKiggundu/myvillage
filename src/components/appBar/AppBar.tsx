@@ -32,6 +32,9 @@ import {userSelector} from "../../data/coreSelectors";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import {KeyboardArrowUp} from "@material-ui/icons";
+import Fab from "@material-ui/core/Fab";
+import BackToTop from "../layout/BackToTop";
 
 type Anchor = 'left' | 'right';
 
@@ -100,9 +103,9 @@ export default function ApplicationBar() {
 
     return (
         <>
-            <AppBar elevation={0} position="fixed">
-                <Container maxWidth={false}>
-                    <Toolbar disableGutters>
+            <AppBar elevation={0} position="absolute">
+                <Container maxWidth="lg">
+                    <Toolbar id="back-to-top-anchor" variant={"dense"} disableGutters>
 
                         <Logo style={{height: isMobile ? 35 : 50, width: 'auto', margin: isMobile ? 5 : 10}}/>
 
@@ -175,6 +178,12 @@ export default function ApplicationBar() {
                             </div> : ""
                         }
                     </Toolbar>
+
+                    <BackToTop>
+                        <Fab color="secondary" size="large" aria-label="scroll back to top">
+                            <KeyboardArrowUp/>
+                        </Fab>
+                    </BackToTop>
                 </Container>
             </AppBar>
 
