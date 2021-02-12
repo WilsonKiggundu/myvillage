@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Container} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {StartupBioCard} from "./StartupBioCard";
@@ -18,6 +18,8 @@ import {globalStyles} from "../../../theme/styles";
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {getAsync, makeUrl} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
 
 const Startup = ({match}: any) => {
 
@@ -26,13 +28,16 @@ const Startup = ({match}: any) => {
     const theme = useTheme()
     const dispatch = useDispatch()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    const [startup, setStartup] = useState<IStartup | undefined>(undefined)
 
-    let startup = useSelector((state) => startupSelector(state, id))
+    useEffect(() => {
+        (async () => {
+            const url = makeUrl("Profiles", Endpoints.business.base)
+            const response: any = await getAsync(url, {id})
 
-    if(!startup) {
-        dispatch(loadStartups())
-        startup = store.getState().startups.data.find((startup: IStartup) => startup.id === id)
-    }
+            setStartup(response.body.startups[0])
+        })()
+    }, [id])
 
     return (
         <Container className={classes.scrollable} maxWidth={false}>
