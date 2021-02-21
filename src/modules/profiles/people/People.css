@@ -1,0 +1,21 @@
+
+.button{
+    width: 100%;
+    box-shadow: none;
+    background-color: #E98A2B;
+    color: #E98A2B !important;
+}
+
+.button-b{
+    width: 100%;
+    box-shadow: none;
+    color: white !important;
+    border-color: #E98A2B !important;
+}
+.conection-btn {
+    background-color: #1C1C1C !important;
+}
+.buttons{
+    display: flex;
+    justify-content: space-between
+}

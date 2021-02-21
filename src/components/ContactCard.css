@@ -1,0 +1,41 @@
+.box{
+    background-color: #FF4C33;
+    height: 150px
+}
+.box-b{
+    background-color: #e0e0e0;
+    height: 150px
+    
+}
+
+.avatar{
+    border-width: 2px;
+    border-style: solid ;
+    background-color: #ff5722 !important;
+    border-color: #ffffff ;
+    position:absolute;
+    top: -40px;
+    width: 100px !important;
+    height: 100px !important;
+}
+
+.bg{
+    background-color: #1C1C1C !important;
+    
+}
+.role {
+    border-left: 2px solid;
+    height: 10px;
+    padding-left: 10px;
+}
+.name{
+    font-size: 1.3em !important;
+    margin-top: 10px !important;
+    line-height: px !important;
+}
+
+.name-b{
+    color: white !important;
+    font-size: 1.3em !important;
+    margin-top: 10px !important;
+}
