@@ -48,8 +48,8 @@ const EventsView = () => {
     return (
         <Container maxWidth={"lg"}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12} md={10} lg={8}>
-                    <Box mb={2}>
+                <Grid item xs={12} md={10} lg={12}>
+                    <Box mt={2}>
                         {
                             events.data
                                 .slice()
@@ -58,7 +58,10 @@ const EventsView = () => {
                                 .map((event: IEvent, index: number) => (
                                     <Grid key={index} item xs={12}>
                                         <Box mb={4}>
-                                            <EventCard event={event}/>
+                                            <EventCard 
+                                                event={event}
+                                                featured={index===0}
+                                            />
                                         </Box>
                                     </Grid>
                                 ))

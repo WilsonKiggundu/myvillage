@@ -1,0 +1,70 @@
+.flex-display {
+  display: flex;
+}
+.card-bg {
+  width: 18vw;
+  height: inherit;
+}
+.event-bg-wrapper {
+  height: 100%;
+}
+.title-and-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 0;
+}
+.progress-bar {
+  justify-self: end;
+  text-align: right;
+  font-size: 11px;
+}
+.event-rsvp {
+  /* display: flex;
+  justify-content: space-between;
+  align-items: center; */
+}
+.date-and-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rsvp-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e5e5e5;
+  text-align: center;
+  padding: 1em;
+}
+.event-body {
+  background-color: #ffffff;
+  padding: 1em;
+}
+.event-bg {
+  width: 100%;
+  margin-bottom: -5px;
+}
+.card-wrapper {
+  flex-direction: column;
+  align-items: center;
+}
+.rsvp-btns-sm {
+  width: 20px;
+}
+.rsvp-sm {
+  font-size: 10px;
+}
+.event-description {
+  align-items: center;
+  justify-content: center;
+  background-color: #e9e6e5;
+  padding: 1em;
+}
+.title-font {
+  color: #e98a2b;
+}
+
+.event-details {
+  margin: 1em 0 !important;
+}
