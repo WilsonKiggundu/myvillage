@@ -83,7 +83,7 @@ const NewJob = ({done, onClose}: IProps) => {
 
     return (
         <XForm
-            debug={false}
+            debug={true}
             submitButtonLabel={"Post Job"}
             schema={schema}
             initialValues={initialValues}

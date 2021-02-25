@@ -1,15 +1,22 @@
-.body{
-    background: #1C1C1C;
-    width: 100%;
-    padding-top: 10vh;
-    min-height: 100vh;
-    overflow-x: hidden;
+body{
+    background-color: #1C1C1C !important;
+    margin: 0;
+    font-size: 0.875rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
 }
 
-.logo{
+.body{
+    width: 100%;
+    padding-top: 10vh;
+    padding-bottom: 5vh;
+}
+
+.Home-logo{
     height: auto;
-    width: 178px;
-    left: 100px;
+    width: 180px;
 }
 
 .title{
@@ -30,13 +37,18 @@
     display: block;
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 576px){
     .map-holder{
         display: none;
     }
 
+    .Home-logo{
+        height: auto;
+        width: 100px;
+    }
+
     .title{
-        font-size: 35px;
+        font-size: 45px;
         line-height: 48px;
     }
 
@@ -64,15 +76,24 @@
 }
 
 .signin-button{
+    background-color: #E98A2B;
     width: 100%;
-    padding: 15px !important;
-    font-weight: bold !important;
-    text-transform: inherit !important;
+    color: white;
+    padding: 15px;
+    border: 1px solid #E98A2B;
+    box-sizing: border-box;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 18px;
 }
 
 .signup-button{
+    background-color: transparent;
     width: 100%;
-    text-transform: inherit !important;
-    color: white !important;
-    padding: 20px !important;
+    color: white;
+    padding: 15px;
+    border: 1px solid #E98A2B;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-size: 18px;
 }

@@ -20,6 +20,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Urls} from "../../routes/Urls";
 
 import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
+import MyVillageLogo from "../../assets/images/MyVillageLogo.png";
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -103,11 +104,11 @@ export default function ApplicationBar() {
 
     return (
         <>
-            <AppBar elevation={0} position="absolute">
+            <AppBar elevation={0} position="fixed">
                 <Container maxWidth={false}>
                     <Toolbar id="back-to-top-anchor" variant={"dense"} disableGutters>
 
-                        <Logo style={{height: isMobile ? 35 : 50, width: 'auto', margin: isMobile ? 5 : 10}}/>
+                        <img src={MyVillageLogo} style={{height: isMobile ? 35 : 50, width: 'auto', margin: isMobile ? 5 : 10}}/>
 
                         {isMobile ? <div className={classes.grow}/> : ""}
 

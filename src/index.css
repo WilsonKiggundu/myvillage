@@ -11,11 +11,6 @@ body, #root, .fill {
     padding: 0;
 }
 
-.MuiCard-root {
-    /*border-radius: 0 !important;*/
-    /*box-shadow: none !important;*/
-}
-
 a {
     text-decoration: none;
     color: #636569;

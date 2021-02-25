@@ -15,6 +15,8 @@ import {loadEvents} from "./redux/eventsActions";
 import ErrorPage from "../exceptions/Error";
 import {homeStyles} from "../home/styles";
 
+import './Event.css'
+
 type EventFilter = 'today' | 'week' | 'month' | 'year'
 
 const EventsView = () => {
