@@ -15,31 +15,26 @@ import {Alert} from "@material-ui/lab";
 import {peopleSelector} from "./redux/peopleSelectors";
 import {loadPeople} from "./redux/peopleActions";
 import _ from "lodash";
-import useTheme from "@material-ui/core/styles/useTheme";
-import {useMediaQuery} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {homeStyles} from "../../home/styles";
+import {scrolledToBottom} from "../../../utils/scrollHelpers";
 
 const People = () => {
 
     const classes = globalStyles()
-    const styles = homeStyles()
     const people = useSelector(peopleSelector)
     const dispatch = useDispatch()
 
     const history = useHistory()
-    const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-    const handleScroll = (event: any) => {
-        const element = event.target
-        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-            if (people.request.hasMore) {
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (people.request.hasMore && scrolledToBottom()) {
                 dispatch(loadPeople())
             }
-        }
-    }
+        })
+    })
 
     useEffect(() => {
         dispatch(loadPeople())
@@ -65,10 +60,10 @@ const People = () => {
     }
 
     return (
-        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
-            <Grid spacing={3} justify={"flex-start"} container>
+        <Container maxWidth={"lg"}>
+            <Grid spacing={2} justify={"flex-start"} container>
                 {people.data.map((person: IPerson) => (
-                    <Grid item key={person.id} xs={12} sm={6} md={4} lg={3}>
+                    <Grid item key={person.id} xs={12} sm={6} md={4}>
                         <ContactCard person={person}>
                             <Box mt={2} pl={3} pr={3}>
                                 <Typography className={classes.maxLines} variant={"body1"}>

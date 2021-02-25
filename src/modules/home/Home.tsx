@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Container from "@material-ui/core/Container";
 import {Urls} from "../../routes/Urls";
 import Grid from "@material-ui/core/Grid";
@@ -26,6 +26,14 @@ function Home() {
         window.location.replace(`${process.env.REACT_APP_AUTH_URL}/account/signup?returnUrl=${process.env.REACT_APP_SIGNUP_REDIRECT_URL}`)
     }
 
+    const handleSignin = () => {
+        return userManager.signinRedirect()
+    }
+
+    useEffect(() => {
+        document.body.style.backgroundColor = '#1C1C1C'
+    })
+
     return (
         <div className="body">
             <Grid container>
@@ -47,7 +55,7 @@ function Home() {
                                     <Grid item xs={12} md={6}>
                                         <button
                                             className="signin-button"
-                                            onClick={() => userManager.signinRedirect()}>
+                                            onClick={handleSignin}>
                                             Sign in
                                         </button>
                                     </Grid>

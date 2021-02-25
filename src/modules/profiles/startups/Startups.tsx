@@ -11,9 +11,9 @@ import {PleaseWait} from "../../../components/PleaseWait";
 import {startupsSelector} from "./redux/startupsSelectors";
 import {loadStartups} from "./redux/startupsActions";
 import _ from "lodash";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ErrorPage from "../../exceptions/Error";
 import {homeStyles} from "../../home/styles";
+import {scrolledToBottom} from "../../../utils/scrollHelpers";
 
 const Startups = () => {
 
@@ -21,19 +21,15 @@ const Startups = () => {
 
     const startups = useSelector(startupsSelector)
     const dispatch = useDispatch()
-    const theme = useTheme()
     const [addStartupDialog, setAddStartupDialog] = useState<boolean>(false)
 
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
-
-    const handleScroll = (event: any) => {
-        const element = event.target
-        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-            if (startups.request.hasMore) {
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (startups.request.hasMore && scrolledToBottom()) {
                 dispatch(loadStartups())
             }
-        }
-    }
+        })
+    })
 
     useEffect(() => {
         dispatch(loadStartups())
@@ -48,12 +44,12 @@ const Startups = () => {
     )
 
     return (
-        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
+        <Container maxWidth={"lg"}>
             <Grid container spacing={2} justify={"flex-start"}>
                 <Grid item xs={12}>
                     <Grid spacing={2} container>
                         {startups.data.map((startup: any) => (
-                            <Grid item key={startup.id} xs={12} sm={6} md={4} lg={3}>
+                            <Grid item key={startup.id} xs={12} sm={6} md={4}>
                                 <StartupCard {...startup} />
                             </Grid>
                         ))}

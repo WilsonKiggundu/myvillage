@@ -16,6 +16,8 @@ import ErrorPage from "../exceptions/Error";
 import {homeStyles} from "../home/styles";
 
 import './Event.css'
+import {scrolledToBottom} from "../../utils/scrollHelpers";
+import {loadPosts} from "../posts/redux/postsActions";
 
 type EventFilter = 'today' | 'week' | 'month' | 'year'
 
@@ -23,7 +25,6 @@ const EventsView = () => {
 
     const [openAddEventDialog, setOpenAddEventDialog] = useState<boolean>(false)
 
-    const styles = homeStyles()
     const dispatch = useDispatch()
     const events = useSelector(eventsSelector)
 
@@ -31,55 +32,24 @@ const EventsView = () => {
         dispatch(loadEvents())
     }, [dispatch])
 
-    const handleScroll = (e: any) => {
-        const element = e.target
-        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-            if (events.request.hasMore) {
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (events.request.hasMore && scrolledToBottom()) {
                 dispatch(loadEvents())
             }
-        }
-    }
+        })
+    })
 
-    // const handleFilter = (filter: EventFilter) => {
-        // let filtered = events
-        // switch (filter) {
-        //     case "today":
-        //         filtered = filtered.filter((f: any) => isToday(f.startDateTime.replace(/ /g, "T")))
-        //         break
-        //     case "week":
-        //         filtered = filtered.filter((f: any) => isThisWeek(f.startDateTime.replace(/ /g, "T")))
-        //         break
-        //     case "month":
-        //         filtered = filtered.filter((f: any) => isThisMonth(f.startDateTime.replace(/ /g, "T")))
-        //         break
-        //     case "year":
-        //         filtered = filtered.filter((f: any) => isThisYear(f.startDateTime.replace(/ /g, "T")))
-        //         break
-        //     default:
-        //         break
-        // }
-        // setEvents(filtered)
-    // }
-
-    if (events.isLoading) return <PleaseWait/>
+    if (events.isLoading) return <PleaseWait label={"Loading events..."}/>
     if (events.error) return (
         <ErrorPage title={"Loading events failed"} message={events.error} />
     )
 
     return (
-        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
+        <Container maxWidth={"lg"}>
             <Grid container spacing={2} justify={"center"}>
-
                 <Grid item xs={12} md={10} lg={8}>
-                    {/*<Box ml={2} mr={2} mt={2} mb={2}>*/}
-                    {/*    <ButtonGroup size={"small"} color="secondary" aria-label="contained secondary button group">*/}
-                    {/*        <Button onClick={() => handleFilter("today")}>Today</Button>*/}
-                    {/*        <Button onClick={() => handleFilter("week")}>This Week</Button>*/}
-                    {/*        <Button onClick={() => handleFilter("month")}>This Month</Button>*/}
-                    {/*        <Button onClick={() => handleFilter("year")}>This Year</Button>*/}
-                    {/*    </ButtonGroup>*/}
-                    {/*</Box>*/}
-                    <Box mt={2}>
+                    <Box mb={2}>
                         {
                             events.data
                                 .slice()

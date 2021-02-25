@@ -196,7 +196,6 @@ export const globalStyles = makeStyles((theme) => ({
 
     scrollable: {
         overflow: 'auto',
-        marginTop: '-20px',
         height: 'calc(100vh - 70px)',
         [theme.breakpoints.down('sm')]: {
             padding: '0'

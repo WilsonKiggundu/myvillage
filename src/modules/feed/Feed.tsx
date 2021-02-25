@@ -13,25 +13,20 @@ import {postsSelector} from "../posts/redux/postsSelectors";
 import {PostContentLoader} from "../../components/loaders/PostContentLoader";
 
 import ErrorPage from "../exceptions/Error";
-import {homeStyles} from "../home/styles";
-
-interface IProps {
-}
+import {scrolledToBottom} from "../../utils/scrollHelpers";
 
 const Feed = () => {
 
-    const styles = homeStyles()
     const dispatch = useDispatch()
     const posts = useSelector(postsSelector)
 
-    const handleScroll = (event: any) => {
-        const element = event.target
-        if(element.scrollHeight - element.scrollTop === element.clientHeight){
-            if(posts.request.hasMore){
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (posts.request.hasMore && scrolledToBottom()) {
                 dispatch(loadPosts())
             }
-        }
-    }
+        })
+    })
 
     useEffect(() => {
         dispatch(loadPosts())
@@ -39,18 +34,18 @@ const Feed = () => {
 
     if (_.isEmpty(posts.data) && posts.isLoading) return (
         <Container maxWidth={"md"}>
-            <PostContentLoader />
+            <PostContentLoader/>
         </Container>
     )
 
     if (posts.error) return (
-        <ErrorPage title={"Loading feed failed"} message={posts.error} />
+        <ErrorPage title={"Loading feed failed"} message={posts.error}/>
     )
 
     return (
-        <Container onScroll={handleScroll} maxWidth={false}>
+        <Container maxWidth={"md"}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12} md={6}>
+                <Grid item>
                     <StartAPostCard placeholder={"What's on your mind?"}/>
                     <Box>
                         {_.isEmpty(posts.data) && <p>No results found</p>}

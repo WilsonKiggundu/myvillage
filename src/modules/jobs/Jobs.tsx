@@ -23,6 +23,8 @@ import ErrorPage from "../exceptions/Error";
 import {homeStyles} from "../home/styles";
 import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
 import {userSelector} from "../../data/coreSelectors";
+import {scrolledToBottom} from "../../utils/scrollHelpers";
+import {loadEvents} from "../events/redux/eventsActions";
 
 
 const Jobs = () => {
@@ -60,28 +62,27 @@ const Jobs = () => {
         history.push(url)
     }
 
-    const handleScroll = (e: any) => {
-        const element = e.target
-        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-            if (jobs.request.hasMore) {
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (jobs.request.hasMore && scrolledToBottom()) {
                 dispatch(loadJobs())
             }
-        }
-    }
+        })
+    })
 
-    if (jobs.isLoading) return <PleaseWait/>
+    if (jobs.isLoading) return <PleaseWait label={"Loading jobs..."}/>
     if (jobs.error) return (
         <ErrorPage title={"Loading jobs failed"} message={jobs.error} />
     )
 
     return (
-        <Container onScroll={handleScroll} className={styles.scrollable} maxWidth={false}>
+        <Container maxWidth={"md"}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12} lg={6}>
+                <Grid item xs={12}>
                     {jobs ?
                         jobs.data.map((job: IJob, index: number) =>
                             (
-                                <Box key={index} mt={2}>
+                                <Box key={index} mb={2}>
                                     <Card>
                                         <CardContent>
                                             <Grid spacing={3} container>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {useLayoutStyles} from "./styles";
 import ApplicationBar from "../appBar/AppBar";
@@ -22,12 +22,14 @@ function MainLayout(props: IProps) {
         // userManager.signinRedirect()
     }
 
+    useEffect(() => {
+        document.body.style.backgroundColor = '#F1F1F0'
+    })
+
     return (
         <>
             <CssBaseline/>
-            <header>
-                <ApplicationBar/>
-            </header>
+            <ApplicationBar/>
             <main className="MainLayout-main">
                 {props.children}
             </main>

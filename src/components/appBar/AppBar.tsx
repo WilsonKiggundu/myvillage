@@ -1,17 +1,12 @@
-import React, {MouseEvent, useState} from "react";
-import {AppBar, Button, Divider, Drawer, Typography, useTheme} from "@material-ui/core";
-import Toolbar from "@material-ui/core/Toolbar";
+import React, {MouseEvent, useEffect, useState} from "react";
+import {Divider, Drawer, Typography, useTheme} from "@material-ui/core";
 import {appBarStyles} from "./styles";
-import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
-import {globalStyles} from "../../theme/styles";
-import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
-import clsx from "clsx";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
-import ListItemLink from "../ListItemLink";
+import ListItemLink from "../ListItemLink/ListItemLink";
 import {MainMenuItems} from "./MainMenuItems";
 import {white} from "../../theme/custom-colors";
 import Avatar from "@material-ui/core/Avatar";
@@ -19,8 +14,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Urls} from "../../routes/Urls";
 
-import {ReactComponent as Logo} from "../../assets/images/logo-white.svg"
-import MyVillageLogo from "../../assets/images/MyVillageLogo.png";
+import {ReactComponent as MyVillageLogo} from "../../assets/images/mv-colored-logo.svg"
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -28,24 +22,39 @@ import {useDispatch, useSelector} from "react-redux";
 import {User} from "oidc-client";
 import userManager from "../../utils/userManager";
 import {USER_SIGNED_OUT} from "redux-oidc";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {userSelector} from "../../data/coreSelectors";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import {KeyboardArrowUp} from "@material-ui/icons";
-import Fab from "@material-ui/core/Fab";
-import BackToTop from "../layout/BackToTop";
+
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+
+import './AppBar.css'
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import MenuIcon from "@material-ui/icons/Menu";
 
 type Anchor = 'left' | 'right';
+
+const useStyles = makeStyles((theme) => ({
+    small: {
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+    },
+    large: {
+        width: theme.spacing(7),
+        height: theme.spacing(7),
+    },
+}));
+
 
 export default function ApplicationBar() {
 
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const styles = globalStyles();
-    const classes = appBarStyles();
+    const classes = useStyles();
+    const appbarStyles = appBarStyles()
     const theme = useTheme();
 
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -102,101 +111,104 @@ export default function ApplicationBar() {
         setState({left: false, right: false})
     }
 
+    const [activeMenu, setActiveMenu] = useState<string>('')
+
+    const location = useLocation()
+
+    useEffect(() => {
+        const locationArray = location.pathname.split('/')
+        if (locationArray.includes('feed')) setActiveMenu('feed')
+        if (locationArray.includes('startups')) setActiveMenu('startups')
+        if (locationArray.includes('people')) setActiveMenu('community')
+        if (locationArray.includes('events')) setActiveMenu('events')
+        if (locationArray.includes('jobs')) setActiveMenu('jobs')
+    })
+
     return (
-        <>
-            <AppBar elevation={0} position="fixed">
-                <Container maxWidth={false}>
-                    <Toolbar id="back-to-top-anchor" variant={"dense"} disableGutters>
+        <header className="Appbar-root">
 
-                        <img src={MyVillageLogo} style={{height: isMobile ? 35 : 50, width: 'auto', margin: isMobile ? 5 : 10}}/>
-
-                        {isMobile ? <div className={classes.grow}/> : ""}
-
+            <Grid container justify={"space-between"}>
+                <Grid item>
+                    <MyVillageLogo className="Appbar-logo"/>
+                </Grid>
+                {!isMobile && <Grid item>
+                    <ul className="Appbar-menu">
+                        <li className={activeMenu === 'feed' ? 'active' : ''}>
+                            <a href={Urls.feed}>Feed</a>
+                        </li>
+                        <li className={activeMenu === 'startups' ? 'active' : ''}>
+                            <a href={Urls.profiles.startups}>Startups</a>
+                        </li>
+                        <li className={activeMenu === 'community' ? 'active' : ''}>
+                            <a href={Urls.profiles.people}>Community</a>
+                        </li>
+                        <li className={activeMenu === 'events' ? 'active' : ''}>
+                            <a href={Urls.events}>Events</a>
+                        </li>
+                        <li className={activeMenu === 'jobs' ? 'active' : ''}>
+                            <a href={Urls.jobs.list}>Jobs</a>
+                        </li>
+                    </ul>
+                </Grid>}
+                <Grid item>
+                    {isMobile ?
                         <IconButton
-                            onClick={toggleDrawer(anchor, true)}
-                            className={clsx(classes.menuButton, classes.hide)}
-                            edge="start">
-                            <MenuIcon style={{color: 'white'}}/>
-                        </IconButton>
+                            onClick={toggleDrawer(anchor, true)}>
+                            <div className="Appbar-profile">
+                                <MenuIcon className="Appbar-menu-icon"/>
+                            </div>
+                        </IconButton> :
+                        <>
+                            <IconButton aria-controls="profile-menu"
+                                        aria-haspopup="true"
+                                        onClick={showProfileMenu}
+                                        color="inherit">
+                                <div className="Appbar-profile">
+                                    <div className="Appbar-profile-avatar">
+                                        <Avatar className={classes.small} src={user?.profile?.picture}
+                                                variant={"circular"}/>
+                                    </div>
+                                    <div className="Appbar-profile-dropdown-icon">
+                                        <KeyboardArrowDownIcon/>
+                                    </div>
 
-                        {!isMobile ? <div className={classes.grow}/> : ""}
-
-                        <div className={classes.sectionDesktop}>
-                            <List className={classes.flexContainer}>
-                                {
-                                    MainMenuItems ? MainMenuItems.map((item, index) => (
-                                        <ListItemLink handleClick={() => handleClick(item.url)} key={index}>
-                                            <ListItemText primary={item.label}/>
-                                        </ListItemLink>
-                                    )) : ""
-                                }
-                            </List>
-                        </div>
-
-                        {
-                            user ? '' :
-                                <div className={classes.sectionDesktop}>
-                                    <Button className={`${styles.noShadow} ${styles.capitalize} ${styles.bold}`}
-                                            variant="contained"
-                                            style={{borderRadius: 30, marginLeft: 15, textTransform: "inherit"}}
-                                            size="small"
-                                            onClick={userManager.signinRedirect}
-                                            color="secondary">
-                                        Login
-                                    </Button>
                                 </div>
-                        }
-
-                        {user ?
-                            <div className={classes.sectionDesktop}>
-                                {user ? (
-                                    <>
-                                        <IconButton aria-controls="profile-menu"
-                                                    aria-haspopup="true"
-                                                    onClick={showProfileMenu}
-                                                    color="inherit">
-                                            <Avatar src={user?.profile?.picture} variant={"circular"}/>
-                                        </IconButton>
-                                        <Menu
-                                            id="profile-menu"
-                                            anchorEl={anchorEl}
-                                            keepMounted
-                                            getContentAnchorEl={null}
-                                            anchorOrigin={{vertical: "bottom", horizontal: "left"}}
-                                            onClose={closeProfileMenu}
-                                            open={Boolean(anchorEl)}>
-                                            <MenuItem
-                                                disabled>{user?.profile?.given_name} {user?.profile?.family_name}</MenuItem>
-                                            <MenuItem onClick={handleProfileView}>
-                                                My Profile
-                                            </MenuItem>
-                                            <Divider/>
-                                            <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
-                                        </Menu>
-                                    </>
-                                ) : ""}
-
-                            </div> : ""
-                        }
-                    </Toolbar>
-                </Container>
-            </AppBar>
+                            </IconButton>
+                            <Menu
+                                id="profile-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                getContentAnchorEl={null}
+                                anchorOrigin={{vertical: "bottom", horizontal: "left"}}
+                                onClose={closeProfileMenu}
+                                open={Boolean(anchorEl)}>
+                                <MenuItem
+                                    disabled>{user?.profile?.given_name} {user?.profile?.family_name}</MenuItem>
+                                <MenuItem onClick={handleProfileView}>
+                                    My Profile
+                                </MenuItem>
+                                <Divider/>
+                                <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                            </Menu>
+                        </>}
+                </Grid>
+            </Grid>
 
             <Drawer
                 variant="temporary"
                 anchor={anchor}
                 onClose={toggleDrawer(anchor, false)}
                 open={state[anchor]}
-                classes={{paper: classes.drawerPaper}}
-                className={classes.drawer}>
-                <div className={classes.drawerHeader}>
+                classes={{paper: appbarStyles.drawerPaper}}
+                className={appbarStyles.drawer}>
+                <div className={appbarStyles.drawerHeader}>
                     <IconButton style={{color: white}} onClick={toggleDrawer(anchor, false)}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
 
-                    <div className={classes.grow}/>
+                    <div className={appbarStyles.grow}/>
 
-                    <Logo style={{
+                    <MyVillageLogo style={{
                         height: 50,
                         margin: 10,
                         width: 'auto'
@@ -259,6 +271,6 @@ export default function ApplicationBar() {
 
             </Drawer>
 
-        </>
+        </header>
     );
 }
