@@ -17,7 +17,6 @@ import {loadPeople} from "./redux/peopleActions";
 import _ from "lodash";
 import {useHistory} from "react-router-dom";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import {homeStyles} from "../../home/styles";
 import {scrolledToBottom} from "../../../utils/scrollHelpers";
 
 const People = () => {

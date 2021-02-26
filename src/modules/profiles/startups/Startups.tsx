@@ -12,12 +12,9 @@ import {startupsSelector} from "./redux/startupsSelectors";
 import {loadStartups} from "./redux/startupsActions";
 import _ from "lodash";
 import ErrorPage from "../../exceptions/Error";
-import {homeStyles} from "../../home/styles";
 import {scrolledToBottom} from "../../../utils/scrollHelpers";
 
 const Startups = () => {
-
-    const styles = homeStyles()
 
     const startups = useSelector(startupsSelector)
     const dispatch = useDispatch()

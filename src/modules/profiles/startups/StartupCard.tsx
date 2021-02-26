@@ -65,15 +65,7 @@ const StartupCard = ({coverPhoto, ...props}: IProps) => {
 
     return (
         <Card style={{textAlign: "center"}}>
-
-            {/*{coverPhoto ? <CardMedia*/}
-            {/*    style={{height: 180}}*/}
-            {/*    image={coverPhoto}*/}
-            {/*    title={props.name}*/}
-            {/*/> : <Box style={{height: 100, backgroundColor: white}}></Box>}*/}
-
             <CardContent style={{paddingTop: 25}}>
-
                 <Avatar variant={"circular"}
                         className={clsx(styles.mediumAvatar, styles.centerAvatar)}
                         src={props.logo}/>
@@ -90,14 +82,6 @@ const StartupCard = ({coverPhoto, ...props}: IProps) => {
                         {props.description}
                     </Typography>
                     : ""}
-
-                {/*<Box mt={1} mb={1}>*/}
-                {/*    <Typography component="div">*/}
-                {/*        <Chip size="small" label={props.category}/>*/}
-                {/*    </Typography>*/}
-                {/*</Box>*/}
-
-                {/*<ProfileRating rating={3} />*/}
 
                 <Box mx={"auto"} mb={2} mt={4}>
                     <Button
