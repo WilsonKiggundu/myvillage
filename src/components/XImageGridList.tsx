@@ -9,6 +9,10 @@ import Grid from "@material-ui/core/Grid";
 import {ChevronLeft, ChevronRight, Close} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 
+import {LazyLoadImage, trackWindowScroll} from 'react-lazy-load-image-component'
+
+import 'react-lazy-load-image-component/src/effects/blur.css';
+
 interface IProps {
     images: IUpload[]
 }
@@ -44,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const XImageGridList = ({images}: IProps) => {
+const XImageGridList = ({images, scrollPosition}: any) => {
 
     const classes = useStyles();
     const columns = () => {
@@ -80,7 +84,13 @@ const XImageGridList = ({images}: IProps) => {
                     <GridListTile className={classes.clickable} onClick={() => handleImageClick(image.path, index)}
                                   key={index}
                                   cols={1}>
-                        <img width={'100%'} src={image.path} alt={image.fileName}/>
+                        <LazyLoadImage
+                            width={'100%'}
+                            src={image.path}
+                            scrollPosition={scrollPosition}
+                            alt={image.fileName}
+                            effect={'blur'}
+                        />
                     </GridListTile>
                 ))}
             </GridList>
@@ -118,4 +128,4 @@ const XImageGridList = ({images}: IProps) => {
 
 }
 
-export default XImageGridList
+export default trackWindowScroll(XImageGridList)

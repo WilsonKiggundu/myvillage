@@ -11,7 +11,9 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import {IStartup} from "../../interfaces/IStartup";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../data/coreSelectors";
-import grey from "@material-ui/core/colors/grey";
+import {LazyLoadImage} from 'react-lazy-load-image-component'
+
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 interface IProps {
     person?: IPerson
@@ -48,10 +50,18 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
                       container>
 
                     {coverPhoto ?
-                        <img alt={""}
-                             src={coverPhoto}
-                             style={{width: '100%'}}
-                        /> : ""
+                        // <img alt={""}
+                        //      src={coverPhoto}
+                        //      style={{width: '100%'}}
+                        // />
+                        <LazyLoadImage
+                            src={coverPhoto}
+                            effect={"blur"}
+                            width={'100%'}
+                            height={'auto'}
+                            alt={'Cover photo'}
+                        />
+                        : ""
                     }
 
                     {canEdit ? <Typography component={"div"} style={{

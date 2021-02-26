@@ -27,6 +27,9 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import Button from "@material-ui/core/Button";
 import {userSelector} from "../../../data/coreSelectors";
 import {personSelector} from "./redux/peopleSelectors";
+import {LazyLoadImage} from 'react-lazy-load-image-component'
+
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 interface IProps {
     person: IPerson
