@@ -54,14 +54,11 @@ const EventsView = () => {
                             events.data
                                 .slice()
                                 .sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
-                                .filter((event: IEvent) => !isPast(event.startDateTime))
+                                // .filter((event: IEvent) => !isPast(event.startDateTime))
                                 .map((event: IEvent, index: number) => (
                                     <Grid key={index} item xs={12}>
                                         <Box mb={4}>
-                                            <EventCard 
-                                                event={event}
-                                                featured={index===0}
-                                            />
+                                            <EventCard featured={index === 0} event={event}/>
                                         </Box>
                                     </Grid>
                                 ))
