@@ -19,6 +19,7 @@ import {addJob, loadJobCategories} from "../redux/jobsActions";
 import {getStartups} from "../../profiles/startups/redux/startupsEndpoints";
 import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
 import {Endpoints} from "../../../services/Endpoints";
+import XFileInput from "../../../components/inputs/XFileInput";
 
 interface IProps {
     done?: () => any
@@ -175,6 +176,11 @@ const NewJob = ({done, onClose}: IProps) => {
                         helperText={"Describe what the application process is like."}
                         label={"How to apply"}
                         name={"howToApply"}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <XFileInput
+                    name='assets'
+                    />
                 </Grid>
 
             </Grid>

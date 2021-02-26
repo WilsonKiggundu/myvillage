@@ -1,0 +1,171 @@
+.flex-display {
+    display: flex;
+}
+
+.card-bg {
+    width: 18vw;
+    height: inherit;
+}
+
+.event-bg-wrapper {
+    height: 100%;
+}
+
+.title-and-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 0;
+}
+
+.progress-bar {
+    justify-self: end;
+    text-align: right;
+    font-size: 11px;
+}
+
+.event-rsvp {
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
+}
+
+.date-and-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rsvp-buttons {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    align-items: center;
+    text-align: center;
+}
+
+.event-body {
+    background-color: #ffffff;
+    padding: 1em;
+}
+
+.event-body .featured-text {
+    color: #c1c1c1;
+}
+
+.event-bg {
+    width: 100%;
+    margin-bottom: -5px;
+}
+
+.card-wrapper {
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-title{
+    font-style: normal;
+    font-weight: 900;
+    font-size: 25px;
+    line-height: 30px;
+    color: #1C1C1C;
+    mix-blend-mode: normal;
+}
+
+.event-location{
+    padding: 15px 0;
+    color: #e98a2b;
+}
+
+.event-location-icon {
+    float: left;
+    position: relative;
+    font-size: 25px;
+}
+
+.event-location-venue{
+    display: inline-block;
+    margin: 0 0 0 10px;
+    position: relative;
+}
+
+.event-date-time{
+    padding: 25px 0;
+    font-size: 15px;
+}
+.event-date-time small{
+    font-size: 0.7em;
+    color: #aaaaaa;
+}
+
+.event-button-container{
+    padding: 10px 20px 15px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.event-action-button{
+    color: white;
+    padding: 5px;
+    width: 1.5em !important;
+    height: 1.5em !important;
+    border-radius: 100%;
+}
+
+.event-button-container:hover{
+    background-color: #ffffff;
+}
+
+.event-maybe-button{
+    background-color: #a78ca3;
+}
+
+.event-not-attending-button{
+    background-color: #C70000;
+}
+
+.event-attending-button{
+    background-color: #E98A2B;
+}
+
+.event-maybe-text{
+    color: #AD7BA8;
+}
+
+.event-not-attending-text{
+    color: #C70000;
+}
+
+.event-attending-text{
+    color: #E98A2B;
+}
+
+.rsvp-btns-sm {
+    width: 20px;
+}
+
+.rsvp-sm {
+    font-size: 10px;
+}
+
+.event-description {
+    align-items: center;
+    justify-content: center;
+    background-color: #E5E5E5;
+    padding: 1em;
+    width: 100%;
+}
+
+.title-font {
+    color: #e98a2b;
+}
+
+.event-details {
+    margin: 1em 0 !important;
+}
+
+@media screen and (max-width: 567px) {
+    .event-button-container > span{
+        font-size: 0.9em;
+    }
+}

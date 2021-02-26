@@ -1,0 +1,27 @@
+.progress-container {
+  background-color: #1c1c1c;
+  border-radius: 20px;
+  position: relative;
+  margin: 15px 0;
+  height: 30px;
+  width: 300px;
+}
+.progress {
+  position: absolute;
+  top: -13px;
+  right: 5px;
+  font-size: 12px;
+  color: azure;
+}
+.progress-score {
+  background-color: #e98a2b;
+  border-radius: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 0;
+  opacity: 0;
+  transition: 1s ease 0.3s;
+}

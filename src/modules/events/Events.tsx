@@ -51,17 +51,17 @@ const EventsView = () => {
     return (
         <Container maxWidth={"lg"}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12} md={10} lg={8}>
-                    <Box mb={2}>
+                <Grid item xs={12} md={10} lg={12}>
+                    <Box mt={2}>
                         {
                             events.data
                                 .slice()
                                 .sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
-                                .filter((event: IEvent) => !isPast(event.startDateTime))
+                                // .filter((event: IEvent) => !isPast(event.startDateTime))
                                 .map((event: IEvent, index: number) => (
                                     <Grid key={index} item xs={12}>
                                         <Box mb={4}>
-                                            <EventCard event={event}/>
+                                            <EventCard featured={index === 0} event={event}/>
                                         </Box>
                                     </Grid>
                                 ))
