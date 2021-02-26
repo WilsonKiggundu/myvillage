@@ -23,11 +23,7 @@ import {Endpoints} from "../../../services/Endpoints";
 
 const Startup = ({match}: any) => {
 
-    const classes = globalStyles()
     const {id} = match.params
-    const theme = useTheme()
-    const dispatch = useDispatch()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const [startup, setStartup] = useState<IStartup | undefined>(undefined)
 
     useEffect(() => {
@@ -39,12 +35,17 @@ const Startup = ({match}: any) => {
         })()
     }, [id])
 
+    useEffect(() => {
+        if (startup) {
+            document.title = `${startup.name} / ${startup.category} / MyVillage`
+        }
+    })
+
     return (
-        <Container className={classes.scrollable} maxWidth={false}>
+        <Container maxWidth={"lg"}>
             <Box mt={0}>
                 <Grid justify={"center"} container spacing={2}>
-                    <Grid item xs={12} lg={9}>
-
+                    <Grid item xs={12}>
                         {startup ? (
                             <>
                                 <StartupSummary startup={startup}/>
@@ -55,7 +56,7 @@ const Startup = ({match}: any) => {
                                 <StartupContacts startup={startup}/>
                                 <StartupRoles startup={startup}/>
                             </>
-                        ) : <PleaseWait />}
+                        ) : <PleaseWait label={"Fetching data..."} />}
 
                         {/*<StartupAwards profile={profile} canEdit={isPageAdmin} />*/}
 

@@ -43,7 +43,7 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
             {coverPhoto || canEdit ? (
                 <Grid className={classes.coverPhoto}
                       alignItems={"center"}
-                      style={{backgroundColor: grey[300]}}
+                      style={{backgroundColor: '#F1F1F1'}}
                       alignContent={"center"}
                       container>
 

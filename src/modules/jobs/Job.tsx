@@ -20,11 +20,9 @@ import StartupCard from "../profiles/startups/StartupCard";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import grey from "@material-ui/core/colors/grey";
-import {homeStyles} from "../home/styles";
 
 const Job = ({match}: any) => {
 
-    const classes = homeStyles()
     const jobId = match.params.id
     const id = parseInt(jobId, 10)
     const [company, setCompany] = useState<any | undefined>(undefined)
@@ -38,21 +36,33 @@ const Job = ({match}: any) => {
 
     useEffect(() => {
         if (job) {
+
+            document.title = `${job.title} / My Village`
+
             getStartups({id: job.companyId})
                 .then((response: any) => {
                     setCompany(response.body.startups[0])
                 })
+                .catch((error) => {
+
+                })
         }
     }, [job])
+
+    useEffect(() => {
+        if (company){
+            document.title = `${job.title} / ${company.name} / My Village`
+        }
+    })
 
     if (!job) {
         job = store.getState().jobs.data.find((job: IJob) => job.id === id)
     }
 
     return (
-        <Container className={classes.scrollable} maxWidth={false}>
+        <Container maxWidth={"md"}>
             <Grid justify={"center"} container spacing={2}>
-                    <Grid item xs={12} lg={6}>
+                    <Grid item xs={12}>
                         {job ? (
                             <Card>
                                 <CardHeader
@@ -126,7 +136,7 @@ const Job = ({match}: any) => {
                             </Card>
                         ) : <PleaseWait/>}
                     </Grid>
-                    <Grid item xs={12} lg={3}>
+                    <Grid item xs={12}>
                         <StartupCard {...company} />
                     </Grid>
                 </Grid>

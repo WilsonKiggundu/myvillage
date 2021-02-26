@@ -29,6 +29,9 @@ const People = () => {
     const history = useHistory()
 
     useEffect(() => {
+
+        document.title = 'Community / My Village'
+
         window.addEventListener('scroll', () => {
             if (people.request.hasMore && scrolledToBottom()) {
                 dispatch(loadPeople())

@@ -63,6 +63,7 @@ const Jobs = () => {
     }
 
     useEffect(() => {
+        document.title = "Jobs / My Village"
         window.addEventListener('scroll', () => {
             if (jobs.request.hasMore && scrolledToBottom()) {
                 dispatch(loadJobs())

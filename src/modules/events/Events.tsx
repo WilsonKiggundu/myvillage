@@ -33,6 +33,9 @@ const EventsView = () => {
     }, [dispatch])
 
     useEffect(() => {
+
+        document.title = 'Events / My Village'
+
         window.addEventListener('scroll', () => {
             if (events.request.hasMore && scrolledToBottom()) {
                 dispatch(loadEvents())

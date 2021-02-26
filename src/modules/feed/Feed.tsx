@@ -21,6 +21,9 @@ const Feed = () => {
     const posts = useSelector(postsSelector)
 
     useEffect(() => {
+
+        document.title = 'Feed / My Village'
+
         window.addEventListener('scroll', () => {
             if (posts.request.hasMore && scrolledToBottom()) {
                 dispatch(loadPosts())

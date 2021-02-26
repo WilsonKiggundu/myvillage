@@ -34,6 +34,12 @@ const Person = ({match}: any) => {
     dispatch(loadPeople())
 
     useEffect(() => {
+        if(person){
+            document.title = `${person.firstname} ${person.lastname} / My Village`
+        }
+    }, [person])
+
+    useEffect(() => {
         (async () => {
             const url = makeUrl("Profiles", Endpoints.person.base)
             const response: any = await getAsync(url, {id})
@@ -42,9 +48,9 @@ const Person = ({match}: any) => {
     }, [id])
 
     return (
-        <Container className={styles.scrollable} maxWidth={false}>
+        <Container style={{marginTop: -20}} maxWidth={"lg"}>
             <Grid container justify={"center"} spacing={2}>
-                <Grid item xs={12} sm={12} lg={8}>
+                <Grid item xs={12}>
                     {person ? (
                         <>
                             <ProfileCoverPhoto person={person}/>
