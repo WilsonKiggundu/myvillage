@@ -13,6 +13,7 @@ export interface IPerson {
     avatar?: string
     gender?: string
     coverPhoto?: string
+    isEven?: boolean
 }
 
 export const getInitials = (firstname: string, lastname: string) => {

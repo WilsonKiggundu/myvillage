@@ -5,7 +5,6 @@ import ContactCard from "../../../components/ContactCard";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import {globalStyles} from "../../../theme/styles";
-import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
 import {Urls} from "../../../routes/Urls";
 import {IPerson} from "./IPerson";
@@ -16,8 +15,9 @@ import {peopleSelector} from "./redux/peopleSelectors";
 import {loadPeople} from "./redux/peopleActions";
 import _ from "lodash";
 import {useHistory} from "react-router-dom";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {scrolledToBottom} from "../../../utils/scrollHelpers";
+
+import './People.css'
 
 const People = () => {
 
@@ -28,9 +28,6 @@ const People = () => {
     const history = useHistory()
 
     useEffect(() => {
-
-        document.title = 'Community / My Village'
-
         window.addEventListener('scroll', () => {
             if (people.request.hasMore && scrolledToBottom()) {
                 dispatch(loadPeople())
@@ -61,30 +58,44 @@ const People = () => {
         history.push(url)
     }
 
+
     return (
         <Container maxWidth={"lg"}>
             <Grid spacing={2} justify={"flex-start"} container>
                 {people.data.map((person: IPerson) => (
-                    <Grid item key={person.id} xs={12} sm={6} md={4}>
-                        <ContactCard person={person}>
-                            <Box mt={2} pl={3} pr={3}>
-                                <Typography className={classes.maxLines} variant={"body1"}>
+                    <Grid item key={person.id} xs={12} sm={6} md={6} lg={4}>
+                        <ContactCard
+                            person={person}
+                            isEven={people.data.indexOf(person) % 2 === 0}
+                        >
+                            <Box pr={3}>
+                                <Typography
+                                    className={people.data.indexOf(person) % 2 === 0 ? `${classes.maxLines}` : `${classes.maxLinesB}`}
+                                    variant={"body1"}>
                                     {person.bio}
                                 </Typography>
                             </Box>
-                            <Box mt={3} p={2}>
+                            <Box mt={3}>
                                 <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        <ButtonGroup style={{width: '100%'}} color={"default"}>
-                                            <Button
-                                                onClick={() => handleViewProfile(person.id)}
-                                                className={clsx(classes.fullWidth, classes.flat)}
-                                                variant="contained"
-                                                style={{textTransform: 'inherit'}}
-                                                color={"primary"}
-                                                size={"medium"}>View Profile</Button>
-                                        </ButtonGroup>
+                                    <Grid item xs={12} className={'buttons'}>
+                                        <Button
+                                            onClick={() => handleViewProfile(person.id)}
+                                            className={people.data.indexOf(person) % 2 === 0 ? 'button' : 'button-b'}
+                                            variant="outlined"
+                                            style={{textTransform: 'inherit', width: '45%'}}
+                                            color={"primary"}
+                                            size={"medium"}><b>View Profile</b>
+                                        </Button>
+
+                                        <Button
+                                            className={people.data.indexOf(person) % 2 === 0 ? 'conection-btn' : 'button-b'}
+                                            variant="contained"
+                                            style={{textTransform: 'inherit', width: '45%'}}
+                                            color={"secondary"}
+                                            size={"medium"}><b>Connect</b>
+                                        </Button>
                                     </Grid>
+
                                 </Grid>
 
                             </Box>
