@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import {globalStyles} from "../../../theme/styles";
 import Typography from "@material-ui/core/Typography";
 import {Urls} from "../../../routes/Urls";
-import {IPerson} from "./IPerson";
 import {useDispatch, useSelector} from "react-redux";
 import {PleaseWait} from "../../../components/PleaseWait";
 import {Alert} from "@material-ui/lab";
@@ -17,17 +16,19 @@ import _ from "lodash";
 import {useHistory} from "react-router-dom";
 import {scrolledToBottom} from "../../../utils/scrollHelpers";
 
-import './People.css'
+// import './People.css'
 
 const People = () => {
 
-    const classes = globalStyles()
     const people = useSelector(peopleSelector)
     const dispatch = useDispatch()
 
     const history = useHistory()
 
     useEffect(() => {
+
+        document.title = 'Community / My Village'
+
         window.addEventListener('scroll', () => {
             if (people.request.hasMore && scrolledToBottom()) {
                 dispatch(loadPeople())
