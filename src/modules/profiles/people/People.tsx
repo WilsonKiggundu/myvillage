@@ -61,49 +61,49 @@ const People = () => {
 
     return (
         <Container maxWidth={"lg"}>
-            <Grid spacing={2} justify={"flex-start"} container>
-                {people.data.map((person: IPerson) => (
-                    <Grid item key={person.id} xs={12} sm={6} md={6} lg={4}>
-                        <ContactCard
-                            person={person}
-                            isEven={people.data.indexOf(person) % 2 === 0}
-                        >
-                            <Box pr={3}>
-                                <Typography
-                                    className={people.data.indexOf(person) % 2 === 0 ? `${classes.maxLines}` : `${classes.maxLinesB}`}
-                                    variant={"body1"}>
-                                    {person.bio}
-                                </Typography>
-                            </Box>
-                            <Box mt={3}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12} className={'buttons'}>
-                                        <Button
-                                            onClick={() => handleViewProfile(person.id)}
-                                            className={people.data.indexOf(person) % 2 === 0 ? 'button' : 'button-b'}
-                                            variant="outlined"
-                                            style={{textTransform: 'inherit', width: '45%'}}
-                                            color={"primary"}
-                                            size={"medium"}><b>View Profile</b>
-                                        </Button>
+            {/*<Grid spacing={2} justify={"flex-start"} container>*/}
+            {/*    {people.data.map((person: IPerson) => (*/}
+            {/*        <Grid item key={person.id} xs={12} sm={6} md={6} lg={4}>*/}
+            {/*            <ContactCard*/}
+            {/*                person={person}*/}
+            {/*                isEven={people.data.indexOf(person) % 2 === 0}*/}
+            {/*            >*/}
+            {/*                <Box pr={3}>*/}
+            {/*                    <Typography*/}
+            {/*                        className={people.data.indexOf(person) % 2 === 0 ? `${classes.maxLines}` : `${classes.maxLinesB}`}*/}
+            {/*                        variant={"body1"}>*/}
+            {/*                        {person.bio}*/}
+            {/*                    </Typography>*/}
+            {/*                </Box>*/}
+            {/*                <Box mt={3}>*/}
+            {/*                    <Grid container spacing={2}>*/}
+            {/*                        <Grid item xs={12} className={'buttons'}>*/}
+            {/*                            <Button*/}
+            {/*                                onClick={() => handleViewProfile(person.id)}*/}
+            {/*                                className={people.data.indexOf(person) % 2 === 0 ? 'button' : 'button-b'}*/}
+            {/*                                variant="outlined"*/}
+            {/*                                style={{textTransform: 'inherit', width: '45%'}}*/}
+            {/*                                color={"primary"}*/}
+            {/*                                size={"medium"}><b>View Profile</b>*/}
+            {/*                            </Button>*/}
 
-                                        <Button
-                                            className={people.data.indexOf(person) % 2 === 0 ? 'conection-btn' : 'button-b'}
-                                            variant="contained"
-                                            style={{textTransform: 'inherit', width: '45%'}}
-                                            color={"secondary"}
-                                            size={"medium"}><b>Connect</b>
-                                        </Button>
-                                    </Grid>
+            {/*                            <Button*/}
+            {/*                                className={people.data.indexOf(person) % 2 === 0 ? 'conection-btn' : 'button-b'}*/}
+            {/*                                variant="contained"*/}
+            {/*                                style={{textTransform: 'inherit', width: '45%'}}*/}
+            {/*                                color={"secondary"}*/}
+            {/*                                size={"medium"}><b>Connect</b>*/}
+            {/*                            </Button>*/}
+            {/*                        </Grid>*/}
 
-                                </Grid>
+            {/*                    </Grid>*/}
 
-                            </Box>
+            {/*                </Box>*/}
 
-                        </ContactCard>
-                    </Grid>
-                ))}
-            </Grid>
+            {/*            </ContactCard>*/}
+            {/*        </Grid>*/}
+            {/*    ))}*/}
+            {/*</Grid>*/}
         </Container>
     )
 }
