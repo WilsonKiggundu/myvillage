@@ -24,7 +24,6 @@ const ContactCard = (props: IProps) => {
     const {firstname, lastname, avatar, coverPhoto, connectionsCount } = props.person
     const isEven = props.isEven
 
-
     return (
         <Card className ={isEven ? '' : 'bg'}>
 
