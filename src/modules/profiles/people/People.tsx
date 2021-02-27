@@ -23,7 +23,7 @@ const People = () => {
     const people = useSelector(peopleSelector)
     const dispatch = useDispatch()
 
-    const history = useHistory()
+    // const history = useHistory()
 
     useEffect(() => {
 
@@ -54,10 +54,10 @@ const People = () => {
         </Alert>
     )
 
-    const handleViewProfile = (id: string) => {
-        const url = Urls.profiles.onePerson(id)
-        history.push(url)
-    }
+    // const handleViewProfile = (id: string) => {
+    //     const url = Urls.profiles.onePerson(id)
+    //     history.push(url)
+    // }
 
 
     return (
