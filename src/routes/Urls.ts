@@ -12,7 +12,7 @@ export const Urls = ({
         create: "/profiles/create",
         person: `/profiles/people/:id`,
         onePerson: (id: string) => `/profiles/people/${id}`,
-        people: "/profiles/people",
+        people: "/profiles/community",
         startups: "/profiles/startups",
         startup: "/profiles/startups/:id",
         singleStartup: (id: string) => `/profiles/startups/${id}`,

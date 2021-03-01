@@ -20,7 +20,7 @@ import {getPeople} from "./redux/peopleEndpoints";
 
 // import './People.css'
 
-const People = () => {
+const Community = () => {
 
     // const [people, setPeople] = useState<any>(Object.create({}))
     // const [loading, setLoading] = useState<boolean>(true)
@@ -118,4 +118,4 @@ const People = () => {
     )
 }
 
-export default People
+export default Community
