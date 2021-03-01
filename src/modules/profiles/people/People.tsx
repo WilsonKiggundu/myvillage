@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import ContactCard from "../../../components/ContactCard";
@@ -11,18 +11,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {PleaseWait} from "../../../components/PleaseWait";
 import {Alert} from "@material-ui/lab";
 import {peopleSelector} from "./redux/peopleSelectors";
-import {loadPeople} from "./redux/peopleActions";
+import {fetchPeople, loadPeople} from "./redux/peopleActions";
 import _ from "lodash";
 import {useHistory} from "react-router-dom";
 import {scrolledToBottom} from "../../../utils/scrollHelpers";
+import {IPerson} from "./IPerson";
+import {getPeople} from "./redux/peopleEndpoints";
 
 // import './People.css'
 
 const People = () => {
 
-    const people = useSelector(peopleSelector)
-
-    console.log(people)
+    const [people, setPeople] = useState<any>(Object.create({}))
+    const [loading, setLoading] = useState<boolean>(true)
 
     const dispatch = useDispatch()
 
@@ -34,16 +35,20 @@ const People = () => {
 
         window.addEventListener('scroll', () => {
             if (people.request.hasMore && scrolledToBottom()) {
-                dispatch(loadPeople())
+                // dispatch(loadPeople())
             }
         })
     })
 
     useEffect(() => {
-        // dispatch(loadPeople())
-    }, [dispatch])
+        (async () => {
+            const response: any = await getPeople({page: 1, pageSize: 15})
+            setPeople(response.body)
+            // setLoading(false)
+        })()
+    }, [setPeople])
 
-    if (_.isEmpty(people.data) && people.isLoading) {
+    if (people && _.isEmpty(people.data) && loading) {
         return <PleaseWait label={"Loading people. Please wait..."}/>
     }
 
@@ -65,7 +70,7 @@ const People = () => {
 
     return (
         <Container maxWidth={"lg"}>
-            {/*<Grid spacing={2} justify={"flex-start"} container>*/}
+            <Grid spacing={2} justify={"flex-start"} container>
             {/*    {people.data.map((person: IPerson) => (*/}
             {/*        <Grid item key={person.id} xs={12} sm={6} md={6} lg={4}>*/}
             {/*            <ContactCard*/}
@@ -107,7 +112,7 @@ const People = () => {
             {/*            </ContactCard>*/}
             {/*        </Grid>*/}
             {/*    ))}*/}
-            {/*</Grid>*/}
+            </Grid>
         </Container>
     )
 }
