@@ -119,7 +119,7 @@ export default function ApplicationBar() {
         const locationArray = location.pathname.split('/')
         if (locationArray.includes('feed')) setActiveMenu('feed')
         if (locationArray.includes('startups')) setActiveMenu('startups')
-        if (locationArray.includes('people')) setActiveMenu('community')
+        if (locationArray.includes('community')) setActiveMenu('community')
         if (locationArray.includes('events')) setActiveMenu('events')
         if (locationArray.includes('jobs')) setActiveMenu('jobs')
     })
