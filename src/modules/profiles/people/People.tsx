@@ -21,6 +21,9 @@ import {scrolledToBottom} from "../../../utils/scrollHelpers";
 const People = () => {
 
     const people = useSelector(peopleSelector)
+
+    console.log(people)
+
     const dispatch = useDispatch()
 
     // const history = useHistory()
@@ -37,7 +40,7 @@ const People = () => {
     })
 
     useEffect(() => {
-        dispatch(loadPeople())
+        // dispatch(loadPeople())
     }, [dispatch])
 
     if (_.isEmpty(people.data) && people.isLoading) {
