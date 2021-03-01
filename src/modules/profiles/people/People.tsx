@@ -22,50 +22,50 @@ import {getPeople} from "./redux/peopleEndpoints";
 
 const People = () => {
 
-    const [people, setPeople] = useState<any>(Object.create({}))
-    const [loading, setLoading] = useState<boolean>(true)
-
-    const dispatch = useDispatch()
-
-    // const history = useHistory()
-
+    // const [people, setPeople] = useState<any>(Object.create({}))
+    // const [loading, setLoading] = useState<boolean>(true)
+    //
+    // const dispatch = useDispatch()
+    //
+    // // const history = useHistory()
+    //
     useEffect(() => {
 
         document.title = 'Community / My Village'
 
         window.addEventListener('scroll', () => {
-            if (people.request.hasMore && scrolledToBottom()) {
-                // dispatch(loadPeople())
-            }
+            // if (people.request.hasMore && scrolledToBottom()) {
+            //     // dispatch(loadPeople())
+            // }
         })
     })
-
-    useEffect(() => {
-        (async () => {
-            const response: any = await getPeople({page: 1, pageSize: 15})
-            setPeople(response.body)
-            // setLoading(false)
-        })()
-    }, [setPeople])
-
-    if (people && _.isEmpty(people.data) && loading) {
-        return <PleaseWait label={"Loading people. Please wait..."}/>
-    }
-
-    if (people.error) return (
-        <Alert color={"error"} icon={false}>
-            <Box mt={2}>
-                <Typography variant={"body2"} component={"div"}>
-                    {people.error}
-                </Typography>
-            </Box>
-        </Alert>
-    )
-
-    // const handleViewProfile = (id: string) => {
-    //     const url = Urls.profiles.onePerson(id)
-    //     history.push(url)
+    //
+    // useEffect(() => {
+    //     (async () => {
+    //         const response: any = await getPeople({page: 1, pageSize: 15})
+    //         setPeople(response.body)
+    //         // setLoading(false)
+    //     })()
+    // }, [setPeople])
+    //
+    // if (people && _.isEmpty(people.data) && loading) {
+    //     return <PleaseWait label={"Loading people. Please wait..."}/>
     // }
+    //
+    // if (people.error) return (
+    //     <Alert color={"error"} icon={false}>
+    //         <Box mt={2}>
+    //             <Typography variant={"body2"} component={"div"}>
+    //                 {people.error}
+    //             </Typography>
+    //         </Box>
+    //     </Alert>
+    // )
+    //
+    // // const handleViewProfile = (id: string) => {
+    // //     const url = Urls.profiles.onePerson(id)
+    // //     history.push(url)
+    // // }
 
 
     return (
