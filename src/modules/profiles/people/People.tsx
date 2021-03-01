@@ -29,16 +29,16 @@ const People = () => {
     //
     // // const history = useHistory()
     //
-    useEffect(() => {
-
-        document.title = 'Community / My Village'
-
-        window.addEventListener('scroll', () => {
-            // if (people.request.hasMore && scrolledToBottom()) {
-            //     // dispatch(loadPeople())
-            // }
-        })
-    })
+    // useEffect(() => {
+    //
+    //     // document.title = 'Community / My Village'
+    //     //
+    //     // window.addEventListener('scroll', () => {
+    //     //     // if (people.request.hasMore && scrolledToBottom()) {
+    //     //     //     // dispatch(loadPeople())
+    //     //     // }
+    //     // })
+    // })
     //
     // useEffect(() => {
     //     (async () => {
@@ -71,6 +71,7 @@ const People = () => {
     return (
         <Container maxWidth={"lg"}>
             <Grid spacing={2} justify={"flex-start"} container>
+            <Grid item>People</Grid>
             {/*    {people.data.map((person: IPerson) => (*/}
             {/*        <Grid item key={person.id} xs={12} sm={6} md={6} lg={4}>*/}
             {/*            <ContactCard*/}
