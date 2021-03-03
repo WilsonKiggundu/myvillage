@@ -9,15 +9,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {IEvent} from "../../interfaces/IEvent";
 import EventCard from "./EventCard";
 import Box from "@material-ui/core/Box";
-import {isPast} from "../../utils/dateHelpers";
 import {eventsSelector} from "./redux/eventsSelectors";
 import {loadEvents} from "./redux/eventsActions";
 import ErrorPage from "../exceptions/Error";
-import {homeStyles} from "../home/styles";
 
-import './Event.css'
 import {scrolledToBottom} from "../../utils/scrollHelpers";
-import {loadPosts} from "../posts/redux/postsActions";
 
 type EventFilter = 'today' | 'week' | 'month' | 'year'
 

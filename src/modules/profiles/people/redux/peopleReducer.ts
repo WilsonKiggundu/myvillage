@@ -409,6 +409,18 @@ export default function reducer(state = initialState, action: any) {
             ...state
         }
     } else if (action.type === EDIT_PERSON_CONNECTION_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                $set: {...person, isConnected: true}
+            }
+        })
+
         return {
             ...state,
         }

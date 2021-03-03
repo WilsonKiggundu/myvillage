@@ -4,13 +4,11 @@ import Progress from "../../components/progress/Progress";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import Box from "@material-ui/core/Box";
 import XImageGridList from "../../components/XImageGridList";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
 import React, {useState} from "react";
 import {IEvent} from "../../interfaces/IEvent";
 import {format, parseISO} from "date-fns";
 import EventActionButtons from "./EventActionButtons";
+import {Urls} from "../../routes/Urls";
 
 const FeaturedEvent = (event: IEvent) => {
 
@@ -39,24 +37,18 @@ const FeaturedEvent = (event: IEvent) => {
                                 <small>{startingTime} - {endingTime}</small>
                             </div>
                         </Grid>
-                        {event.attendees ? (
-                            <Progress
-                                score={70}
-                                style={{
-                                    opacity: 2,
-                                    width: `${score}%`,
-                                    height: '15px',
-                                    cardWidth: '100px',
-                                }}
-                            >
-                                <strong><span style={{color: '#D0D3D4'}}>{attending}</span>/{expectedAttendees}
-                                </strong>
-                            </Progress>
-                        ) : (
-                            <Grid>
-                            </Grid>
-                        )
-                        }
+                        {event.attendees && <Progress
+                            score={70}
+                            style={{
+                                opacity: 2,
+                                width: `${score}%`,
+                                height: '15px',
+                                cardWidth: '100px',
+                            }}
+                        >
+                            <strong><span style={{color: '#D0D3D4'}}>{attending}</span>/{expectedAttendees}
+                            </strong>
+                        </Progress>}
                     </Grid>
 
                 </Grid>
@@ -68,20 +60,27 @@ const FeaturedEvent = (event: IEvent) => {
                         {event.details}
                     </Grid>
                     <Grid item xs={12} className='event-location'>
-                        <LocationOnIcon className="event-location-icon" />
+                        <LocationOnIcon className="event-location-icon"/>
                         <span className="event-location-venue">{event.location}</span>
                     </Grid>
                 </Grid>
             </Grid>
             {
-                event.images?.length && <Grid className='event-bg-wrapper'>
+                event.images?.length && <div className='event-bg-wrapper'>
                     <Box mb={2} ml={1} mr={1}>
                         <XImageGridList images={event.images}/>
                     </Box>
-                </Grid>
+                </div>
             }
 
-            <EventActionButtons iconSize={"lg"} bgColor={"#E5E5E5"} showLabels id={event.id} />
+            <Grid className="featured-event-button-container" container justify={"space-between"}>
+                <Grid className="event-button-container" item xs={2}>
+
+                </Grid>
+                <Grid item xs={6}>
+                    <EventActionButtons iconSize={"lg"} bgColor={"#E5E5E5"} showLabels id={event.id}/>
+                </Grid>
+            </Grid>
         </Grid>
     )
 }

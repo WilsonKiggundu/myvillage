@@ -7,6 +7,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import EventActionButtons from "./EventActionButtons";
 import React, {useState} from "react";
 import {format, parseISO} from "date-fns";
+import './event-card.css'
 
 const EventListItem = (event: IEvent) => {
 
@@ -58,7 +59,6 @@ const EventListItem = (event: IEvent) => {
                     container
                     className='event-rsvp'
                     justify={"space-between"}
-                    alignItems={'center'}
                 >
                     <Grid item lg={6}>
 

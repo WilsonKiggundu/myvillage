@@ -31,6 +31,7 @@ function Home() {
     }
 
     useEffect(() => {
+        document.title = "My Village / Africa's Entrepreneurs meet here."
         document.body.style.backgroundColor = '#1C1C1C'
     })
 

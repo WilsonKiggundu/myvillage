@@ -70,7 +70,7 @@ const Community = () => {
 
     return (
         <Container maxWidth={false}>
-            <Grid spacing={2} justify={"flex-start"} container>
+            <Grid spacing={2} justify={"center"} container>
                 {people.data.map((person: IPerson) => (
                     <Grid item key={person.id} xs={12} sm={4} md={4} xl={2} lg={3}>
                         <ContactCard person={person}>

@@ -7,6 +7,10 @@
     height: inherit;
 }
 
+.align-right{
+    text-align: right;
+}
+
 .event-bg-wrapper {
     height: 100%;
 }
@@ -107,8 +111,8 @@
 .event-action-button{
     color: white;
     padding: 5px;
-    width: 1.5em !important;
-    height: 1.5em !important;
+    width: 1.2em !important;
+    height: 1.2em !important;
     border-radius: 100%;
 }
 
@@ -140,6 +144,16 @@
     color: #E98A2B;
 }
 
+.featured-event-button-container{
+    background-color: #E5E5E5;
+}
+
+.event-details-button{
+    padding: 15px;
+    margin-top: 10px;
+    border: solid 1px crimson;
+}
+
 .rsvp-btns-sm {
     width: 20px;
 }
@@ -151,7 +165,7 @@
 .event-description {
     align-items: center;
     justify-content: center;
-    background-color: #E5E5E5;
+    background-color: #FFFFFF;
     padding: 1em;
     width: 100%;
 }
