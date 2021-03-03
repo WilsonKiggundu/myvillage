@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import VideocamIcon from "@material-ui/icons/Videocam";
 import EventIcon from "@material-ui/icons/Event";
 import Card from "@material-ui/core/Card";
@@ -15,7 +15,7 @@ import UploadFile from "./UploadFile";
 import NewPost from "./NewPost";
 import NewEvent from "../../events/forms/NewEvent";
 import grey from "@material-ui/core/colors/grey";
-import EditIcon from '@material-ui/icons/Edit'
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 
 import '../css/StartAPostCard.css'
 import {white} from "../../../theme/custom-colors";
@@ -52,13 +52,13 @@ const StartAPostCard = (props: IProps) => {
                                 <ListItemAvatar>
                                     <Avatar />
                                 </ListItemAvatar>
-                                <ListItemText primary="What's on your mind?" />
+                                <ListItemText primary="What is on your mind?" />
                             </ListItem>
                         </List>
                     </div>
 
                     <XDialog
-                        title={"New Post"}
+                        title={"Create a Post"}
                         open={openNewPostDialog}
                         onClose={() => setOpenNewPostDialog(false)}>
                         <NewPost onClose={() => setOpenNewPostDialog(false)}/>
@@ -70,7 +70,7 @@ const StartAPostCard = (props: IProps) => {
                                 <Button
                                     className={clsx(classes.bold, classes.fullWidth)}
                                     onClick={() => setOpenPhotoDialog(true)}>
-                                    <AddAPhotoIcon className="icon"/>
+                                    <CameraAltIcon className="icon"/>
                                     {!isMobile && <span>
                                         Photo
                                     </span>}
@@ -140,7 +140,7 @@ const StartAPostCard = (props: IProps) => {
                                     href={Urls.articles.create}
                                     style={{padding: 5}}
                                     className={clsx(classes.bold, classes.fullWidth)}>
-                                    <EditIcon className="icon"/>
+                                    <DescriptionOutlinedIcon className="icon"/>
                                     {!isMobile && <span>
                                         Article
                                     </span>}
