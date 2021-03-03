@@ -9,7 +9,7 @@ export const getPeople = async (params?: any) => {
     const {nextPage} = state.people.request
 
     const url = makeUrl("Profiles", Endpoints.person.base)
-    return await getAsync(url, params ? params : {page: nextPage, pageSize: 7})
+    return await getAsync(url, params ? params : {page: nextPage, pageSize: 16})
 }
 
 export const putPerson = async (person: any, uploadType?: UploadType) => {

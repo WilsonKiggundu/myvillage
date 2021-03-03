@@ -15,7 +15,42 @@
 .conection-btn {
     background-color: #1C1C1C !important;
 }
-.buttons{
+.profile-action-buttons{
     display: flex;
     justify-content: space-between
+}
+.profile-action-buttons > button{
+    cursor: pointer;
+    padding: 5px 10px;
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+.profile-action-buttons > button.view-profile-button{
+    border: 1px solid #E98A2B;
+    background-color: transparent;
+}
+.profile-action-buttons > button.connect-button{
+    border: 1px solid #E98A2B;
+    background-color: #E98A2B;
+    color: white;
+}
+.profile-action-buttons > button.connect-button-disabled{
+    border: 1px solid #c1c1c1;
+    background-color: #c1c1c1;
+    color: white;
+    cursor: auto !important;
+}
+
+.profile-bio-teaser{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 15px;
+    position: relative;
+    height: 4.2em;
+    overflow: hidden;
+    padding-right: 1em;
 }

@@ -335,9 +335,9 @@ export function* removePersonConnection(action: any){
     }
 }
 
-export function* fetchPeople(){
+export function* fetchPeople(action: any){
     try {
-        const response = yield call<any>(getPeople)
+        const response = yield call<any>(getPeople, action.payload)
         yield put(loadPeopleSuccess(response))
     } catch (error) {
         yield put(loadPeopleFailed(error.message));

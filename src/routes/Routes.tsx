@@ -36,7 +36,7 @@ export const Routes = (
             <Route exact path={Urls.profiles.startups} component={Startups}/>
             <Route exact path={Urls.profiles.startup} component={Startup}/>
             <Route exact path={Urls.profiles.people} component={Community}/>
-            <Route exact path={Urls.profiles.person} component={Person}/>
+            <Route exact path={Urls.profiles.person} render={(props) => <Person {...props} />}/>
 
             <Route exact path={Urls.jobs.list} component={Jobs}/>
             <Route exact path={Urls.job} component={Job}/>

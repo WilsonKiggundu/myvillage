@@ -21,23 +21,15 @@ import { loadPeople } from "./redux/peopleActions";
 import {homeStyles} from "../../home/styles";
 import {getAsync, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
+import {getPeople} from "./redux/peopleEndpoints";
 
 const Person = ({match}: any) => {
-    const styles = homeStyles()
     const {id} = match.params
 
     const [person, setPerson] = useState<any>(undefined)
 
     const user = useSelector(userSelector)
     const canEdit: boolean = id === user?.profile.sub
-    const dispatch = useDispatch()
-    dispatch(loadPeople())
-
-    useEffect(() => {
-        if(person){
-            document.title = `${person.firstname} ${person.lastname} / My Village`
-        }
-    }, [person])
 
     useEffect(() => {
         (async () => {
@@ -47,8 +39,14 @@ const Person = ({match}: any) => {
         })()
     }, [id])
 
+    useEffect(() => {
+        if (person){
+            document.title = `${person.firstname} ${person.lastname} / My Village`
+        }
+    }, [person])
+
     return (
-        <Container style={{marginTop: -20}} maxWidth={"lg"}>
+        <Container maxWidth={"lg"}>
             <Grid container justify={"center"} spacing={2}>
                 <Grid item xs={12}>
                     {person ? (
