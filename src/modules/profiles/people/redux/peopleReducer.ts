@@ -387,8 +387,6 @@ export default function reducer(state = initialState, action: any) {
         const person = state.data.find((f: any) => f.id === personId)
         const personIndex = state.data.indexOf(person)
 
-        console.log(personIndex)
-
         state.data = update(state.data, {
             [personIndex]: {
                 connections: {

@@ -35,7 +35,7 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
     const loading = open && options.length === 0;
 
     const {name, helperText, label} = props
-    const {isSubmitting} = useFormikContext()
+    // const {isSubmitting} = useFormikContext()
     const fieldProps = useField(name)
     const meta = fieldProps[1]
     const helpers = fieldProps[2]

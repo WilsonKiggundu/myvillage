@@ -148,7 +148,7 @@ export const isThisYear = (str: string): boolean => {
 }
 
 export const longDate = (date: any): string => {
-    return format(Date.parse(date), longDateFormat)
+    return format(parseISO(date), longDateFormat)
 }
 
 export const timeAgo = (date: any): string => {

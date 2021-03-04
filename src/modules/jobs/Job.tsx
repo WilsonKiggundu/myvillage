@@ -1,25 +1,18 @@
 import {IJob} from "../../interfaces/IJob";
 import React, {useEffect, useState} from "react";
-import {Card} from "@material-ui/core";
+import {Box, Button, Card, CircularProgress, Typography} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {Alert} from "@material-ui/lab";
-import {differenceInCalendarDays} from "date-fns";
 import {useDispatch, useSelector} from "react-redux";
 import store from "../../data/store";
 import {jobSelector} from "./redux/jobsSelectors";
 import {loadJobs} from "./redux/jobsActions";
 import {PleaseWait} from "../../components/PleaseWait";
-import {longDate, timeAgo} from "../../utils/dateHelpers";
 import Container from "@material-ui/core/Container";
 import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
-import Divider from "@material-ui/core/Divider";
-import StartupCard from "../profiles/startups/StartupCard";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import grey from "@material-ui/core/colors/grey";
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import XTabbedPanel, {ITab} from "../../components/tabs/XTabbedPanel";
 
 const Job = ({match}: any) => {
 
@@ -27,7 +20,22 @@ const Job = ({match}: any) => {
     const id = parseInt(jobId, 10)
     const [company, setCompany] = useState<any | undefined>(undefined)
 
-    let job = useSelector((state) => jobSelector(state, id))
+    const [value, setValue] = React.useState(0);
+    const [tabs, setTabs] = useState<ITab[]>([])
+    const [applyButton, setApplyButton] = useState<any>({label: 'Apply now', disabled: false})
+
+    const handleChange = ({event, newValue}: any) => {
+        setValue(newValue);
+    };
+
+    const handleApply = (job: IJob) => {
+        setApplyButton({
+            disabled: true,
+            label: <CircularProgress size={25} />
+        })
+    }
+
+    let job: IJob = useSelector((state) => jobSelector(state, id))
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -36,6 +44,26 @@ const Job = ({match}: any) => {
 
     useEffect(() => {
         if (job) {
+
+
+
+            setTabs([
+                {
+                    label: 'Job description',
+                    content: job.details
+                },
+                {
+                    label: 'Qualifications & Experience',
+                    content: <>
+                        <Typography>{job.qualifications}</Typography>
+                        <Typography>{job.experience}</Typography>
+                    </>
+                },
+                {
+                    label: 'Benefits',
+                    content: job.benefits
+                },
+            ])
 
             document.title = `${job.title} / My Village`
 
@@ -50,7 +78,7 @@ const Job = ({match}: any) => {
     }, [job])
 
     useEffect(() => {
-        if (company){
+        if (company) {
             document.title = `${job.title} / ${company.name} / My Village`
         }
     })
@@ -62,84 +90,83 @@ const Job = ({match}: any) => {
     return (
         <Container maxWidth={"md"}>
             <Grid justify={"center"} container spacing={2}>
-                    <Grid item xs={12}>
-                        {job ? (
-                            <Card>
-                                <CardHeader
-                                    title={
-                                        <Typography style={{marginBottom: 2}} variant={"h4"}>
-                                            <strong>{job.title}</strong>
-                                        </Typography>
-                                    }
-                                    subheader={job.category?.name}
-                                />
-                                <CardContent>
-                                    <Grid container spacing={2}>
-                                        <Divider/>
-                                        <Grid style={{color: grey[500]}} item xs={12}>
-                                            <Grid container spacing={1}>
-                                                <Grid item>
-                                                    <LocationOnIcon/>
-                                                </Grid>
-                                                <Grid style={{marginTop: 3}} item>
-                                                    {job.location}
-                                                </Grid>
+                <Grid item xs={12}>
+                    {job ? (
+
+                        <>
+                            <Box mb={2}>
+                                <Card>
+                                    <CardContent>
+                                        <Grid spacing={2} container justify={"space-between"}>
+                                            <Grid item xs={4} md={2}>
+                                                <LazyLoadImage
+                                                    width={'100%'}
+                                                    className="company-logo"
+                                                    src={company?.avatar}
+                                                    alt={company?.name}
+                                                    effect={'blur'}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={8} md={8}>
+                                                <div className="job-title">{job.title}</div>
+                                                <div className="job-category">
+                                                    {job.category?.name}
+                                                </div>
+
+                                                <Box mt={2}>
+                                                    <Grid container spacing={4} justify={"flex-start"}>
+                                                        <Grid item className="company-name">
+                                                            <a href="">{company?.name}</a>
+                                                        </Grid>
+                                                        <Grid item className="job-location">
+                                                            <LocationOnIcon className="job-location-icon"/>
+                                                            <span>{job.location}</span>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Box>
+                                            </Grid>
+                                            <Grid item xs={12} md={2}>
+                                                <Button className="apply-button"
+                                                        onClick={() => handleApply(job)}
+                                                        variant={"contained"}
+                                                        disabled={applyButton.disabled}
+                                                        color={"secondary"}>
+                                                    {applyButton.label}
+                                                </Button>
                                             </Grid>
                                         </Grid>
+                                    </CardContent>
+                                </Card>
+                            </Box>
 
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Alert color={
-                                                differenceInCalendarDays(Date.parse(job.deadline?.replace(/ /g, "T")), new Date()) <= 1 ? "warning" : "info"
-                                            } icon={<CalendarTodayIcon/>}>
-                                                Application closes on <br/>
-                                                <strong>{longDate(job.deadline)}</strong> ({timeAgo(job.deadline)})
-                                            </Alert>
+                            <Box mb={2}>
+                                <Card>
+                                    <CardContent>
+                                        <Grid spacing={2} container justify={"flex-start"}>
+                                            {job.engagement && <Grid item xs={12} md={4}>
+                                                <strong>Engagement</strong><br/>
+                                                {job.engagement}
+                                            </Grid>}
+                                            <Grid item xs={12} md={4}>
+                                                <strong>Category</strong><br/>{job.category?.name}
+                                            </Grid>
+                                            {job.salaryRange && <Grid item xs={12} md={4}>
+                                                <strong>Salary range</strong><br/>
+                                                {job.salaryRange}
+                                            </Grid>}
                                         </Grid>
+                                    </CardContent>
+                                </Card>
+                            </Box>
 
-                                        <Grid style={{marginBottom: 15}} xs={12} lg={10} item>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>Job Description</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.details}
-                                                </Typography>
-                                            </Typography>
-                                        </Grid>
+                            <Box mb={2}>
+                                <XTabbedPanel tabs={tabs}/>
+                            </Box>
+                        </>
 
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>Qualifications</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.qualifications}
-                                                </Typography>
-                                            </Typography>
-                                        </Grid>
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>Experience</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.experience}
-                                                </Typography>
-                                            </Typography>
-
-                                        </Grid>
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>How to apply</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.howToApply}
-                                                </Typography>
-                                            </Typography>
-                                        </Grid>
-
-                                    </Grid>
-                                </CardContent>
-                            </Card>
-                        ) : <PleaseWait/>}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <StartupCard {...company} />
-                    </Grid>
+                    ) : <PleaseWait/>}
                 </Grid>
+            </Grid>
         </Container>
     )
 }
