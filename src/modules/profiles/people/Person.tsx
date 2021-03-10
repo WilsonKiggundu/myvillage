@@ -59,7 +59,7 @@ const Person = ({match}: any) => {
                             <PersonSkills canEdit={canEdit} person={person}/>
                             <PersonPosts canEdit={canEdit} person={person}/>
                         </>
-                    ) : <PleaseWait label={"Loading person.Please wait..."} /> }
+                    ) : <PleaseWait label={"Please wait..."} /> }
 
                 </Grid>
             </Grid>

@@ -69,7 +69,7 @@ export default function XTabbedPanel({tabs}: IProps) {
         <div className={classes.root}>
             <AppBar position="static">
                 <Tabs value={value} onChange={handleChange} aria-label="tabs">
-                    {tabs.map((tab: ITab, index: number) => (<Tab label={tab.label} {...setProps(index)} />))}
+                    {tabs.map((tab: ITab, index: number) => (<Tab key={index} label={tab.label} {...setProps(index)} />))}
                 </Tabs>
             </AppBar>
             {tabs.map((tab: ITab, index: number) => (

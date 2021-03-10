@@ -45,8 +45,6 @@ const Job = ({match}: any) => {
     useEffect(() => {
         if (job) {
 
-
-
             setTabs([
                 {
                     label: 'Job description',
