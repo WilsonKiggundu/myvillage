@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import {Grid} from "@material-ui/core";
+import {Grid, Button} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import grey from "@material-ui/core/colors/grey";
 import clsx from "clsx";
@@ -46,11 +46,11 @@ export default function CommentsList({postId, articleId}: IProps) {
     }
 
     const content = comments.map((c: any, index: number) => (
+        
         <Grid
             key={index}
             style={
                 {
-                    backgroundColor: grey[100],
                     borderRadius: 10,
                     marginBottom: 8,
                     paddingTop: 5,
@@ -58,7 +58,7 @@ export default function CommentsList({postId, articleId}: IProps) {
                 }
             } container spacing={1}>
             <Grid className={clsx(classes.textCenter)} item xs={2} sm={1}>
-                <Avatar variant={"square"} src={c.author?.avatar}>
+                <Avatar src={c.author?.avatar}>
                     {c.author?.firstname[0].toUpperCase()}{c.author?.lastname[0].toUpperCase()}
                 </Avatar>
             </Grid>
@@ -68,18 +68,29 @@ export default function CommentsList({postId, articleId}: IProps) {
                         <strong>{c.author?.firstname} {c.author?.lastname}</strong>
                     </a>
                 </Typography>
-                <Typography style={{marginTop: '-5px'}} component={"div"}>
-                    <small style={{color: grey[500]}}>
-                        {timeAgo(c.dateCreated)}
-                    </small>
-                </Typography>
                 <Typography style={{marginTop: '5px', whiteSpace: 'pre-line'}} paragraph>
                     {c.details}
                 </Typography>
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <Typography style={{cursor: 'pointer'}}>
+                            Like
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography  component={"div"}>
+                            <small style={{color: grey[500]}}>
+                                {timeAgo(c.dateCreated)}
+                            </small>
+                        </Typography>
+                    </Grid>
+                </Grid>
+
+
+
             </Grid>
         </Grid>
     ))
-
     return (
         <Box mt={3}>
             {content}
