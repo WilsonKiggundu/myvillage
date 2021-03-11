@@ -19,7 +19,7 @@ import palette from "../../theme/palette";
 interface IProps {
     minWidth?: number
     maxWidth?: 'sm' | 'md' | 'lg' | false
-    title?: string
+    title?: any
     contentText?: string
     children: any
     open: boolean

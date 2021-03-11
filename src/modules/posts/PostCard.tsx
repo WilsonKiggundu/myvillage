@@ -1,4 +1,4 @@
-import {Avatar, Typography} from "@material-ui/core";
+import {Avatar, Typography, Link, List} from "@material-ui/core";
 import CardHeader from "@material-ui/core/CardHeader";
 import React, {useState} from "react";
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
@@ -19,8 +19,13 @@ import {useHistory} from "react-router-dom";
 import {timeAgo} from "../../utils/dateHelpers";
 import {userSelector} from "../../data/coreSelectors";
 import XImageGridList from "../../components/XImageGridList";
+import LikeDialogBox from "../../components/LikeDialogBox";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemText from "@material-ui/core/ListItemText";
 
 import './css/PostCard.css'
+
 
 interface IProps {
     post: IPost
@@ -54,7 +59,7 @@ const PostCard = ({post}: IProps) => {
         setCommentsPage(page)
         await dispatch(loadComments({postId: post.id, page}))
     }
-
+  
     return (
         <Box className="PostCard" mt={2}>
             {post ? (
@@ -66,10 +71,10 @@ const PostCard = ({post}: IProps) => {
                         title={
                             <Typography component={"div"}>
                                 <strong>
-                                    <a className={classes.clickable}
+                                    <Link className={classes.clickable}
                                        onClick={() => handleViewAuthor(post.authorId)}>
                                         {post.author?.firstname} {post.author?.lastname}
-                                    </a>
+                                    </Link>
                                 </strong>
                             </Typography>
                         }
@@ -79,78 +84,89 @@ const PostCard = ({post}: IProps) => {
                     />
 
                     <div className="PostCard-content">
-                        <div style={{whiteSpace: "pre-line", marginBottom: 15}}>{post.details}</div>
+                        <div className="Post-details">{post.details}</div>
                         {
                             uploads?.length ?
-                                <Box mb={2} ml={1} mr={1}>
+                                <Box mb={2} ml={2} mr={2}>
                                     <XImageGridList images={uploads}/>
                                 </Box>
                                 : ""
                         }
                     </div>
 
-                    {/*<div className="PostCard-actions">*/}
-                    {/*    <Grid spacing={2} container justify={"flex-start"}>*/}
-                    {/*        {*/}
-                    {/*            post.likesCount ? (*/}
-                    {/*                <Grid item>*/}
-                    {/*                    <Button*/}
-                    {/*                        onClick={() => setOpenLikesDialog(true)}*/}
-                    {/*                        className={classes.capitalize} variant={"text"}>*/}
-                    {/*                        {post.likesCount} {post.likesCount > 1 ? "Likes" : "Like"}*/}
-                    {/*                    </Button>*/}
-                    {/*                </Grid>*/}
-                    {/*            ) : ""*/}
-                    {/*        }*/}
-                    {/*        {*/}
-                    {/*            post.commentsCount ? (*/}
-                    {/*                <Grid item>*/}
-                    {/*                    <Button onClick={() => handleShowComments(1)} className={classes.capitalize}*/}
-                    {/*                            variant={"text"}>*/}
-                    {/*                        {post.commentsCount} {post.commentsCount > 1 ? "Comments" : "Comment"}*/}
-                    {/*                    </Button>*/}
-                    {/*                </Grid>*/}
-                    {/*            ) : ""*/}
-                    {/*        }*/}
-                    {/*    </Grid>*/}
-                    {/*</div>*/}
-
                     <div className="PostCard-actions">
-                        <Grid container spacing={2} justify={"center"}>
-                            <Grid item>
+                        <Grid container  justify={"space-between"}>
+                            <Grid item >
                                 <Button
-                                    className="PostCard-button"
                                     disabled={post.alreadyLikedByUser}
-                                    style={{textTransform: 'inherit'}}
                                     onClick={() => handleLike(post.id)}
                                 >
-                                    <ThumbUpAltIcon style={{marginRight: 5}}/> Like
+                                    <ThumbUpAltIcon />
                                 </Button>
-                            </Grid>
-
-                            <Grid item>
-                                <Button
-                                    className="PostCard-button"
-                                    variant={"text"}
-                                    style={{textTransform: 'inherit'}}
-                                    onClick={() => setOpenCommentDialog(true)}
-                                >
-                                    <InsertCommentIcon style={{marginRight: 10}}/> Comment
-                                </Button>
-
+                                {post.likesCount ? (
+                                    <Button
+                                    className="ShowLikeButton"
+                                    onClick={() => setOpenLikesDialog(true)}
+                                    >
+                                        <span className="Post-action">{post.likesCount > 1 ? "Likes" : "Like"}</span>
+                                        <span className="Counts">{post.likesCount}</span>
+                                    </Button>
+                                    
+                                ):""}
                                 <XDialog
-                                    title={"Add a comment"}
-                                    open={openCommentDialog}
-                                    onClose={() => setOpenCommentDialog(false)}>
-                                    <NewComment onClose={() => setOpenCommentDialog(false)} post={post}/>
+                                    title={
+                                    <Grid item>
+                                        <ListItem className="Like-items">
+                                            <ThumbUpAltIcon />
+                                            <span className="Post-action">{post.likesCount > 1 ? "Likes" : "Like"}</span>
+                                            <span className="Counts">{post.likesCount}</span>
+                                        </ListItem>
+                                    </Grid>
+                                    }
+                                    
+                                    open={openLikesDialog}
+                                    onClose={() => setOpenLikesDialog(false)}>
+                                    <LikeDialogBox onClose={() => setOpenLikesDialog(false)}/>
                                 </XDialog>
-
                             </Grid>
+                            {post.commentsCount ? (
+                                <Grid item>
+                                    <Button
+                                        variant={"text"}
+                                        onClick={() => handleShowComments(1)}
+                                    >
+                                        <InsertCommentIcon/> 
+                                        <span className="Post-action">{post.commentsCount > 1 ? "Comments" : "Comment"}</span>
+                                        <span className="Counts">{post.commentsCount}</span> 
+                                    </Button>
+                                </Grid>
+                            ):""}
 
                         </Grid>
                     </div>
+                    <div className="Comments">
+                        {post.comments ? <CommentsList postId={post.id}/> : ""}
 
-                    {post.comments ? <CommentsList postId={post.id}/> : ""}
+                        <div
+                            onClick={() => setOpenCommentDialog(true)}
+                            className="Comment-input">
+                            <List>
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar />
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Write a comment..." />
+                                </ListItem>
+                            </List>
+                        </div>
+                        <XDialog
+                            title={"Add a comment"}
+                            open={openCommentDialog}
+                            onClose={() => setOpenCommentDialog(false)}>
+                            <NewComment onClose={() => setOpenCommentDialog(false)} post={post}/>
+                        </XDialog>
+                    </div>
+
                 </div>
             ) : ""}
 
