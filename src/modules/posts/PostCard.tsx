@@ -126,7 +126,7 @@ const PostCard = ({post}: IProps) => {
                                     
                                     open={openLikesDialog}
                                     onClose={() => setOpenLikesDialog(false)}>
-                                    <LikeDialogBox onClose={() => setOpenLikesDialog(false)}/>
+                                    <LikeDialogBox postId={post.id} onClose={() => setOpenLikesDialog(false)}/>
                                 </XDialog>
                             </Grid>
                             {post.commentsCount ? (
