@@ -12,6 +12,8 @@ import {getAsync, makeUrl} from "../utils/ajax";
 import {Endpoints} from "../services/Endpoints";
 import {PleaseWait} from "./PleaseWait";
 import {Box} from "@material-ui/core";
+import { useHistory } from 'react-router-dom';
+import {Urls} from "../routes/Urls";
 
 const useStyles = makeStyles({
     avatar: {
@@ -25,9 +27,9 @@ interface IProps {
     postId: string
 }
 
-
 export default function LikeDialogBox({postId, onClose}: IProps) {
     const classes = useStyles();
+    const history = useHistory()
 
     const [likes, setLikes] = useState<IPostLike[]>([])
 
@@ -39,6 +41,11 @@ export default function LikeDialogBox({postId, onClose}: IProps) {
         })()
     }, [postId])
 
+    const handleViewProfile = (personId: string) => {
+        const url = Urls.profiles.onePerson(personId)
+        history.push(url)
+    }
+
     if (!likes.length)
         return <Box mb={2}>
             <PleaseWait/>
@@ -47,7 +54,7 @@ export default function LikeDialogBox({postId, onClose}: IProps) {
     return (
         <List>
             {likes.map((like: IPostLike, index: number) => (
-                <ListItem button key={index}>
+                <ListItem onClick={() => handleViewProfile(like.personId)} button key={index}>
                     <ListItemAvatar>
                         <Avatar
                             src={like.person?.avatar}
