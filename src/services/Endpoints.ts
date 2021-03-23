@@ -46,7 +46,7 @@ export const Endpoints = {
 
     events: {
         base: eventsBaseUrl,
-        api: "/api/events"
+        api: "/api/events",
     },
     business: {
         base: "/api/business",

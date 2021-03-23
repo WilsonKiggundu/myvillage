@@ -7,6 +7,11 @@ export const postEvent = async (event: IEvent) => {
     return await postAsync(url, event)
 }
 
+export const getEventById = async (id: any) => {
+    const url = makeUrl("Events", Endpoints.events.api)
+    return await getAsync(url + '/' + id)
+}
+
 export const getEvents = async () => {
     // const state = store.getState()
     // const {nextPage} = state.events.request

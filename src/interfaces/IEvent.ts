@@ -13,7 +13,7 @@ export interface IEvent {
     details: string
     conferenceUrl: string
     createdBy: string,
-    images?: IUpload[],
+    uploads?: IUpload[],
     featured?: boolean
-    attendees?: number
+    attendances?: []
 }

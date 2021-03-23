@@ -64,8 +64,6 @@ const Person = ({match}: any) => {
                     payload: person
                 })
 
-                // setPerson(person)
-
             } catch (e) {
                 if (e.toString().includes('Unauthorized')) {
                     await userManager.signinRedirect({

@@ -14,6 +14,7 @@ import {loadEvents} from "./redux/eventsActions";
 import ErrorPage from "../exceptions/Error";
 
 import {scrolledToBottom} from "../../utils/scrollHelpers";
+import {Urls} from "../../routes/Urls";
 
 type EventFilter = 'today' | 'week' | 'month' | 'year'
 
@@ -63,7 +64,7 @@ const EventsView = () => {
             }
 
             <XFab
-                onClick={() => setOpenAddEventDialog(true)}
+                href={Urls.createEvent}
                 position={"fixed"}
                 bottom={20}
                 right={20}

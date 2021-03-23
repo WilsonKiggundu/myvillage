@@ -43,9 +43,13 @@
 .rsvp-buttons {
     display: flex;
     justify-content: center;
-    padding: 30px;
+    padding: 0 15px;
     align-items: center;
     text-align: center;
+}
+
+.event-attachment{
+    background-color: #f1f1f1 !important;
 }
 
 .event-body {
@@ -54,6 +58,11 @@
     border: solid 1px #f1f1f1;
     padding: 1em;
     border-radius: 8px;
+    cursor: pointer;
+}
+
+.event-body:hover a{
+    color: #e98a2b;
 }
 
 .event-body .featured-text {
@@ -74,10 +83,21 @@
 .event-title{
     font-style: normal;
     font-weight: 900;
-    font-size: 25px;
-    line-height: 30px;
-    color: #1C1C1C;
+    font-size: 35px;
     mix-blend-mode: normal;
+}
+
+.event-title a{
+    color: #1c1c1c;
+    text-decoration: none;
+}
+.event-title a:hover{
+    color: #e98a2b;
+}
+
+.event-time{
+    font-size: 0.9em;
+    color: #c1c1c1;
 }
 
 .event-location{
@@ -89,6 +109,8 @@
     float: left;
     position: relative;
     font-size: 25px;
+    margin-right: 5px;
+    margin-top: -5px;
 }
 
 .event-location-venue{
@@ -180,6 +202,16 @@
 
 .event-details {
     margin: 1em 0 !important;
+}
+
+.event-details-teaser{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    position: relative;
+    max-height: 4.2em;
+    overflow: hidden;
+    padding-right: 1em;
 }
 
 @media screen and (max-width: 567px) {

@@ -26,5 +26,7 @@ export const Urls = ({
     },
     job: '/jobs/:id/details',
     events: "/events",
-    event: '/events/:id'
+    createEvent: "/events/create",
+    singleEvent: (id: any) => `/events/${id}/details`,
+    event: '/events/:id/details'
 })

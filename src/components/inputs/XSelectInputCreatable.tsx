@@ -24,7 +24,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small"/>;
 type TextFieldVariant = 'standard' | 'filled' | 'outlined'
 
 interface IProps {
-    label: string
+    label?: string
+    placeholder?: string
     name: string
     helperText?: string
     options: any[]
@@ -42,7 +43,7 @@ interface IProps {
 export default function XSelectInputCreatable(props: IProps) {
     const [open, toggleOpen] = useState(false);
 
-    const {name, options, helperText, label, ...rest} = props
+    const {name, options, helperText, label, placeholder, ...rest} = props
     const {isSubmitting} = useFormikContext()
     const fieldProps = useField(name)
     const meta = fieldProps[1]
@@ -101,12 +102,13 @@ export default function XSelectInputCreatable(props: IProps) {
                 options={options}
                 defaultValue={props.defaultValue}
                 selectOnFocus
+                placeholder={placeholder}
                 clearOnBlur
                 handleHomeEndKeys
                 style={{width: '100%'}}
                 freeSolo={rest.allowAddNew}
                 renderInput={(params) => (
-                    <TextField error={showError} {...params} label={label} variant={props.variant}/>
+                    <TextField error={showError} {...params} placeholder={placeholder} label={label} variant={props.variant}/>
                 )}
             />
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

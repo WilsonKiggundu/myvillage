@@ -23,6 +23,8 @@ import userManager from "../utils/userManager";
 import Job from "../modules/jobs/Job";
 import Community from "../modules/profiles/people/Community";
 import CreateJob from "../modules/jobs/CreateJob";
+import CreateEvent from "../modules/events/CreateEvent";
+import Event from "../modules/events/Event";
 
 export const Routes = (
     <Switch>
@@ -51,6 +53,8 @@ export const Routes = (
                 }
             />
             <Route exact path={Urls.events} component={() => <Calendar/>}/>
+            <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
+            <Route exact path={Urls.event} component={Event}/>
         </MainLayout>
 
         {/*<Route path={'/404'} component={NotFound} />*/}

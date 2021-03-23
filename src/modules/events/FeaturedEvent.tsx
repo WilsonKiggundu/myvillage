@@ -2,7 +2,6 @@ import {Divider, Grid} from "@material-ui/core";
 import Progress from "../../components/progress/Progress";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import Box from "@material-ui/core/Box";
-import XImageGridList from "../../components/XImageGridList";
 import React, {useState} from "react";
 import {IEvent} from "../../interfaces/IEvent";
 import {format, parseISO} from "date-fns";
@@ -30,18 +29,19 @@ const FeaturedEvent = (event: IEvent) => {
                         <strong>{eventDate}</strong><br/>
                         <small>{startingTime} - {endingTime}</small>
                     </div>
-                    {event.attendees && <Progress
-                        score={70}
-                        style={{
-                            opacity: 2,
-                            width: `${score}%`,
-                            height: '15px',
-                            cardWidth: '100px',
-                        }}
-                    >
-                        <strong><span style={{color: '#D0D3D4'}}>{attending}</span>/{expectedAttendees}
-                        </strong>
-                    </Progress>}
+                    {
+                        event.attendances && <Progress
+                            score={70}
+                            style={{
+                                opacity: 2,
+                                width: `${score}%`,
+                                height: '15px',
+                                cardWidth: '100px',
+                            }}
+                        >
+                            <strong><span style={{color: '#D0D3D4'}}>{attending}</span>/{expectedAttendees}
+                            </strong>
+                        </Progress>}
                 </div>
 
                 <Grid container>
@@ -51,21 +51,24 @@ const FeaturedEvent = (event: IEvent) => {
                     <Grid item xs={12} className='event-details'>
                         {event.details}
                     </Grid>
-                    <Grid item xs={12} className='event-location'>
-                        <LocationOnIcon className="event-location-icon"/>
-                        <span className="event-location-venue">{event.location}</span>
-                    </Grid>
+                    {
+                        event.location &&
+                        <Grid item xs={12} className='event-location'>
+                            <LocationOnIcon className="event-location-icon"/>
+                            <span className="event-location-venue">{event.location}</span>
+                        </Grid>
+                    }
                 </Grid>
             </div>
             {
-                event.images?.length && <div className='event-bg-wrapper'>
+                event.uploads && <div className='event-bg-wrapper'>
                     <Box mb={2} ml={1} mr={1}>
-                        <XImageGridList images={event.images}/>
+                        {/*<XImageGridList images={event.uploads}/>*/}
                     </Box>
                 </div>
             }
 
-            <Divider />
+            <Divider/>
 
             <Grid
                 className="featured-event-button-container"
