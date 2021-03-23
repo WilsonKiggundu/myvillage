@@ -11,7 +11,7 @@ export const PleaseWait = ({label}: IProps) => {
     return (
         <Container style={{textAlign: "center"}} maxWidth={false}>
             <Box mt={5}>
-                <CircularProgress variant={"indeterminate"}/><br/>
+                <CircularProgress color={"secondary"} variant={"indeterminate"}/><br/>
                 <span>{label}</span>
             </Box>
         </Container>

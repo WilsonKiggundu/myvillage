@@ -14,3 +14,12 @@ body, #root, .fill {
 a {
     text-decoration: none;
 }
+
+/*.MuiCard-root {*/
+/*    overflow: hidden;*/
+/*    border-radius: 8px;*/
+/*    border: solid 1px #dadce0;*/
+/*}*/
+/*.MuiPaper-elevation1 {*/
+/*    box-shadow: none !important;*/
+/*}*/

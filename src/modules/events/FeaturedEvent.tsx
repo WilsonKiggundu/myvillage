@@ -1,5 +1,4 @@
-import {Grid} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import {Divider, Grid} from "@material-ui/core";
 import Progress from "../../components/progress/Progress";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import Box from "@material-ui/core/Box";
@@ -8,7 +7,6 @@ import React, {useState} from "react";
 import {IEvent} from "../../interfaces/IEvent";
 import {format, parseISO} from "date-fns";
 import EventActionButtons from "./EventActionButtons";
-import {Urls} from "../../routes/Urls";
 
 const FeaturedEvent = (event: IEvent) => {
 
@@ -22,36 +20,30 @@ const FeaturedEvent = (event: IEvent) => {
     let endingTime = format(parseISO(event.endDateTime), "h:mma z")
 
     return (
-        <Grid item xs={12} lg={8}>
-            <Grid className="event-body">
-                <Grid>
-                    <Typography
-                        className="featured-text"
-                        variant={'body2'}>
-                        Featured Event
-                    </Typography>
-                    <Grid className='date-and-progress'>
-                        <Grid>
-                            <div className="event-date-time">
-                                <strong>{eventDate}</strong><br/>
-                                <small>{startingTime} - {endingTime}</small>
-                            </div>
-                        </Grid>
-                        {event.attendees && <Progress
-                            score={70}
-                            style={{
-                                opacity: 2,
-                                width: `${score}%`,
-                                height: '15px',
-                                cardWidth: '100px',
-                            }}
-                        >
-                            <strong><span style={{color: '#D0D3D4'}}>{attending}</span>/{expectedAttendees}
-                            </strong>
-                        </Progress>}
-                    </Grid>
+        <div className="event-body">
+            <div>
+                <div className="featured-text">
+                    Featured Event
+                </div>
+                <div className='date-and-progress'>
+                    <div className="event-date-time">
+                        <strong>{eventDate}</strong><br/>
+                        <small>{startingTime} - {endingTime}</small>
+                    </div>
+                    {event.attendees && <Progress
+                        score={70}
+                        style={{
+                            opacity: 2,
+                            width: `${score}%`,
+                            height: '15px',
+                            cardWidth: '100px',
+                        }}
+                    >
+                        <strong><span style={{color: '#D0D3D4'}}>{attending}</span>/{expectedAttendees}
+                        </strong>
+                    </Progress>}
+                </div>
 
-                </Grid>
                 <Grid container>
                     <Grid item xs={12} className="event-title">
                         {event.title}
@@ -64,7 +56,7 @@ const FeaturedEvent = (event: IEvent) => {
                         <span className="event-location-venue">{event.location}</span>
                     </Grid>
                 </Grid>
-            </Grid>
+            </div>
             {
                 event.images?.length && <div className='event-bg-wrapper'>
                     <Box mb={2} ml={1} mr={1}>
@@ -73,15 +65,21 @@ const FeaturedEvent = (event: IEvent) => {
                 </div>
             }
 
-            <Grid className="featured-event-button-container" container justify={"space-between"}>
-                <Grid className="event-button-container" item xs={2}>
+            <Divider />
 
-                </Grid>
-                <Grid item xs={6}>
-                    <EventActionButtons iconSize={"lg"} bgColor={"#E5E5E5"} showLabels id={event.id}/>
+            <Grid
+                className="featured-event-button-container"
+                container
+                justify={"center"}>
+                <Grid item xs={12}>
+                    <EventActionButtons
+                        iconSize={"lg"}
+                        bgColor={"#ffffff"}
+                        showLabels
+                        id={event.id}/>
                 </Grid>
             </Grid>
-        </Grid>
+        </div>
     )
 }
 

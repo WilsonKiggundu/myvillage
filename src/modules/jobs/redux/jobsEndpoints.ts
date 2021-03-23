@@ -8,6 +8,17 @@ export const postJob = async (job: IJob) => {
     return await postAsync(url, job)
 }
 
+export const applyForJob = async (params: any) => {
+    let url = makeUrl("Jobs", Endpoints.jobs.api)
+    url = url + '/' + params.id + '/apply'
+    return await postAsync(url, params)
+}
+
+export const getJobById = async (id: any) => {
+    const url = makeUrl("Jobs", Endpoints.jobs.api)
+    return await getAsync(url + '/' + id)
+}
+
 export const getJobs = async (params?: any) => {
     const url = makeUrl("Jobs", Endpoints.jobs.api)
     return await getAsync(url, params)

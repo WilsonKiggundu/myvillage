@@ -16,6 +16,8 @@ import NewPost from "./NewPost";
 import NewEvent from "../../events/forms/NewEvent";
 import grey from "@material-ui/core/colors/grey";
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import WorkIcon from '@material-ui/icons/Work';
 
 import '../css/StartAPostCard.css'
 import {white} from "../../../theme/custom-colors";
@@ -26,6 +28,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {Urls} from "../../../routes/Urls";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useTheme from "@material-ui/core/styles/useTheme";
+import NewJob from "../../jobs/forms/NewJob";
 
 interface IProps {
     placeholder: string
@@ -37,6 +40,7 @@ const StartAPostCard = (props: IProps) => {
     const [openVideoDialog, setOpenVideoDialog] = useState(false);
     const [openNewPostDialog, setOpenNewPostDialog] = useState(false);
     const [openNewEventDialog, setOpenNewEventDialog] = useState(false);
+    const [openNewJobDialog, setOpenNewJobDialog] = useState(false);
 
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down("xs"))
@@ -136,13 +140,12 @@ const StartAPostCard = (props: IProps) => {
 
                             <Grid className="button-container" item xs={3}>
                                 <Button
-                                    disabled
-                                    href={Urls.articles.create}
+                                    href={Urls.jobs.create}
                                     style={{padding: 5}}
                                     className={clsx(classes.bold, classes.fullWidth)}>
-                                    <DescriptionOutlinedIcon className="icon"/>
+                                    <WorkIcon className="icon"/>
                                     {!isMobile && <span>
-                                        Article
+                                        Job
                                     </span>}
                                 </Button>
                             </Grid>

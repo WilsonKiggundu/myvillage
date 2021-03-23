@@ -53,9 +53,25 @@ export const DELETE_PERSON_CONNECTION = 'people/DELETE_PERSON_CONNECTION';
 export const DELETE_PERSON_CONNECTION_SUCCEEDED = 'people/DELETE_PERSON_CONNECTION_SUCCEEDED';
 export const DELETE_PERSON_CONNECTION_FAILED = 'people/DELETE_PERSON_CONNECTION_FAILED';
 
+export const APPEND_PERSON = 'people/APPEND_PERSON';
+export const APPEND_PERSON_SUCCEEDED = 'people/APPEND_PERSON_SUCCESS';
+export const APPEND_PERSON_FAILED = 'people/APPEND_PERSON_FAILURE';
+
 export const FETCH_PEOPLE = 'people/FETCH_PEOPLE';
 export const FETCH_PEOPLE_SUCCEEDED = 'people/FETCH_PEOPLE_SUCCESS';
 export const FETCH_PEOPLE_FAILED = 'people/FETCH_PEOPLE_FAILURE';
+
+export const EDIT_PERSON_CONTACT = 'startups/EDIT_PERSON_CONTACT';
+export const EDIT_PERSON_CONTACT_SUCCEEDED = 'startups/EDIT_PERSON_CONTACT_SUCCEEDED';
+export const EDIT_PERSON_CONTACT_FAILED = 'startups/EDIT_PERSON_CONTACT_FAILED';
+
+export const DELETE_PERSON_CONTACT = 'startups/DELETE_PERSON_CONTACT';
+export const DELETE_PERSON_CONTACT_SUCCEEDED = 'startups/DELETE_PERSON_CONTACT_SUCCEEDED';
+export const DELETE_PERSON_CONTACT_FAILED = 'startups/DELETE_PERSON_CONTACT_FAILED';
+
+export const ADD_PERSON_CONTACT = 'startups/ADD_PERSON_CONTACT';
+export const ADD_PERSON_CONTACT_SUCCEEDED = 'startups/ADD_PERSON_CONTACT_SUCCEEDED';
+export const ADD_PERSON_CONTACT_FAILED = 'startups/ADD_PERSON_CONTACT_FAILED';
 
 export const DISPLAY_MORE_PEOPLE_BEGIN = "people/DISPLAY_MORE_PEOPLE_BEGIN";
 export const DISPLAY_MORE_PEOPLE_END = "people/DISPLAY_MORE_PEOPLE_END";
@@ -72,12 +88,20 @@ const initialState: any = {
 }
 
 export default function reducer(state = initialState, action: any) {
-    if (action.type === FETCH_PEOPLE) {
+
+    if (action.type === APPEND_PERSON){
+        return {
+            ...state,
+            data: [...state.data, action.payload],
+            isLoading: false
+        }
+    } else if (action.type === FETCH_PEOPLE) {
         return {
             ...state,
             isLoading: true
         }
     } else if (action.type === FETCH_PEOPLE_SUCCEEDED) {
+
         const {persons, request, hasMore} = action.payload.body
 
         return {
@@ -385,6 +409,7 @@ export default function reducer(state = initialState, action: any) {
 
         const personId = action.payload.body[0].followerId
         const person = state.data.find((f: any) => f.id === personId)
+
         const personIndex = state.data.indexOf(person)
 
         state.data = update(state.data, {
@@ -399,6 +424,9 @@ export default function reducer(state = initialState, action: any) {
             ...state,
         }
     } else if (action.type === FETCH_PERSON_CONNECTION_FAILED) {
+
+        console.log(action.payload)
+
         return {
             ...state
         }

@@ -91,3 +91,29 @@ export const delPersonConnection = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.connection)
     return await deleteAsync(url, payload)
 }
+
+
+export const getPersonContact = async (personId: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.contact)
+    return await getAsync(url, {personId})
+}
+
+
+export const postPersonContact = async (contact: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.contact)
+    const response = await postAsync(url, contact)
+    console.log(response)
+
+    return response
+}
+
+export const putPersonContact = async (contact: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.contact)
+    return await putAsync(url, contact)
+}
+
+export const delPersonContact = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.contact)
+    await deleteAsync(url, payload)
+    return payload
+}

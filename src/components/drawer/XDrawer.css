@@ -1,0 +1,19 @@
+.Drawer{
+    min-width: 300px;
+}
+
+@media screen and (max-width: 400px) {
+    .Drawer{
+        width: 300px;
+    }
+}
+
+.Drawer-subheader{
+    color: #c1c1c1 !important;
+}
+
+.Drawer-timeago{
+    color: #c1c1c1 !important;
+    font-size: 0.9em;
+}
+

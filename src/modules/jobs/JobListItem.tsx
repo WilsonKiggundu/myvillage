@@ -1,12 +1,11 @@
 import {IJob} from "../../interfaces/IJob";
-import {Box, Card, CardContent, Grid} from "@material-ui/core";
+import {Avatar, Box, Card, CardContent, CardHeader, Divider, Grid} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 import './Jobs.css'
 import {longDate} from "../../utils/dateHelpers";
-import {LazyLoadImage} from "react-lazy-load-image-component";
 import {IStartup} from "../../interfaces/IStartup";
 import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
 import {Urls} from "../../routes/Urls";
@@ -32,69 +31,93 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
         })()
     }, [setCompany, job.companyId])
 
+    let div = document.createElement("div")
+    div.innerHTML = job.details
+
+    const jobDetails = div.textContent || div.innerText || ""
+
+    const salaryArray = []
+    let salaryRange = undefined
+
+    if (job.minSalary) salaryArray.push(job.minSalary)
+    if (job.maxSalary) salaryArray.push(job.maxSalary)
+
+    if (salaryArray.length)
+        salaryRange = salaryArray.join(" - ")
+
     return (
         <Box mb={2}>
             <Card>
+                <CardHeader
+                    avatar={
+                        <Avatar src={company?.avatar} variant={"square"}>
+                            {company?.name[0].toUpperCase()}
+                        </Avatar>
+                    }
+                    title={
+                        <div className="job-title">
+                            {job.title}
+                        </div>
+                    }
+                    subheader={
+                        <div className="job-category">
+                            {job.category?.name}
+                        </div>
+                    }/>
+
+                <Divider/>
+
                 <CardContent>
-                    <Grid spacing={2} container justify={"flex-start"}>
-                        <Grid item sm={2}>
-                            <LazyLoadImage
-                                width={'100%'}
-                                className="company-logo"
-                                src={company?.avatar}
-                                alt={company?.name}
-                                effect={'blur'}
-                            />
-                        </Grid>
-                        <Grid item sm={10}>
-                            <Box mb={3}>
-                                <Grid container justify={"space-between"}>
-                                    <Grid item>
-                                        <div className="job-title">{job.title}</div>
-                                        <div className="job-category">
-                                            {job.category?.name}
-                                        </div>
-                                    </Grid>
-                                    <Grid className="job-deadline" item>
-                                        {longDate(job.deadline)}
-                                    </Grid>
-                                </Grid>
-
-                            </Box>
-                            <Box mb={3}>
-                                <Grid container spacing={4} justify={"flex-start"}>
-                                    <Grid item className="company-name">
-                                        <a href="">{company?.name}</a>
-                                    </Grid>
-                                    <Grid item className="job-location">
-                                        <LocationOnIcon className="job-location-icon"/> <span>{job.location}</span>
-                                    </Grid>
-                                </Grid>
-                            </Box>
+                    <Box mb={3}>
+                        <Grid container spacing={2} justify={"flex-start"}>
                             {
-                                showJobDetails && <Box mb={2}>
-                                    <div className="job-details-teaser">
-                                        {job.details}
-                                    </div>
-                                </Box>
+                                company?.name && <Grid xs={12} item className="company-name">
+                                    <a href="">{company?.name}</a>
+                                </Grid>
                             }
 
                             {
-                                showVewDetailsButton && <Box>
-                                    <Grid container justify={"space-between"}>
-                                        <Grid className="job-salary-range" item>
-                                            <span>UGX 1,000,000 - UGX 1,500,000</span>
-                                        </Grid>
-                                        <Grid item>
-                                            <a href={Urls.jobs.singleJob(job.id)} className="job-details-button">
-                                                View details
-                                            </a>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
+                                job.location && <Grid xs={12} item className="job-location">
+                                    <LocationOnIcon className="job-location-icon"/> <span>{job.location}</span>
+                                </Grid>
                             }
                         </Grid>
-                    </Grid>
+                    </Box>
+
+                    <Box mt={3} mb={3}>
+                        <Grid container justify={"space-between"}>
+                            <Grid className="job-deadline" item>
+                                <strong>Application deadline</strong><br/>{longDate(job.deadline)}
+                            </Grid>
+                        </Grid>
+                    </Box>
+
+                    <Divider />
+
+                    {
+                        showJobDetails && <Box mt={3} mb={2}>
+                            <div className="job-details-teaser">
+                                {jobDetails}
+                            </div>
+                        </Box>
+                    }
+
+                    <Divider />
+
+                    {
+                        showVewDetailsButton && <Box mt={3}>
+                            <Grid container spacing={2} justify={"flex-start"}>
+                                <Grid xs={12} md={9} className="job-salary-range" item>
+                                    {salaryRange && <span>{salaryRange}</span>}
+                                </Grid>
+                                <Grid xs={12} md={3} item>
+                                    <a href={Urls.jobs.singleJob(job.id)} className="job-details-button">
+                                        View details
+                                    </a>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    }
                 </CardContent>
             </Card>
         </Box>

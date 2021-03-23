@@ -22,6 +22,7 @@ import store from "../data/store";
 import userManager from "../utils/userManager";
 import Job from "../modules/jobs/Job";
 import Community from "../modules/profiles/people/Community";
+import CreateJob from "../modules/jobs/CreateJob";
 
 export const Routes = (
     <Switch>
@@ -40,6 +41,7 @@ export const Routes = (
 
             <Route exact path={Urls.jobs.list} component={Jobs}/>
             <Route exact path={Urls.job} component={Job}/>
+            <Route exact path={Urls.jobs.create} component={CreateJob}/>
 
             <Route
                 exact

@@ -8,12 +8,11 @@ import React, {useEffect, useState} from "react";
 import CardHeader from "@material-ui/core/CardHeader";
 import AddConnectionsForm from "./forms/profile/AddConnectionsForm";
 import {XPersonGridList} from "../../../components/XPersonGridList";
-import {CardContent} from "@material-ui/core";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {loadPersonConnection} from "./redux/peopleActions";
-import {personSelector} from "./redux/peopleSelectors";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {Urls} from "../../../routes/Urls";
+import {PleaseWait} from "../../../components/PleaseWait";
 
 interface IProps {
     person: IPerson
@@ -49,16 +48,20 @@ const PersonConnections = ({person, canEdit}: IProps) => {
                     title="Connections"
                 />
 
-                {connections?.length ? (
-                    <CardContent>
-                        <XPersonGridList
-                            people={
-                                connections.map((connection: any) => {
-                                    return connection.person
-                                })
-                            }/>
-                    </CardContent>
-                ) : ""}
+                {
+                    connections?.length ?
+                        (
+                            <XPersonGridList
+                                people={
+                                    connections.map((connection: any) => {
+                                        return connection.person
+                                    })
+                                }/>
+                        ) :
+                        <Box mb={2}>
+                            <PleaseWait label={"Loading connections..."}/>
+                        </Box>
+                }
 
             </Card>
 

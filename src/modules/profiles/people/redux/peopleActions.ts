@@ -19,6 +19,17 @@ import {
     DELETE_PERSON_INTERESTS,
     DELETE_PERSON_INTERESTS_SUCCEEDED,
     DELETE_PERSON_INTERESTS_FAILED,
+
+    ADD_PERSON_CONTACT,
+    ADD_PERSON_CONTACT_SUCCEEDED,
+    ADD_PERSON_CONTACT_FAILED,
+    DELETE_PERSON_CONTACT,
+    DELETE_PERSON_CONTACT_SUCCEEDED,
+    DELETE_PERSON_CONTACT_FAILED,
+    EDIT_PERSON_CONTACT,
+    EDIT_PERSON_CONTACT_SUCCEEDED,
+    EDIT_PERSON_CONTACT_FAILED,
+    
     EDIT_PERSON_SKILLS,
     EDIT_PERSON_SKILLS_SUCCEEDED,
     EDIT_PERSON_SKILLS_FAILED,
@@ -48,11 +59,11 @@ import {
     delPersonInterests, delPersonSkills,
     getPeople, getPersonConnection, postPersonEducation,
     putPerson,
+    delPersonContact, postPersonContact, putPersonContact,
     putPersonCategories, putPersonConnection, putPersonEducation,
     putPersonInterests, putPersonSkills
 } from "./peopleEndpoints";
 import {UploadType} from "../../../posts/forms/UploadFile";
-
 
 export function loadPeople(payload?: any) {
     return { type: FETCH_PEOPLE, payload };
@@ -222,6 +233,42 @@ export function deletePersonConnectionFailed(payload: any) {
     return { type: DELETE_PERSON_CONNECTION_FAILED, payload };
 }
 
+export function editPersonContact(payload?: any) {
+    return { type: EDIT_PERSON_CONTACT, payload };
+}
+
+export function editPersonContactSuccess(payload: any) {
+    return { type: EDIT_PERSON_CONTACT_SUCCEEDED, payload };
+}
+
+export function editPersonContactFailed(payload: any) {
+    return { type: EDIT_PERSON_CONTACT_FAILED, payload };
+}
+
+export function addPersonContact(payload?: any) {
+    return { type: ADD_PERSON_CONTACT, payload };
+}
+
+export function addPersonContactSuccess(payload: any) {
+    return { type: ADD_PERSON_CONTACT_SUCCEEDED, payload };
+}
+
+export function addPersonContactFailed(payload: any) {
+    return { type: ADD_PERSON_CONTACT_FAILED, payload };
+}
+
+export function deletePersonContact(payload?: any) {
+    return { type: DELETE_PERSON_CONTACT, payload };
+}
+
+export function deletePersonContactSuccess(payload: any) {
+    return { type: DELETE_PERSON_CONTACT_SUCCEEDED, payload };
+}
+
+export function deletePersonContactFailed(payload: any) {
+    return { type: DELETE_PERSON_CONTACT_FAILED, payload };
+}
+
 export function* updatePersonCategories(action: any){
     try {
         const response = yield call<any>(putPersonCategories, action.payload)
@@ -352,3 +399,31 @@ export function* updatePerson(action: any){
         yield put(editPersonFailed(error.message));
     }
 }
+
+export function* updatePersonContact(action: any){
+    try {
+        const response = yield call<any>(putPersonContact, action.payload)
+        yield put(editPersonContactSuccess(response))
+    } catch (error) {
+        yield put(editPersonContactFailed(error.message));
+    }
+}
+
+export function* createPersonContact(action: any){
+    try {
+        const response = yield call<any>(postPersonContact, action.payload)
+        yield put(addPersonContactSuccess(response))
+    } catch (error) {
+        yield put(addPersonContactFailed(error.message));
+    }
+}
+
+export function* removePersonContact(action: any){
+    try {
+        const response = yield call<any>(delPersonContact, action.payload)
+        yield put(deletePersonContactSuccess(response))
+    } catch (error) {
+        yield put(deletePersonContactFailed(error.message));
+    }
+}
+

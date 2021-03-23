@@ -59,9 +59,9 @@ export function* createJob(action: any){
     }
 }
 
-export function* fetchJobs(){
+export function* fetchJobs(action: any){
     try {
-        const response = yield call<any>(getJobs)
+        const response = yield call<any>(getJobs, action.payload)
         yield put(loadJobsSuccess(response))
     } catch (error) {
         yield put(loadJobsFailed(error.message));

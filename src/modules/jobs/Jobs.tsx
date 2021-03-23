@@ -20,7 +20,9 @@ import JobListItem from "./JobListItem";
 import userManager from "../../utils/userManager";
 import * as yup from "yup";
 import {Autocomplete} from "@material-ui/lab";
-import {TextField} from "@material-ui/core";
+import {Button, TextField} from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
+import JobFilter from "./forms/JobFilter";
 
 
 const schema = yup.object().shape(
@@ -31,39 +33,38 @@ const initialValues = {}
 
 const Jobs = () => {
 
-    const [openJobDialog, setOpenJobDialog] = useState<boolean>(false)
-
     const history = useHistory()
     const dispatch = useDispatch()
     const jobs = useSelector(jobsSelector)
     const user = useSelector(userSelector)
 
     const [canCreateJob, setCanCreateJob] = useState<boolean>(false)
-    const [categories, setCategories] = useState<any>([])
-
-    const handleSubmit = () => {
-
-    }
 
     useEffect(() => {
         dispatch(loadJobs())
     }, [dispatch])
 
     useEffect(() => {
-        (async () => {
-            getStartups({personId: user?.profile?.sub})
-                .then((response: any) => {
-                    if (response.status === 200 && response.body.startups.length) {
-                        setCanCreateJob(true)
-                    } else {
-                        setOpenJobDialog(false)
-                    }
-                }).catch(error => {
-                if (error.toString().indexOf('Unauthorized') != -1) {
-                    userManager.signinRedirect()
+
+        getStartups({personId: user?.profile?.sub})
+            .then((response: any) => {
+                if (response.status === 200 && response.body.startups.length) {
+                    setCanCreateJob(true)
+                } else {
+                    // setOpenJobDialog(false)
                 }
-            })
-        })()
+            }).catch(error => {
+            if (error.toString().indexOf('Unauthorized') != -1) {
+                userManager.signinRedirect(
+                    {
+                        data: {
+                            path: window.location.pathname
+                        }
+                    }
+                )
+            }
+        })
+
     }, [setCanCreateJob])
 
     const handleViewJob = (id: string) => {
@@ -87,51 +88,10 @@ const Jobs = () => {
 
     return (
         <Container maxWidth={"md"}>
+
+            <JobFilter />
+
             <Grid container spacing={2} justify={"center"}>
-
-                <Grid xs={12} item>
-                    <div className="headline">Search for your next job</div>
-                    <div className="filter-container">
-
-                        <Grid spacing={2} container>
-                            <Grid item xs={12} md={4}>
-                                <Autocomplete
-                                    size={"small"}
-                                    id="job-category"
-                                    className="job-category-selector"
-                                    options={categories}
-                                    getOptionLabel={(option: any) => option.label}
-                                    renderInput={(params) =>
-                                        <TextField {...params} label="Category" variant="filled"/>}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={4}>
-                                <Autocomplete
-                                    size={"small"}
-                                    id="job-category"
-                                    className="job-company-selector"
-                                    options={categories}
-                                    getOptionLabel={(option: any) => option.label}
-                                    renderInput={(params) =>
-                                        <TextField {...params} label="Company" variant="filled"/>}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={4}>
-                                <Autocomplete
-                                    size={"small"}
-                                    id="job-category"
-                                    className="job-location-selector"
-                                    options={categories}
-                                    getOptionLabel={(option: any) => option.label}
-                                    renderInput={(params) =>
-                                        <TextField {...params} label="Location" variant="filled"/>
-                                    }
-                                />
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Grid>
-
                 <Grid item xs={12}>
                     {jobs && jobs.data.map((job: IJob, index: number) => <JobListItem
                         key={index}
@@ -144,7 +104,8 @@ const Jobs = () => {
 
             {canCreateJob ? <>
                 <XFab
-                    onClick={() => setOpenJobDialog(true)}
+                    href={Urls.jobs.create}
+                    // onClick={() => setOpenJobDialog(true)}
                     position={"fixed"}
                     bottom={20}
                     right={20}
@@ -152,13 +113,6 @@ const Jobs = () => {
                     <AddIcon/>
                 </XFab>
 
-                <XDialog
-                    maxWidth={"md"}
-                    title={"Add a new job"}
-                    open={openJobDialog}
-                    onClose={() => setOpenJobDialog(false)}>
-                    <NewJob onClose={() => setOpenJobDialog(false)}/>
-                </XDialog>
             </> : ""}
 
         </Container>

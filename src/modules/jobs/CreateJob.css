@@ -1,0 +1,25 @@
+.CreateJob-buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.CreateJob-button{
+    background-color: #e98a2b;
+    padding: 10px 0;
+    color: white;
+    min-width: 200px;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+}
+
+.CreateJob-wrapper{
+    margin: 5px;
+    position: relative;
+}
+
+.CreateJob-progress-button{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}

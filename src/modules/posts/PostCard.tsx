@@ -25,6 +25,8 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import './css/PostCard.css'
+import {IEmailObject} from "../../interfaces/IEmailObject";
+import {sendEmail} from "../../services/NotificationService";
 
 
 interface IProps {
@@ -47,6 +49,17 @@ const PostCard = ({post}: IProps) => {
 
     const handleLike = async (postId: string) => {
         dispatch(likePost({entityId: postId, personId: user?.profile.sub}))
+
+        // const emailToSend: IEmailObject = {
+        //     body: `<p>${user.profile.family_name} liked your post</p>`,
+        //     recipient: "wkiggundu@innovationvillage.co.ug",
+        //     senderEmail: "no-reply@myvillage.africa",
+        //     senderName: "Wilson Kiggundu",
+        //     subject: "MyVillage news feed"
+        // }
+        //
+        // await sendEmail(emailToSend)
+
     }
 
     const handleViewAuthor = (authorId: string) => {

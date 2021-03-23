@@ -41,30 +41,26 @@ const EventsView = () => {
 
     if (events.isLoading) return <PleaseWait label={"Loading events..."}/>
     if (events.error) return (
-        <ErrorPage title={"Loading events failed"} message={events.error} />
+        <ErrorPage title={"Loading events failed"} message={events.error}/>
     )
 
     return (
-        <Container maxWidth={"lg"}>
-            <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12} md={10} lg={12}>
-                    <Box mt={2}>
-                        {
-                            events.data
-                                .slice()
-                                .sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
-                                // .filter((event: IEvent) => !isPast(event.startDateTime))
-                                .map((event: IEvent, index: number) => (
-                                    <Grid key={index} item xs={12}>
-                                        <Box mb={4}>
-                                            <EventCard featured={index === 0} event={event}/>
-                                        </Box>
-                                    </Grid>
-                                ))
-                        }
-                    </Box>
-                </Grid>
-            </Grid>
+        <Container maxWidth={"md"}>
+            {
+                events.data
+                    .slice()
+                    .sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
+                    // .filter((event: IEvent) => !isPast(event.startDateTime))
+                    .map((event: IEvent, index: number) => (
+                        <Grid key={index} spacing={2} container>
+                            <Grid item xs={12}>
+                                <Box mb={2}>
+                                    <EventCard featured={index === 0} event={event}/>
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    ))
+            }
 
             <XFab
                 onClick={() => setOpenAddEventDialog(true)}

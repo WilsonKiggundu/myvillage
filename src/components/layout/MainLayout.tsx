@@ -5,6 +5,7 @@ import ApplicationBar from "../appBar/AppBar";
 import {useSelector} from "react-redux";
 
 import './MainLayout.css'
+import userManager from "../../utils/userManager";
 
 interface IProps {
     user?: any
@@ -19,7 +20,7 @@ function MainLayout(props: IProps) {
     const isAuthenticated = user != null
 
     if (!isAuthenticated) {
-        // userManager.signinRedirect()
+        userManager.signinRedirect({state: window.location.pathname + window.location.search})
     }
 
     useEffect(() => {

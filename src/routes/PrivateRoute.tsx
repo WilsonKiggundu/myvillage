@@ -9,8 +9,6 @@ export const PrivateRoute = ({component: Component, ...children}) => {
     const {user} = useSelector((state: any) => state.oidc)
     const isAuthenticated = user != null
 
-    console.log(user)
-
     return (
         <Route
             render={

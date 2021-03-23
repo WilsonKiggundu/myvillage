@@ -4,6 +4,7 @@ export interface IPerson {
     lastname: string
     dateOfBirth?: string
     connections?: []
+    contacts?: any[]
     connectionsCount?: number
     categories: []
     interests: []

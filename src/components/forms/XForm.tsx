@@ -18,6 +18,7 @@ interface IProps {
     children?: React.ReactNode
     initialValues?: any
     submitButtonLabel?: string
+    hideSubmitButton?: boolean
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -48,8 +49,8 @@ const XForm = (props: IProps) => {
         validationSchema={props.schema}
         validateOnBlur
         enableReinitialize
-    >{({ submitForm, isSubmitting, values, errors, touched, submitCount}) => (
-        <Form>
+    >{({submitForm, isSubmitting, values, errors, touched, submitCount}) => (
+        <>
             <Grid container spacing={0} className={classes.root}>
                 <Grid item xs={12}>
                     <Box m={2}>
@@ -58,7 +59,7 @@ const XForm = (props: IProps) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Box p={1} pt={2}>
-                        <Grid container spacing={1} alignContent='flex-end' justify='flex-start'>
+                        <Grid container spacing={1} alignContent='flex-end' justify='flex-end'>
                             {
                                 props.onDelete &&
                                 <Grid item>
@@ -81,15 +82,19 @@ const XForm = (props: IProps) => {
                                     >Cancel</Button>
                                 </Grid>
                             }
-                            <Grid item>
-                                <XSubmitButton
-                                    style={{textTransform: "inherit", fontSize: '17px'}}
-                                    color={"primary"}
-                                    label={props.submitButtonLabel ?? "Submit"}
-                                    onClick={submitForm}>
-                                    <CircularProgress variant={"indeterminate"} color={"primary"} />
-                                </XSubmitButton>
-                            </Grid>
+
+                            {
+                                !props.hideSubmitButton && <Grid item>
+                                    <XSubmitButton
+                                        style={{textTransform: "inherit", fontSize: '17px'}}
+                                        color={"secondary"}
+                                        label={props.submitButtonLabel ?? "Submit"}
+                                        onClick={submitForm}>
+                                        <CircularProgress variant={"indeterminate"} color={"primary"}/>
+                                    </XSubmitButton>
+                                </Grid>
+                            }
+
                         </Grid>
                     </Box>
                 </Grid>
@@ -102,7 +107,7 @@ const XForm = (props: IProps) => {
                     </Grid>
                 }
             </Grid>
-        </Form>
+        </>
     )}</Formik>
 }
 

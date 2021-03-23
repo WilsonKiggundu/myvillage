@@ -17,7 +17,7 @@ interface IProps {
 
 const ContactCard = (props: IProps, scrollPosition: any) => {
 
-    const {firstname, lastname, avatar, coverPhoto, connectionsCount } = props.person
+    const {firstname, lastname, avatar, categories, coverPhoto, connectionsCount } = props.person
 
     return (
         <Card>
@@ -35,7 +35,7 @@ const ContactCard = (props: IProps, scrollPosition: any) => {
             <CardContent>
                 <section className="profile-details">
                     <section className="profile-name">{firstname} {lastname}</section>
-                    <section className="profile-category">Student</section>
+                    <section className="profile-category">{categories.join(', ')}</section>
                     <section className="profile-connections">
                         {connectionsCount} Connections
                     </section>

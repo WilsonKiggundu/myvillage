@@ -29,7 +29,7 @@ const Callback = () => {
                     .timeout(0)
                     .end(handleResponse((response) => {
                         if (response) {
-                            history.push(Urls.feed)
+                            history.push(user.state ? user.state : Urls.feed)
                         } else {
                             history.push(Urls.profiles.create)
                         }

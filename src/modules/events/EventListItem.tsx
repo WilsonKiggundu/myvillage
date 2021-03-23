@@ -21,7 +21,7 @@ const EventListItem = (event: IEvent) => {
     let endingTime = format(parseISO(event.endDateTime), "h:mma z")
 
     return (
-        <>
+        <div className="event-body">
             {event.images?.length && (
                 <Grid item lg={4}>
                     <Grid className='event-bg-wrapper'>
@@ -29,7 +29,7 @@ const EventListItem = (event: IEvent) => {
                     </Grid>
                 </Grid>
             )}
-            <Grid item lg={8} className='event-description'>
+            <Grid item lg={event.images?.length ? 8 : 12} className='event-description'>
                 <Grid className='title-and-progress'>
                     <div className="event-title">
                         {event.title}
@@ -60,8 +60,7 @@ const EventListItem = (event: IEvent) => {
                     className='event-rsvp'
                     justify={"space-between"}
                 >
-                    <Grid item lg={6}>
-
+                    <Grid item xs={12} lg={6}>
                         <Grid container>
                             <Grid item xs={12} className='event-location'>
                                 <LocationOnIcon className="event-location-icon" />
@@ -75,14 +74,13 @@ const EventListItem = (event: IEvent) => {
                                 </div>
                             </Grid>
                         </Grid>
-
                     </Grid>
-                    <Grid item lg={6}>
-                        <EventActionButtons iconSize={"sm"} showLabels={true} id={event.id} />
+                    <Grid item xs={12} lg={6}>
+                        {/*<EventActionButtons iconSize={"sm"} showLabels={true} id={event.id} />*/}
                     </Grid>
                 </Grid>
             </Grid>
-        </>
+        </div>
     )
 }
 
