@@ -86,6 +86,7 @@ const StartAPostCard = (props: IProps) => {
                                     open={openPhotoDialog}>
                                     <UploadFile
                                         addToFeed={true}
+                                        showUploadButton={true}
                                         filesLimit={10}
                                         onClose={() => setOpenPhotoDialog(false)}
                                         acceptedTypes={['image/jpeg', 'image/png', 'image/bmp']}/>

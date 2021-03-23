@@ -103,6 +103,17 @@
     font-size: 0.8em;
 }
 
+.application-accept-button{
+    color: green !important;
+    font-weight: 700 !important;
+}
+.application-reject-button{
+    color: darkred !important;
+    font-weight: 700 !important;
+}
+.application-pending-button{}
+.application-all-button{}
+
 .application-accept-icon{
     color: green;
 }

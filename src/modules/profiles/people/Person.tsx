@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, CardContent, Container} from "@material-ui/core";
+import {Button, Card, CardContent, Container, Hidden} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import PersonCard from "./PersonCard";
 import PersonInterests from "./PersonInterests";
@@ -13,12 +13,11 @@ import PersonConnections from "./PersonConnections";
 import {userSelector} from "../../../data/coreSelectors";
 import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
-import {useLocation, useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import XDialog from "../../../components/dialogs/XDialog";
 import XRichTextArea from "../../../components/inputs/XRichTextArea";
 import userManager from "../../../utils/userManager";
 import XForm from "../../../components/forms/XForm";
-import {IPerson} from "./IPerson";
 import {Urls} from "../../../routes/Urls";
 import {IEmailObject} from "../../../interfaces/IEmailObject";
 import {sendEmail} from "../../../services/NotificationService";
@@ -26,8 +25,10 @@ import Toast from "../../../utils/Toast";
 import PersonContacts from "./PersonContacts";
 import {getPersonContact} from "./redux/peopleEndpoints";
 import {personSelector} from "./redux/peopleSelectors";
-import {loadPeople, loadPeopleSuccess} from "./redux/peopleActions";
-import {APPEND_PERSON, FETCH_PEOPLE_SUCCEEDED} from "./redux/peopleReducer";
+import {APPEND_PERSON} from "./redux/peopleReducer";
+import {IContact} from "../../../interfaces/IContact";
+import {EmailSettings} from "../../../data/constants";
+import XTextInput from "../../../components/inputs/XTextInput";
 
 const Person = ({match}: any) => {
     const {id} = match.params
@@ -41,9 +42,10 @@ const Person = ({match}: any) => {
 
     const context = useQuery().get('context')
     const jobId = useQuery().get('jobId')
+    const jobName = useQuery().get('jobName')
     const jobApplicationId = useQuery().get('applicationId')
+    const jobApplicationStatus = useQuery().get('status')
 
-    // const [person, setPerson] = useState<IPerson | undefined>(undefined)
     const person = useSelector((state) => personSelector(state, id))
     const [showAcceptDialog, setShowAcceptDialog] = useState<boolean>(false)
 
@@ -81,40 +83,50 @@ const Person = ({match}: any) => {
     }, [person])
 
     const initialValues = {
-        acceptMessage: ''
+        acceptMessage: '',
+        applicationId: jobApplicationId,
+        jobId: jobId
     }
 
     const handleReject = async (jobId: string, applicationId: any) => {
-        try{
+        try {
             const url = makeUrl("Jobs", Endpoints.jobs.update(applicationId))
             const response: any = await postAsync(url, {status: 'rejected'})
             history.push(Urls.jobs.singleJob(jobId))
-        }catch (e) {
+        } catch (e) {
             Toast.error(e.toString())
         }
     }
 
     const handleAccept = async (values: any, actions: any) => {
-        try{
-            const contactResponse: any = await getPersonContact(id)
 
-            console.log(contactResponse)
+        try {
+            const url = makeUrl("Jobs", Endpoints.jobs.update(values.applicationId))
+            await postAsync(url, {status: 'accepted'})
 
-            const emailToSend: IEmailObject = {
-                body: values.acceptMessage,
-                recipient: "wkiggundu@innovationvillage.co.ug",
-                senderEmail: process.env.REACT_APP_SENDER_EMAIL || "",
-                senderName: process.env.REACT_APP_SENDER_NAME || "",
-                subject: "Job application accepted"
+            const personContacts: any = await getPersonContact(id)
+            const emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
+
+            if (emails.length){
+
+                const recipients = emails.map((contact: IContact) => contact.value).join(',')
+
+                const emailToSend: IEmailObject = {
+                    body: values.acceptMessage,
+                    recipient: recipients,
+                    senderEmail: EmailSettings.senderEmail,
+                    senderName: EmailSettings.senderName,
+                    subject: `Your application for the ${jobName} has been accepted`
+                }
+
+                await sendEmail(emailToSend)
             }
 
-            const response: any = await sendEmail(emailToSend)
-
-            setShowAcceptDialog(false)
-
-        }catch (e) {
-            setShowAcceptDialog(false)
+        } catch (e) {
             Toast.error(e.toString())
+        }finally {
+            setShowAcceptDialog(false)
+            history.push(Urls.jobs.singleJob(values.jobId))
         }
     }
 
@@ -133,10 +145,10 @@ const Person = ({match}: any) => {
                             <PersonSkills canEdit={canEdit} person={person}/>
                             <PersonPosts canEdit={canEdit} person={person}/>
 
-                            {context === 'job_application' && jobId && jobApplicationId ?
+                            {jobApplicationStatus === "pending" && context === 'job_application' && jobId && jobApplicationId ?
                                 <Card>
                                     <CardContent>
-                                        <Grid spacing={2} container justify={"center"}>
+                                        <Grid spacing={2} alignContent={"center"} container justify={"center"}>
                                             <Grid item>
                                                 <Button
                                                     onClick={() => handleReject(jobId, jobApplicationId)}
@@ -164,6 +176,11 @@ const Person = ({match}: any) => {
                                                             helperText={"This will be sent via email to the applicant"}
                                                             label={"Acceptance message"}
                                                             name={"acceptMessage"}/>
+
+                                                            {/*<Hidden>*/}
+                                                            {/*    <XTextInput name={"applicationId"} />*/}
+                                                            {/*</Hidden>*/}
+
                                                     </XForm>
                                                 </XDialog>
 

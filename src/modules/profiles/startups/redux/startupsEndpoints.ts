@@ -41,6 +41,11 @@ export const delStartupAddress = async (payload: any) => {
     return payload
 }
 
+export const getStartupContact = async (businessId: any) => {
+    const url = makeUrl("Profiles", Endpoints.business.contact)
+    return await getAsync(url, {businessId})
+}
+
 export const postStartupContact = async (contact: any) => {
     const url = makeUrl("Profiles", Endpoints.business.contact)
     return await postAsync(url, contact)

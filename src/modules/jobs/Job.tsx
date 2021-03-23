@@ -39,6 +39,8 @@ import {timeAgo} from "../../utils/dateHelpers";
 import {useHistory} from "react-router-dom";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+import {SendApplicationNotification} from "./jobHelpers";
 
 
 const Job = ({match}: any) => {
@@ -52,25 +54,35 @@ const Job = ({match}: any) => {
     const [applyButton, setApplyButton] = useState<any>({label: 'Apply now', visible: true, disabled: false})
     const [alreadyApplied, setAlreadyApplied] = useState<boolean>(false)
     const [canApply, setCanApply] = useState<boolean>(false)
-    const [canViewApplicants, setCanViewApplicants] = useState<boolean>(true)
+    const [canViewApplicants, setCanViewApplicants] = useState<boolean>(false)
 
-    const handleApply = (job: IJob) => {
+    const [allApplications, setAllApplications] = useState<any>([])
+    const [acceptedApplications, setAcceptedApplications] = useState<any>([])
+    const [rejectedApplications, setRejectedApplications] = useState<any>([])
+    const [pendingApplications, setPendingApplications] = useState<any>([])
+
+    const handleApply = async (job: IJob) => {
         setApplyButton({
             disabled: true,
             label: <CircularProgress size={25}/>
         })
 
-        applyForJob({
-            id: job.id,
-            profileId: user.profile.sub
-        }).then(() => {
+        try {
+            await applyForJob({
+                id: job.id,
+                profileId: user.profile.sub
+            })
+
+            // send email notification to the job owner
+            await SendApplicationNotification(job, user)
+
+        } catch (error) {
+            Toast.error(error.toString())
+        } finally {
             setApplyButton({
                 visible: false
             })
-        }).catch((error: any) => {
-            Toast.error(error.toString())
-        })
-
+        }
     }
 
     useEffect(() => {
@@ -82,15 +94,18 @@ const Job = ({match}: any) => {
                 const res: any = await getStartups({id: response.body.companyId})
 
                 setCompany(res.body.startups[0])
-                setJob(response.body)
 
-                const {applicants, profileId} = response.body
+                const job = response.body
+                setJob(job)
+
+                const {applicants, profileId} = job
 
                 const alreadyApplied = applicants?.map((m: any) => (m.profileId)).includes(user.profile.sub)
                 const postedByCurrentUser = profileId === user.profile.sub
 
                 setAlreadyApplied(alreadyApplied)
                 setCanApply(!postedByCurrentUser || !alreadyApplied)
+                setCanViewApplicants(postedByCurrentUser)
 
                 document.title = `${response.body.title} / My Village`
 
@@ -126,8 +141,6 @@ const Job = ({match}: any) => {
 
             if (job?.applicants) {
 
-                console.log(job.applicants)
-
                 await Promise.all(job.applicants.map(async (application: any) => {
                     const response: any = await getAsync(url, {id: application.profileId})
                     const person: IPerson = response.body.persons[0]
@@ -141,6 +154,11 @@ const Job = ({match}: any) => {
                     })
                 }))
 
+                setAllApplications(applicants)
+                setAcceptedApplications(applicants.filter((f: IApplicant) => f.status === 'accepted'))
+                setRejectedApplications(applicants.filter((f: IApplicant) => f.status === 'rejected'))
+                setPendingApplications(applicants.filter((f: IApplicant) => !f.status))
+
                 setApplicants(applicants)
             }
 
@@ -148,9 +166,22 @@ const Job = ({match}: any) => {
 
     }
 
-    const handleViewApplicant = (id: string, applicationId: any) => {
-        const url = Urls.profiles.onePerson(id) + `?jobId=${job?.id}&applicationId=${applicationId}&context=job_application`
-        history.push(url)
+    const handleViewApplicant = (id: string, applicationId: any, status: string, jobName: string) => {
+        const query: any = {
+            jobId: job?.id,
+            jobName: jobName,
+            applicationId: applicationId,
+            status: status,
+            context: "job_application"
+        }
+
+        const queryString = Object.keys(query).map(key => key + '=' + query[key]).join('&');
+
+        const url = Urls.profiles.onePerson(id)
+        history.push({
+            pathname: url,
+            search: `?${queryString}`
+        })
     }
 
     return (
@@ -216,12 +247,12 @@ const Job = ({match}: any) => {
                                         <Grid container justify={"center"}>
                                             <Grid item>
                                                 {
-                                                    alreadyApplied && canApply &&
+                                                    canApply && alreadyApplied &&
                                                     <span>You have already applied for this job.</span>
                                                 }
 
                                                 {
-                                                    canApply &&
+                                                    canApply && !alreadyApplied &&
                                                     <Button className="apply-button"
                                                             onClick={() => handleApply(job)}
                                                             variant={"contained"}
@@ -254,24 +285,59 @@ const Job = ({match}: any) => {
                                                                                 subheader={
                                                                                     <ListSubheader
                                                                                         className="Drawer-subheader">
-                                                                                        Applicants ({applicants?.length})
+                                                                                        Applications
                                                                                     </ListSubheader>
                                                                                 }>
 
                                                                                 <div
                                                                                     className="application-button-group">
                                                                                     <ButtonGroup color={"default"}>
-                                                                                        <Button>All</Button>
-                                                                                        <Button>Pending</Button>
-                                                                                        <Button>Accepted</Button>
-                                                                                        <Button>Rejected</Button>
+                                                                                        <Button
+                                                                                            onClick={() => setApplicants(allApplications)}>
+                                                                                            All
+                                                                                            ({allApplications.length})
+                                                                                        </Button>
+                                                                                        {
+                                                                                            pendingApplications.length ?
+                                                                                                <Button
+                                                                                                    onClick={() => setApplicants(pendingApplications)}
+                                                                                                >
+                                                                                                    Pending
+                                                                                                    ({pendingApplications.length})
+                                                                                                </Button> : ""
+                                                                                        }
+                                                                                        {
+                                                                                            acceptedApplications.length ?
+                                                                                                <Button
+                                                                                                    onClick={() => setApplicants(acceptedApplications)}
+                                                                                                    className="application-accept-button">
+                                                                                                    Accepted
+                                                                                                    ({acceptedApplications.length})
+                                                                                                </Button> : ""
+                                                                                        }
+                                                                                        {
+                                                                                            rejectedApplications.length ?
+                                                                                                <Button
+                                                                                                    onClick={() => setApplicants(rejectedApplications)}
+                                                                                                    className="application-reject-button">
+                                                                                                    Rejected
+                                                                                                    ({rejectedApplications.length})
+                                                                                                </Button> : ""
+                                                                                        }
                                                                                     </ButtonGroup>
                                                                                 </div>
 
                                                                                 {applicants ? applicants.map((applicant: IApplicant, index: number) => (
                                                                                     <div key={index}>
                                                                                         <ListItem
-                                                                                            onClick={() => handleViewApplicant(applicant.profileId, applicant.id)}
+                                                                                            onClick={
+                                                                                                () => handleViewApplicant(
+                                                                                                    applicant.profileId,
+                                                                                                    applicant.id,
+                                                                                                    applicant.status ?? 'pending',
+                                                                                                    job?.title
+                                                                                                )
+                                                                                            }
                                                                                             button
                                                                                             alignItems="flex-start">
                                                                                             <ListItemText
@@ -289,8 +355,10 @@ const Job = ({match}: any) => {
                                                                                                     applicant.status === 'accepted' ?
                                                                                                         <CheckCircleIcon
                                                                                                             className="application-accept-icon"/> :
-                                                                                                        <CancelIcon
-                                                                                                            className="application-reject-icon"/>
+                                                                                                        applicant.status === 'rejected' ?
+                                                                                                            <CancelIcon
+                                                                                                                className="application-reject-icon"/> :
+                                                                                                            <HourglassFullIcon/>
                                                                                                 }
                                                                                             </ListItemSecondaryAction>
 

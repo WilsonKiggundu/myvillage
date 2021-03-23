@@ -21,6 +21,11 @@ export const appRoles = {
     roleGroupEdit: "GROUP_EDIT",
 }
 
+export const EmailSettings = {
+    senderName: process.env.REACT_APP_SENDER_NAME,
+    senderEmail: process.env.REACT_APP_SENDER_EMAIL,
+}
+
 
 export const redux = {
     doLogin: 'DO_LOGIN',
