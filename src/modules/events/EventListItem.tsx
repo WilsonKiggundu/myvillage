@@ -11,10 +11,6 @@ import {Urls} from "../../routes/Urls";
 const EventListItem = (event: IEvent) => {
 
     const history = useHistory()
-    const [attending, setAttending] = useState(6)
-
-    const expectedAttendees = 25
-    const score = Math.round((attending / expectedAttendees) * 10000) / 100;
 
     let eventDate = format(parseISO(event.startDateTime), "eeee, d MMMM, yyy")
     let startingTime = format(parseISO(event.startDateTime), "h:mma")
@@ -41,26 +37,10 @@ const EventListItem = (event: IEvent) => {
             <Grid item lg={event.uploads?.length ? 8 : 12} className='event-description'>
                 <Grid className='title-and-progress'>
                     <div className="event-title">
-                        <a href="">
+                        <a href={Urls.singleEvent(event.id)}>
                             {event.title}
                         </a>
                     </div>
-                    {
-                        event.attendances &&
-                        <Grid className='progress-bar'>
-                            <Progress
-                                score={70}
-                                style={{
-                                    opacity: 2,
-                                    width: `${score}%`,
-                                    height: '8px',
-                                    cardWidth: '100px'
-                                }}
-                            >
-                            </Progress>
-                            <strong>{attending}/{expectedAttendees} attending</strong>
-                        </Grid>
-                    }
                 </Grid>
 
                 {

@@ -6,21 +6,25 @@ import React, {useState} from "react";
 import {IEvent} from "../../interfaces/IEvent";
 import {format, parseISO} from "date-fns";
 import EventActionButtons from "./EventActionButtons";
+import EventAttachments from "./EventAttachments";
+import {Urls} from "../../routes/Urls";
+import {useHistory} from "react-router-dom";
 
 const FeaturedEvent = (event: IEvent) => {
 
-    const [attending, setAttending] = useState(6)
-
-    const expectedAttendees = 25
-    const score = Math.round((attending / expectedAttendees) * 10000) / 100;
+    const history = useHistory()
 
     let eventDate = format(parseISO(event.startDateTime), "eeee, d MMMM, yyy")
     let startingTime = format(parseISO(event.startDateTime), "h:mma")
     let endingTime = format(parseISO(event.endDateTime), "h:mma z")
 
+    const handleViewEvent = (eventId: any) => {
+        history.push(Urls.singleEvent(eventId))
+    }
+
     return (
         <div className="event-body">
-            <div>
+            <div onClick={() => handleViewEvent(event.id)}>
                 <div className="featured-text">
                     Featured Event
                 </div>
@@ -29,27 +33,20 @@ const FeaturedEvent = (event: IEvent) => {
                         <strong>{eventDate}</strong><br/>
                         <small>{startingTime} - {endingTime}</small>
                     </div>
-                    {
-                        event.attendances && <Progress
-                            score={70}
-                            style={{
-                                opacity: 2,
-                                width: `${score}%`,
-                                height: '15px',
-                                cardWidth: '100px',
-                            }}
-                        >
-                            <strong><span style={{color: '#D0D3D4'}}>{attending}</span>/{expectedAttendees}
-                            </strong>
-                        </Progress>}
                 </div>
 
                 <Grid container>
                     <Grid item xs={12} className="event-title">
-                        {event.title}
+                        <a href={Urls.singleEvent(event.id)}>
+                            {event.title}
+                        </a>
                     </Grid>
                     <Grid item xs={12} className='event-details'>
-                        {event.details}
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: event.details
+                            }}
+                        />
                     </Grid>
                     {
                         event.location &&
@@ -63,6 +60,7 @@ const FeaturedEvent = (event: IEvent) => {
             {
                 event.uploads && <div className='event-bg-wrapper'>
                     <Box mb={2} ml={1} mr={1}>
+                        <EventAttachments uploads={event.uploads} />
                         {/*<XImageGridList images={event.uploads}/>*/}
                     </Box>
                 </div>
@@ -70,18 +68,20 @@ const FeaturedEvent = (event: IEvent) => {
 
             <Divider/>
 
-            <Grid
-                className="featured-event-button-container"
-                container
-                justify={"center"}>
-                <Grid item xs={12}>
-                    <EventActionButtons
-                        iconSize={"lg"}
-                        bgColor={"#ffffff"}
-                        showLabels
-                        id={event.id}/>
+            <Box mt={2}>
+                <Grid
+                    className="featured-event-button-container"
+                    container
+                    justify={"center"}>
+                    <Grid item xs={12}>
+                        <EventActionButtons
+                            iconSize={"lg"}
+                            bgColor={"#ffffff"}
+                            showLabels
+                            id={event.id}/>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Box>
         </div>
     )
 }
