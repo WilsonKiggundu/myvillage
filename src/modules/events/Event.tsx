@@ -227,7 +227,7 @@ const Event = ({match}: any) => {
                                                                 onClick={() => toggleDrawer("right", true)}
                                                                 color={"default"}
                                                                 variant={"outlined"}>
-                                                                {event.attendances?.length} attendees
+                                                                {event.attendances?.length} responses
                                                             </Button>
                                                         </Grid>
                                                     </Grid>
