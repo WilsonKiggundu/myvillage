@@ -1,12 +1,7 @@
 import {IPerson} from "./IPerson";
 import Box from "@material-ui/core/Box";
 import React, {useEffect} from "react";
-import {Typography} from "@material-ui/core";
-import PostCard from "../../posts/PostCard";
 import {useDispatch, useSelector} from "react-redux";
-import {PleaseWait} from "../../../components/PleaseWait";
-import EventCard from "../../events/EventCard";
-import {Alert} from "@material-ui/lab";
 
 interface IProps {
     person: IPerson

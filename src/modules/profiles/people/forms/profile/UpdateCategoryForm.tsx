@@ -2,16 +2,13 @@ import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Grid} from "@material-ui/core";
 import {IPerson} from "../../IPerson";
-import {IOption} from "../../../../../components/inputs/inputHelpers";
 import {Endpoints} from "../../../../../services/Endpoints";
 import {reqArray} from "../../../../../data/validations";
-import {getProfile} from "../../../../../services/User";
 import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
-import {personSelector} from "../../redux/peopleSelectors";
 import {editPersonCategories} from "../../redux/peopleActions";
 
 interface IProps {

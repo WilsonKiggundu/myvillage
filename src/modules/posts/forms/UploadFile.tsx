@@ -27,6 +27,8 @@ interface IProps {
     type?: UploadType
     category?: UploadCategory
     addToFeed?: boolean
+    addCaption?: boolean
+    showUploadButton?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -50,7 +52,7 @@ const initialValues = {
 export type UploadType = 'coverPhoto' | 'profilePhoto' | 'other'
 type UploadCategory = 'person' | 'startup'
 
-const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTypes, onClose}: IProps) => {
+const UploadFile = ({done, id, addCaption, showUploadButton, type, addToFeed, category, filesLimit, acceptedTypes, onClose}: IProps) => {
     const dispatch = useDispatch()
     const styles = useStyles()
     const classes = globalStyles()
@@ -137,6 +139,7 @@ const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTy
     return (
         <XForm
             submitButtonLabel={"Upload"}
+            hideSubmitButton={!showUploadButton}
             schema={schema}
             loading={true}
             initialValues={initialValues}
@@ -162,7 +165,7 @@ const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTy
                         onChange={handleDragDrop}/>
                 </Grid>
 
-                <Grid item xs={12}>
+                {addCaption && <Grid item xs={12}>
                     <XTextInput
                         name={"details"}
                         variant={"standard"}
@@ -171,7 +174,7 @@ const UploadFile = ({done, id, type, addToFeed, category, filesLimit, acceptedTy
                         rows={2}
                         rowsMax={4}
                     />
-                </Grid>
+                </Grid>}
             </Grid>
 
         </XForm>

@@ -1,12 +1,22 @@
 
 import {Endpoints} from "../../../services/Endpoints";
 import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
-import store from "../../../data/store";
 import {IJob} from "../../../interfaces/IJob";
 
 export const postJob = async (job: IJob) => {
     const url = makeUrl("Jobs", Endpoints.jobs.api)
     return await postAsync(url, job)
+}
+
+export const applyForJob = async (params: any) => {
+    let url = makeUrl("Jobs", Endpoints.jobs.api)
+    url = url + '/' + params.id + '/apply'
+    return await postAsync(url, params)
+}
+
+export const getJobById = async (id: any) => {
+    const url = makeUrl("Jobs", Endpoints.jobs.api)
+    return await getAsync(url + '/' + id)
 }
 
 export const getJobs = async (params?: any) => {

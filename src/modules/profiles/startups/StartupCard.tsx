@@ -6,16 +6,12 @@ import Typography from "@material-ui/core/Typography";
 import {Urls} from "../../../routes/Urls";
 import {globalStyles} from "../../../theme/styles";
 import clsx from "clsx";
-import Chip from "@material-ui/core/Chip";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import palette from "../../../theme/palette";
 import { useHistory } from "react-router-dom";
-import {Endpoints} from "../../../services/Endpoints";
-import CardMedia from "@material-ui/core/CardMedia";
-import grey from "@material-ui/core/colors/grey";
-import {white} from "../../../theme/custom-colors";
+
 
 interface IProps {
     id: string
@@ -69,15 +65,7 @@ const StartupCard = ({coverPhoto, ...props}: IProps) => {
 
     return (
         <Card style={{textAlign: "center"}}>
-
-            {/*{coverPhoto ? <CardMedia*/}
-            {/*    style={{height: 180}}*/}
-            {/*    image={coverPhoto}*/}
-            {/*    title={props.name}*/}
-            {/*/> : <Box style={{height: 100, backgroundColor: white}}></Box>}*/}
-
             <CardContent style={{paddingTop: 25}}>
-
                 <Avatar variant={"circular"}
                         className={clsx(styles.mediumAvatar, styles.centerAvatar)}
                         src={props.logo}/>
@@ -94,14 +82,6 @@ const StartupCard = ({coverPhoto, ...props}: IProps) => {
                         {props.description}
                     </Typography>
                     : ""}
-
-                {/*<Box mt={1} mb={1}>*/}
-                {/*    <Typography component="div">*/}
-                {/*        <Chip size="small" label={props.category}/>*/}
-                {/*    </Typography>*/}
-                {/*</Box>*/}
-
-                {/*<ProfileRating rating={3} />*/}
 
                 <Box mx={"auto"} mb={2} mt={4}>
                     <Button

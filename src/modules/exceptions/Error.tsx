@@ -10,6 +10,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import {errorColor} from "../../theme/custom-colors";
+import userManager from "../../utils/userManager";
 
 interface IProps {
     title: string
@@ -19,6 +20,11 @@ interface IProps {
 const ErrorPage = ({title, message}: IProps) => {
 
     const classes = globalStyles()
+    const isLoggedOut = message === "Cannot read property 'profile' of null"
+
+    const errorMessage = isLoggedOut ?
+        "You have been logged out due to inactivity.\n" +
+        "Click Refresh to login again." : message
 
     return (
         <Container maxWidth={"md"}>
@@ -32,18 +38,24 @@ const ErrorPage = ({title, message}: IProps) => {
                         <Typography variant={"h6"}>{title}</Typography>
                     }
                 />
-                <Divider />
+                <Divider/>
                 <CardContent>
                     <Box mb={4}>
                         <Typography className={classes.whiteSpace} variant={"body2"} component={"div"}>
-                            {message}
+                            {errorMessage}
                         </Typography>
                     </Box>
                     <Typography variant={"body2"} component={"div"}>
-                        <Button style={{textTransform: 'inherit'}}
-                                variant={"outlined"}
-                                onClick={() => window.location.reload()}
-                                color={"default"}>Refresh the page</Button>
+                        {isLoggedOut ?
+                            <Button style={{textTransform: 'inherit'}}
+                                    variant={"outlined"}
+                                    onClick={() => userManager.signinRedirect()}
+                                    color={"default"}>Refresh</Button> :
+                            <Button style={{textTransform: 'inherit'}}
+                                    variant={"outlined"}
+                                    onClick={() => window.location.reload()}
+                                    color={"default"}>Refresh</Button>
+                        }
                     </Typography>
                 </CardContent>
             </Card>

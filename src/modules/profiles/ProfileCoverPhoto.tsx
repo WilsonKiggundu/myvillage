@@ -9,11 +9,11 @@ import XDialog from "../../components/dialogs/XDialog";
 import UploadFile from "../posts/forms/UploadFile";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {IStartup} from "../../interfaces/IStartup";
-import palette from "../../theme/palette";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../data/coreSelectors";
-import grey from "@material-ui/core/colors/grey";
-import {start} from "repl";
+import {LazyLoadImage} from 'react-lazy-load-image-component'
+
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 interface IProps {
     person?: IPerson
@@ -45,15 +45,23 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
             {coverPhoto || canEdit ? (
                 <Grid className={classes.coverPhoto}
                       alignItems={"center"}
-                      style={{marginTop: -20, backgroundColor: grey[300]}}
+                      style={{backgroundColor: '#F1F1F1'}}
                       alignContent={"center"}
                       container>
 
                     {coverPhoto ?
-                        <img alt={""}
-                             src={coverPhoto}
-                             style={{width: '100%'}}
-                        /> : ""
+                        // <img alt={""}
+                        //      src={coverPhoto}
+                        //      style={{width: '100%'}}
+                        // />
+                        <LazyLoadImage
+                            src={coverPhoto}
+                            effect={"blur"}
+                            width={'100%'}
+                            height={'auto'}
+                            alt={'Cover photo'}
+                        />
+                        : ""
                     }
 
                     {canEdit ? <Typography component={"div"} style={{

@@ -29,6 +29,7 @@ const initialValues = {
 }
 
 const NewPost = ({onClose}: IProps) => {
+
     const dispatch = useDispatch()
 
     const user = useSelector(userSelector);
@@ -62,14 +63,14 @@ const NewPost = ({onClose}: IProps) => {
                         name={"details"}
                         autoFocus={true}
                         variant={"standard"}
-                        label={"What's on your mind?"}
+                        placeholder={"What is on your mind?"}
+                        // label={"What do you want to talk about ?"}
                         helperText={"Press enter / return key to start a new line"}
                         multiline
-                        rows={6}
+                        rows={4}
                         rowsMax={12}
                     />
                 </Grid>
-
 
             </Grid>
 

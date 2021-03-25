@@ -66,7 +66,7 @@ export const handleResponse = (callBack: CallbackFunction, errorCallBack?: Error
     }
 }
 
-export type Services = "Profiles" | "Jobs" | "Events" | "Auth" | "CDN"
+export type Services = "Profiles" | "Jobs" | "Events" | "Auth" | "CDN" | "Notification"
 
 export const makeUrl = (service: Services, endpoint: string, params?: object) => {
     switch (service) {
@@ -79,6 +79,8 @@ export const makeUrl = (service: Services, endpoint: string, params?: object) =>
             return Endpoints.jobs.base + endpoint
         case "Profiles":
             return Endpoints.base + endpoint
+        case "Notification":
+            return Endpoints.notification.base + endpoint
         default:
             return Endpoints.base + endpoint
     }
@@ -159,15 +161,21 @@ export const post = (url: string, data: any, callBack: CallbackFunction, errorCa
     })
 }
 
-export const postAsync = (url: string, data: any) => {
+export const postAsync = (url: string, data: any, apikey?: string) => {
     return new Promise((resolve, reject) => {
 
         userManager.getUser().then((user: User | null) => {
             if(user){
-                return superagent.post(url)
+
+                let request = superagent.post(url)
                     .set('Authorization', `Bearer ${user.access_token}`)
                     .set('Accept', 'application/json')
                     .set('Content-Type', 'application/json')
+
+                if (apikey)
+                    request = request.set('APIKEY', apikey)
+
+                return request
                     .send(data)
                     .timeout(timeout)
                     .end((err, res) => {

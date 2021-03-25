@@ -36,19 +36,20 @@ export default function reducer(state = initialState, action: any) {
 
         case ADD_JOB_SUCCEEDED:
             const job = action.payload.body
+
             return {
                 ...state,
                 data: [...state.data, job]
             }
 
         case ADD_JOB_FAILED:
-            console.log(action)
             return {
                 ...state,
                 error: action.payload
             }
 
         case FETCH_JOBS:
+
             return {
                 ...state,
                 isLoading: true
@@ -56,6 +57,7 @@ export default function reducer(state = initialState, action: any) {
 
         case FETCH_JOBS_SUCCEEDED:
             const jobs = action.payload.body
+
             return {
                 ...state,
                 data: jobs,

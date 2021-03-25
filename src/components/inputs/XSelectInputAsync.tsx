@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {FormControl} from "@material-ui/core";
-import {useField, useFormikContext} from "formik";
+import {useField} from "formik";
 import {getAsync} from "../../utils/ajax";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Avatar from "@material-ui/core/Avatar";
@@ -11,7 +11,8 @@ import {globalStyles} from "../../theme/styles";
 import Box from "@material-ui/core/Box";
 
 interface IProps {
-    label: string
+    placeholder?: string
+    label?: string
     name: string
     helperText?: string
     multiple?: boolean
@@ -20,9 +21,9 @@ interface IProps {
     size?: 'small' | 'medium'
     margin?: 'none' | 'dense' | 'normal',
     data: {
-        field: string,
+        field?: string,
         endpoint: string
-        params: {}
+        params?: {}
         label: string
         avatar?: string
     }
@@ -35,7 +36,7 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
     const loading = open && options.length === 0;
 
     const {name, helperText, label} = props
-    const {isSubmitting} = useFormikContext()
+    // const {isSubmitting} = useFormikContext()
     const fieldProps = useField(name)
     const meta = fieldProps[1]
     const helpers = fieldProps[2]
@@ -53,7 +54,10 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
             const response: any = await getAsync(data.endpoint, data.params);
 
             if (active) {
-                setOptions(response.body[data.field].map((item: any) => (
+
+                const fieldData = data.field ? response.body[data.field] : response.body
+
+                setOptions(fieldData.map((item: any) => (
                     {
                         id: item.id,
                         name: item[data.label],
@@ -77,8 +81,10 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
     return (
         <FormControl fullWidth>
             <Autocomplete
+                size={props.size}
                 id="asynchronous-demo"
                 style={{width: '100%'}}
+                // placeholder={props.placeholder}
                 getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
                 filterOptions={(x) => x}
                 includeInputInList
@@ -96,17 +102,23 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
                 // getOptionSelected={(option, value) => option.name === value.name}
                 renderOption={(option: any) =>
                     <>
-                        <Avatar className={classes.smallAvatar} src={option.avatar}>
-                            {option.name[0].toUpperCase()}
-                        </Avatar> <Box ml={2}>{option.name}</Box>
+                        {option.avatar &&
+                            <Avatar className={classes.smallAvatar} src={option.avatar}>
+                                {option.name[0].toUpperCase()}
+                            </Avatar>
+                        }
+
+                        <Box ml={option.avatar ? 2 : ''}>{option.name}</Box>
                     </>
                 }
                 options={options}
                 loading={loading}
                 renderInput={(params) => (
                     <TextField
+                        size={props.size}
                         {...params}
-                        label={props.label}
+                        placeholder={props.placeholder}
+                        // label={props.label}
                         variant={props.variant}
                         InputProps={{
                             ...params.InputProps,

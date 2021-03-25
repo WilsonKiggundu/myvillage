@@ -57,19 +57,19 @@ export default function StartupSummary({startup}: IProps) {
                         </Typography>
                     ) : ""}
 
-                    <CardContent style={{textAlign: "center", marginTop: -110}}>
+                    <CardContent style={{textAlign: "center"}}>
 
 
                         <div className={classes.profilePhoto}>
                             <Avatar
                                 style={{
-                                    backgroundColor: palette.tertiary.main,
                                     borderWidth: 1,
                                     borderColor: palette.primary.main,
                                     borderStyle: 'solid'
                                 }}
+                                variant="square"
                                 src={startup.avatar}
-                                className={clsx(classes.largeAvatar, classes.avatar)}/>
+                                className={clsx(classes.mediumAvatar, classes.avatar)}/>
                             {canEdit ?
                                 <Typography style={{position: "relative"}}>
                                     <IconButton

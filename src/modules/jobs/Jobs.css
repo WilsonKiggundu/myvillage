@@ -1,0 +1,128 @@
+.job-salary-range{
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #636569;
+}
+
+.headline{
+    width: 100%;
+    text-align: center;
+    padding: 15px 5px;
+    background-color: #c1c1c1;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    font-weight: bold;
+    color: white;
+}
+
+.search-btn{
+    box-shadow: none !important;
+    display: block;
+    width: 100%;
+}
+
+.filter-container{
+    padding: 15px;
+    background-color: white;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.job-details-button{
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    color: white;
+    padding: 10px;
+    background-color: #1c1c1c;
+    display: block;
+}
+
+.job-details-teaser{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    position: relative;
+    max-height: 4.2em;
+    overflow: hidden;
+    padding-right: 1em;
+}
+
+.job-location-icon{
+    float: left;
+    margin-right: 5px;
+}
+
+.company-name a{
+    font-weight: 700;
+    color: #e98a2b;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+.company-name a:hover{
+    text-decoration: underline;
+}
+
+.company-logo{
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.job-title{
+    font-size: 1.8em;
+    font-weight: bold;
+}
+.job-category{
+    color: #c1c1c1;
+}
+
+.job-tabbed-panel{
+    /*background-color: #1c1c1c;*/
+    /*border-top-left-radius: 8px;*/
+    /*border-top-right-radius: 8px;*/
+}
+.job-tab{
+    /*color: white !important;*/
+}
+.job-tab:hover{
+    /*font-weight: bold;*/
+}
+
+.apply-button{
+    /*margin: 15px 15px 0 0;*/
+}
+
+.CreateJob-title{
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0 15px;
+}
+
+.job-card-title{
+    font-size: 0.8em;
+}
+
+.application-accept-button{
+    color: green !important;
+    font-weight: 700 !important;
+}
+.application-reject-button{
+    color: darkred !important;
+    font-weight: 700 !important;
+}
+.application-pending-button{}
+.application-all-button{}
+
+.application-accept-icon{
+    color: green;
+}
+
+.application-reject-icon{
+    color: darkred;
+}
+
+.application-button-group{
+    padding: 15px;
+    text-transform: inherit !important;
+}

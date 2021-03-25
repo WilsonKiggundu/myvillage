@@ -6,9 +6,9 @@ const palette = {
     white: white,
     primary: {
         contrastText: white,
-        dark: '#021835',
-        main: '#62cbc9',
-        light: '#4E6481'
+        dark: '#1C1C1C',
+        main: '#1C1C1C',
+        light: '#1C1C1C'
     },
     secondary: {
         contrastText: white,
@@ -19,8 +19,9 @@ const palette = {
     tertiary: {
         contrastText: white,
         dark: '#636569',
-        main: '#636569',
-        light: '#636569'
+        main: '#1C1C1C',
+        light: '#2C2A2A'
+
     },
     error: {
         contrastText: white,

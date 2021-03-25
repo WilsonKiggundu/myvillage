@@ -7,15 +7,14 @@ import palette from "../theme/palette";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
-import {CardContent, isWidthUp} from "@material-ui/core";
+import {CardContent} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import useTheme from "@material-ui/core/styles/useTheme";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import grey from "@material-ui/core/colors/grey";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {Urls} from "../routes/Urls";
+import XImageGridList from "./XImageGridList";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,19 +66,27 @@ export const XPersonGridList = ({people}: IProps) => {
                     <GridListTile key={index}>
                         <Card style={{borderRadius: 0, backgroundColor: grey[100]}}>
                             <CardActionArea onClick={() => handleViewProfile(person.id)}>
-                                <CardMedia
-                                    className={classes.cardImage}
-                                    image={person.avatar}/>
+                                {
+                                    person.avatar ?
+                                        <div className={classes.cardImage}>
+                                            <XImageGridList images={[{
+                                                path: person.avatar
+                                            }]} />
+                                        </div> :
+                                        <CardMedia
+                                            className={classes.cardImage}
+                                            image={person.coverPhoto}/>
+                                }
 
-                                    <CardContent>
-                                        <Typography noWrap variant={"body2"}>
-                                            <strong>{person.firstname} {person.lastname}</strong>
-                                        </Typography>
-                                        <Typography noWrap variant={"body2"}>
-                                            {person.bio.substr(0, 30)}...
-                                        </Typography>
+                                <CardContent>
+                                    <Typography noWrap variant={"body2"}>
+                                        <strong>{person.firstname} {person.lastname}</strong>
+                                    </Typography>
+                                    <Typography noWrap variant={"body2"}>
+                                        {person?.bio?.substr(0, 30)}...
+                                    </Typography>
 
-                                    </CardContent>
+                                </CardContent>
                             </CardActionArea>
                         </Card>
                     </GridListTile>

@@ -1,4 +1,4 @@
-import {call, put, delay} from "redux-saga/effects"
+import {call, put} from "redux-saga/effects"
 
 import {
     ADD_STARTUP,
@@ -46,7 +46,9 @@ import {
     ADD_STARTUP_CONTACT,
     ADD_STARTUP_CONTACT_SUCCEEDED,
     ADD_STARTUP_CONTACT_FAILED,
-    DELETE_STARTUP_CONTACT, DELETE_STARTUP_CONTACT_SUCCEEDED, DELETE_STARTUP_CONTACT_FAILED
+    DELETE_STARTUP_CONTACT,
+    DELETE_STARTUP_CONTACT_SUCCEEDED,
+    DELETE_STARTUP_CONTACT_FAILED
 } from "./startupsReducer";
 import {
     delStartupAddress, delStartupContact,

@@ -6,7 +6,7 @@ import React from "react";
 import {IStartup} from "../../../interfaces/IStartup";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
-import {Divider} from "@material-ui/core";
+
 
 interface IProps {
     startup: IStartup

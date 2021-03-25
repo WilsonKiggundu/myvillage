@@ -1,143 +1,544 @@
 import {IJob} from "../../interfaces/IJob";
 import React, {useEffect, useState} from "react";
-import {Card} from "@material-ui/core";
+import {
+    Avatar,
+    Box,
+    Button,
+    ButtonGroup,
+    Card,
+    CardHeader,
+    CircularProgress,
+    Divider,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemSecondaryAction,
+    ListItemText,
+    ListSubheader
+} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {Alert} from "@material-ui/lab";
-import {differenceInCalendarDays} from "date-fns";
-import Box from "@material-ui/core/Box";
-import useTheme from "@material-ui/core/styles/useTheme";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {useDispatch, useSelector} from "react-redux";
-import store from "../../data/store";
-import {jobSelector, jobsSelector} from "./redux/jobsSelectors";
-import {loadJobs} from "./redux/jobsActions";
+import {useSelector} from "react-redux";
 import {PleaseWait} from "../../components/PleaseWait";
-import {longDate, timeAgo} from "../../utils/dateHelpers";
 import Container from "@material-ui/core/Container";
-import {globalStyles} from "../../theme/styles";
-import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
-import Divider from "@material-ui/core/Divider";
-import StartupCard from "../profiles/startups/StartupCard";
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import grey from "@material-ui/core/colors/grey";
-import teal from "@material-ui/core/colors/teal";
-import {homeStyles} from "../home/styles";
+import {getStartupContact, getStartups} from "../profiles/startups/redux/startupsEndpoints";
+import {Urls} from "../../routes/Urls";
+import AttachmentIcon from '@material-ui/icons/Attachment';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {applyForJob, getJobById} from "./redux/jobsEndpoints";
+import {userSelector} from "../../data/coreSelectors";
+import Toast from "../../utils/Toast";
+import userManager from "../../utils/userManager";
+import XDrawer, {Anchor} from "../../components/drawer/XDrawer";
+import {getAsync, makeUrl} from "../../utils/ajax";
+import {Endpoints} from "../../services/Endpoints";
+import {IPerson} from "../profiles/people/IPerson";
+import {IApplicant} from "../../interfaces/IApplicant";
+import {timeAgo} from "../../utils/dateHelpers";
+import {useHistory} from "react-router-dom";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+import {SendApplicationNotification} from "./jobHelpers";
+import {IEmailObject} from "../../interfaces/IEmailObject";
+import {EmailSettings} from "../../data/constants";
+import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
+import {IContact} from "../../interfaces/IContact";
+import {sendEmail} from "../../services/NotificationService";
+
 
 const Job = ({match}: any) => {
 
-    const classes = homeStyles()
-    const jobId = match.params.id
-    const id = parseInt(jobId, 10)
-    const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    const history = useHistory()
+    const user = useSelector(userSelector)
+    const id = parseInt(match.params.id, 10)
     const [company, setCompany] = useState<any | undefined>(undefined)
+    const [job, setJob] = useState<IJob | undefined>(undefined)
 
-    const jobs = useSelector(jobsSelector)
-    let job = useSelector((state) => jobSelector(state, id))
+    const [applyButton, setApplyButton] = useState<any>({label: 'Apply now', visible: true, disabled: false})
+    const [alreadyApplied, setAlreadyApplied] = useState<boolean>(false)
+    const [canApply, setCanApply] = useState<boolean>(false)
+    const [canViewApplicants, setCanViewApplicants] = useState<boolean>(false)
 
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(loadJobs())
-    }, [dispatch])
+    const [allApplications, setAllApplications] = useState<any>([])
+    const [acceptedApplications, setAcceptedApplications] = useState<any>([])
+    const [rejectedApplications, setRejectedApplications] = useState<any>([])
+    const [pendingApplications, setPendingApplications] = useState<any>([])
 
-    useEffect(() => {
-        if (job) {
-            getStartups({id: job.companyId})
-                .then((response: any) => {
-                    setCompany(response.body.startups[0])
-                })
+    const handleApply = async (job: IJob) => {
+        setApplyButton({
+            disabled: true,
+            label: <CircularProgress size={25}/>
+        })
+
+        try {
+            await applyForJob({
+                id: job.id,
+                profileId: user.profile.sub
+            })
+
+            const body = `<!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Title</title>
+                </head>
+                <body style="text-align: center; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; background-color: #f1f1f1">
+                    <div style="padding: 25px; width: 100%; background-color: #1c1c1c; color: #ffffff;">
+                        <h1>Someone applied for the ${job.title} role</h1>
+                    </div>
+                    <div style="background-color: #ffffff; padding: 15px; margin: 0 auto; max-width: 80%">
+                        <p>
+                            <a style="background-color: #e98a2b; text-decoration: none; color: white; padding: 15px;" 
+                                href="${Urls.base}${Urls.jobs.singleJob(job.id)}">
+                                Open the job
+                            </a>
+                        </p>
+                    </div>
+                    <div style="padding: 25px; font-size: 10px; color: #cccccc">
+                        <p>This is an auto-generated email sent from an unmonitored emailing list. You may not reply to it directly.</p>
+                    </div>
+                </body>
+            </html>`
+
+            const {profileId, companyId} = job
+            let recipients: string[]
+
+            const emailToSend: IEmailObject = {
+                body: body,
+                recipient: "",
+                senderEmail: EmailSettings.senderEmail,
+                senderName: EmailSettings.senderName,
+                subject: "Job application"
+            }
+
+            const personContacts: any = await getPersonContact(profileId)
+            let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
+
+            if(emails.length){
+                recipients = emails.map((contact: IContact) => contact.value)
+            }
+            else{
+                const companyContacts: any = await getStartupContact(companyId)
+                const companyEmails: IContact[] = companyContacts.body.filter((contact: IContact) => contact.type === 2)
+                recipients = companyEmails.map((contact: IContact) => contact.value)
+            }
+
+            if (recipients){
+                emailToSend.recipient = recipients.join(',')
+                await sendEmail(emailToSend)
+            }
+
+        } catch (error) {
+            Toast.error(error.toString())
+        } finally {
+            setApplyButton({
+                visible: false
+            })
         }
-    }, [job])
+    }
 
-    if (!job) {
-        job = store.getState().jobs.data.find((job: IJob) => job.id === id)
+    useEffect(() => {
+
+        (async () => {
+            try {
+
+                const response: any = await getJobById(id)
+                const res: any = await getStartups({id: response.body.companyId})
+
+                setCompany(res.body.startups[0])
+
+                const job = response.body
+                setJob(job)
+
+                const {applicants, profileId} = job
+
+                const alreadyApplied = applicants?.map((m: any) => (m.profileId)).includes(user.profile.sub)
+                const postedByCurrentUser = profileId === user.profile.sub
+
+                setAlreadyApplied(alreadyApplied)
+                setCanApply(!postedByCurrentUser || !alreadyApplied)
+                setCanViewApplicants(postedByCurrentUser)
+
+                document.title = `${response.body.title} / My Village`
+
+            } catch (e) {
+
+                if (e.toString().includes('Unauthorized')) {
+                    await userManager.signinRedirect({
+                        state: window.location.pathname
+                    })
+                }
+            } finally {
+
+            }
+
+        })()
+    }, [id])
+
+    const handleDownload = (path: string) => {
+        window.open(path, '_blank')
+    }
+
+    const [openDrawer, setOpenDrawer] = useState<boolean>(false)
+    const [drawerAnchor, setDrawerAnchor] = useState<Anchor>("right")
+    const [applicants, setApplicants] = useState<IApplicant[] | undefined>(undefined)
+
+    const toggleDrawer = async (anchor: Anchor, open: boolean) => {
+        setOpenDrawer(open)
+        setDrawerAnchor(anchor)
+
+        if (open) {
+            const applicants: IApplicant[] | undefined = []
+            const url = makeUrl("Profiles", Endpoints.person.base)
+
+            if (job?.applicants) {
+
+                await Promise.all(job.applicants.map(async (application: any) => {
+                    const response: any = await getAsync(url, {id: application.profileId})
+                    const person: IPerson = response.body.persons[0]
+                    applicants.push({
+                        id: application.id,
+                        avatar: person.avatar ?? "",
+                        profileId: application.profileId,
+                        date: timeAgo(application.dateTime),
+                        name: person.firstname + " " + person.lastname,
+                        status: application.status
+                    })
+                }))
+
+                setAllApplications(applicants)
+                setAcceptedApplications(applicants.filter((f: IApplicant) => f.status === 'accepted'))
+                setRejectedApplications(applicants.filter((f: IApplicant) => f.status === 'rejected'))
+                setPendingApplications(applicants.filter((f: IApplicant) => !f.status))
+
+                setApplicants(applicants)
+            }
+
+        }
+
+    }
+
+    const handleViewApplicant = (id: string, applicationId: any, status: string, jobName: string) => {
+        const query: any = {
+            jobId: job?.id,
+            jobName: jobName,
+            applicationId: applicationId,
+            status: status,
+            context: "job_application"
+        }
+
+        const queryString = Object.keys(query).map(key => key + '=' + query[key]).join('&');
+
+        const url = Urls.profiles.onePerson(id)
+        history.push({
+            pathname: url,
+            search: `?${queryString}`
+        })
     }
 
     return (
-        <Container className={classes.scrollable} maxWidth={false}>
+        <Container maxWidth={"md"}>
             <Grid justify={"center"} container spacing={2}>
-                    <Grid item xs={12} lg={6}>
-                        {job ? (
-                            <Card>
-                                <CardHeader
-                                    title={
-                                        <Typography style={{marginBottom: 2}} variant={"h4"}>
-                                            <strong>{job.title}</strong>
-                                        </Typography>
-                                    }
-                                    subheader={job.category?.name}
-                                />
-                                <CardContent>
-                                    <Grid container spacing={2}>
-                                        <Divider/>
-                                        <Grid style={{color: grey[500]}} item xs={12}>
-                                            <Grid container spacing={1}>
-                                                <Grid item>
-                                                    <LocationOnIcon/>
-                                                </Grid>
-                                                <Grid style={{marginTop: 3}} item>
-                                                    {job.location}
-                                                </Grid>
+                <Grid item xs={12}>
+                    {job ? (
+                        <>
+                            <Box mb={2}>
+                                <Card>
+                                    <CardHeader
+                                        avatar={
+                                            <Avatar src={company?.avatar} variant={"square"}>
+                                                {company?.name[0].toUpperCase()}
+                                            </Avatar>
+                                        }
+                                        action={
+                                            <IconButton>
+                                                <MoreVertIcon/>
+                                            </IconButton>
+                                        }
+                                        title={
+                                            <div className="job-title">
+                                                {job.title}
+                                            </div>
+                                        }
+                                        subheader={
+                                            <div className="job-category">
+                                                {job.category?.name}, {job.location}
+                                            </div>
+                                        }/>
+
+                                    <Divider/>
+
+                                    <CardContent>
+                                        <Grid spacing={2} container justify={"flex-start"}>
+                                            {company?.name && <Grid item xs={6} sm={6} md={4} lg={3}>
+                                                <strong>Company</strong><br/>
+                                                <a href={Urls.profiles.singleStartup(company?.id)}>{company?.name}</a>
+                                            </Grid>}
+                                            <Grid item xs={6} sm={6} md={4} lg={3}>
+                                                <strong>Job Category</strong><br/>
+                                                {job.category?.name}
+                                            </Grid>
+                                            <Grid item xs={6} sm={6} md={4} lg={3}>
+                                                <strong>Job type</strong><br/>
+                                                {job.jobType}
+                                            </Grid>
+                                            <Grid item xs={6} sm={6} md={4} lg={3}>
+                                                <strong>Salary range</strong><br/>
+                                                {job.minSalary} - {job.maxSalary}
+                                            </Grid>
+                                            <Grid item xs={6} sm={6} md={4} lg={3}>
+                                                <strong>Experience</strong><br/>
+                                                {job.experience}
                                             </Grid>
                                         </Grid>
+                                    </CardContent>
 
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Alert color={
-                                                differenceInCalendarDays(Date.parse(job.deadline?.replace(/ /g, "T")), new Date()) <= 1 ? "warning" : "info"
-                                            } icon={<CalendarTodayIcon/>}>
-                                                Application closes on <br/>
-                                                <strong>{longDate(job.deadline)}</strong> ({timeAgo(job.deadline)})
-                                            </Alert>
-                                        </Grid>
+                                    <Divider/>
 
-                                        <Grid style={{marginBottom: 15}} xs={12} lg={10} item>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>Job Description</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.details}
-                                                </Typography>
-                                            </Typography>
-                                        </Grid>
+                                    <CardContent>
+                                        <Grid container justify={"center"}>
+                                            <Grid item>
+                                                {
+                                                    canApply && alreadyApplied &&
+                                                    <span>You have already applied for this job.</span>
+                                                }
 
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>Qualifications</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.qualifications}
-                                                </Typography>
-                                            </Typography>
-                                        </Grid>
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>Experience</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.experience}
-                                                </Typography>
-                                            </Typography>
+                                                {
+                                                    canApply && !alreadyApplied && applyButton.visible &&
+                                                    <Button className="apply-button"
+                                                            onClick={() => handleApply(job)}
+                                                            variant={"contained"}
+                                                            disabled={applyButton.disabled}
+                                                            color={"secondary"}>
+                                                        {applyButton.label}
+                                                    </Button>
+                                                }
 
-                                        </Grid>
-                                        <Grid style={{marginBottom: 15}} item xs={12}>
-                                            <Typography style={{margin: '15px 0'}} variant={"h6"}>
-                                                <strong>How to apply</strong>
-                                                <Typography style={{whiteSpace: 'pre-line'}} component={"div"}>
-                                                    {job.howToApply}
-                                                </Typography>
-                                            </Typography>
-                                        </Grid>
+                                                {
+                                                    canViewApplicants &&
+                                                    <>
+                                                        <Button
+                                                            onClick={() => toggleDrawer("right", true)}
+                                                            color={"default"}
+                                                            variant={"outlined"}>
+                                                            {job.applicants?.length} applicants
+                                                        </Button>
 
-                                    </Grid>
-                                </CardContent>
-                            </Card>
-                        ) : <PleaseWait/>}
-                    </Grid>
-                    <Grid item xs={12} lg={3}>
-                        <StartupCard {...company} />
-                    </Grid>
+                                                        <XDrawer
+                                                            onClose={() => toggleDrawer("right", false)}
+                                                            open={openDrawer}
+                                                            anchor={drawerAnchor}>
+                                                            <div className="Drawer">
+                                                                {
+                                                                    applicants ?
+                                                                        <>
+
+                                                                            <List
+                                                                                subheader={
+                                                                                    <ListSubheader
+                                                                                        className="Drawer-subheader">
+                                                                                        Applications
+                                                                                    </ListSubheader>
+                                                                                }>
+
+                                                                                <div
+                                                                                    className="application-button-group">
+                                                                                    <ButtonGroup color={"default"}>
+                                                                                        <Button
+                                                                                            onClick={() => setApplicants(allApplications)}>
+                                                                                            All
+                                                                                            ({allApplications.length})
+                                                                                        </Button>
+                                                                                        {
+                                                                                            pendingApplications.length ?
+                                                                                                <Button
+                                                                                                    onClick={() => setApplicants(pendingApplications)}
+                                                                                                >
+                                                                                                    Pending
+                                                                                                    ({pendingApplications.length})
+                                                                                                </Button> : ""
+                                                                                        }
+                                                                                        {
+                                                                                            acceptedApplications.length ?
+                                                                                                <Button
+                                                                                                    onClick={() => setApplicants(acceptedApplications)}
+                                                                                                    className="application-accept-button">
+                                                                                                    Accepted
+                                                                                                    ({acceptedApplications.length})
+                                                                                                </Button> : ""
+                                                                                        }
+                                                                                        {
+                                                                                            rejectedApplications.length ?
+                                                                                                <Button
+                                                                                                    onClick={() => setApplicants(rejectedApplications)}
+                                                                                                    className="application-reject-button">
+                                                                                                    Rejected
+                                                                                                    ({rejectedApplications.length})
+                                                                                                </Button> : ""
+                                                                                        }
+                                                                                    </ButtonGroup>
+                                                                                </div>
+
+                                                                                {applicants ? applicants.map((applicant: IApplicant, index: number) => (
+                                                                                    <div key={index}>
+                                                                                        <ListItem
+                                                                                            onClick={
+                                                                                                () => handleViewApplicant(
+                                                                                                    applicant.profileId,
+                                                                                                    applicant.id,
+                                                                                                    applicant.status ?? 'pending',
+                                                                                                    job?.title
+                                                                                                )
+                                                                                            }
+                                                                                            button
+                                                                                            alignItems="flex-start">
+                                                                                            <ListItemText
+                                                                                                primary={
+                                                                                                    applicant.name
+                                                                                                }
+                                                                                                secondary={
+                                                                                                    <span
+                                                                                                        className="Drawer-timeago">
+                                                                                                    {applicant.date}
+                                                                                                </span>
+                                                                                                }/>
+                                                                                            <ListItemSecondaryAction>
+                                                                                                {
+                                                                                                    applicant.status === 'accepted' ?
+                                                                                                        <CheckCircleIcon
+                                                                                                            className="application-accept-icon"/> :
+                                                                                                        applicant.status === 'rejected' ?
+                                                                                                            <CancelIcon
+                                                                                                                className="application-reject-icon"/> :
+                                                                                                            <HourglassFullIcon/>
+                                                                                                }
+                                                                                            </ListItemSecondaryAction>
+
+                                                                                        </ListItem>
+                                                                                        <Divider/>
+                                                                                    </div>
+                                                                                )) : ""}
+                                                                            </List>
+                                                                        </> :
+                                                                        <PleaseWait label={"Loading applicants..."}/>
+                                                                }
+                                                            </div>
+                                                        </XDrawer>
+                                                    </>
+
+                                                }
+                                            </Grid>
+                                        </Grid>
+                                    </CardContent>
+
+                                </Card>
+                            </Box>
+
+                            <Box mb={2}>
+                                <Card>
+                                    <CardHeader title={
+                                        <div className="job-card-title">Job description</div>
+                                    }/>
+                                    <Divider/>
+                                    <CardContent>
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: job.details
+                                            }}
+                                        />
+                                    </CardContent>
+                                </Card>
+                            </Box>
+
+                            {
+                                job.qualifications && <Box mb={2}>
+                                    <Card>
+                                        <CardHeader title={
+                                            <div className="job-card-title">Qualifications</div>
+                                        }/>
+                                        <Divider/>
+                                        <CardContent>
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: job.qualifications
+                                                }}
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            }
+
+                            {
+                                job.skills && <Box mb={2}>
+                                    <Card>
+                                        <CardHeader title={
+                                            <div className="job-card-title">Required skills</div>
+                                        }/>
+                                        <Divider/>
+                                        <CardContent>
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: job.skills
+                                                }}
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            }
+
+                            {
+                                job.benefits && <Box mb={2}>
+                                    <Card>
+                                        <CardHeader title={
+                                            <div className="job-card-title">Benefits</div>
+                                        }/>
+                                        <Divider/>
+                                        <CardContent>
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: job.benefits
+                                                }}
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            }
+
+                            {
+                                job.uploads?.length ? <Box mb={2}>
+                                    <Card>
+                                        <CardHeader title={
+                                            <div>Attachments</div>
+                                        }/>
+                                        <CardContent>
+                                            <List>
+                                                {
+                                                    job.uploads?.map((upload: any, index: number) => (
+                                                        <div key={index}>
+                                                            <ListItem
+                                                                onClick={() => handleDownload(upload.path)}
+                                                                button>
+                                                                <ListItemIcon>
+                                                                    <AttachmentIcon/>
+                                                                </ListItemIcon>
+                                                                <ListItemText primary={upload.name}/>
+                                                            </ListItem>
+                                                            <Divider/>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </List>
+                                        </CardContent>
+                                    </Card>
+                                </Box> : ""
+                            }
+                        </>
+
+                    ) : <PleaseWait label={"Please wait while we fetch the job details..."}/>}
                 </Grid>
+            </Grid>
         </Container>
     )
 }

@@ -1,4 +1,5 @@
 export const Urls = ({
+    base: process.env.REACT_APP_PUBLIC_URL,
     articles: {
         create: '/articles/create'
     },
@@ -20,11 +21,13 @@ export const Urls = ({
         entrepreneurs: "/profiles/entrepreneurs",
     },
     jobs: {
-        singleJob: (id: string) => `/jobs/${id}/details`,
+        singleJob: (id: string | null) => `/jobs/${id}/details`,
         create: "/jobs/create",
         list: "/jobs"
     },
     job: '/jobs/:id/details',
     events: "/events",
-    event: '/events/:id'
+    createEvent: "/events/create",
+    singleEvent: (id: any) => `/events/${id}/details`,
+    event: '/events/:id/details'
 })

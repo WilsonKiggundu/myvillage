@@ -10,7 +10,6 @@ import React, {useState} from "react";
 import Chip from "@material-ui/core/Chip";
 import UpdateSkillsForm from "./forms/profile/UpdateSkillsForm";
 import CardHeader from "@material-ui/core/CardHeader";
-import grey from "@material-ui/core/colors/grey";
 import {useDispatch} from "react-redux";
 import {deletePersonSkills} from "./redux/peopleActions";
 

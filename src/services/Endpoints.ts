@@ -1,21 +1,24 @@
-let profileBaseUrl, eventsBaseUrl, jobsBaseUrl, cdnBaseUrl
+let profileBaseUrl, eventsBaseUrl, jobsBaseUrl, cdnBaseUrl, notificationsBaseUrl
 
 switch (process.env.REACT_APP_ENV) {
     case "test":
         profileBaseUrl = "https://profiles-test.innovationvillage.co.ug"
         eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
+        notificationsBaseUrl = "https://commservice-test.innovationvillage.co.ug"
         jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     case "production":
         profileBaseUrl = "https://profiles.innovationvillage.co.ug"
         eventsBaseUrl = "https://events-api.innovationvillage.co.ug"
+        notificationsBaseUrl = "https://commservice.innovationvillage.co.ug"
         jobsBaseUrl = "https://jobs-api.innovationvillage.co.ug"
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     default:
         profileBaseUrl = "https://localhost:5001"
         eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
+        notificationsBaseUrl = "https://commservice-test.innovationvillage.co.ug"
         jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
 }
@@ -30,12 +33,20 @@ export const Endpoints = {
 
     jobs: {
         base: jobsBaseUrl,
-        api: '/api/jobs'
+        api: '/api/jobs',
+        update: (id: string) => `/api/jobs/applicant/${id}/update`
+    },
+
+    notification: {
+        base: notificationsBaseUrl,
+        api: {
+            email: '/api/emails'
+        }
     },
 
     events: {
         base: eventsBaseUrl,
-        api: "/api/events"
+        api: "/api/events",
     },
     business: {
         base: "/api/business",
@@ -69,6 +80,7 @@ export const Endpoints = {
         category: "/api/person/categories",
         interest: "/api/person/interests",
         skill: "/api/person/skills",
+        contact: "/api/person/contacts",
         connection: "/api/person/connections",
     },
 

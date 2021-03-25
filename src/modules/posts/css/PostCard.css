@@ -1,0 +1,50 @@
+.PostCard{
+    background: #FFFFFF;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    padding-bottom: 25px;
+}
+
+.PostCard-content{
+    padding: 15px;
+}
+
+.Post-details{
+    white-space: pre-line; 
+    margin-bottom: 15px
+}
+
+.Post-action{
+    margin-right: 10px;
+    margin-left: 10px;
+    text-transform: capitalize;
+}
+
+.Counts{
+    color: rgb(88, 88, 238);
+    font-weight: bold;
+}
+
+.PostCard-actions{
+    padding: 25px;
+}
+.Comment-input{
+    background: #F1F1F0;
+    mix-blend-mode: normal;
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+
+}
+
+.Comments{
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.Like-items{
+    font-size: 15px;
+}
+
+.ShowLikeButton{
+    padding-left: 0 !important;
+}

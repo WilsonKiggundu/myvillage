@@ -1,3 +1,5 @@
+import {IUpload} from "./IUpload";
+
 export interface IEvent {
     type: string
     title: string
@@ -10,5 +12,8 @@ export interface IEvent {
     days?: number[]
     details: string
     conferenceUrl: string
-    createdBy: string
+    createdBy: string,
+    uploads?: IUpload[],
+    featured?: boolean
+    attendances?: []
 }

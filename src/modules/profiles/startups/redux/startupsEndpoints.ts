@@ -1,10 +1,9 @@
 
 import {Endpoints} from "../../../../services/Endpoints";
-import {del, deleteAsync, getAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
+import { deleteAsync, getAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
 import store from "../../../../data/store";
 import {IAddress} from "../../../../interfaces/IAddress";
 import {UploadType} from "../../../posts/forms/UploadFile";
-import {start} from "repl";
 
 export const postStartup = async (startup: any) => {
     const url = makeUrl("Profiles", Endpoints.business.base)
@@ -40,6 +39,11 @@ export const delStartupAddress = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.business.address)
     await deleteAsync(url, payload)
     return payload
+}
+
+export const getStartupContact = async (businessId: any) => {
+    const url = makeUrl("Profiles", Endpoints.business.contact)
+    return await getAsync(url, {businessId})
 }
 
 export const postStartupContact = async (contact: any) => {

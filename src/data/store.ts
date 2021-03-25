@@ -5,6 +5,7 @@ import {createLogger} from 'redux-logger'
 import userManager from "../utils/userManager";
 import {rootReducer} from "./rootReducer";
 import rootSaga from "./rootSaga";
+import Toast from "../utils/Toast";
 
 const middlewares = [];
 const myWindow = window as any;
@@ -28,7 +29,7 @@ const store: any = middleware(devTools(createStore))(rootReducer)
 sagaMiddleware.run(rootSaga)
 loadUser(store, userManager).then((user) => {
 
-})
+}).catch((error) => Toast.error(error))
 
 export default store
 

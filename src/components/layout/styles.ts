@@ -1,6 +1,6 @@
 import grey from "@material-ui/core/colors/grey";
 import {createStyles, makeStyles, Theme} from "@material-ui/core";
-import {themeBackground} from "../../theme/custom-colors";
+import {themeBackground, white} from "../../theme/custom-colors";
 
 export const drawerWidth = 240;
 export const navBackgroundColor = grey[900];
@@ -8,7 +8,8 @@ export const useLayoutStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
-            width: "100%"
+            width: "100%",
+            backgroundColor: white
         },
         drawer: {
             backgroundColor: navBackgroundColor,

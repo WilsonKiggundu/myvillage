@@ -1,0 +1,102 @@
+body{
+    background-color: #1C1C1C;
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+}
+
+.body{
+    width: 100%;
+    padding-top: 10vh;
+    padding-bottom: 5vh;
+}
+
+.Home-logo{
+    height: auto;
+    width: 180px;
+}
+
+.title{
+    font-family: 'Montserrat', sans-serif !important;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 65px;
+    line-height: 60px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+
+    color: #FFFFFF;
+
+    mix-blend-mode: normal;
+}
+
+.map-holder{
+    display: block;
+}
+
+@media screen and (max-width: 576px){
+    .map-holder{
+        display: none;
+    }
+
+    .Home-logo{
+        height: auto;
+        width: 100px;
+    }
+
+    .title{
+        font-size: 45px;
+        line-height: 48px;
+    }
+
+    .body{
+        background-image: url("../../assets/images/map-of-africa-background.png");
+        background-repeat: no-repeat;
+        background-position-x: right;
+        background-position-y: 5vh;
+        padding-top: 5vh;
+        background-attachment: fixed;
+    }
+}
+
+.subtitle{
+    font-family: Montserrat, sans-serif !important;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0;
+    text-align: left;
+    color: #E98A2B;
+    margin-top: 27px;
+    margin-bottom: 50px;
+}
+
+.signin-button{
+    background-color: #E98A2B;
+    width: 100%;
+    color: white;
+    padding: 15px;
+    border: 1px solid #E98A2B;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.signup-button{
+    background-color: transparent;
+    width: 100%;
+    color: white;
+    padding: 15px;
+    border: 1px solid #1C1C1C;
+    box-sizing: border-box;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.signup-button:hover{
+    border: 1px solid #E98A2B;
+}

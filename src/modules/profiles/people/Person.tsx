@@ -1,70 +1,220 @@
-import React, {useEffect} from "react";
-import {Container} from "@material-ui/core";
+import React, {useEffect, useState} from "react";
+import {Button, Card, CardContent, Container, Hidden} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-
-import {IPerson} from "./IPerson";
 import PersonCard from "./PersonCard";
 import PersonInterests from "./PersonInterests";
 import PersonAwards from "./PersonAwards";
 import PersonSkills from "./PersonSkills";
 import {useDispatch, useSelector} from "react-redux";
 import {PleaseWait} from "../../../components/PleaseWait";
-import {Alert} from "@material-ui/lab";
 import PersonPosts from "./PersonPosts";
 import ProfileCoverPhoto from "../ProfileCoverPhoto";
-import {getProfile} from "../../../services/User";
 import PersonConnections from "./PersonConnections";
-import {globalStyles} from "../../../theme/styles";
-import useTheme from "@material-ui/core/styles/useTheme";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {startupSelector} from "../startups/redux/startupsSelectors";
-import {loadStartups} from "../startups/redux/startupsActions";
-import store from "../../../data/store";
-import {IStartup} from "../../../interfaces/IStartup";
-import {personSelector} from "./redux/peopleSelectors";
 import {userSelector} from "../../../data/coreSelectors";
-import {loadPeople, loadPersonConnection} from "./redux/peopleActions";
-import {homeStyles} from "../../home/styles";
+import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
+import {useHistory, useLocation} from "react-router-dom";
+import XDialog from "../../../components/dialogs/XDialog";
+import XRichTextArea from "../../../components/inputs/XRichTextArea";
+import userManager from "../../../utils/userManager";
+import XForm from "../../../components/forms/XForm";
+import {Urls} from "../../../routes/Urls";
+import {IEmailObject} from "../../../interfaces/IEmailObject";
+import {sendEmail} from "../../../services/NotificationService";
+import Toast from "../../../utils/Toast";
+import PersonContacts from "./PersonContacts";
+import {getPersonContact} from "./redux/peopleEndpoints";
+import {personSelector} from "./redux/peopleSelectors";
+import {APPEND_PERSON} from "./redux/peopleReducer";
+import {IContact} from "../../../interfaces/IContact";
+import {EmailSettings} from "../../../data/constants";
+import XTextInput from "../../../components/inputs/XTextInput";
 
 const Person = ({match}: any) => {
-    const styles = homeStyles()
     const {id} = match.params
-    const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
-    let person = useSelector((state) => personSelector(state, id))
-
+    const history = useHistory()
+    const location = useLocation()
     const dispatch = useDispatch()
 
-
-    useEffect(() => {
-        (async () => {
-            await dispatch(loadPeople())
-        })()
-    },[id])
-
-    if(!person) {
-        person = store.getState().people.data.find((person: IPerson) => person.id === id)
+    const useQuery = () => {
+        return new URLSearchParams(location.search)
     }
+
+    const context = useQuery().get('context')
+    const jobId = useQuery().get('jobId')
+    const jobName = useQuery().get('jobName')
+    const jobApplicationId = useQuery().get('applicationId')
+    const jobApplicationStatus = useQuery().get('status')
+
+    const person = useSelector((state) => personSelector(state, id))
+    const [showAcceptDialog, setShowAcceptDialog] = useState<boolean>(false)
 
     const user = useSelector(userSelector)
     const canEdit: boolean = id === user?.profile.sub
 
+    useEffect(() => {
+        (async () => {
+            try {
+                const url = makeUrl("Profiles", Endpoints.person.base)
+                const response: any = await getAsync(url, {id})
+                const person = response.body.persons[0]
+
+                dispatch({
+                    type: APPEND_PERSON,
+                    payload: person
+                })
+
+            } catch (e) {
+                if (e.toString().includes('Unauthorized')) {
+                    await userManager.signinRedirect({
+                        state: window.location.pathname + window.location.search
+                    })
+                }
+            }
+        })()
+    }, [id])
+
+    useEffect(() => {
+        if (person) {
+            document.title = `${person.firstname} ${person.lastname} / My Village`
+        }
+    }, [person])
+
+    const initialValues = {
+        acceptMessage: '',
+        applicationId: jobApplicationId,
+        jobId: jobId
+    }
+
+    const handleReject = async (jobId: string, applicationId: any) => {
+        try {
+            const url = makeUrl("Jobs", Endpoints.jobs.update(applicationId))
+            const response: any = await postAsync(url, {status: 'rejected'})
+            history.push(Urls.jobs.singleJob(jobId))
+        } catch (e) {
+            Toast.error(e.toString())
+        }
+    }
+
+    const handleAccept = async (values: any, actions: any) => {
+
+        try {
+            const url = makeUrl("Jobs", Endpoints.jobs.update(values.applicationId))
+            await postAsync(url, {status: 'accepted'})
+
+            const personContacts: any = await getPersonContact(id)
+            const emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
+
+            if (emails.length){
+
+                const body = `<!DOCTYPE html>
+                    <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <title>Title</title>
+                        </head>
+                        <body style="text-align: center; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; background-color: #f1f1f1">
+                            <div style="padding: 25px; width: 100%; background-color: #1c1c1c; color: #ffffff;">
+                                <h1>Congratulations! Your application has been accepted.</h1>
+                            </div>
+                            <div style="background-color: #ffffff; padding: 15px; margin: 0 auto; max-width: 80%">
+                                <div>${values.acceptMessage}</div>
+                                <p>
+                                    <a style="background-color: #e98a2b; text-decoration: none; color: white; padding: 15px;" 
+                                        href="${Urls.base}${Urls.jobs.singleJob(jobId)}">
+                                        Open the job
+                                    </a>
+                                </p>
+                            </div>
+                            <div style="padding: 25px; font-size: 10px; color: #cccccc">
+                                <p>This is an auto-generated email sent from an unmonitored emailing list. You may not reply to it directly.</p>
+                            </div>
+                        </body>
+                    </html>`
+
+                const recipients = emails.map((contact: IContact) => contact.value).join(',')
+
+                const emailToSend: IEmailObject = {
+                    body: body,
+                    recipient: recipients,
+                    senderEmail: EmailSettings.senderEmail,
+                    senderName: EmailSettings.senderName,
+                    subject: `Your application for the ${jobName} has been accepted`
+                }
+
+                await sendEmail(emailToSend)
+            }
+
+        } catch (e) {
+            Toast.error(e.toString())
+        }finally {
+            setShowAcceptDialog(false)
+            history.push(Urls.jobs.singleJob(values.jobId))
+        }
+    }
+
     return (
-        <Container className={styles.scrollable} maxWidth={false}>
+        <Container maxWidth={"lg"}>
             <Grid container justify={"center"} spacing={2}>
-                <Grid item xs={12} sm={12} lg={8}>
+                <Grid item xs={12}>
                     {person ? (
                         <>
                             <ProfileCoverPhoto person={person}/>
                             <PersonCard canEdit={canEdit} person={person}/>
+                            <PersonContacts canEdit={canEdit} person={person}/>
                             <PersonAwards canEdit={canEdit} person={person}/>
                             <PersonInterests canEdit={canEdit} person={person}/>
                             <PersonConnections canEdit={canEdit} person={person}/>
                             <PersonSkills canEdit={canEdit} person={person}/>
                             <PersonPosts canEdit={canEdit} person={person}/>
+
+                            {jobApplicationStatus === "pending" && context === 'job_application' && jobId && jobApplicationId ?
+                                <Card>
+                                    <CardContent>
+                                        <Grid spacing={2} alignContent={"center"} container justify={"center"}>
+                                            <Grid item>
+                                                <Button
+                                                    onClick={() => handleReject(jobId, jobApplicationId)}
+                                                    color={"default"}
+                                                    variant={"outlined"}>Reject</Button>
+                                            </Grid>
+                                            <Grid item>
+                                                <Button
+                                                    onClick={() => setShowAcceptDialog(true)}
+                                                    color={"secondary"} variant={"contained"}>
+                                                    Accept
+                                                </Button>
+
+                                                <XDialog
+                                                    title={"Accept application"}
+                                                    contentText={"Please specify the message that you want to send to the applicant. This could be details of the next steps."}
+                                                    open={showAcceptDialog}
+                                                    onClose={() => setShowAcceptDialog(false)}>
+
+                                                    <XForm
+                                                        initialValues={initialValues}
+                                                        submitButtonLabel={"Notify applicant"}
+                                                        onSubmit={handleAccept}>
+                                                        <XRichTextArea
+                                                            helperText={"This will be sent via email to the applicant"}
+                                                            label={"Acceptance message"}
+                                                            name={"acceptMessage"}/>
+
+                                                            {/*<Hidden>*/}
+                                                            {/*    <XTextInput name={"applicationId"} />*/}
+                                                            {/*</Hidden>*/}
+
+                                                    </XForm>
+                                                </XDialog>
+
+                                            </Grid>
+                                        </Grid>
+                                    </CardContent>
+                                </Card>
+                                : ""}
+
                         </>
-                    ) : <PleaseWait label={"Loading person.Please wait..."} /> }
+                    ) : <PleaseWait label={"Please wait..."}/>}
 
                 </Grid>
             </Grid>

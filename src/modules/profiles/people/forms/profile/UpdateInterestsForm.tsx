@@ -3,13 +3,10 @@ import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
 import {useDispatch} from "react-redux";
-import {get, getAsync, makeUrl} from "../../../../../utils/ajax";
+import {getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Grid} from "@material-ui/core";
 import {IPerson} from "../../IPerson";
-import {IOption} from "../../../../../components/inputs/inputHelpers";
 import {Endpoints} from "../../../../../services/Endpoints";
-import Chip from "@material-ui/core/Chip";
-import {getProfile} from "../../../../../services/User";
 import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
 import {reqArray} from "../../../../../data/validations";
 import {editPersonInterests} from "../../redux/peopleActions";

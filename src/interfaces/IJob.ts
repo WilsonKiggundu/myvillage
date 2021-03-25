@@ -1,15 +1,24 @@
+import {IStartup} from "./IStartup";
+
 export interface IJob {
-    id?: any
     deadline: string
+    profileId: string
+    companyId: string
     details: string
     experience: string
-    howToApply: string
+    benefits: string
     location: string
     qualifications: string
     title: string
     category: IJobCategory
-    profileId: string
-    companyId: string
+    id?: any
+    jobType?: string
+    minSalary?: string
+    maxSalary?: string
+    skills?: string
+    company?: IStartup
+    applicants?: []
+    uploads?: []
 }
 
 export interface IJobCategory {

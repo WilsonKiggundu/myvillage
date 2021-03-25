@@ -5,7 +5,6 @@ import * as yup from "yup"
 import {reqObject, reqString} from "../../../../../data/validations";
 import {useDispatch} from "react-redux";
 import {Grid} from "@material-ui/core";
-import {IEducation} from "../../../../../interfaces/IEducation";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
 import {IPerson} from "../../IPerson";

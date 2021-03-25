@@ -15,11 +15,13 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 import palette from "../../theme/palette";
+import {grey} from "@material-ui/core/colors";
 
 interface IProps {
     minWidth?: number
     maxWidth?: 'sm' | 'md' | 'lg' | false
-    title?: string
+    fullscreen?: boolean
+    title?: any
     contentText?: string
     children: any
     open: boolean
@@ -50,7 +52,7 @@ export default function XDialog(props: IProps) {
         <Dialog
             maxWidth={props.maxWidth}
             fullWidth
-            fullScreen={isMobile}
+            fullScreen={isMobile || props.fullscreen}
             scroll={"paper"}
             open={props.open}
             disableBackdropClick={true}
@@ -96,7 +98,7 @@ export default function XDialog(props: IProps) {
             <DialogContent>
                 {
                     props.contentText ?
-                        <DialogContentText style={{fontSize: '1.1rem'}}>
+                        <DialogContentText style={{fontSize: '0.9rem', color: grey[500]}}>
                             {props.contentText}
                         </DialogContentText>
                         : ""

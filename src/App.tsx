@@ -10,6 +10,11 @@ import {PleaseWait} from "./components/PleaseWait";
 import {Alert} from "@material-ui/lab";
 import {coreConstants} from "./data/coreReducer";
 import {withSnackbar} from "notistack";
+import ReactGA from 'react-ga'
+
+if(process.env.GA_TRACKING_ID){
+    ReactGA.initialize(process.env.GA_TRACKING_ID)
+}
 
 const App: React.FC = () => {
     const oidcState: any = useSelector((state: any) => state.oidc)

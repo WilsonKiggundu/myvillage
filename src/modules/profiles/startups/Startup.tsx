@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Container} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {StartupBioCard} from "./StartupBioCard";
@@ -18,28 +18,34 @@ import {globalStyles} from "../../../theme/styles";
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {getAsync, makeUrl} from "../../../utils/ajax";
+import {Endpoints} from "../../../services/Endpoints";
 
 const Startup = ({match}: any) => {
 
-    const classes = globalStyles()
     const {id} = match.params
-    const theme = useTheme()
-    const dispatch = useDispatch()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    const [startup, setStartup] = useState<IStartup | undefined>(undefined)
 
-    let startup = useSelector((state) => startupSelector(state, id))
+    useEffect(() => {
+        (async () => {
+            const url = makeUrl("Profiles", Endpoints.business.base)
+            const response: any = await getAsync(url, {id})
 
-    if(!startup) {
-        dispatch(loadStartups())
-        startup = store.getState().startups.data.find((startup: IStartup) => startup.id === id)
-    }
+            setStartup(response.body.startups[0])
+        })()
+    }, [id])
+
+    useEffect(() => {
+        if (startup) {
+            document.title = `${startup.name} / ${startup.category} / MyVillage`
+        }
+    })
 
     return (
-        <Container className={classes.scrollable} maxWidth={false}>
+        <Container maxWidth={"lg"}>
             <Box mt={0}>
                 <Grid justify={"center"} container spacing={2}>
-                    <Grid item xs={12} lg={9}>
-
+                    <Grid item xs={12}>
                         {startup ? (
                             <>
                                 <StartupSummary startup={startup}/>
@@ -50,7 +56,7 @@ const Startup = ({match}: any) => {
                                 <StartupContacts startup={startup}/>
                                 <StartupRoles startup={startup}/>
                             </>
-                        ) : <PleaseWait />}
+                        ) : <PleaseWait label={"Fetching data..."} />}
 
                         {/*<StartupAwards profile={profile} canEdit={isPageAdmin} />*/}
 

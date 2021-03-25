@@ -3,7 +3,7 @@ export const IDENTITY_CONFIG = {
     client_id: process.env.REACT_APP_CLIENT_ID,
     redirect_uri: process.env.REACT_APP_REDIRECT_URL,
     automaticSilentRenew: true,
-    //loadUserInfo: true,
+    loadUserInfo: true,
     silent_redirect_uri: process.env.REACT_APP_SILENT_REDIRECT_URL,
     post_logout_redirect_uri: process.env.REACT_APP_LOGOFF_REDIRECT_URL,
     response_type: "id_token token",

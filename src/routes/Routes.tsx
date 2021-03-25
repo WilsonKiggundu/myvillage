@@ -6,7 +6,7 @@ import MainLayout from "../components/layout/MainLayout";
 import Home from "../modules/home/Home";
 import Startups from "../modules/profiles/startups/Startups";
 import Startup from "../modules/profiles/startups/Startup";
-import People from "../modules/profiles/people/People";
+import People from "../modules/profiles/people/Community";
 import Person from "../modules/profiles/people/Person";
 import Jobs from "../modules/jobs/Jobs";
 import Callback from "../modules/auth/Callback";
@@ -21,6 +21,10 @@ import {PrivateRoute} from "./PrivateRoute";
 import store from "../data/store";
 import userManager from "../utils/userManager";
 import Job from "../modules/jobs/Job";
+import Community from "../modules/profiles/people/Community";
+import CreateJob from "../modules/jobs/CreateJob";
+import CreateEvent from "../modules/events/CreateEvent";
+import Event from "../modules/events/Event";
 
 export const Routes = (
     <Switch>
@@ -34,11 +38,12 @@ export const Routes = (
             <Route exact path={Urls.feed} component={Feed}/>
             <Route exact path={Urls.profiles.startups} component={Startups}/>
             <Route exact path={Urls.profiles.startup} component={Startup}/>
-            <Route exact path={Urls.profiles.people} component={People}/>
-            <Route exact path={Urls.profiles.person} component={Person}/>
+            <Route exact path={Urls.profiles.people} component={Community}/>
+            <Route exact path={Urls.profiles.person} render={(props) => <Person {...props} />}/>
 
             <Route exact path={Urls.jobs.list} component={Jobs}/>
             <Route exact path={Urls.job} component={Job}/>
+            <Route exact path={Urls.jobs.create} component={CreateJob}/>
 
             <Route
                 exact
@@ -48,6 +53,8 @@ export const Routes = (
                 }
             />
             <Route exact path={Urls.events} component={() => <Calendar/>}/>
+            <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
+            <Route exact path={Urls.event} component={Event}/>
         </MainLayout>
 
         {/*<Route path={'/404'} component={NotFound} />*/}

@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,700;1,400;1,700&display=swap');
-
+/*@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,700;1,400;1,700&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
 * {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: 'Open Sans', sans-serif !important;
 }
 
 html,
@@ -9,48 +9,17 @@ body, #root, .fill {
     margin: 0;
     border: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow-y: hidden;
-    overflow-x: hidden;
-}
-
-.MuiCard-root {
-    /*border-radius: 0 !important;*/
-    /*box-shadow: none !important;*/
 }
 
 a {
     text-decoration: none;
-    color: #636569;
 }
 
-.ql-editor {
-    min-height: 25vh;
-    padding: 20px 0 !important;
-    font-size: 1.2em;
-    margin-bottom: 25px;
-}
-
-.ql-container.ql-snow {
-    border: 0 !important;
-    border-bottom: solid 1px #ccc !important;
-}
-
-.ql-editor.ql-blank::before {
-    color: rgba(0, 0, 0, 0.6);
-    content: attr(data-placeholder);
-    font-style: normal !important;
-    left: 0px !important;
-    pointer-events: none;
-    position: absolute;
-    right: 15px;
-}
-
-.ql-toolbar.ql-snow {
-    border: 1px solid #ccc !important;
-    border-radius: 5px;
-    box-sizing: content-box;
-    padding: 8px !important;
-    background-color: white;
-}
+/*.MuiCard-root {*/
+/*    overflow: hidden;*/
+/*    border-radius: 8px;*/
+/*    border: solid 1px #dadce0;*/
+/*}*/
+/*.MuiPaper-elevation1 {*/
+/*    box-shadow: none !important;*/
+/*}*/

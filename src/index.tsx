@@ -12,6 +12,8 @@ import userManager from "./utils/userManager";
 import App from "./App";
 import {Provider} from "react-redux";
 
+import './email-templates/inlined.css'
+
 ReactDOM.render(
     <Provider store={store}>
         <OidcProvider store={store} userManager={userManager}>

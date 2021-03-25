@@ -1,83 +1,48 @@
-import {Card, createStyles, Theme} from "@material-ui/core";
+import {Card} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import deepOrange from "@material-ui/core/colors/deepOrange";
-import deepPurple from "@material-ui/core/colors/deepPurple";
-import clsx from "clsx";
 import {getInitials, IPerson} from "../modules/profiles/people/IPerson";
-import CardMedia from "@material-ui/core/CardMedia";
-import Box from "@material-ui/core/Box";
-import grey from "@material-ui/core/colors/grey";
+
+import {LazyLoadImage, trackWindowScroll} from 'react-lazy-load-image-component'
+
+import './ContactCard.css'
 
 interface IProps {
     children?: any
     person: IPerson
+    isEven?: boolean
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-            '& > *': {
-                margin: theme.spacing(1),
-            },
-        },
-        orange: {
-            color: theme.palette.getContrastText(deepOrange[500]),
-            backgroundColor: deepOrange[500],
-            borderColor: deepOrange[500],
-            borderWidth: 1,
-            borderStyle: 'solid'
-        },
-        purple: {
-            color: theme.palette.getContrastText(deepPurple[500]),
-            backgroundColor: deepPurple[500],
-        },
 
-        centerAvatar: {
-            margin: 'auto'
-        },
+const ContactCard = (props: IProps, scrollPosition: any) => {
 
-        largeAvatar: {
-            width: theme.spacing(15),
-            height: theme.spacing(15),
-        },
-
-        mediumAvatar: {
-            width: theme.spacing(8),
-            height: theme.spacing(8),
-        },
-    }),
-);
-
-const ContactCard = (props: IProps) => {
-
-    const classes = useStyles()
-    const {firstname, lastname, avatar, coverPhoto} = props.person
-
+    const {firstname, lastname, avatar, categories, coverPhoto, connectionsCount } = props.person
 
     return (
         <Card>
-
-            {
-                coverPhoto ?
-                    <CardMedia style={{height: 150}} image={coverPhoto}/> :
-                    <Box style={{height: 150, backgroundColor: grey[300]}}/>
-            }
-
-            <CardContent style={{textAlign: 'center', marginTop: -80}}>
-
-                <Avatar src={avatar} className={clsx(classes.orange, classes.largeAvatar, classes.centerAvatar)}>
+            <div className="cover-photo">
+                <Avatar src={avatar} className ={'avatar'}>
                     {getInitials(firstname, lastname)}
                 </Avatar>
-
-                <Typography noWrap component="div" style={{fontSize: '1.3rem', marginTop: 10}}>
-                    <strong>{firstname} {lastname}</strong>
-                </Typography>
-
+                <LazyLoadImage
+                    width={"100%"}
+                    className="cover-photo-image"
+                    src={coverPhoto}
+                    effect={'blur'}
+                />
+            </div>
+            <CardContent>
+                <section className="profile-details">
+                    <section className="profile-name">{firstname} {lastname}</section>
+                    <section className="profile-category">
+                        {categories.map((c: any) => c.category?.name).join(', ')}
+                    </section>
+                    <section className="profile-connections">
+                        {connectionsCount} Connections
+                    </section>
+                </section>
+    
                 {props.children}
 
             </CardContent>

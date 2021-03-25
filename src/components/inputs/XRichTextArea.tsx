@@ -1,20 +1,47 @@
-import React, {useEffect, useState} from "react";
-import XTextAreaInput from "./XTextAreaInput";
-import {Typography} from "@material-ui/core";
-import Toast from "../../utils/Toast";
-import {useField} from "formik";
-import TextField, {TextFieldProps} from "@material-ui/core/TextField";
+import React from "react";
+import {Field, FieldProps, useField} from "formik";
+import {TextFieldProps} from "@material-ui/core/TextField";
 import {hasValue} from "./inputHelpers";
-import {MuiBulletedTextArea} from "react-bulleted-textarea";
+// @ts-ignore
+import {CKEditor} from "@ckeditor/ckeditor5-react"
+// @ts-ignore
+// import BalloonEditor from '@ckeditor/ckeditor5-build-balloon';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import './css/XRichTextArea.css'
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 export type EditorTheme = 'snow' | 'bubble'
 
-interface IProps{
-
+interface IProps {
+    name: string
 }
 
-const XRichTextArea = ({...props}: TextFieldProps & IProps) => {
+const XRichTextArea = ({name, helperText, ...props}: TextFieldProps & IProps) => {
+    const [field, meta] = useField({name});
+    const error = hasValue(meta.error) ? meta.error : undefined
+    const showError = Boolean(error && meta.touched)
+    return (
 
+        <Field name={name}>
+            {({field, form, meta}: FieldProps<number | string>) => (
+                <>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={field.value}
+                        onChange={(event: any, editor: any) => {
+                            form.setFieldValue(field.name, editor.getData())
+                        }}
+                    />
+
+                    {
+                        helperText ? <FormHelperText>{helperText}</FormHelperText> :
+                            showError && <FormHelperText>{error}</FormHelperText>
+                    }
+                </>
+            )}
+        </Field>
+    )
 }
 
 export default XRichTextArea
