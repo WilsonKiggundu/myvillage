@@ -107,10 +107,35 @@ const Person = ({match}: any) => {
 
             if (emails.length){
 
+                const body = `<!DOCTYPE html>
+                    <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <title>Title</title>
+                        </head>
+                        <body style="text-align: center; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; background-color: #f1f1f1">
+                            <div style="padding: 25px; width: 100%; background-color: #1c1c1c; color: #ffffff;">
+                                <h1>Congratulations! Your application has been accepted.</h1>
+                            </div>
+                            <div style="background-color: #ffffff; padding: 15px; margin: 0 auto; max-width: 80%">
+                                <div>${values.acceptMessage}</div>
+                                <p>
+                                    <a style="background-color: #e98a2b; text-decoration: none; color: white; padding: 15px;" 
+                                        href="${Urls.base}${Urls.jobs.singleJob(jobId)}">
+                                        Open the job
+                                    </a>
+                                </p>
+                            </div>
+                            <div style="padding: 25px; font-size: 10px; color: #cccccc">
+                                <p>This is an auto-generated email sent from an unmonitored emailing list. You may not reply to it directly.</p>
+                            </div>
+                        </body>
+                    </html>`
+
                 const recipients = emails.map((contact: IContact) => contact.value).join(',')
 
                 const emailToSend: IEmailObject = {
-                    body: values.acceptMessage,
+                    body: body,
                     recipient: recipients,
                     senderEmail: EmailSettings.senderEmail,
                     senderName: EmailSettings.senderName,

@@ -22,7 +22,7 @@ import Grid from "@material-ui/core/Grid";
 import {useSelector} from "react-redux";
 import {PleaseWait} from "../../components/PleaseWait";
 import Container from "@material-ui/core/Container";
-import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
+import {getStartupContact, getStartups} from "../profiles/startups/redux/startupsEndpoints";
 import {Urls} from "../../routes/Urls";
 import AttachmentIcon from '@material-ui/icons/Attachment';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -41,6 +41,11 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import HourglassFullIcon from '@material-ui/icons/HourglassFull';
 import {SendApplicationNotification} from "./jobHelpers";
+import {IEmailObject} from "../../interfaces/IEmailObject";
+import {EmailSettings} from "../../data/constants";
+import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
+import {IContact} from "../../interfaces/IContact";
+import {sendEmail} from "../../services/NotificationService";
 
 
 const Job = ({match}: any) => {
@@ -73,8 +78,57 @@ const Job = ({match}: any) => {
                 profileId: user.profile.sub
             })
 
-            // send email notification to the job owner
-            await SendApplicationNotification(job, user)
+            const body = `<!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Title</title>
+                </head>
+                <body style="text-align: center; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; background-color: #f1f1f1">
+                    <div style="padding: 25px; width: 100%; background-color: #1c1c1c; color: #ffffff;">
+                        <h1>Someone applied for the ${job.title} role</h1>
+                    </div>
+                    <div style="background-color: #ffffff; padding: 15px; margin: 0 auto; max-width: 80%">
+                        <p>
+                            <a style="background-color: #e98a2b; text-decoration: none; color: white; padding: 15px;" 
+                                href="${Urls.base}${Urls.jobs.singleJob(job.id)}">
+                                Open the job
+                            </a>
+                        </p>
+                    </div>
+                    <div style="padding: 25px; font-size: 10px; color: #cccccc">
+                        <p>This is an auto-generated email sent from an unmonitored emailing list. You may not reply to it directly.</p>
+                    </div>
+                </body>
+            </html>`
+
+            const {profileId, companyId} = job
+            let recipients: string[]
+
+            const emailToSend: IEmailObject = {
+                body: body,
+                recipient: "",
+                senderEmail: EmailSettings.senderEmail,
+                senderName: EmailSettings.senderName,
+                subject: "Job application"
+            }
+
+            const personContacts: any = await getPersonContact(profileId)
+            let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
+
+            if(emails.length){
+                recipients = emails.map((contact: IContact) => contact.value)
+            }
+            else{
+                const companyContacts: any = await getStartupContact(companyId)
+                const companyEmails: IContact[] = companyContacts.body.filter((contact: IContact) => contact.type === 2)
+                recipients = companyEmails.map((contact: IContact) => contact.value)
+            }
+
+            if (recipients){
+                emailToSend.recipient = recipients.join(',')
+                await sendEmail(emailToSend)
+            }
 
         } catch (error) {
             Toast.error(error.toString())
@@ -252,7 +306,7 @@ const Job = ({match}: any) => {
                                                 }
 
                                                 {
-                                                    canApply && !alreadyApplied &&
+                                                    canApply && !alreadyApplied && applyButton.visible &&
                                                     <Button className="apply-button"
                                                             onClick={() => handleApply(job)}
                                                             variant={"contained"}

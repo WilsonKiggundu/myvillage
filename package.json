@@ -61,6 +61,7 @@
     "yup": "^0.29.3"
   },
   "scripts": {
+    "build-babel": "NODE_ENV=production babel src --out-dir src/lib",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -98,9 +99,21 @@
     "@types/redux-logger": "^3.0.8",
     "@types/superagent": "^4.1.10",
     "autosuggest-highlight": "^3.1.1",
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-preset-react-app": "^3.1.1",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.4.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.1",
     "faker": "^5.1.0",
     "formik": "^2.1.7",
     "formik-material-ui": "^3.0.0",
+    "node-fetch": "^2.6.1",
     "react-uuid": "^1.0.2"
   }
 }
