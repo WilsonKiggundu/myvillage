@@ -148,11 +148,19 @@ export const isThisYear = (str: string): boolean => {
 }
 
 export const longDate = (date: any): string => {
-    return date ? format(parseISO(date), longDateFormat) : ""
+    try{
+        return format(parseISO(date), longDateFormat)
+    }catch (e){
+        return ""
+    }
 }
 
 export const timeFormat = (date: any): string => {
-    return date ? format(parseISO(date), "h:mma z") : ""
+    try{
+        return format(parseISO(date), "h:mma z")
+    }catch (e){
+        return ""
+    }
 }
 
 export const timeAgo = (date: any): string => {
