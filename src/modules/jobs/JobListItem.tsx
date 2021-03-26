@@ -88,7 +88,7 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                         job.deadline && <Box mt={3} mb={3}>
                             <Grid container justify={"space-between"}>
                                 <Grid className="job-deadline" item>
-                                    <strong>Application deadline</strong><br/>{job.deadline}
+                                    <strong>Application deadline</strong><br/>{(job.deadline)}
                                 </Grid>
                             </Grid>
                         </Box>
