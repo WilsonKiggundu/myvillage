@@ -86,6 +86,7 @@ export default function StartupSummary({startup}: IProps) {
                                             id={startup.id}
                                             onClose={() => setOpenEditProfilePhotoDialog(false)}
                                             type={"profilePhoto"}
+                                            showUploadButton={true}
                                             category={"startup"}
                                             filesLimit={1}
                                             acceptedTypes={['image/*']}/>

@@ -123,6 +123,7 @@ const PersonCard = ({person, canEdit}: IProps) => {
                                          onClose={() => setOpenEditProfilePhotoDialog(false)}
                                          open={openEditProfilePhotoDialog}>
                                     <UploadFile
+                                        showUploadButton={true}
                                         type={"profilePhoto"}
                                         category={"person"}
                                         onClose={() => setOpenEditProfilePhotoDialog(false)}

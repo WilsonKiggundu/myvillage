@@ -92,6 +92,7 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
                                 type={"coverPhoto"}
                                 category={category}
                                 filesLimit={1}
+                                showUploadButton={true}
                                 id={person?.id || startup?.id}
                                 onClose={() => setOpenUploadDialog(false)}
                                 acceptedTypes={['image/*']}/>
