@@ -1,5 +1,8 @@
 export const Urls = ({
     base: process.env.REACT_APP_PUBLIC_URL,
+    devices: {
+      publicKey: '/api/devices/key'
+    },
     articles: {
         create: '/articles/create'
     },

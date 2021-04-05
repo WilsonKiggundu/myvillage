@@ -48,7 +48,7 @@ const Feed = () => {
     return (
         <Container maxWidth={"md"}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item>
+                <Grid xs={12} item>
                     <StartAPostCard placeholder={"What's on your mind?"}/>
                     <Box>
                         {_.isEmpty(posts.data) && <p>No results found</p>}

@@ -6,6 +6,12 @@ import {useSelector} from "react-redux";
 
 import './MainLayout.css'
 import userManager from "../../utils/userManager";
+import {
+    initialiseServiceWorker, subscribe
+} from "../../utils/web-push/notifications";
+import {checkBrowser} from "../../utils/web-push/browser";
+
+const serviceWorker = '../../../public/service-worker.js'
 
 interface IProps {
     user?: any
@@ -25,7 +31,26 @@ function MainLayout(props: IProps) {
 
     useEffect(() => {
         document.body.style.backgroundColor = '#F1F1F0'
-    })
+
+        if ('Notification' in window){
+
+            const browser = checkBrowser()
+
+            if (browser === 'chrome'){
+                Notification.requestPermission().then(function (status) {
+                    if (status === 'denied') {
+                        console.log('[Notification.requestPermission] Browser denied permissions to notification api.');
+                    } else if (status === 'granted') {
+                        console.log('[Notification.requestPermission] Initializing service worker.');
+                        initialiseServiceWorker();
+                        subscribe(user.profile.sub)
+                    }
+                });
+            }
+
+        }
+
+    }, [user])
 
     return (
         <>

@@ -3,7 +3,6 @@ import Toast from './Toast'
 import {Endpoints} from "../services/Endpoints";
 import userManager from "./userManager";
 import {User} from "oidc-client";
-import apiRequest from "./apiRequest";
 
 type CallbackFunction = (data?: any) => void;
 type ErrorCallback = (err: any, res: superagent.Response) => void;
@@ -88,14 +87,14 @@ export const makeUrl = (service: Services, endpoint: string, params?: object) =>
 
 export const get = (url: string, params: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     userManager.getUser().then((user: User | null) => {
-        if(user){
+        if (user) {
             superagent.get(url)
                 .set('Authorization', `Bearer ${user.access_token}`)
                 .query(params)
                 .set('Accept', 'application/json')
                 .timeout(timeout)
                 .end(handleResponse(callBack, errorCallBack, endCallBack))
-        }else{
+        } else {
             userManager.signinSilent()
         }
     }).catch(error => {
@@ -106,7 +105,7 @@ export const get = (url: string, params: any, callBack: CallbackFunction, errorC
 export const getAsync = (url: string, params?: any) => {
     return new Promise((resolve, reject) => {
         userManager.getUser().then((user: User | null) => {
-            if(user){
+            if (user) {
                 return superagent.get(url)
                     .set('Authorization', `Bearer ${user.access_token}`)
                     .set('Accept', 'application/json')
@@ -116,7 +115,7 @@ export const getAsync = (url: string, params?: any) => {
                         if (!err) resolve(res)
                         else reject(err)
                     })
-            }else{
+            } else {
                 userManager.signinSilent()
             }
         }).catch(error => {
@@ -125,16 +124,29 @@ export const getAsync = (url: string, params?: any) => {
     })
 }
 
+export const getWithoutLoginAsync = (url: string, params?: any) => {
+    return new Promise((resolve, reject) => {
+        return superagent.get(url)
+            .set('Accept', 'application/json')
+            .query(params)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
+    })
+}
+
 export const search = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     userManager.getUser().then((user: User | null) => {
-        if(user){
+        if (user) {
             superagent.get(url)
                 .set('Authorization', `Bearer ${user.access_token}`)
                 .set('Accept', 'application/json')
                 .query(data)
                 .timeout(timeout)
                 .end(handleResponse(callBack, errorCallBack, endCallBack))
-        }else{
+        } else {
             userManager.signinSilent()
         }
     }).catch(error => {
@@ -145,7 +157,7 @@ export const search = (url: string, data: any, callBack: CallbackFunction, error
 
 export const post = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     userManager.getUser().then((user: User | null) => {
-        if(user){
+        if (user) {
             superagent.post(url)
                 .set('Authorization', `Bearer ${user.access_token}`)
                 .set('Accept', 'application/json')
@@ -153,7 +165,7 @@ export const post = (url: string, data: any, callBack: CallbackFunction, errorCa
                 .send(data)
                 .timeout(timeout)
                 .end(handleResponse(callBack, errorCallBack, endCallBack))
-        }else{
+        } else {
             userManager.signinSilent()
         }
     }).catch(error => {
@@ -165,7 +177,7 @@ export const postAsync = (url: string, data: any, apikey?: string) => {
     return new Promise((resolve, reject) => {
 
         userManager.getUser().then((user: User | null) => {
-            if(user){
+            if (user) {
 
                 let request = superagent.post(url)
                     .set('Authorization', `Bearer ${user.access_token}`)
@@ -182,12 +194,33 @@ export const postAsync = (url: string, data: any, apikey?: string) => {
                         if (!err) resolve(res)
                         else reject(err)
                     })
-            }else{
+            } else {
                 userManager.signinSilent()
             }
         }).catch(error => {
             Toast.error(error.message)
         })
+
+    })
+}
+
+export const postWithoutLoginAsync = (url: string, data: any, apikey?: string) => {
+    return new Promise((resolve, reject) => {
+
+        let request = superagent.post(url)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+
+        if (apikey)
+            request = request.set('APIKEY', apikey)
+
+        return request
+            .send(data)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
 
     })
 }
@@ -199,7 +232,7 @@ export const postFile = (file: any, callBack: CallbackFunction, errorCallBack?: 
     formData.append('file', file);
 
     userManager.getUser().then((user: User | null) => {
-        if(user){
+        if (user) {
             superagent.post(url)
                 .set('Authorization', `Bearer ${user.access_token}`)
                 .set('Accept', 'application/octet-stream')
@@ -207,7 +240,7 @@ export const postFile = (file: any, callBack: CallbackFunction, errorCallBack?: 
                 .send(formData)
                 .timeout(timeout)
                 .end(handleResponse(callBack, errorCallBack, endCallBack))
-        }else{
+        } else {
             userManager.signinSilent()
         }
     }).catch(error => {
@@ -226,7 +259,7 @@ export const postFileAsync = (file: any) => {
     return new Promise((resolve, reject) => {
 
         userManager.getUser().then((user: User | null) => {
-            if(user){
+            if (user) {
                 return superagent.post(url)
                     .set('Authorization', `Bearer ${user.access_token}`)
                     .set('Accept', 'application/octet-stream')
@@ -237,7 +270,7 @@ export const postFileAsync = (file: any) => {
                         if (!err) resolve(res)
                         else reject(err)
                     })
-            }else{
+            } else {
                 userManager.signinSilent()
             }
         }).catch(error => {
@@ -250,7 +283,7 @@ export const postFileAsync = (file: any) => {
 export const put = (url: string, data: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
 
     userManager.getUser().then((user: User | null) => {
-        if(user){
+        if (user) {
             superagent.put(url)
                 .set('Authorization', `Bearer ${user.access_token}`)
                 .set('Content-Type', 'application/json')
@@ -258,7 +291,7 @@ export const put = (url: string, data: any, callBack: CallbackFunction, errorCal
                 .send(data)
                 .timeout(timeout)
                 .end(handleResponse(callBack, errorCallBack, endCallBack))
-        }else{
+        } else {
             userManager.signinSilent()
         }
     }).catch(error => {
@@ -271,7 +304,7 @@ export const putAsync = (url: string, data: any) => {
     return new Promise((resolve, reject) => {
 
         userManager.getUser().then((user: User | null) => {
-            if(user){
+            if (user) {
                 return superagent.put(url)
                     .set('Authorization', `Bearer ${user.access_token}`)
                     .set('Accept', 'application/json')
@@ -282,7 +315,7 @@ export const putAsync = (url: string, data: any) => {
                         if (!err) resolve(res)
                         else reject(err)
                     })
-            }else{
+            } else {
                 userManager.signinSilent()
             }
         }).catch(error => {
@@ -296,7 +329,7 @@ export const deleteAsync = (url: string, params: any) => {
     return new Promise((resolve, reject) => {
 
         userManager.getUser().then((user: User | null) => {
-            if(user){
+            if (user) {
                 return superagent.delete(url)
                     .set('Authorization', `Bearer ${user.access_token}`)
                     .set('Accept', 'application/json')
@@ -307,7 +340,7 @@ export const deleteAsync = (url: string, params: any) => {
                         if (!err) resolve(res)
                         else reject(err)
                     })
-            }else{
+            } else {
                 userManager.signinSilent()
             }
         }).catch(error => {
@@ -317,16 +350,16 @@ export const deleteAsync = (url: string, params: any) => {
     })
 }
 
-export const del = (url: string,  callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
+export const del = (url: string, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
 
     userManager.getUser().then((user: User | null) => {
-        if(user){
+        if (user) {
             superagent.delete(url)
                 .set('Authorization', `Bearer ${user.access_token}`)
                 .set('Accept', 'application/json')
                 .timeout(timeout)
                 .end(handleResponse(callBack, errorCallBack, endCallBack))
-        }else{
+        } else {
             userManager.signinSilent()
         }
     }).catch(error => {
