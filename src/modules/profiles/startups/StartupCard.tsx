@@ -29,7 +29,9 @@ const StartupCard = ({startup}: IProps) => {
     const nameArray = startup.name.split(' ')
 
     nameArray.forEach(part => {
-        initials.push(part[0].toUpperCase())
+        if(part){
+            initials.push(part[0].toUpperCase())
+        }
     })
 
     const handleClick = (id: string) => {
