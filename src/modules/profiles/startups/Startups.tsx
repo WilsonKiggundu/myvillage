@@ -47,7 +47,7 @@ const Startups = () => {
                     <Grid spacing={2} container>
                         {startups.data.map((startup: any) => (
                             <Grid item key={startup.id} xs={12} sm={6} md={4}>
-                                <StartupCard {...startup} />
+                                <StartupCard startup={startup} />
                             </Grid>
                         ))}
                     </Grid>

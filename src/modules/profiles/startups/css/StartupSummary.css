@@ -1,0 +1,30 @@
+.StartupSummary-logo{
+    position: absolute;
+    z-index: 1000;
+    width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    margin: 15px;
+    border: solid 2px white;
+    line-height: 100px;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    background-color: white;
+}
+
+.StartupSummary-logo img{
+    width: 100%;
+    border-radius: 100%;
+    height: auto;
+}
+
+.StartupSummary-name{
+    font-size: 2em;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.StartupSummary-category{
+    margin: 0 5px;
+}

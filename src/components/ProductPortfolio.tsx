@@ -113,7 +113,7 @@ const ProductPortfolio = ({startup, ...props}: IProps) => {
                                     {canEdit ? <Grid item xs={12}>
                                         <Box mt={2}>
                                             <Button variant={"contained"}
-                                                    color={"secondary"}
+                                                    color={"primary"}
                                                     className={clsx(classes.flat)}
                                                     size={"small"}
                                                     onClick={() => handleEdit(product)}>Edit</Button>

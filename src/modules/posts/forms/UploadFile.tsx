@@ -99,7 +99,7 @@ const UploadFile = ({done, id, addCaption, showUploadButton, type, addToFeed, ca
                     const profile: any =
                         category === "person" ?
                             { userId: user.profile.sub } :
-                            { id: startup?.id }
+                            { id: id }
 
                     type === "coverPhoto" ?
                         profile.coverPhoto = upload.path :

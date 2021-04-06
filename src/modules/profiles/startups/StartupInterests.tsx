@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
 import {deleteStartupInterests} from "./redux/startupsActions";
 import {startupInterestsSelector} from "./redux/startupsSelectors";
+import {Divider} from "@material-ui/core";
 
 interface IProps {
     startup: IStartup
@@ -47,6 +48,8 @@ const StartupInterests = ({startup}: IProps) => {
                     }
                     title={"Our interests"}
                 />
+
+                <Divider />
 
                 {interests?.length ? (
                     <CardContent>

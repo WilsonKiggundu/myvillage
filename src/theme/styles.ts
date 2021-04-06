@@ -113,6 +113,10 @@ export const globalStyles = makeStyles((theme) => ({
         //backgroundColor: palette.primary.main
     },
 
+    startupLogo: {
+        marginBottom: 25
+    },
+
     tile: {
         borderRadius: 0
     },

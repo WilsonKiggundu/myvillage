@@ -9,6 +9,10 @@ export const EDIT_STARTUP = 'startups/EDIT_STARTUP';
 export const EDIT_STARTUP_SUCCEEDED = 'startups/EDIT_STARTUP_SUCCEEDED';
 export const EDIT_STARTUP_FAILED = 'startups/EDIT_STARTUP_FAILED';
 
+export const APPEND_STARTUP = 'people/APPEND_STARTUP';
+export const APPEND_STARTUP_SUCCEEDED = 'people/APPEND_STARTUP_SUCCESS';
+export const APPEND_STARTUP_FAILED = 'people/APPEND_STARTUP_FAILURE';
+
 export const EDIT_STARTUP_ADDRESS = 'startups/EDIT_STARTUP_ADDRESS';
 export const EDIT_STARTUP_ADDRESS_SUCCEEDED = 'startups/EDIT_STARTUP_ADDRESS_SUCCEEDED';
 export const EDIT_STARTUP_ADDRESS_FAILED = 'startups/EDIT_STARTUP_ADDRESS_FAILED';
@@ -80,7 +84,13 @@ const initialState: any = {
 }
 
 export default function reducer(state = initialState, action: any) {
-    if (action.type === ADD_STARTUP) {
+    if (action.type === APPEND_STARTUP){
+        return {
+            ...state,
+            data: [...state.data, action.payload],
+            isLoading: false
+        }
+    }else if (action.type === ADD_STARTUP) {
         return {
             ...state
         }

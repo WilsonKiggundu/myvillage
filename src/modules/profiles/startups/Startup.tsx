@@ -20,18 +20,46 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {getAsync, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
+import userManager from "../../../utils/userManager";
+import {APPEND_STARTUP} from "./redux/startupsReducer";
+
+import './css/StartupSummary.css'
 
 const Startup = ({match}: any) => {
 
+    const dispatch = useDispatch()
     const {id} = match.params
-    const [startup, setStartup] = useState<IStartup | undefined>(undefined)
+    // const [startup, setStartup] = useState<IStartup | undefined>(undefined)
 
+    const startup = useSelector(state => startupSelector(state, id))
     useEffect(() => {
         (async () => {
             const url = makeUrl("Profiles", Endpoints.business.base)
             const response: any = await getAsync(url, {id})
 
-            setStartup(response.body.startups[0])
+            // setStartup(response.body.startups[0])
+        })()
+    }, [id])
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const url = makeUrl("Profiles", Endpoints.business.base)
+                const response: any = await getAsync(url, {id})
+                const startup = response.body.startups[0]
+
+                dispatch({
+                    type: APPEND_STARTUP,
+                    payload: startup
+                })
+
+            } catch (e) {
+                if (e.toString().includes('Unauthorized')) {
+                    await userManager.signinRedirect({
+                        state: window.location.pathname + window.location.search
+                    })
+                }
+            }
         })()
     }, [id])
 

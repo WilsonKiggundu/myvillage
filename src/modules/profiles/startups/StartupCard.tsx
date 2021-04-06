@@ -1,62 +1,36 @@
 import React from "react";
-import {Card, createStyles, Theme} from "@material-ui/core";
+import {Card, Grid} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import {Urls} from "../../../routes/Urls";
 import {globalStyles} from "../../../theme/styles";
-import clsx from "clsx";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
-import palette from "../../../theme/palette";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
+import './css/StartupCard.css'
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import {IStartup} from "../../../interfaces/IStartup";
+import Chip from "@material-ui/core/Chip";
 
 interface IProps {
-    id: string
-    name: string
-    description: string
-    interests?: [string]
-    category?: string
-    logo?: string
-    coverPhoto?: string
+    startup: IStartup
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            '& > *': {
-                margin: theme.spacing(0.5),
-            },
-        },
-
-        truncate: {
-            height: 50,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-        },
-
-        tile: {
-            borderRadius: 0
-        },
-
-        flat: {
-            boxShadow: 'none'
-        },
-
-
-    }),
-);
-
-const StartupCard = ({coverPhoto, ...props}: IProps) => {
+const StartupCard = ({startup}: IProps) => {
 
     const styles = globalStyles()
-    const classes = useStyles()
     const history = useHistory()
+
+    let div = document.createElement("div")
+    div.innerHTML = startup.description
+
+    const startupDescription = div.textContent || div.innerText || ""
+
+    const initials: string[] = []
+    const nameArray = startup.name.split(' ')
+
+    nameArray.forEach(part => {
+        initials.push(part[0].toUpperCase())
+    })
 
     const handleClick = (id: string) => {
         const route = Urls.profiles.singleStartup(id)
@@ -64,35 +38,69 @@ const StartupCard = ({coverPhoto, ...props}: IProps) => {
     }
 
     return (
-        <Card style={{textAlign: "center"}}>
-            <CardContent style={{paddingTop: 25}}>
-                <Avatar variant={"circular"}
-                        className={clsx(styles.mediumAvatar, styles.centerAvatar)}
-                        src={props.logo}/>
+        <Card>
+            <CardContent>
+                <Grid justify={"center"} container>
+                    <Grid item xs={12}>
+                        <div className="startup-logo-holder">
+                            {startup.avatar ?
+                                <LazyLoadImage
+                                    src={startup.avatar}
+                                    effect={"blur"}
+                                    alt={startup.name}
+                                /> : <div className="startup-initials">
+                                    {initials.join('')}
+                                </div>
+                            }
+                        </div>
+                    </Grid>
+                </Grid>
 
-                <Typography noWrap
-                            variant="h6"
-                            className={classes.truncate}
-                            style={{textAlign: "center", marginTop: 15}}>
-                    {props.name}
-                </Typography>
+                <Grid spacing={2} justify={"center"} container>
+                    <Grid item xs={12}>
+                        <div className="startup-name">
+                            {startup.name}
+                        </div>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <div className="startup-category">
+                            {
+                                startup.category.split(',')
+                                    .map((c: string, index: number) => <Chip
+                                        size={"small"}
+                                        key={index}
+                                        color={"secondary"}
+                                        variant={"outlined"}
+                                        label={c}/>)
+                            }
+                        </div>
+                    </Grid>
+                </Grid>
 
-                {props.description ?
-                    <Typography className={styles.maxLines} style={{whiteSpace: 'pre-line'}} variant={"body2"}>
-                        {props.description}
-                    </Typography>
-                    : ""}
+                <div className="startup-description-truncated">
+                    {startupDescription}
+                </div>
 
-                <Box mx={"auto"} mb={2} mt={4}>
-                    <Button
-                        className={clsx(styles.flex, styles.noShadow)}
-                        onClick={() => handleClick(props.id)}
-                        variant="contained"
-                        style={{
-                            color: palette.tertiary.main
-                        }}>
+                <Box mt={2}>
+                    <Grid container justify={"space-between"}>
+                        {startup.incorporationDate ? <Grid item>
+                            <div className="startup-inc-date">
+                                {startup.incorporationDate}
+                            </div>
+                        </Grid> : ""}
+                        {startup.employeeCount ? <Grid item>
+                            <div className="startup-inc-date">
+                                {startup.employeeCount} employees
+                            </div>
+                        </Grid> : ""}
+                    </Grid>
+                </Box>
+
+                <Box mx={"auto"} mt={2}>
+                    <a href={Urls.profiles.singleStartup(startup.id)}
+                       className="startup-view-profile">
                         <strong>View profile</strong>
-                    </Button>
+                    </a>
                 </Box>
             </CardContent>
         </Card>
