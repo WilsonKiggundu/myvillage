@@ -12,7 +12,9 @@
 }
 
 .startup-logo-holder img{
-    max-width: 100%;
+    width: auto;
+    /*max-width: 100px;*/
+    height: 100px;
 }
 
 .startup-name{
