@@ -123,6 +123,9 @@ export default function reducer(state = initialState, action: any) {
             isLoading: false
         }
     } else if (action.type === FETCH_POSTS_FAILED) {
+
+        console.log(action)
+
         return {
             ...state,
             error: action.payload,

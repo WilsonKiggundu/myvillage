@@ -11,7 +11,7 @@ interface IProps {
 export const XLoginSnackbar = ({open, onClose}: IProps) => {
     return (
         <Snackbar
-            anchorOrigin={{vertical: "top", horizontal: "center"}}
+            anchorOrigin={{vertical: "bottom", horizontal: "center"}}
             open={open} autoHideDuration={6000}
             onClose={onClose}>
             <Alert onClose={onClose} severity="warning">

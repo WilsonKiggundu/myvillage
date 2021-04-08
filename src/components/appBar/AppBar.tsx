@@ -165,7 +165,7 @@ export default function ApplicationBar() {
                                 <MenuIcon className="Appbar-menu-icon"/>
                             </div>
                         </IconButton> :
-                        isAuthenticated ?
+                        user ?
                             <>
                                 <IconButton aria-controls="profile-menu"
                                             aria-haspopup="true"
@@ -202,8 +202,8 @@ export default function ApplicationBar() {
                             <div className="Appbar-login-button">
                                 <Button
                                     onClick={handleLogin}
-                                    variant={"contained"}
-                                    color={"secondary"}>Have an account? Login.</Button>
+                                    variant={"outlined"}
+                                    color={"secondary"}>Do you have an account? Login.</Button>
                             </div>
                     }
                 </Grid>
