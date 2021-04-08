@@ -14,11 +14,16 @@ import {PostContentLoader} from "../../components/loaders/PostContentLoader";
 
 import ErrorPage from "../exceptions/Error";
 import {scrolledToBottom} from "../../utils/scrollHelpers";
+import {userSelector} from "../../data/coreSelectors";
+import userManager from "../../utils/userManager";
+import {handleLogin} from "../../utils/authHelpers";
 
 const Feed = () => {
 
     const dispatch = useDispatch()
     const posts = useSelector(postsSelector)
+
+    const user = useSelector(userSelector)
 
     useEffect(() => {
 
@@ -48,7 +53,7 @@ const Feed = () => {
     return (
         <Container maxWidth={"md"}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid item>
+                <Grid xs={12} item>
                     <StartAPostCard placeholder={"What's on your mind?"}/>
                     <Box>
                         {_.isEmpty(posts.data) && <p>No results found</p>}

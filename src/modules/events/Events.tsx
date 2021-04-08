@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {XFab} from "../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add";
-import XDialog from "../../components/dialogs/XDialog";
-import NewEvent from "./forms/NewEvent";
 import {PleaseWait} from "../../components/PleaseWait";
 import {useDispatch, useSelector} from "react-redux";
 import {IEvent} from "../../interfaces/IEvent";
@@ -15,15 +13,19 @@ import ErrorPage from "../exceptions/Error";
 
 import {scrolledToBottom} from "../../utils/scrollHelpers";
 import {Urls} from "../../routes/Urls";
+import {userSelector} from "../../data/coreSelectors";
+import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 
 type EventFilter = 'today' | 'week' | 'month' | 'year'
 
 const EventsView = () => {
 
     const [openAddEventDialog, setOpenAddEventDialog] = useState<boolean>(false)
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
     const dispatch = useDispatch()
     const events = useSelector(eventsSelector)
+    const user = useSelector(userSelector)
 
     useEffect(() => {
         dispatch(loadEvents())
@@ -39,6 +41,14 @@ const EventsView = () => {
             }
         })
     })
+
+    const handleCreate = () => {
+        if (user) {
+            window.location.replace(Urls.createEvent)
+        } else {
+            setOpenSnackbar(true)
+        }
+    }
 
     if (events.isLoading) return <PleaseWait label={"Loading events..."}/>
     if (events.error) return (
@@ -64,7 +74,7 @@ const EventsView = () => {
             }
 
             <XFab
-                href={Urls.createEvent}
+                onClick={handleCreate}
                 position={"fixed"}
                 bottom={20}
                 right={20}
@@ -72,14 +82,12 @@ const EventsView = () => {
                 <AddIcon/>
             </XFab>
 
-            <XDialog
-                maxWidth={"md"}
-                title={"Add an event"}
-                open={openAddEventDialog}
-                onClose={() => setOpenAddEventDialog(false)}>
-                <NewEvent
-                    onClose={() => setOpenAddEventDialog(false)}/>
-            </XDialog>
+            {
+                !user && <XLoginSnackbar
+                    open={openSnackbar}
+                    onClose={() => setOpenSnackbar(false)}/>
+            }
+
         </Container>
     )
 

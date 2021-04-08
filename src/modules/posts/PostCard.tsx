@@ -30,6 +30,7 @@ import {sendEmail} from "../../services/NotificationService";
 import {EmailSettings} from "../../data/constants";
 import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
 import {IContact} from "../../interfaces/IContact";
+import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 
 
 interface IProps {
@@ -49,16 +50,21 @@ const PostCard = ({post}: IProps) => {
 
     const [openCommentDialog, setOpenCommentDialog] = useState<boolean>(false)
     const [openLikesDialog, setOpenLikesDialog] = useState<boolean>(false)
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
     const handleLike = async (postId: string) => {
-        const personId = user?.profile.sub
-        dispatch(likePost({entityId: postId, personId}))
+        if (!user) {
+            setOpenSnackbar(true)
+        }
+        else{
+            const personId = user?.profile.sub
+            dispatch(likePost({entityId: postId, personId}))
 
-        const personContacts: any = await getPersonContact(personId)
-        let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
-        const recipient = emails.map((contact: IContact) => contact.value).join(',')
+            const personContacts: any = await getPersonContact(personId)
+            let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
+            const recipient = emails.map((contact: IContact) => contact.value).join(',')
 
-        const body = `<!DOCTYPE html>
+            const body = `<!DOCTYPE html>
             <html lang="en">
                 <head>
                     <meta charset="UTF-8">
@@ -82,16 +88,23 @@ const PostCard = ({post}: IProps) => {
                 </body>
             </html>`
 
-        const emailToSend: IEmailObject = {
-            body: body,
-            recipient: recipient,
-            senderEmail: EmailSettings.senderEmail,
-            senderName: EmailSettings.senderName,
-            subject: "MyVillage news feed"
+            const emailToSend: IEmailObject = {
+                body: body,
+                recipient: recipient,
+                senderEmail: EmailSettings.senderEmail,
+                senderName: EmailSettings.senderName,
+                subject: "MyVillage news feed"
+            }
+
+            await sendEmail(emailToSend)
         }
 
-        await sendEmail(emailToSend)
 
+    }
+
+    const handleAddComment = () => {
+        if (user) setOpenCommentDialog(true)
+        else setOpenSnackbar(true)
     }
 
     const handleViewAuthor = (authorId: string) => {
@@ -109,6 +122,9 @@ const PostCard = ({post}: IProps) => {
         <Box className="PostCard" mt={2}>
             {post ? (
                 <div>
+
+                    {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)} />}
+
                     <CardHeader
                         avatar={<Avatar src={post.author?.avatar}>
                             {post.author?.firstname[0].toUpperCase()}{post.author?.lastname[0].toUpperCase()}
@@ -195,7 +211,7 @@ const PostCard = ({post}: IProps) => {
                         {post.comments ? <CommentsList postId={post.id}/> : ""}
 
                         <div
-                            onClick={() => setOpenCommentDialog(true)}
+                            onClick={handleAddComment}
                             className="Comment-input">
                             <List>
                                 <ListItem>

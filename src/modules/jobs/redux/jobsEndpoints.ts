@@ -1,30 +1,30 @@
 
 import {Endpoints} from "../../../services/Endpoints";
-import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
+import {getAsync, getWithoutLoginAsync, makeUrl, postAsync, postWithoutLoginAsync} from "../../../utils/ajax";
 import {IJob} from "../../../interfaces/IJob";
 
 export const postJob = async (job: IJob) => {
     const url = makeUrl("Jobs", Endpoints.jobs.api)
-    return await postAsync(url, job)
+    return await postWithoutLoginAsync(url, job)
 }
 
 export const applyForJob = async (params: any) => {
     let url = makeUrl("Jobs", Endpoints.jobs.api)
     url = url + '/' + params.id + '/apply'
-    return await postAsync(url, params)
+    return await postWithoutLoginAsync(url, params)
 }
 
 export const getJobById = async (id: any) => {
     const url = makeUrl("Jobs", Endpoints.jobs.api)
-    return await getAsync(url + '/' + id)
+    return await getWithoutLoginAsync(url + '/' + id)
 }
 
 export const getJobs = async (params?: any) => {
     const url = makeUrl("Jobs", Endpoints.jobs.api)
-    return await getAsync(url, params)
+    return await getWithoutLoginAsync(url, params)
 }
 
 export const getJobCategories = async (params?: any) => {
     const url = makeUrl("Jobs", Endpoints.jobs.api + "/categories")
-    return await getAsync(url, params)
+    return await getWithoutLoginAsync(url, params)
 }

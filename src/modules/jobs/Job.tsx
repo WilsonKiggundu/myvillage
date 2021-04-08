@@ -40,12 +40,12 @@ import {useHistory} from "react-router-dom";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import HourglassFullIcon from '@material-ui/icons/HourglassFull';
-import {SendApplicationNotification} from "./jobHelpers";
 import {IEmailObject} from "../../interfaces/IEmailObject";
 import {EmailSettings} from "../../data/constants";
 import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
 import {IContact} from "../../interfaces/IContact";
 import {sendEmail} from "../../services/NotificationService";
+import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 
 
 const Job = ({match}: any) => {
@@ -65,20 +65,25 @@ const Job = ({match}: any) => {
     const [acceptedApplications, setAcceptedApplications] = useState<any>([])
     const [rejectedApplications, setRejectedApplications] = useState<any>([])
     const [pendingApplications, setPendingApplications] = useState<any>([])
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
     const handleApply = async (job: IJob) => {
-        setApplyButton({
-            disabled: true,
-            label: <CircularProgress size={25}/>
-        })
 
-        try {
-            await applyForJob({
-                id: job.id,
-                profileId: user.profile.sub
+        if (!user) {
+            setOpenSnackbar(true)
+        } else {
+            setApplyButton({
+                disabled: true,
+                label: <CircularProgress size={25}/>
             })
 
-            const body = `<!DOCTYPE html>
+            try {
+                await applyForJob({
+                    id: job.id,
+                    profileId: user.profile.sub
+                })
+
+                const body = `<!DOCTYPE html>
             <html lang="en">
                 <head>
                     <meta charset="UTF-8">
@@ -102,40 +107,40 @@ const Job = ({match}: any) => {
                 </body>
             </html>`
 
-            const {profileId, companyId} = job
-            let recipients: string[]
+                const {profileId, companyId} = job
+                let recipients: string[]
 
-            const emailToSend: IEmailObject = {
-                body: body,
-                recipient: "",
-                senderEmail: EmailSettings.senderEmail,
-                senderName: EmailSettings.senderName,
-                subject: "Job application"
+                const emailToSend: IEmailObject = {
+                    body: body,
+                    recipient: "",
+                    senderEmail: EmailSettings.senderEmail,
+                    senderName: EmailSettings.senderName,
+                    subject: "Job application"
+                }
+
+                const personContacts: any = await getPersonContact(profileId)
+                let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
+
+                if (emails.length) {
+                    recipients = emails.map((contact: IContact) => contact.value)
+                } else {
+                    const companyContacts: any = await getStartupContact(companyId)
+                    const companyEmails: IContact[] = companyContacts.body.filter((contact: IContact) => contact.type === 2)
+                    recipients = companyEmails.map((contact: IContact) => contact.value)
+                }
+
+                if (recipients) {
+                    emailToSend.recipient = recipients.join(',')
+                    await sendEmail(emailToSend)
+                }
+
+            } catch (error) {
+                Toast.error(error.toString())
+            } finally {
+                setApplyButton({
+                    visible: false
+                })
             }
-
-            const personContacts: any = await getPersonContact(profileId)
-            let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
-
-            if(emails.length){
-                recipients = emails.map((contact: IContact) => contact.value)
-            }
-            else{
-                const companyContacts: any = await getStartupContact(companyId)
-                const companyEmails: IContact[] = companyContacts.body.filter((contact: IContact) => contact.type === 2)
-                recipients = companyEmails.map((contact: IContact) => contact.value)
-            }
-
-            if (recipients){
-                emailToSend.recipient = recipients.join(',')
-                await sendEmail(emailToSend)
-            }
-
-        } catch (error) {
-            Toast.error(error.toString())
-        } finally {
-            setApplyButton({
-                visible: false
-            })
         }
     }
 
@@ -298,7 +303,14 @@ const Job = ({match}: any) => {
                                     <Divider/>
 
                                     <CardContent>
-                                        <Grid container justify={"center"}>
+                                        <Grid container justify={"flex-start"}>
+
+                                            {
+                                                !user && <XLoginSnackbar
+                                                    open={openSnackbar}
+                                                    onClose={() => setOpenSnackbar(false)}/>
+                                            }
+
                                             <Grid item>
                                                 {
                                                     canApply && alreadyApplied &&
@@ -310,8 +322,9 @@ const Job = ({match}: any) => {
                                                     <Button className="apply-button"
                                                             onClick={() => handleApply(job)}
                                                             variant={"contained"}
+                                                            disableElevation
                                                             disabled={applyButton.disabled}
-                                                            color={"secondary"}>
+                                                            color={"primary"}>
                                                         {applyButton.label}
                                                     </Button>
                                                 }

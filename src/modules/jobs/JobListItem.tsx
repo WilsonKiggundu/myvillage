@@ -72,7 +72,7 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                         <Grid container spacing={2} justify={"flex-start"}>
                             {
                                 company?.name && <Grid xs={12} item className="company-name">
-                                    <a href="">{company?.name}</a>
+                                    <a href={Urls.profiles.singleStartup(company?.id)}>{company?.name}</a>
                                 </Grid>
                             }
 

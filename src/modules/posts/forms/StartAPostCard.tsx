@@ -29,6 +29,9 @@ import {Urls} from "../../../routes/Urls";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useTheme from "@material-ui/core/styles/useTheme";
 import NewJob from "../../jobs/forms/NewJob";
+import {useSelector} from "react-redux";
+import {userSelector} from "../../../data/coreSelectors";
+import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
 
 interface IProps {
     placeholder: string
@@ -41,15 +44,46 @@ const StartAPostCard = (props: IProps) => {
     const [openNewPostDialog, setOpenNewPostDialog] = useState(false);
     const [openNewEventDialog, setOpenNewEventDialog] = useState(false);
     const [openNewJobDialog, setOpenNewJobDialog] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const user = useSelector(userSelector)
 
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down("xs"))
 
+    const handleNewPost = () => {
+        if (user) setOpenNewPostDialog(true)
+        else setOpenSnackbar(true)
+    }
+
+    const handlePhotoUpload = () => {
+        if (user) setOpenPhotoDialog(true)
+        else setOpenSnackbar(true)
+    }
+
+    const handleVideoUpload = () => {
+        if (user) setOpenVideoDialog(true)
+        else setOpenSnackbar(true)
+    }
+
+    const handleCreateEvent = () => {
+        if (user) window.location.replace(Urls.createEvent)
+        else setOpenSnackbar(true)
+    }
+
+    const handleCreateJob = () => {
+        if (user) window.location.replace(Urls.jobs.create)
+        else setOpenSnackbar(true)
+    }
+
     return (
             <div className="start-a-post">
                 <div>
+
+                    {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)} />}
+
                     <div
-                        onClick={() => setOpenNewPostDialog(true)}
+                        onClick={handleNewPost}
                         className="input-box">
                         <List>
                             <ListItem>
@@ -73,7 +107,7 @@ const StartAPostCard = (props: IProps) => {
                             <Grid className="button-container" item xs={3}>
                                 <Button
                                     className={clsx(classes.bold, classes.fullWidth)}
-                                    onClick={() => setOpenPhotoDialog(true)}>
+                                    onClick={handlePhotoUpload}>
                                     <CameraAltIcon className="icon"/>
                                     {!isMobile && <span>
                                         Photo
@@ -95,7 +129,7 @@ const StartAPostCard = (props: IProps) => {
 
                             <Grid className="button-container" item xs={3}>
                                 <Button
-                                    onClick={() => setOpenVideoDialog(true)}
+                                    onClick={handleVideoUpload}
                                     size={"large"}
                                     disabled
                                     style={{padding: 5}}
@@ -120,7 +154,7 @@ const StartAPostCard = (props: IProps) => {
 
                             <Grid className="button-container" item xs={3}>
                                 <Button
-                                    onClick={() => setOpenNewEventDialog(true)}
+                                    onClick={handleCreateEvent}
                                     style={{padding: 5}}
                                     className={clsx(classes.bold, classes.fullWidth)}>
                                     <EventIcon  className="icon"/>
@@ -130,18 +164,11 @@ const StartAPostCard = (props: IProps) => {
                                     </span>}
 
                                 </Button>
-                                <XDialog
-                                    title={"Add an event"}
-                                    maxWidth={"md"}
-                                    open={openNewEventDialog}
-                                    onClose={() => setOpenNewEventDialog(false)}>
-                                    <NewEvent onClose={() => setOpenNewEventDialog(false)}/>
-                                </XDialog>
                             </Grid>
 
                             <Grid className="button-container" item xs={3}>
                                 <Button
-                                    href={Urls.jobs.create}
+                                    onClick={handleCreateJob}
                                     style={{padding: 5}}
                                     className={clsx(classes.bold, classes.fullWidth)}>
                                     <WorkIcon className="icon"/>

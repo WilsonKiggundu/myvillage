@@ -74,6 +74,11 @@ export const Endpoints = {
         portfolio: "/api/business/portfolios"
     },
 
+    devices: {
+        publicKey: '/api/devices/key',
+        create: '/api/devices/create'
+    },
+
     person: {
         base: "/api/person",
         award: "/api/person/awards",

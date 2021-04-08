@@ -1,5 +1,5 @@
 import React, {MouseEvent, useEffect, useState} from "react";
-import {Divider, Drawer, Typography, useTheme} from "@material-ui/core";
+import {Button, Divider, Drawer, Typography, useTheme} from "@material-ui/core";
 import {appBarStyles} from "./styles";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
@@ -59,6 +59,7 @@ export default function ApplicationBar() {
 
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const user: User = useSelector(userSelector)
+    const isAuthenticated = user != null
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -97,6 +98,10 @@ export default function ApplicationBar() {
         setState({left: false, right: false})
     }
 
+    const handleLogin = async () => {
+        await userManager.signinRedirect({state: window.location.pathname + window.location.search})
+    }
+
     const handleLogout = async () => {
         dispatch({
             type: USER_SIGNED_OUT
@@ -104,6 +109,8 @@ export default function ApplicationBar() {
         await userManager.signoutRedirect({
             id_token_hint: user.id_token
         })
+
+        await userManager.removeUser()
     }
 
     const handleClick = (href: string) => {
@@ -158,39 +165,47 @@ export default function ApplicationBar() {
                                 <MenuIcon className="Appbar-menu-icon"/>
                             </div>
                         </IconButton> :
-                        <>
-                            <IconButton aria-controls="profile-menu"
-                                        aria-haspopup="true"
-                                        onClick={showProfileMenu}
-                                        color="inherit">
-                                <div className="Appbar-profile">
-                                    <div className="Appbar-profile-avatar">
-                                        <Avatar className={classes.small} src={user?.profile?.picture}
-                                                variant={"circular"}/>
-                                    </div>
-                                    <div className="Appbar-profile-dropdown-icon">
-                                        <KeyboardArrowDownIcon/>
-                                    </div>
+                        user ?
+                            <>
+                                <IconButton aria-controls="profile-menu"
+                                            aria-haspopup="true"
+                                            onClick={showProfileMenu}
+                                            color="inherit">
+                                    <div className="Appbar-profile">
+                                        <div className="Appbar-profile-avatar">
+                                            <Avatar className={classes.small} src={user?.profile?.picture}
+                                                    variant={"circular"}/>
+                                        </div>
+                                        <div className="Appbar-profile-dropdown-icon">
+                                            <KeyboardArrowDownIcon/>
+                                        </div>
 
-                                </div>
-                            </IconButton>
-                            <Menu
-                                id="profile-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                getContentAnchorEl={null}
-                                anchorOrigin={{vertical: "bottom", horizontal: "left"}}
-                                onClose={closeProfileMenu}
-                                open={Boolean(anchorEl)}>
-                                <MenuItem
-                                    disabled>{user?.profile?.given_name} {user?.profile?.family_name}</MenuItem>
-                                <MenuItem onClick={handleProfileView}>
-                                    My Profile
-                                </MenuItem>
-                                <Divider/>
-                                <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
-                            </Menu>
-                        </>}
+                                    </div>
+                                </IconButton>
+                                <Menu
+                                    id="profile-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    getContentAnchorEl={null}
+                                    anchorOrigin={{vertical: "bottom", horizontal: "left"}}
+                                    onClose={closeProfileMenu}
+                                    open={Boolean(anchorEl)}>
+                                    <MenuItem
+                                        disabled>{user?.profile?.given_name} {user?.profile?.family_name}</MenuItem>
+                                    <MenuItem onClick={handleProfileView}>
+                                        My Profile
+                                    </MenuItem>
+                                    <Divider/>
+                                    <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                                </Menu>
+                            </> :
+                            <div className="Appbar-login-button">
+                                <Button
+                                    onClick={handleLogin}
+                                    variant={"outlined"}
+                                    color={"secondary"}>Login</Button>
+                            </div>
+                    }
                 </Grid>
             </Grid>
 
@@ -216,46 +231,49 @@ export default function ApplicationBar() {
                 </div>
                 <Divider style={{color: "white"}}/>
 
-                <Box mt={2} mb={2} ml={1}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <List>
-                                <ListItem
-                                    button
-                                    onClick={() => handleProfileView()}
-                                    alignItems="flex-start">
-                                    <ListItemAvatar>
-                                        <Avatar alt={user?.profile?.given_name} src={user?.profile?.picture}/>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={
-                                            <Typography
-                                                style={{width: '95%'}}
-                                                noWrap variant={"h6"}>
-                                                {user?.profile?.given_name} {user?.profile?.family_name}
-                                            </Typography>
-                                        }
-                                        secondary={
-                                            <Typography
-                                                style={{width: '85%'}}
-                                                noWrap
-                                                component="div"
-                                                variant="body2"
-                                            >
-                                                {user?.profile?.email}
-                                            </Typography>
-                                        }
-                                    />
-                                    <ListItemSecondaryAction>
-                                        <IconButton edge="end" aria-label="more">
-                                            <ChevronRightIcon/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            </List>
+                {
+                    isAuthenticated &&
+                    <Box mt={2} mb={2} ml={1}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <List>
+                                    <ListItem
+                                        button
+                                        onClick={() => handleProfileView()}
+                                        alignItems="flex-start">
+                                        <ListItemAvatar>
+                                            <Avatar alt={user?.profile?.given_name} src={user?.profile?.picture}/>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={
+                                                <Typography
+                                                    style={{width: '95%'}}
+                                                    noWrap variant={"h6"}>
+                                                    {user?.profile?.given_name} {user?.profile?.family_name}
+                                                </Typography>
+                                            }
+                                            secondary={
+                                                <Typography
+                                                    style={{width: '85%'}}
+                                                    noWrap
+                                                    component="div"
+                                                    variant="body2"
+                                                >
+                                                    {user?.profile?.email}
+                                                </Typography>
+                                            }
+                                        />
+                                        <ListItemSecondaryAction>
+                                            <IconButton edge="end" aria-label="more">
+                                                <ChevronRightIcon/>
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                </List>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Box>
+                    </Box>
+                }
 
                 <Divider style={{color: "white"}}/>
 

@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {FormControl} from "@material-ui/core";
 import {useField} from "formik";
-import {getAsync} from "../../utils/ajax";
+import {getAsync, getWithoutLoginAsync} from "../../utils/ajax";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Avatar from "@material-ui/core/Avatar";
 import {globalStyles} from "../../theme/styles";
@@ -51,7 +51,7 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
         }
 
         (async () => {
-            const response: any = await getAsync(data.endpoint, data.params);
+            const response: any = await getWithoutLoginAsync(data.endpoint, data.params);
 
             if (active) {
 

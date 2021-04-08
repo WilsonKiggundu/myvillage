@@ -37,13 +37,14 @@ const Callback = () => {
             }}
             errorCallback={async error => {
                 Toast.error(error.message)
-                // dispatch({
-                //     type: USER_SIGNED_OUT
-                // })
-                // await userManager.signoutRedirect()
+                console.log(error.name)
+                dispatch({
+                    type: USER_SIGNED_OUT
+                })
+                await userManager.signinRedirect()
             }}
         >
-            <PleaseWait/>
+            <PleaseWait label={"Please wait..."}/>
         </CallbackComponent>
     )
 }

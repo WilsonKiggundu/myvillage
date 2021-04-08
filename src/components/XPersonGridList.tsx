@@ -72,10 +72,10 @@ export const XPersonGridList = ({people}: IProps) => {
                                             <XImageGridList images={[{
                                                 path: person.avatar
                                             }]} />
-                                        </div> :
-                                        <CardMedia
-                                            className={classes.cardImage}
-                                            image={person.coverPhoto}/>
+                                        </div> : ""
+                                        // <CardMedia
+                                        //     className={classes.cardImage}
+                                        //     image={person.coverPhoto}/>
                                 }
 
                                 <CardContent>

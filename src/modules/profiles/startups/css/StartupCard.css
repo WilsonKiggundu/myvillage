@@ -1,0 +1,65 @@
+.startup-logo-holder{
+    border: solid 1px #c1c1c1;
+    display: inline-block;
+    padding: 0;
+    height: 100px;
+    width: 100px;
+    overflow-y: hidden;
+    border-radius: 100%;
+    text-align: center;
+    margin: auto;
+    line-height: 100px;
+}
+
+.startup-logo-holder img{
+    width: auto;
+    /*max-width: 100px;*/
+    height: 100px;
+}
+
+.startup-name{
+    font-size: 2em;
+    font-weight: bold;
+    margin: 15px 0 0 0;
+}
+
+.startup-category{
+    margin: 0 0 15px 0;
+    color: #c1c1c1;
+}
+
+.startup-inc-date{
+    margin: 15px 0;
+    font-size: 0.9em;
+    color: #c1c1c1;
+}
+
+.startup-description-truncated{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    position: relative;
+    max-height: 4.2em;
+    overflow: hidden;
+    padding-right: 1em;
+}
+
+.startup-initials{
+    font-weight: bold;
+    font-size: 2em;
+    color: #cccccc;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.startup-view-profile{
+    text-decoration: none;
+    display: block;
+    padding: 15px;
+    background-color: #1c1c1c;
+    text-align: center;
+    color: #f1f1f1;
+    border-radius: 8px;
+}

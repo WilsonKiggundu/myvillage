@@ -1,6 +1,6 @@
 
 import {Endpoints} from "../../../../services/Endpoints";
-import { deleteAsync, getAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
+import {deleteAsync, getAsync, getWithoutLoginAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
 import store from "../../../../data/store";
 import {IAddress} from "../../../../interfaces/IAddress";
 import {UploadType} from "../../../posts/forms/UploadFile";
@@ -43,7 +43,7 @@ export const delStartupAddress = async (payload: any) => {
 
 export const getStartupContact = async (businessId: any) => {
     const url = makeUrl("Profiles", Endpoints.business.contact)
-    return await getAsync(url, {businessId})
+    return await getWithoutLoginAsync(url, {businessId})
 }
 
 export const postStartupContact = async (contact: any) => {
@@ -100,5 +100,5 @@ export const getStartups = async (params?: any) => {
     const {nextPage} = state.startups.request
 
     const url = makeUrl("Profiles", Endpoints.business.base)
-    return await getAsync(url, {...params, page: nextPage})
+    return await getWithoutLoginAsync(url, {...params, page: nextPage})
 }

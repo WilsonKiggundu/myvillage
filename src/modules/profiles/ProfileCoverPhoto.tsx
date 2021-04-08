@@ -32,11 +32,13 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
     const category = person ? "person" : "startup"
 
     useEffect(() => {
-        if (startup){
-            const hasRoles = startup.roles?.some((role: any) => role.personId === user?.profile.sub)
-            setCanEdit(hasRoles)
-        }else if(person){
-            setCanEdit(person.id === user.profile.sub)
+        if (user){
+            if (startup){
+                const hasRoles = startup.roles?.some((role: any) => role.personId === user?.profile.sub)
+                setCanEdit(hasRoles)
+            }else if(person){
+                setCanEdit(person.id === user.profile.sub)
+            }
         }
     }, [person, startup])
 
@@ -92,6 +94,7 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
                                 type={"coverPhoto"}
                                 category={category}
                                 filesLimit={1}
+                                showUploadButton={true}
                                 id={person?.id || startup?.id}
                                 onClose={() => setOpenUploadDialog(false)}
                                 acceptedTypes={['image/*']}/>

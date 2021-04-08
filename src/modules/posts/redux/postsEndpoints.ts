@@ -1,6 +1,6 @@
 import apiRequest from "../../../utils/apiRequest";
 import {Endpoints} from "../../../services/Endpoints";
-import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
+import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../../utils/ajax";
 import Toast from "../../../utils/Toast";
 import store from "../../../data/store";
 import {IJob} from "../../../interfaces/IJob";
@@ -20,10 +20,11 @@ export const getPosts = async () => {
     const state = store.getState()
     const {nextPage} = state.posts.request
 
-    const {sub} = state.oidc.user.profile
+    const {user} = state.oidc
+    const profileId = user?.profile?.sub
 
     const url = makeUrl("Profiles", Endpoints.blog.post)
-    return await getAsync(url, {page: nextPage, userId: sub})
+    return await getWithoutLoginAsync(url, {page: nextPage, userId: profileId})
 }
 
 export const createComment = async (comment: any) => {
@@ -33,5 +34,5 @@ export const createComment = async (comment: any) => {
 
 export const getComments = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.blog.comment)
-    return await getAsync(url, {...payload})
+    return await getWithoutLoginAsync(url, {...payload})
 }
