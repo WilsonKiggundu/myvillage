@@ -203,7 +203,7 @@ export default function ApplicationBar() {
                                 <Button
                                     onClick={handleLogin}
                                     variant={"outlined"}
-                                    color={"secondary"}>Do you have an account? Login.</Button>
+                                    color={"secondary"}>Login</Button>
                             </div>
                     }
                 </Grid>
