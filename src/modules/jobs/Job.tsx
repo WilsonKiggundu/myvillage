@@ -45,6 +45,7 @@ import {EmailSettings} from "../../data/constants";
 import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
 import {IContact} from "../../interfaces/IContact";
 import {sendEmail} from "../../services/NotificationService";
+import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 
 
 const Job = ({match}: any) => {
@@ -64,11 +65,12 @@ const Job = ({match}: any) => {
     const [acceptedApplications, setAcceptedApplications] = useState<any>([])
     const [rejectedApplications, setRejectedApplications] = useState<any>([])
     const [pendingApplications, setPendingApplications] = useState<any>([])
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
     const handleApply = async (job: IJob) => {
 
         if (!user) {
-            await userManager.signinRedirect({state: window.location.pathname + window.location.search})
+            setOpenSnackbar(true)
         } else {
             setApplyButton({
                 disabled: true,
@@ -302,6 +304,13 @@ const Job = ({match}: any) => {
 
                                     <CardContent>
                                         <Grid container justify={"flex-start"}>
+
+                                            {
+                                                !user && <XLoginSnackbar
+                                                    open={openSnackbar}
+                                                    onClose={() => setOpenSnackbar(false)}/>
+                                            }
+
                                             <Grid item>
                                                 {
                                                     canApply && alreadyApplied &&
@@ -309,7 +318,7 @@ const Job = ({match}: any) => {
                                                 }
 
                                                 {
-                                                    // canApply && !alreadyApplied && applyButton.visible &&
+                                                    canApply && !alreadyApplied && applyButton.visible &&
                                                     <Button className="apply-button"
                                                             onClick={() => handleApply(job)}
                                                             variant={"contained"}
