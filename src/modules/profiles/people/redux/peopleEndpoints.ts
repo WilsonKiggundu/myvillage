@@ -1,6 +1,6 @@
 
 import {Endpoints} from "../../../../services/Endpoints";
-import {deleteAsync, getAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
+import {deleteAsync, getAsync, getWithoutLoginAsync, makeUrl, postAsync, putAsync} from "../../../../utils/ajax";
 import store from "../../../../data/store";
 import {UploadType} from "../../../posts/forms/UploadFile";
 
@@ -9,7 +9,7 @@ export const getPeople = async (params?: any) => {
     const {nextPage} = state.people.request
 
     const url = makeUrl("Profiles", Endpoints.person.base)
-    return await getAsync(url, params ? params : {page: nextPage, pageSize: 16})
+    return await getWithoutLoginAsync(url, params ? params : {page: nextPage, pageSize: 16})
 }
 
 export const putPerson = async (person: any, uploadType?: UploadType) => {
@@ -79,7 +79,7 @@ export const delPersonEducation = async (payload: any) => {
 
 export const getPersonConnection = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.connection)
-    return await getAsync(url, payload)
+    return await getWithoutLoginAsync(url, payload)
 }
 
 export const putPersonConnection = async (payload: any) => {
@@ -95,7 +95,7 @@ export const delPersonConnection = async (payload: any) => {
 
 export const getPersonContact = async (personId: any) => {
     const url = makeUrl("Profiles", Endpoints.person.contact)
-    return await getAsync(url, {personId})
+    return await getWithoutLoginAsync(url, {personId})
 }
 
 

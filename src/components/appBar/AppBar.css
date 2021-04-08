@@ -71,3 +71,11 @@
 .Appbar-profile-dropdown-icon{
     display: inline-flex;
 }
+
+.Appbar-login-button{
+    margin: 15px 15px 0 0;
+}
+
+.Appbar-login-button button{
+    text-transform: inherit !important;
+}

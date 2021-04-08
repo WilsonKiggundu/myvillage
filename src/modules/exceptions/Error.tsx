@@ -11,6 +11,8 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import {errorColor} from "../../theme/custom-colors";
 import userManager from "../../utils/userManager";
+import {useSelector} from "react-redux";
+import {userSelector} from "../../data/coreSelectors";
 
 interface IProps {
     title: string
@@ -20,11 +22,13 @@ interface IProps {
 const ErrorPage = ({title, message}: IProps) => {
 
     const classes = globalStyles()
-    const isLoggedOut = message === "Cannot read property 'profile' of null"
+    const user = useSelector(userSelector)
+
+    // const isLoggedOut = message === "Cannot read property 'profile' of null"
+    const isLoggedOut = !user
 
     const errorMessage = isLoggedOut ?
-        "You have been logged out due to inactivity.\n" +
-        "Click Refresh to login again." : message
+        "You are not logged in." : message
 
     return (
         <Container maxWidth={"md"}>
@@ -50,7 +54,7 @@ const ErrorPage = ({title, message}: IProps) => {
                             <Button style={{textTransform: 'inherit'}}
                                     variant={"outlined"}
                                     onClick={() => userManager.signinRedirect()}
-                                    color={"default"}>Refresh</Button> :
+                                    color={"default"}>Login</Button> :
                             <Button style={{textTransform: 'inherit'}}
                                     variant={"outlined"}
                                     onClick={() => window.location.reload()}

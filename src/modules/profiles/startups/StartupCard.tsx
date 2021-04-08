@@ -17,7 +17,6 @@ interface IProps {
 
 const StartupCard = ({startup}: IProps) => {
 
-    const styles = globalStyles()
     const history = useHistory()
 
     let div = document.createElement("div")

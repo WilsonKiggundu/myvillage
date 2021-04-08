@@ -1,5 +1,5 @@
 import {Endpoints} from "../../../services/Endpoints";
-import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
+import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../../utils/ajax";
 import {IEvent} from "../../../interfaces/IEvent";
 
 export const postEvent = async (event: IEvent) => {
@@ -9,7 +9,7 @@ export const postEvent = async (event: IEvent) => {
 
 export const getEventById = async (id: any) => {
     const url = makeUrl("Events", Endpoints.events.api)
-    return await getAsync(url + '/' + id)
+    return await getWithoutLoginAsync(url + '/' + id)
 }
 
 export const getEvents = async () => {
@@ -17,5 +17,5 @@ export const getEvents = async () => {
     // const {nextPage} = state.events.request
 
     const url = makeUrl("Events", Endpoints.events.api)
-    return await getAsync(url)
+    return await getWithoutLoginAsync(url)
 }

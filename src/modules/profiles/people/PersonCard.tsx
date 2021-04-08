@@ -30,6 +30,7 @@ import {personSelector} from "./redux/peopleSelectors";
 import {LazyLoadImage} from 'react-lazy-load-image-component'
 
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
 
 interface IProps {
     person: IPerson
@@ -49,19 +50,24 @@ const PersonCard = ({person, canEdit}: IProps) => {
     const [openEditProfileDialog, setOpenEditProfileDialog] = useState<boolean>(false)
     const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState<boolean>(false)
     const [openEditProfilePhotoDialog, setOpenEditProfilePhotoDialog] = useState<boolean>(false)
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
     const user = useSelector(userSelector)
     const {connections} = person
 
-    if(!connections?.length) dispatch(loadPersonConnection({personId: user.profile.sub}))
+    if(!connections?.length) dispatch(loadPersonConnection({personId: user?.profile?.sub}))
 
     const handleDeleteCategory = (categoryId: string) => {
         dispatch(deletePersonCategories({categoryId, personId: person.id}))
     }
 
     const handleConnect = (personId: string) => {
-        dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
-        setIsConnected(true)
+        if(user){
+            dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
+            setIsConnected(true)
+        }else{
+            setOpenSnackbar(true)
+        }
     }
 
     useEffect(() => {
@@ -146,6 +152,9 @@ const PersonCard = ({person, canEdit}: IProps) => {
                                 variant="contained"
                                 color={"primary"}
                                 size={"medium"}>Connect</Button>
+
+                            <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)} />
+
                         </Box>
                     }
 

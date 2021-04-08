@@ -11,7 +11,7 @@ import PersonPosts from "./PersonPosts";
 import ProfileCoverPhoto from "../ProfileCoverPhoto";
 import PersonConnections from "./PersonConnections";
 import {userSelector} from "../../../data/coreSelectors";
-import {getAsync, makeUrl, postAsync} from "../../../utils/ajax";
+import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
 import {useHistory, useLocation} from "react-router-dom";
 import XDialog from "../../../components/dialogs/XDialog";
@@ -56,7 +56,7 @@ const Person = ({match}: any) => {
         (async () => {
             try {
                 const url = makeUrl("Profiles", Endpoints.person.base)
-                const response: any = await getAsync(url, {id})
+                const response: any = await getWithoutLoginAsync(url, {id})
                 const person = response.body.persons[0]
 
                 dispatch({

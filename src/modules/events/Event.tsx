@@ -36,7 +36,7 @@ import './event-card.css'
 import {LocationOn} from "@material-ui/icons";
 import EventActionButtons from "./EventActionButtons";
 import EventAttachments from "./EventAttachments";
-import {getAsync, makeUrl, postAsync} from "../../utils/ajax";
+import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import {IPerson} from "../profiles/people/IPerson";
 
@@ -97,16 +97,21 @@ const Event = ({match}: any) => {
                 const url = makeUrl("Profiles", Endpoints.person.base)
 
                 await Promise.all(event.attendances.map(async (attendance: any) => {
-                    const response: any = await getAsync(url, {id: attendance.profileId})
+                    const response: any = await getWithoutLoginAsync(url, {id: attendance.profileId})
                     const person: IPerson = response.body.persons[0]
-                    attendances.push({
-                        // id: attendance.id,
-                        avatar: person.avatar ?? "",
-                        profileId: attendance.profileId,
-                        // date: timeAgo(attendance.dateTime),
-                        name: person.firstname + " " + person.lastname,
-                        category: attendance.category
-                    })
+
+                    if (person){
+                        attendances.push({
+                            // id: attendance.id,
+                            avatar: person.avatar ?? "",
+                            profileId: attendance.profileId,
+                            // date: timeAgo(attendance.dateTime),
+                            name: person.firstname + " " + person.lastname,
+                            category: attendance.category
+                        })
+                    }
+
+
                 }))
 
                 setAllResponses(attendances)

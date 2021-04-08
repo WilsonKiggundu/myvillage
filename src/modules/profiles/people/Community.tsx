@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import ContactCard from "../../../components/ContactCard";
@@ -18,10 +18,11 @@ import {IPerson} from "./IPerson";
 
 import './People.css'
 import {userSelector} from "../../../data/coreSelectors";
-import {getPersonConnection} from "./redux/peopleEndpoints";
+import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
 
 const Community = () => {
 
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
     const people = useSelector(peopleSelector)
     const user = useSelector(userSelector)
 
@@ -30,7 +31,12 @@ const Community = () => {
     const history = useHistory()
 
     const handleConnect = (personId: string) => {
-        dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
+
+        if (user){
+            dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
+        }else{
+            setOpenSnackbar(true)
+        }
     }
 
     useEffect(() => {
@@ -70,7 +76,7 @@ const Community = () => {
 
     return (
         <Container maxWidth={false}>
-            <Grid spacing={2} justify={"center"} container>
+            <Grid spacing={2} justify={"flex-start"} container>
                 {people.data.map((person: IPerson) => (
                     <Grid item key={person.id} xs={12} sm={4} md={4} xl={2} lg={3}>
                         <ContactCard person={person}>
@@ -95,6 +101,14 @@ const Community = () => {
                                             className={person.isConnected ? "connect-button-disabled" : "connect-button"}>
                                             <span>Connect</span>
                                         </button>
+
+                                        {
+                                            !user &&
+                                            <XLoginSnackbar
+                                                open={openSnackbar}
+                                                onClose={() => setOpenSnackbar(false)}/>
+                                        }
+
                                     </Grid>
 
                                 </Grid>

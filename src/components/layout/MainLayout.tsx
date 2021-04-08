@@ -23,16 +23,16 @@ interface IProps {
 function MainLayout(props: IProps) {
 
     const {user} = useSelector((state: any) => state.oidc)
-    const isAuthenticated = user != null
-
-    if (!isAuthenticated) {
-        userManager.signinRedirect({state: window.location.pathname + window.location.search})
-    }
+    // const isAuthenticated = user != null
+    //
+    // if (!isAuthenticated) {
+    //     userManager.signinRedirect({state: window.location.pathname + window.location.search})
+    // }
 
     useEffect(() => {
         document.body.style.backgroundColor = '#F1F1F0'
 
-        if ('Notification' in window){
+        if ('Notification' in window && user){
 
             const browser = checkBrowser()
 

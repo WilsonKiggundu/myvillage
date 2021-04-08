@@ -18,7 +18,7 @@ import {globalStyles} from "../../../theme/styles";
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useTheme from "@material-ui/core/styles/useTheme";
-import {getAsync, makeUrl} from "../../../utils/ajax";
+import {getAsync, getWithoutLoginAsync, makeUrl} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
 import userManager from "../../../utils/userManager";
 import {APPEND_STARTUP} from "./redux/startupsReducer";
@@ -35,7 +35,7 @@ const Startup = ({match}: any) => {
     useEffect(() => {
         (async () => {
             const url = makeUrl("Profiles", Endpoints.business.base)
-            const response: any = await getAsync(url, {id})
+            // const response: any = await getAsync(url, {id})
 
             // setStartup(response.body.startups[0])
         })()
@@ -45,7 +45,7 @@ const Startup = ({match}: any) => {
         (async () => {
             try {
                 const url = makeUrl("Profiles", Endpoints.business.base)
-                const response: any = await getAsync(url, {id})
+                const response: any = await getWithoutLoginAsync(url, {id})
                 const startup = response.body.startups[0]
 
                 dispatch({

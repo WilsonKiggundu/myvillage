@@ -13,12 +13,23 @@ import {loadStartups} from "./redux/startupsActions";
 import _ from "lodash";
 import ErrorPage from "../../exceptions/Error";
 import {scrolledToBottom} from "../../../utils/scrollHelpers";
+import {userSelector} from "../../../data/coreSelectors";
+import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
 
 const Startups = () => {
 
+    const user = useSelector(userSelector)
     const startups = useSelector(startupsSelector)
     const dispatch = useDispatch()
     const [addStartupDialog, setAddStartupDialog] = useState<boolean>(false)
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
+
+    const handleCreate = () => {
+        if (user) setAddStartupDialog(true)
+        else{
+            setOpenSnackbar(true)
+        }
+    }
 
     useEffect(() => {
         window.addEventListener('scroll', () => {
@@ -58,9 +69,11 @@ const Startups = () => {
                   bottom={15}
                   color={"secondary"}
                   position={"fixed"}
-                  onClick={() => setAddStartupDialog(true)}>
+                  onClick={handleCreate}>
                 <AddIcon/>
             </XFab>
+
+            {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)} />}
 
             <XDialog title={"Enroll your startup"}
                      maxWidth={"md"}

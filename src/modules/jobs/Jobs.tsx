@@ -19,10 +19,11 @@ import {scrolledToBottom} from "../../utils/scrollHelpers";
 import JobListItem from "./JobListItem";
 import userManager from "../../utils/userManager";
 import * as yup from "yup";
-import {Autocomplete} from "@material-ui/lab";
-import {Button, TextField} from "@material-ui/core";
+import {Alert, Autocomplete} from "@material-ui/lab";
+import {Button, Snackbar, TextField} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import JobFilter from "./forms/JobFilter";
+import { handleLogin } from "../../utils/authHelpers";
 
 
 const schema = yup.object().shape(
@@ -39,6 +40,7 @@ const Jobs = () => {
     const user = useSelector(userSelector)
 
     const [canCreateJob, setCanCreateJob] = useState<boolean>(false)
+    const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
     useEffect(() => {
         dispatch(loadJobs())
@@ -70,6 +72,13 @@ const Jobs = () => {
     const handleViewJob = (id: string) => {
         const url = Urls.jobs.singleJob(id)
         history.push(url)
+    }
+
+    const handleCreate = () => {
+        if (user) window.location.replace(Urls.jobs.create)
+        else{
+            setOpenSnackbar(true)
+        }
     }
 
     useEffect(() => {
@@ -104,14 +113,22 @@ const Jobs = () => {
 
             {canCreateJob ? <>
                 <XFab
-                    href={Urls.jobs.create}
-                    // onClick={() => setOpenJobDialog(true)}
+                    onClick={handleCreate}
                     position={"fixed"}
                     bottom={20}
                     right={20}
                     color={"secondary"}>
                     <AddIcon/>
                 </XFab>
+
+                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+                    <Alert onClose={() => setOpenSnackbar(false)} severity="warning">
+                        You need to be logged in to post a job. &nbsp;&nbsp;
+                        <Button onClick={handleLogin} size={"small"} variant={"outlined"} color={"secondary"}>
+                            Continue to login
+                        </Button>
+                    </Alert>
+                </Snackbar>
 
             </> : ""}
 

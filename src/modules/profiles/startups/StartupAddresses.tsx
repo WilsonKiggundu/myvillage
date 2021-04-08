@@ -67,7 +67,7 @@ export default function StartupAddresses({startup}: IProps) {
 
                                 {
                                     addresses.map((address: IAddress, index: number) => (
-                                        <>
+                                        <div key={index}>
                                             <ListItem>
                                                 <ListItemText
                                                     primary={getAddressTypeLabel(address.type)}
@@ -98,7 +98,7 @@ export default function StartupAddresses({startup}: IProps) {
                                                 </> : ""}
                                             </ListItem>
                                             <Divider/>
-                                        </>
+                                        </div>
                                     ))
                                 }
 
