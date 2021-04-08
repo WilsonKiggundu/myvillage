@@ -109,6 +109,8 @@ export default function ApplicationBar() {
         await userManager.signoutRedirect({
             id_token_hint: user.id_token
         })
+
+        await userManager.removeUser()
     }
 
     const handleClick = (href: string) => {
