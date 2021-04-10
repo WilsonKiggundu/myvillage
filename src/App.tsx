@@ -11,6 +11,7 @@ import {Alert} from "@material-ui/lab";
 import {coreConstants} from "./data/coreReducer";
 import {withSnackbar} from "notistack";
 import ReactGA from 'react-ga'
+import CacheBuster from "./CacheBuster";
 
 if(process.env.GA_TRACKING_ID){
     ReactGA.initialize(process.env.GA_TRACKING_ID)
@@ -25,13 +26,26 @@ const App: React.FC = () => {
         return <PleaseWait/>
     } else {
 
-        return <>
-            <ToastContainer enableMultiContainer={false} hideProgressBar/>
-            <>
-                {/*{<LoaderDialog open={globalLoader}/>}*/}
-                <BrowserRouter children={Routes} basename={"/"}/>
-            </>
-        </>;
+        return(
+            <CacheBuster>
+                {({loading, isLatestVersion, refreshCacheAndReload}: any) => {
+                    if (loading) return null;
+                    if (!loading && !isLatestVersion) {
+                        refreshCacheAndReload();
+                    }
+
+                    return <>
+                        <ToastContainer enableMultiContainer={false} hideProgressBar/>
+                        <>
+                            {/*{<LoaderDialog open={globalLoader}/>}*/}
+                            <BrowserRouter children={Routes} basename={"/"}/>
+                        </>
+                    </>;
+                }}
+            </CacheBuster>
+        )
+
+
     }
 }
 
