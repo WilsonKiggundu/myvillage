@@ -12,7 +12,7 @@ import JobDescription from "./forms/JobDescription";
 import JobOverview from "./forms/JobOverview";
 import JobQualifications from "./forms/JobQualifications";
 import {Form, Formik} from "formik";
-import {postFileAsync} from "../../utils/ajax";
+import {makeUrl, postAsync, postFileAsync} from "../../utils/ajax";
 import {IUpload} from "../../interfaces/IUpload";
 import {Endpoints} from "../../services/Endpoints";
 import {addJob} from "./redux/jobsActions";
@@ -21,6 +21,10 @@ import {userSelector} from "../../data/coreSelectors";
 import JobSkills from "./forms/JobSkills";
 import JobExperience from "./forms/JobExperience";
 import {Urls} from "../../routes/Urls";
+import { useHistory } from "react-router-dom";
+import {postJob} from "./redux/jobsEndpoints";
+import {ADD_JOB} from "./redux/jobsReducer";
+import Toast from "../../utils/Toast";
 
 interface IProps {
 
@@ -30,6 +34,7 @@ const CreateJob = (props: IProps) => {
     const user = useSelector(userSelector)
     const {formId, formField} = JobFormModel
     const dispatch = useDispatch()
+    const history = useHistory()
 
     const currentValidationSchema = ValidationSchema[0];
     const [files, setFiles] = useState<any>([])
@@ -72,12 +77,19 @@ const CreateJob = (props: IProps) => {
             uploads,
         }
 
-        console.log(job)
-
         try {
-            dispatch(addJob(job))
-        } catch (e) {
+            const response = await postJob(job)
 
+            dispatch({
+                type: ADD_JOB,
+                payload: response
+            })
+
+            Toast.success("Job added successfully", "bottom-center")
+            history.push(Urls.jobs.list)
+
+        } catch (e) {
+            Toast.error("An error occurred while adding the job.", "bottom-center")
         } finally {
             // actions.resetForm()
             // window.location.replace(Urls.jobs.list)

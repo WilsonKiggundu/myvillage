@@ -69,32 +69,33 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
 
                 <CardContent>
                     <Box mb={3}>
-                        <Grid container spacing={2} justify={"flex-start"}>
-                            {
-                                company?.name && <Grid xs={12} item className="company-name">
-                                    <a href={Urls.profiles.singleStartup(company?.id)}>{company?.name}</a>
-                                </Grid>
-                            }
+                        <Grid container justify={"space-between"} spacing={2}>
+                            <Grid item>
+                                <Grid container spacing={2} justify={"flex-start"}>
+                                    {
+                                        company?.name && <Grid xs={12} item className="company-name">
+                                            <a href={Urls.profiles.singleStartup(company?.id)}>{company?.name}</a>
+                                        </Grid>
+                                    }
 
-                            {
-                                job.location && <Grid xs={12} item className="job-location">
-                                    <LocationOnIcon className="job-location-icon"/> <span>{job.location}</span>
-                                </Grid>
-                            }
-                        </Grid>
-                    </Box>
-
-                    {
-                        job.deadline && <Box mt={3} mb={3}>
-                            <Grid container justify={"space-between"}>
-                                <Grid className="job-deadline" item>
-                                    <strong>Application deadline</strong><br/>{(job.deadline)}
+                                    {
+                                        job.location && <Grid xs={12} item className="job-location">
+                                            <LocationOnIcon className="job-location-icon"/> <span>{job.location}</span>
+                                        </Grid>
+                                    }
                                 </Grid>
                             </Grid>
-                        </Box>
-                    }
-
-                    <Divider />
+                            <Grid item>
+                                {
+                                    job.deadline && <Box mb={3}>
+                                        <div className="job-deadline">
+                                            <strong>Application deadline</strong><br/>{longDate(job.deadline)}
+                                        </div>
+                                    </Box>
+                                }
+                            </Grid>
+                        </Grid>
+                    </Box>
 
                     {
                         showJobDetails && <Box mt={3} mb={2}>
@@ -108,11 +109,11 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
 
                     {
                         showVewDetailsButton && <Box mt={3}>
-                            <Grid container spacing={2} justify={"flex-start"}>
-                                <Grid xs={12} md={9} className="job-salary-range" item>
+                            <Grid container spacing={2} justify={"space-between"}>
+                                <Grid className="job-salary-range" item>
                                     {salaryRange && <span>{salaryRange}</span>}
                                 </Grid>
-                                <Grid xs={12} md={3} item>
+                                <Grid item>
                                     <a href={Urls.jobs.singleJob(job.id)} className="job-details-button">
                                         View details
                                     </a>

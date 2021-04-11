@@ -1,6 +1,6 @@
 {
   "name": "myvillage",
-  "version": "0.1.0",
+  "version": "1.1.1",
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^26.0.0",
@@ -62,6 +62,8 @@
   },
   "scripts": {
     "build-babel": "NODE_ENV=production babel src --out-dir src/lib",
+    "prebuild": "npm run generate-build-version",
+    "generate-build-version": "node generate-build-version",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
