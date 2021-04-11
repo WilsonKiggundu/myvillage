@@ -149,8 +149,6 @@ export const isThisYear = (str: string): boolean => {
 
 export const longDate = (date: any): string => {
     try{
-        console.log(date, parseISO(date))
-
         return format(parseISO(date), longDateFormat)
     }catch (e){
         return ""
