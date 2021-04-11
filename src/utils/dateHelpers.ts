@@ -5,7 +5,7 @@ export const dateFormat = 'dd.MM.yyyy'
 export const dateTimeFormat = 'dd.MM.yyyy HH:mm'
 export const standardDateTimeFormat = 'dd-MM-yyyy HH:mm'
 export const standardDateFormat = 'dd-MM-yyyy'
-const longDateFormat = 'E, MMMM Mo, yyyy'
+const longDateFormat = 'EEEE, MMMM do, yyyy'
 
 export const printDateTime = (value: any): string => {
     if (typeof value === 'string') {
@@ -149,6 +149,8 @@ export const isThisYear = (str: string): boolean => {
 
 export const longDate = (date: any): string => {
     try{
+        console.log(date, parseISO(date))
+
         return format(parseISO(date), longDateFormat)
     }catch (e){
         return ""

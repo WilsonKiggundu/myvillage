@@ -35,7 +35,7 @@ import {getAsync, makeUrl} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import {IPerson} from "../profiles/people/IPerson";
 import {IApplicant} from "../../interfaces/IApplicant";
-import {timeAgo} from "../../utils/dateHelpers";
+import {longDate, timeAgo} from "../../utils/dateHelpers";
 import {useHistory} from "react-router-dom";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -82,6 +82,8 @@ const Job = ({match}: any) => {
                     id: job.id,
                     profileId: user.profile.sub
                 })
+
+                setAlreadyApplied(true)
 
                 const body = `<!DOCTYPE html>
             <html lang="en">
@@ -135,6 +137,8 @@ const Job = ({match}: any) => {
                 }
 
             } catch (error) {
+                console.log(error)
+
                 Toast.error(error.toString())
             } finally {
                 setApplyButton({
@@ -158,15 +162,24 @@ const Job = ({match}: any) => {
                 setJob(job)
 
                 const {applicants, profileId} = job
-
-                const alreadyApplied = applicants?.map((m: any) => (m.profileId)).includes(user.profile.sub)
                 const postedByCurrentUser = profileId === user.profile.sub
 
-                setAlreadyApplied(alreadyApplied)
-                setCanApply(!postedByCurrentUser || !alreadyApplied)
-                setCanViewApplicants(postedByCurrentUser)
+                if (postedByCurrentUser) {
+                    setCanViewApplicants(true)
+                } else {
+                    const alreadyApplied = applicants?.map((m: any) => (m.profileId))
+                        .includes(user.profile.sub)
+
+                    if (alreadyApplied) {
+                        setAlreadyApplied(true)
+                    } else {
+                        setCanApply(true)
+                    }
+                }
 
                 document.title = `${response.body.title} / My Village`
+
+                console.log(job)
 
             } catch (e) {
 
@@ -175,8 +188,6 @@ const Job = ({match}: any) => {
                         state: window.location.pathname
                     })
                 }
-            } finally {
-
             }
 
         })()
@@ -297,13 +308,17 @@ const Job = ({match}: any) => {
                                                 <strong>Experience</strong><br/>
                                                 {job.experience}
                                             </Grid>
+                                            <Grid item xs={6} sm={6} md={4} lg={3}>
+                                                <strong>Application deadline</strong><br/>
+                                                {longDate(job.deadline)}
+                                            </Grid>
                                         </Grid>
                                     </CardContent>
 
                                     <Divider/>
 
                                     <CardContent>
-                                        <Grid container justify={"flex-start"}>
+                                        <Grid container justify={"center"}>
 
                                             {
                                                 !user && <XLoginSnackbar
@@ -313,18 +328,18 @@ const Job = ({match}: any) => {
 
                                             <Grid item>
                                                 {
-                                                    canApply && alreadyApplied &&
-                                                    <span>You have already applied for this job.</span>
+                                                    alreadyApplied &&
+                                                    <span style={{color: "green"}}>You have applied for this job.</span>
                                                 }
 
                                                 {
-                                                    canApply && !alreadyApplied && applyButton.visible &&
+                                                    canApply && applyButton.visible &&
                                                     <Button className="apply-button"
                                                             onClick={() => handleApply(job)}
                                                             variant={"contained"}
                                                             disableElevation
                                                             disabled={applyButton.disabled}
-                                                            color={"primary"}>
+                                                            color={"secondary"}>
                                                         {applyButton.label}
                                                     </Button>
                                                 }
@@ -332,12 +347,15 @@ const Job = ({match}: any) => {
                                                 {
                                                     canViewApplicants &&
                                                     <>
-                                                        <Button
-                                                            onClick={() => toggleDrawer("right", true)}
-                                                            color={"default"}
-                                                            variant={"outlined"}>
-                                                            {job.applicants?.length} applicants
-                                                        </Button>
+                                                        {job.applicants?.length ?
+                                                            <Button
+                                                                style={{textTransform: 'inherit'}}
+                                                                onClick={() => toggleDrawer("right", true)}
+                                                                color={"default"}
+                                                                variant={"outlined"}>
+                                                                View applicants
+                                                            </Button> : <span style={{color: "red"}}>No applications yet</span>
+                                                        }
 
                                                         <XDrawer
                                                             onClose={() => toggleDrawer("right", false)}
