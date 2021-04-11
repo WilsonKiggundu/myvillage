@@ -179,8 +179,6 @@ const Job = ({match}: any) => {
 
                 document.title = `${response.body.title} / My Village`
 
-                console.log(job)
-
             } catch (e) {
 
                 if (e.toString().includes('Unauthorized')) {
