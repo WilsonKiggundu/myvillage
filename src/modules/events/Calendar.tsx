@@ -1,23 +1,33 @@
 import React from "react";
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
-import {Container} from "@material-ui/core";
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import {Card, CardContent, Container} from "@material-ui/core";
 
-const Calendar = () => {
+interface IProps {
+    events: []
+}
+
+const Calendar = ({events}: IProps) => {
+
+
+
     return (
-        <Container maxWidth={"lg"}>
-            <FullCalendar
-                plugins={[dayGridPlugin]}
-                events={[
-                    {
-                        id: '1',
-                        title: 'my event',
-                        start: '2021-04-13',
-                        end: '2021-04-15',
-                        description: 'Some events that will blow your mind away.'
-                    }
-                ]}
-                initialView="dayGridMonth" />
+        <Container disableGutters maxWidth={false}>
+            <Card>
+                <CardContent>
+                    <FullCalendar
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                        headerToolbar={{
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                        }}
+                        events={events}
+                        initialView="dayGridMonth"/>
+                </CardContent>
+            </Card>
         </Container>
     )
 }
