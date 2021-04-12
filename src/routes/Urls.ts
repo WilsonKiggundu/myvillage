@@ -32,5 +32,6 @@ export const Urls = ({
     events: "/events",
     createEvent: "/events/create",
     singleEvent: (id: any) => `/events/${id}/details`,
-    event: '/events/:id/details'
+    event: '/events/:id/details',
+    calendar: '/calendar'
 })

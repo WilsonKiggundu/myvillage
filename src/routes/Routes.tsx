@@ -16,7 +16,7 @@ import {SilentRenew} from "../modules/auth/SilientRenew";
 import Feed from "../modules/feed/Feed";
 import {CreateProfile} from "../modules/profiles/CreateProfile";
 import NewArticle from "../modules/articles/NewArticle";
-import Calendar from "../modules/events/Events";
+import Calendar from "../modules/events/Calendar";
 import {PrivateRoute} from "./PrivateRoute";
 import store from "../data/store";
 import userManager from "../utils/userManager";
@@ -55,6 +55,7 @@ export const Routes = (
             <Route exact path={Urls.events} component={() => <Calendar/>}/>
             <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
             <Route exact path={Urls.event} component={Event}/>
+            <Route exact path={Urls.calendar} component={Calendar}/>
         </MainLayout>
 
         {/*<Route path={'/404'} component={NotFound} />*/}
