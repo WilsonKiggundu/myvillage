@@ -14,7 +14,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import grey from "@material-ui/core/colors/grey";
 import {useHistory} from 'react-router-dom';
 import {Urls} from "../routes/Urls";
-import XImageGridList from "./XImageGridList";
+import XImageGridList from "./grid-list/XImageGridList";
 
 const useStyles = makeStyles((theme) => ({
     root: {

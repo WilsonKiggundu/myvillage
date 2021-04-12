@@ -6,12 +6,12 @@
 }
 
 .PostCard-content{
-    padding: 15px;
+    padding: 0;
 }
 
 .Post-details{
     white-space: pre-line; 
-    margin-bottom: 15px
+    margin: 15px;
 }
 
 .Post-action{
@@ -26,7 +26,8 @@
 }
 
 .PostCard-actions{
-    padding: 25px;
+    padding: 0 15px;
+    margin-top: 15px;
 }
 .Comment-input{
     background: #F1F1F0;
@@ -37,8 +38,8 @@
 }
 
 .Comments{
-    margin-left: 25px;
-    margin-right: 25px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .Like-items{

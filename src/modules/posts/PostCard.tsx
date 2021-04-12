@@ -18,7 +18,7 @@ import CommentsList from "../../components/CommentsList";
 import {useHistory} from "react-router-dom";
 import {timeAgo} from "../../utils/dateHelpers";
 import {userSelector} from "../../data/coreSelectors";
-import XImageGridList from "../../components/XImageGridList";
+import XImageGridList from "../../components/grid-list/XImageGridList";
 import LikeDialogBox from "../../components/LikeDialogBox";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -145,12 +145,10 @@ const PostCard = ({post}: IProps) => {
                     />
 
                     <div className="PostCard-content">
-                        <div className="Post-details">{post.details}</div>
+                        {post.details && <div className="Post-details">{post.details}</div>}
                         {
                             uploads?.length ?
-                                <Box mb={2} ml={2} mr={2}>
-                                    <XImageGridList images={uploads}/>
-                                </Box>
+                                <XImageGridList images={uploads}/>
                                 : ""
                         }
                     </div>
@@ -159,6 +157,7 @@ const PostCard = ({post}: IProps) => {
                         <Grid container justify={"space-between"}>
                             <Grid item>
                                 <Button
+                                    variant={"outlined"}
                                     disabled={post.alreadyLikedByUser}
                                     onClick={() => handleLike(post.id)}
                                 >
