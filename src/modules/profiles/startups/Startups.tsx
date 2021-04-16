@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import StartupCard from "./StartupCard";
-import {Grid, useTheme} from "@material-ui/core";
+import {Box, Button, Grid} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import {XFab} from "../../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add";
@@ -15,6 +15,7 @@ import ErrorPage from "../../exceptions/Error";
 import {scrolledToBottom} from "../../../utils/scrollHelpers";
 import {userSelector} from "../../../data/coreSelectors";
 import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
+import {ChevronRight} from "@material-ui/icons";
 
 const Startups = () => {
 
@@ -26,18 +27,14 @@ const Startups = () => {
 
     const handleCreate = () => {
         if (user) setAddStartupDialog(true)
-        else{
+        else {
             setOpenSnackbar(true)
         }
     }
 
-    useEffect(() => {
-        window.addEventListener('scroll', () => {
-            if (startups.request.hasMore && scrolledToBottom()) {
-                dispatch(loadStartups())
-            }
-        })
-    })
+    const handleLoadMore = () => {
+        dispatch(loadStartups())
+    }
 
     useEffect(() => {
         dispatch(loadStartups())
@@ -54,15 +51,17 @@ const Startups = () => {
     return (
         <Container maxWidth={"lg"}>
             <Grid container spacing={2} justify={"flex-start"}>
-                <Grid item xs={12}>
-                    <Grid spacing={2} container>
-                        {startups.data.map((startup: any) => (
-                            <Grid item key={startup.id} xs={12} sm={6} md={4}>
-                                <StartupCard startup={startup} />
-                            </Grid>
-                        ))}
+                {startups.data.map((startup: any, index: number) => (
+                    <Grid key={index} item xs={12} md={6} lg={4}>
+                        <StartupCard index={index} startup={startup}/>
                     </Grid>
-                </Grid>
+                ))}
+
+                {startups.request.hasMore && <Grid style={{textAlign: "center"}} item xs={12}>
+                    <Box mt={2} mb={2}>
+                        <Button onClick={handleLoadMore} variant={"text"}>Load more <ChevronRight /></Button>
+                    </Box>
+                </Grid>}
             </Grid>
 
             <XFab right={15}
@@ -73,7 +72,7 @@ const Startups = () => {
                 <AddIcon/>
             </XFab>
 
-            {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)} />}
+            {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)}/>}
 
             <XDialog title={"Enroll your startup"}
                      maxWidth={"md"}

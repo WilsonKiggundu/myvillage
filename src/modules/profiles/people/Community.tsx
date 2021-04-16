@@ -19,6 +19,9 @@ import {IPerson} from "./IPerson";
 import './People.css'
 import {userSelector} from "../../../data/coreSelectors";
 import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
+import {Button} from "@material-ui/core";
+import {ChevronRight} from "@material-ui/icons";
+import {loadStartups} from "../startups/redux/startupsActions";
 
 const Community = () => {
 
@@ -43,11 +46,11 @@ const Community = () => {
 
         document.title = 'Community / My Village'
 
-        window.addEventListener('scroll', () => {
-            if (people.request.hasMore && scrolledToBottom()) {
-                dispatch(loadPeople())
-            }
-        })
+        // window.addEventListener('scroll', () => {
+        //     if (people.request.hasMore && scrolledToBottom()) {
+        //         dispatch(loadPeople())
+        //     }
+        // })
     })
 
     useEffect(() => {
@@ -71,6 +74,10 @@ const Community = () => {
     const handleViewProfile = (id: string) => {
         const url = Urls.profiles.onePerson(id)
         history.push(url)
+    }
+
+    const handleLoadMore = () => {
+        dispatch(loadPeople())
     }
 
 
@@ -118,6 +125,13 @@ const Community = () => {
                         </ContactCard>
                     </Grid>
                 ))}
+
+                {people.request.hasMore && <Grid style={{textAlign: "center"}} item xs={12}>
+                    <Box mt={2} mb={2}>
+                        <Button onClick={handleLoadMore} variant={"text"}>Load more <ChevronRight /></Button>
+                    </Box>
+                </Grid>}
+
             </Grid>
         </Container>
     )

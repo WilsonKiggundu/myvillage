@@ -1,31 +1,37 @@
 .startup-logo-holder{
-    border: solid 1px #c1c1c1;
     display: inline-block;
     padding: 0;
-    height: 100px;
-    width: 100px;
-    overflow-y: hidden;
-    border-radius: 100%;
+    max-height: 80px;
+    width: 100%;
+    overflow: hidden;
     text-align: center;
     margin: auto;
-    line-height: 100px;
+    line-height: 80px;
 }
 
 .startup-logo-holder img{
-    width: auto;
-    /*max-width: 100px;*/
-    height: 100px;
+    width: 100%;
+    height: auto;
 }
 
 .startup-name{
-    font-size: 2em;
-    font-weight: bold;
-    margin: 15px 0 0 0;
+    font-size: 1.5em;
+    font-weight: 500;
+    max-width: 95%;
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .startup-category{
     margin: 0 0 15px 0;
     color: #c1c1c1;
+    max-width: 95%;
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .startup-inc-date{
@@ -36,22 +42,26 @@
 
 .startup-description-truncated{
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     position: relative;
-    max-height: 4.2em;
+    height: 3em;
     overflow: hidden;
     padding-right: 1em;
 }
 
 .startup-initials{
-    font-weight: bold;
+    font-weight: 400;
     font-size: 2em;
-    color: #cccccc;
+    color: #ffffff;
 }
 
 .clickable{
     cursor: pointer;
+}
+
+.clickable:hover{
+    box-shadow: 1px 2px 1px -1px #c1c1c1;
 }
 
 .startup-view-profile{
