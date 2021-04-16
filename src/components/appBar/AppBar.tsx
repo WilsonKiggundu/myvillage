@@ -27,12 +27,15 @@ import {userSelector} from "../../data/coreSelectors";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import './AppBar.css'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
+import XAsyncTypeahead from "../XAsyncTypeahead";
 
 type Anchor = 'left' | 'right';
 
@@ -134,11 +137,17 @@ export default function ApplicationBar() {
     return (
         <header className="Appbar-root">
 
-            <Grid container justify={"space-between"}>
-                <Grid item>
+            <Grid spacing={3} container>
+                {!isMobile && <Grid xs={2} lg={1} item>
                     <MyVillageLogo className="Appbar-logo"/>
+                </Grid>}
+                <Grid xs={10} lg={4} item>
+                    <div className="Appbar-searchbox">
+                        <XAsyncTypeahead
+                            placeholder="What are you looking for?"/>
+                    </div>
                 </Grid>
-                {!isMobile && <Grid item>
+                {!isMobile && <Grid style={{textAlign: "center"}} lg={6} item>
                     <ul className="Appbar-menu">
                         <li className={activeMenu === 'feed' ? 'active' : ''}>
                             <a href={Urls.feed}>Feed</a>
@@ -157,14 +166,12 @@ export default function ApplicationBar() {
                         </li>
                     </ul>
                 </Grid>}
-                <Grid item>
+                <Grid xs={1} item>
                     {isMobile ?
-                        <IconButton
-                            onClick={toggleDrawer(anchor, true)}>
-                            <div className="Appbar-profile">
-                                <MenuIcon className="Appbar-menu-icon"/>
-                            </div>
-                        </IconButton> :
+                        <div onClick={toggleDrawer(anchor, true)}
+                             className="Appbar-profile">
+                            <MenuIcon className="Appbar-menu-icon"/>
+                        </div> :
                         user ?
                             <>
                                 <IconButton aria-controls="profile-menu"

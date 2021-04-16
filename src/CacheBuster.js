@@ -2,9 +2,12 @@ import React, {Component} from "react";
 import packageJson from '../package.json'
 global.appVersion = packageJson.version
 
-const semverGreaterThan = (versionA, versionB) => {
-    const versionsA = versionA.split(/\./g)
-    const versionsB = versionB.split(/\./g)
+const semverGreaterThan = (latestVersion, currentVersion) => {
+
+    if (currentVersion === null) return true
+
+    const versionsA = latestVersion.split(/\./g)
+    const versionsB = currentVersion.split(/\./g)
 
     while (versionsA.length || versionsB.length) {
         const a = Number(versionsA.shift())
@@ -18,11 +21,13 @@ const semverGreaterThan = (versionA, versionB) => {
 }
 
 const forceReload = () => {
-    const form = document.createElement('form');
-    form.method = "POST";
-    form.action = window.location.href;
-    document.body.appendChild(form);
-    form.submit();
+    localStorage.setItem('appVersion', packageJson.version)
+    window.location.reload()
+    // const form = document.createElement('form');
+    // form.method = "POST";
+    // form.action = window.location.href;
+    // document.body.appendChild(form);
+    // form.submit();
 }
 
 class CacheBuster extends Component{
@@ -47,11 +52,13 @@ class CacheBuster extends Component{
     }
 
     componentDidMount() {
+
+        const currentVersion = localStorage.getItem('appVersion')
+
         fetch('/meta.json')
             .then((response) => response.json())
             .then((meta) => {
                 const latestVersion = meta.version
-                const currentVersion = global.appVersion
 
                 const shouldForceRefresh = semverGreaterThan(latestVersion, currentVersion)
                 if (shouldForceRefresh) {
