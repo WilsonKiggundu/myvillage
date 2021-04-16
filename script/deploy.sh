@@ -1,7 +1,7 @@
 #!/bin/sh
-ssh -p 50739 jenkins@prod-server.innovationvillage.co.ug <<EOF
+ssh -p 50739 jenkins@test-server.innovationvillage.co.ug <<EOF
  cd /var/www/my-village
- git checkout master
+ git checkout develop
  git pull
  yarn install
  yarn run build
