@@ -1,15 +1,14 @@
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import React, {useState} from "react";
 import {globalStyles} from "../../../theme/styles";
 import {Box} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import EditIcon from "@material-ui/icons/Edit";
+import EditIconOutlined from "@material-ui/icons/EditOutlined";
 import {IStartup} from "../../../interfaces/IStartup";
-import Chip from "@material-ui/core/Chip";
 import XDialog from "../../../components/dialogs/XDialog";
 import UpdateStartupDetails from "./forms/UpdateStartupDetails";
 import IconButton from "@material-ui/core/IconButton";
@@ -17,11 +16,12 @@ import UploadFile from "../../posts/forms/UploadFile";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
 import ProfileCoverPhoto from "../ProfileCoverPhoto";
-import {LazyLoadImage} from "react-lazy-load-image-component";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import './css/StartupSummary.css'
+import XImageLoader from "../../../components/XImageLoader";
+import {ChevronRight} from "@material-ui/icons";
 
 interface IProps {
     startup: IStartup
@@ -54,18 +54,55 @@ export default function StartupSummary({startup}: IProps) {
         setOpenEditProfileDialog(true)
     }
 
+    const bgColors = ['#636569', '#ff9015', '#62cbc9']
+    const color = bgColors[Math.floor(Math.random() * bgColors.length)];
+    const name = startup.name.replace(/^\s+|\s+$/gm, '');
+
     return (
         <>
             <Box mb={2}>
                 <Card>
 
-                    <div className="StartupSummary-logo">
-                        <LazyLoadImage
-                            src={startup.avatar}
-                            alt={startup.name}
-                            effect={'blur'}
-                        />
-                    </div>
+                    <CardContent>
+                        <Grid container justify={"flex-start"} spacing={2}>
+                            <Grid item xs={3} lg={2}>
+                                <div className="StartupSummary-logo-holder">
+                                    {startup.avatar ?
+                                        <XImageLoader
+                                            width="95%"
+                                            height={"auto"}
+                                            src={startup.avatar}
+                                            effect={"opacity"}
+                                            alt={startup.name}
+                                        /> : <div style={{backgroundColor: color}} className="startup-initials">
+                                            {name[0].toUpperCase()}
+                                        </div>
+                                    }
+                                </div>
+                            </Grid>
+                            <Grid item xs={9} lg={10}>
+                                <div className="StartupSummary-name">{startup.name}</div>
+                                <div className="StartupSummary-category">
+                                    {
+                                        startup.category.split(',')
+                                            .map((category: string, index: number) => (
+                                                <span key={index}>{category}</span>
+                                            ))
+                                    }
+                                </div>
+
+                                <Button
+                                    variant={"outlined"}
+                                    href={startup.website}
+                                    target={"_blank"}
+                                    disabled={!startup.website}
+                                    size={"small"}
+                                    title={"Website"}>
+                                    Visit Website <ChevronRight/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </CardContent>
 
                     <ProfileCoverPhoto startup={startup}/>
 
@@ -113,49 +150,8 @@ export default function StartupSummary({startup}: IProps) {
                     ) : ""}
 
                     <CardContent style={{textAlign: "center"}}>
-
-                        <div className="StartupSummary-name">{startup.name}</div>
-                        {/*<Typography style={{whiteSpace: 'pre-line'}} component={"div"} variant={"body2"}>*/}
-                        {/*    {startup.description}*/}
-                        {/*</Typography>*/}
-
-                        <Box mt={1} mb={2}>
-                            {
-                                startup.category.split(',')
-                                    .map((c, index) =>
-                                        <Chip
-                                            className="StartupSummary-category"
-                                            key={index}
-                                            size="small"
-                                            label={c}
-                                        />)
-                            }
-                        </Box>
-
-                        {/*<ProfileRating rating={3}/>*/}
-
-                        <Divider/>
-
                         <Grid style={{marginTop: 15}} container justify={"center"}>
-                            <Button style={{margin: 5}}
-                                    variant={"outlined"}
-                                    href={startup.website}
-                                    target={"_blank"}
-                                    size={"small"}
-                                    title={"Website"}>
-                                Visit Website
-                            </Button>
 
-                            <Button disabled
-                                    style={{margin: 5}}
-                                    variant={"outlined"}
-                                    size={"small"}>
-                                Connect
-                            </Button>
-
-                            {/*<Button disabled style={{margin: 5}} variant={"outlined"} size={"small"}>*/}
-                            {/*    Send Message*/}
-                            {/*</Button>*/}
                         </Grid>
 
                     </CardContent>

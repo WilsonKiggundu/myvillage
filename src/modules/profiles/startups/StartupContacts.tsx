@@ -21,6 +21,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import AddIcCallIcon from '@material-ui/icons/AddIcCall';
 
 interface IProps {
     startup: IStartup
@@ -46,7 +48,12 @@ export default function StartupContacts({startup}: IProps) {
         <Box mb={2}>
             <Card>
                 <CardHeader
-                    title={"Contacts"}
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><AddIcCallIcon /></Grid>
+                            <Grid item><div className="card-title">Get in touch</div></Grid>
+                        </Grid>
+                    }
                     action={
                         canEdit ? (
                             <IconButton onClick={() => setOpenDialog(true)}>

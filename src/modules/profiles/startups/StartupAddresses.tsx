@@ -21,6 +21,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
 import {white} from "../../../theme/custom-colors";
 import {deleteStartupAddress} from "./redux/startupsActions";
+import {LocationOn} from "@material-ui/icons";
 
 interface IProps {
     startup: IStartup
@@ -55,7 +56,12 @@ export default function StartupAddresses({startup}: IProps) {
                             </IconButton>
                         ) : ""
                     }
-                    title={"Addresses"}
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><LocationOn /></Grid>
+                            <Grid item><div className="card-title">Where to find us</div></Grid>
+                        </Grid>
+                    }
                 />
 
                 <Divider />

@@ -2,3 +2,8 @@
     border-radius: 8px;
     border: solid 1px #c1c1c1;
 }
+
+.about-title{
+    font-weight: 500;
+    font-size: 1.2em;
+}
