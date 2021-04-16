@@ -4,8 +4,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import React, {useEffect, useState} from "react";
 import {IStartup} from "../../../interfaces/IStartup";
-import {useSelector} from "react-redux";
-import {userSelector} from "../../../data/coreSelectors";
 import {Divider, Grid, List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 
 import PeopleIcon from '@material-ui/icons/People';
@@ -13,7 +11,6 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import TodayIcon from '@material-ui/icons/Today';
 
 import './css/StartupBioCard.css'
-import {IAddress} from "../../../interfaces/IAddress";
 
 interface IProps {
     startup: IStartup
@@ -24,7 +21,7 @@ export function StartupBioCard({startup}: IProps) {
     const [address, setAddress] = useState<string | undefined>(undefined)
 
     useEffect(() => {
-        if (startup.addresses?.length){
+        if (startup.addresses?.length) {
             const addressArray = []
             const address = startup.addresses[0]
             if (address.city) addressArray.push(address.city)
@@ -35,56 +32,56 @@ export function StartupBioCard({startup}: IProps) {
     }, [startup])
 
     return <Box mb={2}>
-        <Card>
-            <CardContent>
-                <Box mb={2} mt={2}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={8}>
-                            <Typography variant={"h4"}>
-                                <strong>About</strong>
+
+        <Grid container spacing={2}>
+            <Grid item xs={12} md={8}>
+                <Card>
+                    <CardContent>
+                        <div className="about-title">
+                            About
+                        </div>
+                        <Box mb={2}>
+                            <Typography style={{whiteSpace: "pre-line", marginTop: 15}} variant="body2">
+                                {startup.description}
                             </Typography>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <Card>
+                    <CardContent>
+                        <List>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <TodayIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={startup.incorporationDate} secondary="Incorporation date"/>
+                            </ListItem>
 
-                            <Box mb={2}>
-                                <Typography style={{whiteSpace: "pre-line", marginTop: 15}} variant="body2">
-                                    {startup.description}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <div className="StartupBioCard-sidebar">
+                            <Divider/>
+                            <ListItem>
+                                <ListItemIcon>
+                                    <PeopleIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={startup.employeeCount} secondary="Number of employees"/>
+                            </ListItem>
 
-                                <List>
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <TodayIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary={startup.incorporationDate} secondary="Incorporation date" />
-                                    </ListItem>
+                            {address ? <>
+                                <Divider/>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <LocationOnIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={address} secondary="Address"/>
+                                </ListItem>
+                            </> : ""}
 
-                                    <Divider />
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <PeopleIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary={startup.employeeCount} secondary="Number of employees" />
-                                    </ListItem>
+                        </List>
+                    </CardContent>
+                </Card>
+            </Grid>
+        </Grid>
 
-                                    {address ? <>
-                                        <Divider />
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <LocationOnIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary={address} secondary="Address" />
-                                        </ListItem>
-                                    </> : ""}
-
-                                </List>
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Box>
-            </CardContent>
-        </Card>
     </Box>;
 }

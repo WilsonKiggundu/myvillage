@@ -22,6 +22,10 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import DeleteIcon from "@material-ui/icons/Delete"
 import {deleteStartupRoles} from "./redux/startupsActions";
+import {grey} from "@material-ui/core/colors";
+import Grid from "@material-ui/core/Grid";
+import AddIcCallIcon from "@material-ui/icons/AddIcCall";
+import GroupIcon from '@material-ui/icons/Group';
 
 interface IProps {
     startup: IStartup
@@ -44,7 +48,12 @@ export default function StartupRoles({startup}: IProps) {
         <Box mb={2}>
             <Card>
                 <CardHeader
-                    title={"Our people"}
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><GroupIcon /></Grid>
+                            <Grid item><div className="card-title">Meet our team</div></Grid>
+                        </Grid>
+                    }
                     action={
                         canEdit ? (
                             <IconButton onClick={() => setAddDialog(true)}>
@@ -54,7 +63,7 @@ export default function StartupRoles({startup}: IProps) {
                     }
                 />
                 <Divider/>
-                <CardContent style={{paddingTop: 15}}>
+                <CardContent style={{margin: -15}}>
                     {roles && roles.length > 0 ? (
                         <List>
                             {roles?.map((role: any, index: number) => {
@@ -70,13 +79,9 @@ export default function StartupRoles({startup}: IProps) {
                                             <ListItemText
                                                 primary={`${role.person.firstname} ${role.person.lastname}`}
                                                 secondary={
-                                                    <Typography
-                                                        component="span"
-                                                        variant="body2"
-                                                        color="textPrimary"
-                                                    >
-                                                        {role.role}
-                                                    </Typography>
+                                                    <span style={{color: grey[400]}}>
+                                                        {role.role === 'PageAdmin' ? 'Administrator' : role.role}
+                                                    </span>
                                                 }
                                             />
                                             <ListItemSecondaryAction>
@@ -93,7 +98,7 @@ export default function StartupRoles({startup}: IProps) {
                                                 </IconButton>
                                             </ListItemSecondaryAction>
                                         </ListItem>
-                                        <Divider variant="fullWidth" component="li"/>
+                                        {index < roles?.length - 1 ? <Divider variant="fullWidth" component="li"/> : ""}
                                     </Box>
                                 )
                             })}

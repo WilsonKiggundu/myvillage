@@ -14,6 +14,7 @@ import {userSelector} from "../../data/coreSelectors";
 import {LazyLoadImage} from 'react-lazy-load-image-component'
 
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import XImageLoader from "../../components/XImageLoader";
 
 interface IProps {
     person?: IPerson
@@ -47,18 +48,14 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
             {coverPhoto || canEdit ? (
                 <Grid className={classes.coverPhoto}
                       alignItems={"center"}
-                      style={{backgroundColor: '#F1F1F1'}}
+                      style={{backgroundColor: '#fbfafa'}}
                       alignContent={"center"}
                       container>
 
                     {coverPhoto ?
-                        // <img alt={""}
-                        //      src={coverPhoto}
-                        //      style={{width: '100%'}}
-                        // />
-                        <LazyLoadImage
+                        <XImageLoader
                             src={coverPhoto}
-                            effect={"blur"}
+                            effect={"opacity"}
                             width={'100%'}
                             height={'auto'}
                             alt={'Cover photo'}
@@ -76,14 +73,14 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
                     }}>
                         <Typography component={"div"}>
                             <IconButton
-                                style={{color: "white"}}
+                                style={{color: "#c1c1c1"}}
                                 onClick={() => setOpenUploadDialog(true)}
                                 size={"medium"}>
                                 <AddAPhoto fontSize={"large"}/>
                             </IconButton>
                         </Typography>
 
-                        <Typography style={{color: "white"}} component={"small"}>
+                        <Typography style={{color: "#c1c1c1"}} component={"small"}>
                             {coverPhoto ? "" : "Add a cover photo"}
                         </Typography>
 
@@ -103,7 +100,7 @@ const ProfileCoverPhoto = ({person, startup}: IProps) => {
                     </Typography> : ""}
 
                 </Grid>
-            ) : ""}
+            ) : <div className={classes.coverPhoto}></div>}
         </>
     )
 }

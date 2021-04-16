@@ -189,17 +189,15 @@ export const globalStyles = makeStyles((theme) => ({
     },
 
     coverPhoto: {
-        // borderBottomLeftRadius: 8,
-        // borderBottomRightRadius: 8,
         position: 'relative',
         backgroundColor: grey[100],
         width: '100%',
-        maxHeight: '45vh',
-        minHeight: '45vh',
+        maxHeight: '35vh',
+        minHeight: '20vh',
         overflow: 'hidden',
         [theme.breakpoints.down('sm')]: {
             maxHeight: '35vh',
-            minHeight: '25vh',
+            minHeight: '20vh',
         }
     },
 

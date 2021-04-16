@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import StartupCard from "./StartupCard";
-import {Box, Button, Grid} from "@material-ui/core";
+import {Box, Button, Grid, useMediaQuery, useTheme} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import {XFab} from "../../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add";
@@ -12,10 +12,11 @@ import {startupsSelector} from "./redux/startupsSelectors";
 import {loadStartups} from "./redux/startupsActions";
 import _ from "lodash";
 import ErrorPage from "../../exceptions/Error";
-import {scrolledToBottom} from "../../../utils/scrollHelpers";
 import {userSelector} from "../../../data/coreSelectors";
 import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
 import {ChevronRight} from "@material-ui/icons";
+
+import './css/StartupCard.css'
 
 const Startups = () => {
 
@@ -24,6 +25,9 @@ const Startups = () => {
     const dispatch = useDispatch()
     const [addStartupDialog, setAddStartupDialog] = useState<boolean>(false)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
+
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
     const handleCreate = () => {
         if (user) setAddStartupDialog(true)
@@ -50,7 +54,7 @@ const Startups = () => {
 
     return (
         <Container maxWidth={"lg"}>
-            <Grid container spacing={2} justify={"flex-start"}>
+            <Grid container spacing={2} justify={"center"}>
                 {startups.data.map((startup: any, index: number) => (
                     <Grid key={index} item xs={12} md={6} lg={4}>
                         <StartupCard index={index} startup={startup}/>
@@ -59,18 +63,20 @@ const Startups = () => {
 
                 {startups.request.hasMore && <Grid style={{textAlign: "center"}} item xs={12}>
                     <Box mt={2} mb={2}>
-                        <Button onClick={handleLoadMore} variant={"text"}>Load more <ChevronRight /></Button>
+                        <Button onClick={handleLoadMore} variant={"text"}>Load more <ChevronRight/></Button>
                     </Box>
                 </Grid>}
             </Grid>
 
             <XFab right={15}
+                  variant={isMobile ? "round" : "extended"}
                   bottom={15}
-                  color={"secondary"}
+                  color={"primary"}
                   position={"fixed"}
                   onClick={handleCreate}>
-                <AddIcon/>
+                <AddIcon/> {!isMobile && <span className="text-inherit">Add your business</span>}
             </XFab>
+
 
             {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)}/>}
 

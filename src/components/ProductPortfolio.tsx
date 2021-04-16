@@ -24,7 +24,8 @@ import {startupProductsSelector, startupSelector} from "../modules/profiles/star
 import {PleaseWait} from "./PleaseWait";
 import {Alert} from "@material-ui/lab";
 import {deleteStartupProduct} from "../modules/profiles/startups/redux/startupsActions";
-
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 interface IProps {
     title: string
     startup: IStartup
@@ -83,7 +84,12 @@ const ProductPortfolio = ({startup, ...props}: IProps) => {
         <Box mb={2}>
             <Card>
                 <CardHeader
-                    title={props.title}
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><AttachMoneyIcon /></Grid>
+                            <Grid item><div className="card-title">What we do</div></Grid>
+                        </Grid>
+                    }
                     action={canEdit ? (
                         <IconButton onClick={() => setOpenAddProduct(true)}>
                             <AddIcon/>

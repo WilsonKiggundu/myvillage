@@ -37,7 +37,7 @@ const StartupCard = ({startup, index}: IProps) => {
     const name = startup.name.replace(/^\s+|\s+$/gm,'');
 
     return (
-        <Card onClick={() => handleClick(startup.id)} elevation={0} className="clickable">
+        <Card onClick={() => handleClick(startup.id)} elevation={0} className="clickable gutters">
             <CardContent>
                 <Grid justify={"flex-start"} spacing={2} container>
                     <Grid item xs={3}>

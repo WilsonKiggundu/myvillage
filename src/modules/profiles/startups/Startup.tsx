@@ -70,7 +70,7 @@ const Startup = ({match}: any) => {
     })
 
     return (
-        <Container maxWidth={"lg"}>
+        <Container maxWidth={"md"}>
             <Box mt={0}>
                 <Grid justify={"center"} container spacing={2}>
                     <Grid item xs={12}>

@@ -14,6 +14,8 @@ import {userSelector} from "../../../data/coreSelectors";
 import {deleteStartupInterests} from "./redux/startupsActions";
 import {startupInterestsSelector} from "./redux/startupsSelectors";
 import {Divider} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 
 interface IProps {
     startup: IStartup
@@ -46,10 +48,13 @@ const StartupInterests = ({startup}: IProps) => {
                             </IconButton>
                         ) : ""
                     }
-                    title={"Our interests"}
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><InsertEmoticonIcon /></Grid>
+                            <Grid item><div className="card-title">The things we like</div></Grid>
+                        </Grid>
+                    }
                 />
-
-                <Divider />
 
                 {interests?.length ? (
                     <CardContent>
