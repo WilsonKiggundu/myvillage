@@ -54,6 +54,10 @@ export default function StartupSummary({startup}: IProps) {
         setOpenEditProfileDialog(true)
     }
 
+    const handleOpenWebsite = (url: string) => {
+        window.open(url, '_blank')
+    }
+
     const bgColors = ['#636569', '#ff9015', '#62cbc9']
     const color = bgColors[Math.floor(Math.random() * bgColors.length)];
     const name = startup.name.replace(/^\s+|\s+$/gm, '');
@@ -93,8 +97,7 @@ export default function StartupSummary({startup}: IProps) {
 
                                 <Button
                                     variant={"outlined"}
-                                    href={startup.website}
-                                    target={"_blank"}
+                                    onClick={() => handleOpenWebsite(startup.website)}
                                     disabled={!startup.website}
                                     size={"small"}
                                     title={"Website"}>
