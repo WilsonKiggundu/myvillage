@@ -16,6 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
 import {useDispatch} from "react-redux";
 import {deletePersonEducation} from "./redux/peopleActions";
+import SchoolIcon from '@material-ui/icons/School';
 
 interface IProps {
     person: IPerson
@@ -56,7 +57,12 @@ const PersonAwards = ({person, canEdit}: IProps) => {
                             </IconButton>
                         ) : ""
                     }
-                    title="Education / Awards"
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><SchoolIcon /></Grid>
+                            <Grid item><div className="card-title">Education background</div></Grid>
+                        </Grid>
+                    }
                 />
 
                 {awards?.length ? (

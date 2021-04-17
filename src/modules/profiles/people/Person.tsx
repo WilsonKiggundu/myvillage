@@ -154,18 +154,18 @@ const Person = ({match}: any) => {
     }
 
     return (
-        <Container maxWidth={"lg"}>
+        <Container maxWidth={"md"}>
             <Grid container justify={"center"} spacing={2}>
                 <Grid item xs={12}>
                     {person ? (
                         <>
-                            <ProfileCoverPhoto person={person}/>
+                            {/*<ProfileCoverPhoto person={person}/>*/}
                             <PersonCard canEdit={canEdit} person={person}/>
                             <PersonContacts canEdit={canEdit} person={person}/>
                             <PersonAwards canEdit={canEdit} person={person}/>
                             <PersonInterests canEdit={canEdit} person={person}/>
-                            <PersonConnections canEdit={canEdit} person={person}/>
                             <PersonSkills canEdit={canEdit} person={person}/>
+                            <PersonConnections canEdit={canEdit} person={person}/>
                             <PersonPosts canEdit={canEdit} person={person}/>
 
                             {jobApplicationStatus === "pending" && context === 'job_application' && jobId && jobApplicationId ?

@@ -53,6 +53,10 @@ const XAsyncTypeahead = (props) => {
         switch (option.type) {
             case 'Businesses':
                 window.location.replace(Urls.profiles.singleStartup(option.id))
+                break
+            case 'People':
+                window.location.replace(Urls.profiles.onePerson(option.id))
+                break
             default:
                 return
         }
@@ -64,7 +68,6 @@ const XAsyncTypeahead = (props) => {
             id="async-example"
             isLoading={isLoading}
             labelKey="label"
-
             minLength={3}
             onSearch={handleSearch}
             options={options}
@@ -75,7 +78,9 @@ const XAsyncTypeahead = (props) => {
                 const items = Object.keys(types).sort().map((type) => (
                     <Fragment key={type}>
                         {index !== 0 && <Menu.Divider/>}
-                        <Menu.Header>{type.toString()}</Menu.Header>
+                        <Menu.Header>
+                            <strong>{type.toString()}</strong>
+                        </Menu.Header>
                         {types[type].map((i) => {
                             const item =
                                 <MenuItem onClick={() => handleClick(i)} key={index} option={i} position={index}>
@@ -83,12 +88,11 @@ const XAsyncTypeahead = (props) => {
                                         {i.label}
                                     </Highlighter>
                                     <div style={{color: grey[400]}}>
-                                        <small>
+                                        <small style={{fontSize: '0.8em'}}>
                                             {i.subtitle}
                                         </small>
                                     </div>
                                 </MenuItem>;
-
                             index += 1;
                             return item;
                         })}

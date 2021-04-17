@@ -12,6 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import {ChevronLeft, ChevronRight} from "@material-ui/icons";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
+import XImageLoader from "../XImageLoader";
 
 // interface IProps {
 //     images: IUpload[]
@@ -91,13 +92,11 @@ const XImageGridList = ({images, scrollPosition}) => {
                         className={classes.clickable}
                         onClick={() => handleImageClick(image.path, index)}
                         key={index} cols={1}>
-                        <LazyLoadImage
+                        <XImageLoader
                             width={'100%'}
-                            // style={{height: 300}}
                             src={image.path}
-                            scrollPosition={scrollPosition}
                             alt={image.fileName}
-                            effect={'blur'}
+                            effect={'opacity'}
                         />
                     </GridListTile>
                 ))}

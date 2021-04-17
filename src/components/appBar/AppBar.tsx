@@ -141,13 +141,13 @@ export default function ApplicationBar() {
                 {!isMobile && <Grid xs={2} lg={1} item>
                     <MyVillageLogo className="Appbar-logo"/>
                 </Grid>}
-                <Grid xs={10} lg={4} item>
+                <Grid xs={10} lg={3} item>
                     <div className="Appbar-searchbox">
                         <XAsyncTypeahead
                             placeholder="What are you looking for?"/>
                     </div>
                 </Grid>
-                {!isMobile && <Grid style={{textAlign: "center"}} lg={6} item>
+                {!isMobile && <Grid style={{textAlign: "right"}} lg={6} item>
                     <ul className="Appbar-menu">
                         <li className={activeMenu === 'feed' ? 'active' : ''}>
                             <a href={Urls.feed}>Feed</a>
@@ -164,48 +164,24 @@ export default function ApplicationBar() {
                         <li className={activeMenu === 'jobs' ? 'active' : ''}>
                             <a href={Urls.jobs.list}>Jobs</a>
                         </li>
+                        {/*<li className={activeMenu === 'jobs' ? 'active' : ''}>*/}
+                        {/*    <a href={Urls.jobs.list}>Freelancers</a>*/}
+                        {/*</li>*/}
                     </ul>
                 </Grid>}
-                <Grid xs={1} item>
+                <Grid xs={1} lg={2}  style={{textAlign: "right"}} item>
                     {isMobile ?
                         <div onClick={toggleDrawer(anchor, true)}
                              className="Appbar-profile">
                             <MenuIcon className="Appbar-menu-icon"/>
                         </div> :
                         user ?
-                            <>
-                                <IconButton aria-controls="profile-menu"
-                                            aria-haspopup="true"
-                                            onClick={showProfileMenu}
-                                            color="inherit">
-                                    <div className="Appbar-profile">
-                                        <div className="Appbar-profile-avatar">
-                                            <Avatar className={classes.small} src={user?.profile?.picture}
-                                                    variant={"circular"}/>
-                                        </div>
-                                        <div className="Appbar-profile-dropdown-icon">
-                                            <KeyboardArrowDownIcon/>
-                                        </div>
-
-                                    </div>
-                                </IconButton>
-                                <Menu
-                                    id="profile-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{vertical: "bottom", horizontal: "left"}}
-                                    onClose={closeProfileMenu}
-                                    open={Boolean(anchorEl)}>
-                                    <MenuItem
-                                        disabled>{user?.profile?.given_name} {user?.profile?.family_name}</MenuItem>
-                                    <MenuItem onClick={handleProfileView}>
-                                        My Profile
-                                    </MenuItem>
-                                    <Divider/>
-                                    <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
-                                </Menu>
-                            </> :
+                            <div className="Appbar-login-button">
+                                <Button
+                                    onClick={handleProfileView}
+                                    variant={"contained"}
+                                    color={"secondary"}>Update your profile</Button>
+                            </div> :
                             <div className="Appbar-login-button">
                                 <Button
                                     onClick={handleLogin}

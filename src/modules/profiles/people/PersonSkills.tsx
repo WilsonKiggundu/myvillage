@@ -12,6 +12,10 @@ import UpdateSkillsForm from "./forms/profile/UpdateSkillsForm";
 import CardHeader from "@material-ui/core/CardHeader";
 import {useDispatch} from "react-redux";
 import {deletePersonSkills} from "./redux/peopleActions";
+import Grid from "@material-ui/core/Grid";
+import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
+
+import './People.css'
 
 interface IProps {
     person: IPerson
@@ -42,7 +46,12 @@ const PersonSkills = ({person, canEdit}: IProps) => {
                             </IconButton>
                         ) : ""
                     }
-                    title={"Personal skills"}
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><LocalLibraryIcon /></Grid>
+                            <Grid item><div className="card-title">My skills</div></Grid>
+                        </Grid>
+                    }
                 />
 
                 {skills?.length ? (

@@ -27,7 +27,7 @@ export const MainMenuItems = [
         url: Urls.jobs.list
     },
     // {
-    //     label: "Corporates",
+    //     label: "Freelancers",
     //     icon: "",
     //     url: Urls.profiles.startups
     // }

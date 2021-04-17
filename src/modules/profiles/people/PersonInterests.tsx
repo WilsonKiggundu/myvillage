@@ -11,6 +11,9 @@ import UpdateInterestsForm from "./forms/profile/UpdateInterestsForm";
 import CardHeader from "@material-ui/core/CardHeader";
 import { deletePersonInterests } from "./redux/peopleActions";
 import {useDispatch} from "react-redux";
+import Grid from "@material-ui/core/Grid";
+import GroupIcon from "@material-ui/icons/Group";
+import {ThumbsUpDown, ThumbUp} from "@material-ui/icons";
 
 interface IProps {
     person: IPerson
@@ -42,7 +45,10 @@ const PersonInterests = ({person, canEdit}: IProps) => {
                         ) : ""
                     }
                     title={
-                        canEdit ? "Your interests" : `${person.firstname}'s interests`
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><ThumbUp /></Grid>
+                            <Grid item><div className="card-title">Stuff I am interested in</div></Grid>
+                        </Grid>
                     }
                 />
 
