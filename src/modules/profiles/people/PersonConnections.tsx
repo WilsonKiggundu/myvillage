@@ -13,6 +13,10 @@ import {loadPersonConnection} from "./redux/peopleActions";
 import {useHistory} from "react-router-dom";
 import {Urls} from "../../../routes/Urls";
 import {PleaseWait} from "../../../components/PleaseWait";
+import Grid from "@material-ui/core/Grid";
+import GroupIcon from "@material-ui/icons/Group";
+import {AvatarGroup} from "@material-ui/lab";
+import {Avatar, CardContent} from "@material-ui/core";
 
 interface IProps {
     person: IPerson
@@ -30,6 +34,10 @@ const PersonConnections = ({person, canEdit}: IProps) => {
         dispatch(loadPersonConnection({personId: person.id}))
     }, [person.id])
 
+    const handleViewProfile = (personId: string) => {
+        window.location.replace(Urls.profiles.onePerson(personId))
+    }
+
     const [openAddConnectionsDialog, setOpenAddConnectionsDialog] = useState<boolean>(false)
 
     return (
@@ -45,23 +53,35 @@ const PersonConnections = ({person, canEdit}: IProps) => {
                             </IconButton>
                         ) : ""
                     }
-                    title="Connections"
+                    title={
+                        <Grid container spacing={1} justify={"flex-start"}>
+                            <Grid item><GroupIcon /></Grid>
+                            <Grid item><div className="card-title">People in my network</div></Grid>
+                        </Grid>
+                    }
                 />
 
-                {
-                    connections?.length ?
-                        (
-                            <XPersonGridList
-                                people={
-                                    connections.map((connection: any) => {
-                                        return connection.person
-                                    })
-                                }/>
-                        ) :
-                        <Box mb={2}>
-                            <PleaseWait label={"Loading connections..."}/>
-                        </Box>
-                }
+                <CardContent>
+                    {
+                        connections?.length ?
+                            (
+                                <AvatarGroup spacing={"medium"} max={9}>
+                                    {connections
+                                        .map((conn: any, index: number) => (
+                                            <Avatar
+                                                style={{cursor: 'pointer'}}
+                                                onClick={() => handleViewProfile(conn.personId)}
+                                                key={index} alt={conn.person.firstname} src={conn.person.avatar}>
+                                                <strong>{conn.person.firstname[0].toUpperCase()}{conn.person.lastname[0].toUpperCase()}</strong>
+                                            </Avatar>
+                                        ))}
+                                </AvatarGroup>
+                            ) :
+                            <Box mb={2}>
+                                <PleaseWait label={"Loading connections..."}/>
+                            </Box>
+                    }
+                </CardContent>
 
             </Card>
 

@@ -45,16 +45,16 @@
 }
 
 .Appbar-menu-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
 }
 
 .Appbar-profile{
-    background-color: #636569;
-    border-radius: 6px;
-    padding: 5px 8px;
+    border-radius: 0;
+    padding: 0 5px;
     color: #FFFFFF;
     cursor: pointer;
+    line-height: 65px;
 }
 
 .Appbar-profile-avatar{
@@ -78,4 +78,15 @@
 
 .Appbar-login-button button{
     text-transform: inherit !important;
+}
+
+.Appbar-searchbox{
+    width: 100%;
+    margin: 15px 5px 0 15px;
+}
+
+@media screen and (max-width: 567px) {
+    .Appbar-searchbox{
+        max-width: 100%;
+    }
 }

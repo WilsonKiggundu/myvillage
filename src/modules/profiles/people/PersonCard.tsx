@@ -102,7 +102,7 @@ const PersonCard = ({person, canEdit}: IProps) => {
                     }
                 />
 
-                <CardContent style={{padding: 30, marginTop: -60}}>
+                <CardContent style={{padding: 30, marginTop: -30}}>
                     <div className={classes.profilePhoto}>
 
                         <Avatar className={clsx(styles.largeAvatar, styles.avatar)}
@@ -163,7 +163,7 @@ const PersonCard = ({person, canEdit}: IProps) => {
                             <Typography
                                 style={{
                                     whiteSpace: 'pre-line',
-                                    textAlign: isMobile ? 'center' : 'justify'
+                                    textAlign: isMobile ? 'center' : 'center'
                                 }}
                                 variant={"body2"}>
                                 {person.bio}
