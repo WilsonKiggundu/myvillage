@@ -82,7 +82,6 @@ const PersonSkills = ({person, canEdit}: IProps) => {
                     </CardContent>
                 ) : ""}
 
-
                 <XDialog title={"Update your skills"}
                          maxWidth={"sm"}
                          onClose={() => setOpenEditSkillsDialog(false)}
