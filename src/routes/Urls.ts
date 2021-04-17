@@ -26,7 +26,8 @@ export const Urls = ({
     jobs: {
         singleJob: (id: string | null) => `/jobs/${id}/details`,
         create: "/jobs/create",
-        list: "/jobs"
+        home: "/jobs",
+        list: "/jobs/search"
     },
     job: '/jobs/:id/details',
     events: "/events",
