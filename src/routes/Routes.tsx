@@ -26,6 +26,7 @@ import Community from "../modules/profiles/people/Community";
 import CreateJob from "../modules/jobs/CreateJob";
 import CreateEvent from "../modules/events/CreateEvent";
 import Event from "../modules/events/Event";
+import JobsHome from "../modules/jobs/JobsHome";
 
 export const Routes = (
     <Switch>
@@ -45,6 +46,7 @@ export const Routes = (
             <Route exact path={Urls.jobs.list} component={Jobs}/>
             <Route exact path={Urls.job} component={Job}/>
             <Route exact path={Urls.jobs.create} component={CreateJob}/>
+            <Route exact path={Urls.jobs.home} component={JobsHome}/>
 
             <Route
                 exact

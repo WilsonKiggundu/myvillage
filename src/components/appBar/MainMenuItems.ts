@@ -22,9 +22,9 @@ export const MainMenuItems = [
         url: Urls.events
     },
     {
-        label: "Jobs",
+        label: "Work in tech",
         icon: "",
-        url: Urls.jobs.list
+        url: Urls.jobs.home
     },
     // {
     //     label: "Freelancers",

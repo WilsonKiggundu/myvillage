@@ -162,7 +162,7 @@ export default function ApplicationBar() {
                             <a href={Urls.events}>Events</a>
                         </li>
                         <li className={activeMenu === 'jobs' ? 'active' : ''}>
-                            <a href={Urls.jobs.list}>Jobs</a>
+                            <a href={Urls.jobs.home}>Work in tech</a>
                         </li>
                         {/*<li className={activeMenu === 'jobs' ? 'active' : ''}>*/}
                         {/*    <a href={Urls.jobs.list}>Freelancers</a>*/}
