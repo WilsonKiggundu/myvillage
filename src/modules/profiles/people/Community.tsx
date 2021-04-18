@@ -22,6 +22,10 @@ import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
 import {Button} from "@material-ui/core";
 import {ChevronRight} from "@material-ui/icons";
 import {loadStartups} from "../startups/redux/startupsActions";
+import XAutoComplete from "../../../components/inputs/XAutoComplete";
+import {Endpoints} from "../../../services/Endpoints";
+import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
+import PeopleFilter from "./forms/PeopleFilter";
 
 const Community = () => {
 
@@ -82,8 +86,13 @@ const Community = () => {
 
 
     return (
-        <Container maxWidth={false}>
+        <Container maxWidth={"lg"}>
             <Grid spacing={2} justify={"flex-start"} container>
+
+                {/*<Grid xs={12} item>*/}
+                {/*    <PeopleFilter />*/}
+                {/*</Grid>*/}
+
                 {people.data.map((person: IPerson) => (
                     <Grid item key={person.id} xs={12} sm={4} md={4} xl={2} lg={3}>
                         <ContactCard person={person}>

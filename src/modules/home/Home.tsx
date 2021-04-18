@@ -9,6 +9,7 @@ import AfricaMap from "../../assets/images/map-of-africa.png"
 import {ReactComponent as MyVillageLogo} from "../../assets/images/mv-colored-logo.svg";
 
 import './Home.css'
+import ReactGA from "react-ga";
 
 
 function Home() {
@@ -33,6 +34,11 @@ function Home() {
     useEffect(() => {
         document.title = "My Village / Africa's Entrepreneurs meet here."
         document.body.style.backgroundColor = '#1C1C1C'
+
+        if (process.env.REACT_APP_ENV === 'Production'){
+            ReactGA.initialize('UA-192556411-2')
+            ReactGA.pageview(window.location.pathname + window.location.search);
+        }
     })
 
     return (

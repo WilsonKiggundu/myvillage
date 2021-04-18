@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import {useLayoutStyles} from "./styles";
 import ApplicationBar from "../appBar/AppBar";
 import {useSelector} from "react-redux";
+import ReactGA from 'react-ga'
 
 import './MainLayout.css'
 import userManager from "../../utils/userManager";
@@ -20,6 +21,8 @@ interface IProps {
     mobilePadding?: boolean
 }
 
+ReactGA.initialize('')
+
 function MainLayout(props: IProps) {
 
     const {user} = useSelector((state: any) => state.oidc)
@@ -31,6 +34,13 @@ function MainLayout(props: IProps) {
 
     useEffect(() => {
         document.body.style.backgroundColor = '#F1F1F0'
+
+        if (process.env.REACT_APP_ENV === 'Production'){
+            if (process.env.REACT_APP_ENV === 'Production'){
+                ReactGA.initialize('UA-192556411-2')
+                ReactGA.pageview(window.location.pathname + window.location.search);
+            }
+        }
 
         if ('Notification' in window && user){
 
