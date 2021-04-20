@@ -27,6 +27,7 @@ import CreateJob from "../modules/jobs/CreateJob";
 import CreateEvent from "../modules/events/CreateEvent";
 import Event from "../modules/events/Event";
 import JobsHome from "../modules/jobs/JobsHome";
+import FreelancerHome from "../modules/freelancers/Home";
 
 export const Routes = (
     <Switch>
@@ -59,6 +60,7 @@ export const Routes = (
             <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
             <Route exact path={Urls.event} component={Event}/>
             <Route exact path={Urls.calendar} component={Calendar}/>
+            <Route exact path={Urls.profiles.freelancers} component={FreelancerHome}/>
         </MainLayout>
 
         {/*<Route path={'/404'} component={NotFound} />*/}

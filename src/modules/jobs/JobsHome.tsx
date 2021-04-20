@@ -6,8 +6,12 @@ import './css/JobsHome.css'
 import XImageLoader from "../../components/XImageLoader";
 import {ChevronRight} from "@material-ui/icons";
 import {Urls} from "../../routes/Urls";
+import {useSelector} from "react-redux";
+import {userSelector} from "../../data/coreSelectors";
 
 const JobsHome = () => {
+
+    const user = useSelector(userSelector)
 
     const handleSignup = () => {
         window.location.replace(`${process.env.REACT_APP_AUTH_URL}/account/signup?returnUrl=${process.env.REACT_APP_SIGNUP_REDIRECT_URL}`)
@@ -33,9 +37,10 @@ const JobsHome = () => {
                             </Button>
                         </div>
 
-                        <div className="JobsHome-signup">
+                        {!user && <div className="JobsHome-signup">
                             <a onClick={handleSignup} href="#">Create your profile</a>
-                        </div>
+                        </div>}
+
                     </Grid>
                     <Grid item xs={12} lg={7}>
                         <XImageLoader width={"100%"} effect={"opacity"} src={Image}/>

@@ -13,6 +13,7 @@ export const Urls = ({
     home: "/",
     feed: "/feed",
     profiles: {
+        freelancers: '/freelancers',
         create: "/profiles/create",
         person: `/profiles/people/:id`,
         onePerson: (id: string) => `/profiles/people/${id}`,

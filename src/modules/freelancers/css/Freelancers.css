@@ -1,0 +1,68 @@
+.Freelancers-title{
+    font-size: 3em;
+    line-height: 50px;
+    font-weight: 300;
+}
+
+.Freelancers-leading-text{
+    font-size: 18px;
+    text-align: left;
+    padding: 30px 0 60px 0;
+}
+
+.Freelancers-buttons{
+    margin: 30px 0;
+}
+
+.Freelancers-main-title{
+    font-weight: 900;
+    color: #e98a2b;
+    font-size: 4em;
+    line-height: 50px;
+    margin-top: 30px;
+}
+
+.Freelancers-bg-white{
+    background: white;
+    margin-top: -15px;
+    padding: 30px 0;
+}
+
+.Freelancers-button{
+    font-weight: bold !important;
+    text-transform: inherit !important;
+    font-size: 1.3em !important;
+}
+
+.Freelancers-button2{
+    text-transform: inherit !important;
+    font-size: 1.3em !important;
+}
+
+.Process-card{
+    text-align: center;
+    background: white;
+    padding: 15px;
+    min-height: 200px;
+}
+
+.Process-card-icon{
+    font-size: 3em !important;
+}
+
+.Process-card h3{
+    font-weight: 100;
+    font-size: 35px;
+    line-height: 30px;
+    padding: 25px 0;
+}
+
+.Process-card p{
+    padding: 0 0 15px 0;
+}
+
+.Process-title{
+    font-weight: 300;
+    font-size: 20px;
+    margin-top: 30px;
+}

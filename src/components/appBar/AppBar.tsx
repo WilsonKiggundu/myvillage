@@ -132,6 +132,7 @@ export default function ApplicationBar() {
         if (locationArray.includes('people')) setActiveMenu('community')
         if (locationArray.includes('events')) setActiveMenu('events')
         if (locationArray.includes('jobs')) setActiveMenu('jobs')
+        if (locationArray.includes('freelancers')) setActiveMenu('freelancers')
     })
 
     return (
@@ -163,6 +164,9 @@ export default function ApplicationBar() {
                         </li>
                         <li className={activeMenu === 'jobs' ? 'active' : ''}>
                             <a href={Urls.jobs.home}>Work in tech</a>
+                        </li>
+                        <li className={activeMenu === 'freelancers' ? 'active' : ''}>
+                            <a href={Urls.profiles.freelancers}>Freelancers</a>
                         </li>
                         {/*<li className={activeMenu === 'jobs' ? 'active' : ''}>*/}
                         {/*    <a href={Urls.jobs.list}>Freelancers</a>*/}
