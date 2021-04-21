@@ -1,6 +1,7 @@
 import {getWithoutLoginAsync, makeUrl, postWithoutLoginAsync} from "../ajax";
 import {Endpoints} from "../../services/Endpoints";
 import {checkBrowser} from "./browser";
+import Toast from "../Toast";
 
 const serviceWorker = '/service-worker.js';
 let isSubscribed = false;
@@ -65,7 +66,14 @@ const initialiseState = (reg) => {
             .catch(function (err) {
                 console.log('[req.pushManager.getSubscription] Unable to get subscription details.', err);
             })
+
+        navigator.serviceWorker.addEventListener('message', event => notifyInApp(event.data))
     })
+}
+
+const notifyInApp = (data) => {
+    const message = `${data.title}`
+    Toast.info(message, "bottom-left")
 }
 
 export const initialiseServiceWorker = () => {
@@ -118,8 +126,5 @@ export const subscribe = (userId) => {
                         })
                 })
         }
-
-
     })
-
 }

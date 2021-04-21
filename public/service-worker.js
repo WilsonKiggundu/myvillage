@@ -4,29 +4,32 @@ self.addEventListener('push', event => {
         return;
     }
 
-    let data = {};
+    let payload = {};
     if (event.data) {
-        data = event.data.json();
-
-        // console.log(data)
-
+        payload = event.data.json();
     }
 
-    const title = data.title;
-    const message = data.message;
-    const icon = data.options.icon;
+    const title = payload.title;
+    const message = payload.message;
+    const icon = payload.options.icon;
 
-    const showNotification =
-        self.registration.showNotification(title, {
-            body: message,
-            icon: icon,
-            badge: icon,
-            image: icon,
-            requireInteraction: data.requireInteraction,
-            actions: data.options.actions
+    event.waitUntil(
+        clients.matchAll().then(cs => {
+            if (cs.length === 0) {
+                self.registration.showNotification(title, {
+                    body: message,
+                    icon: icon,
+                    data: payload.data,
+                    badge: icon,
+                    image: icon,
+                    requireInteraction: payload.requireInteraction,
+                    actions: payload.options.actions
+                })
+            }else{
+                cs[0].postMessage(payload)
+            }
         })
-
-    event.waitUntil(showNotification);
+    );
 });
 
 self.addEventListener('notificationclose', event => {
@@ -34,5 +37,19 @@ self.addEventListener('notificationclose', event => {
 })
 
 self.addEventListener('notificationclick',  event => {
-    console.log('notification clicked', event)
+    const {data} = event.notification
+    const {action} = event
+    const {profileId, baseUrl} = data
+
+    let url = baseUrl
+    if (action === 'view-profile'){
+        url = `${url}/profiles/people/${profileId}`
+    }else{
+        url = `${url}/feed`
+    }
+
+    clients.openWindow(url)
+
+    self.registration.getNotifications()
+        .then(ns => ns.forEach(n => n.close()))
 });

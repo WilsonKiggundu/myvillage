@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {forwardRef, useEffect, useRef} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {useLayoutStyles} from "./styles";
 import ApplicationBar from "../appBar/AppBar";
@@ -11,6 +11,7 @@ import {
     initialiseServiceWorker, subscribe
 } from "../../utils/web-push/notifications";
 import {checkBrowser} from "../../utils/web-push/browser";
+import {Alert} from "@material-ui/lab";
 
 const serviceWorker = '../../../public/service-worker.js'
 
@@ -22,6 +23,10 @@ interface IProps {
 }
 
 ReactGA.initialize('')
+
+const PushNotification = forwardRef(({props1, ref}:any) => {
+    return <div ref={ref} />
+})
 
 function MainLayout(props: IProps) {
 
@@ -62,6 +67,9 @@ function MainLayout(props: IProps) {
 
     }, [user])
 
+
+    const pushNotifRef = useRef()
+
     return (
         <>
             <CssBaseline/>
@@ -69,6 +77,11 @@ function MainLayout(props: IProps) {
             <main className="MainLayout-main">
                 {props.children}
             </main>
+
+            {/*<PushNotification id="push-notification" ref={pushNotifRef}>*/}
+            {/*    <Alert icon={false} severity={"info"} />*/}
+            {/*</PushNotification>*/}
+
         </>
     );
 }

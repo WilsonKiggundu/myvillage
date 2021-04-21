@@ -27,7 +27,11 @@ import {Endpoints} from "../../../services/Endpoints";
 import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
 import PeopleFilter from "./forms/PeopleFilter";
 
-const Community = () => {
+interface IProps{
+    category?: string
+}
+
+const Community = ({category} : IProps) => {
 
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
     const people = useSelector(peopleSelector)
@@ -58,7 +62,7 @@ const Community = () => {
     })
 
     useEffect(() => {
-        dispatch(loadPeople())
+        dispatch(loadPeople({category}))
     }, [dispatch])
 
     if (people && _.isEmpty(people.data)) {
