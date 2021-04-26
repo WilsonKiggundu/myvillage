@@ -27,17 +27,33 @@ const JobsHome = () => {
                             Entrepreneurs are looking for you to help them build and scale their startups.
                         </p>
                         <div className="JobsHome-apply">
-                            <Button
-                                href={Urls.jobs.list}
-                                size={"large"}
-                                color={"secondary"}
-                                variant={"contained"}
-                                disableElevation>
-                                Find a job <ChevronRight />
-                            </Button>
+
+                            <Grid container justify={"flex-start"} spacing={2}>
+                                <Grid item>
+                                    <Button
+                                        href={Urls.jobs.list}
+                                        size={"large"}
+                                        color={"secondary"}
+                                        variant={"contained"}
+                                        disableElevation>
+                                        Find a job <ChevronRight />
+                                    </Button>
+                                </Grid>
+
+                                <Grid item>
+                                    <Button
+                                        href={Urls.jobs.create}
+                                        size={"large"}
+                                        color={"primary"}
+                                        variant={"outlined"}
+                                        disableElevation>
+                                        Post a job
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </div>
 
-                        {!user && <div className="JobsHome-signup">
+                        {user && <div className="JobsHome-signup">
                             <a onClick={handleSignup} href="#">Create your profile</a>
                         </div>}
 
