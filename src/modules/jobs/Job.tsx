@@ -131,15 +131,15 @@ const Job = ({match}: any) => {
                     recipients = companyEmails.map((contact: IContact) => contact.value)
                 }
 
-                if (recipients) {
+                if (recipients.length) {
                     emailToSend.recipient = recipients.join(',')
                     await sendEmail(emailToSend)
                 }
 
             } catch (error) {
-                console.log(error)
-
-                Toast.error(error.toString())
+                // console.log(error)
+                //
+                // Toast.error(error.toString())
             } finally {
                 setApplyButton({
                     visible: false
