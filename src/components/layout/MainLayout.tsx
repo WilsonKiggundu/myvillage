@@ -13,8 +13,6 @@ import {
 import {checkBrowser} from "../../utils/web-push/browser";
 import {Alert} from "@material-ui/lab";
 
-const serviceWorker = '../../../public/service-worker.js'
-
 interface IProps {
     user?: any
     title?: string
@@ -23,10 +21,6 @@ interface IProps {
 }
 
 ReactGA.initialize('')
-
-const PushNotification = forwardRef(({props1, ref}:any) => {
-    return <div ref={ref} />
-})
 
 function MainLayout(props: IProps) {
 
@@ -47,28 +41,25 @@ function MainLayout(props: IProps) {
             }
         }
 
-        if ('Notification' in window && user){
-
-            const browser = checkBrowser()
-
-            if (browser === 'chrome'){
-                Notification.requestPermission().then(function (status) {
-                    if (status === 'denied') {
-                        console.log('[Notification.requestPermission] Browser denied permissions to notification api.');
-                    } else if (status === 'granted') {
-                        console.log('[Notification.requestPermission] Initializing service worker.');
-                        initialiseServiceWorker();
-                        subscribe(user.profile.sub)
-                    }
-                });
-            }
-
-        }
+        // if ('Notification' in window && user){
+        //
+        //     const browser = checkBrowser()
+        //
+        //     if (browser === 'chrome'){
+        //         Notification.requestPermission().then(function (status) {
+        //             if (status === 'denied') {
+        //                 console.log('[Notification.requestPermission] Browser denied permissions to notification api.');
+        //             } else if (status === 'granted') {
+        //                 console.log('[Notification.requestPermission] Initializing service worker.');
+        //                 initialiseServiceWorker();
+        //                 subscribe(user.profile.sub)
+        //             }
+        //         });
+        //     }
+        //
+        // }
 
     }, [user])
-
-
-    const pushNotifRef = useRef()
 
     return (
         <>
@@ -77,11 +68,6 @@ function MainLayout(props: IProps) {
             <main className="MainLayout-main">
                 {props.children}
             </main>
-
-            {/*<PushNotification id="push-notification" ref={pushNotifRef}>*/}
-            {/*    <Alert icon={false} severity={"info"} />*/}
-            {/*</PushNotification>*/}
-
         </>
     );
 }
