@@ -85,6 +85,14 @@
     margin: 15px 5px 0 15px;
 }
 
+.Appbar-menu .dropdown{
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    position: absolute;
+    top: 2px;
+}
+
 @media screen and (max-width: 567px) {
     .Appbar-searchbox{
         max-width: 100%;

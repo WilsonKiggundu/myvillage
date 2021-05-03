@@ -9,6 +9,7 @@ import {longDate} from "../../utils/dateHelpers";
 import {IStartup} from "../../interfaces/IStartup";
 import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
 import {Urls} from "../../routes/Urls";
+import { useHistory } from "react-router-dom";
 
 interface IProps {
     job: IJob
@@ -19,17 +20,18 @@ interface IProps {
 
 const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
 
-    const [company, setCompany] = useState<IStartup | undefined>(undefined)
+    const history = useHistory()
+    // const [company, setCompany] = useState<IStartup | undefined>(undefined)
 
-    useEffect(() => {
-        (async () => {
-            const response: any = await getStartups({id: job.companyId})
-            const {startups} = response.body
-            if (startups.length) {
-                setCompany(startups[0])
-            }
-        })()
-    }, [setCompany, job.companyId])
+    // useEffect(() => {
+    //     (async () => {
+    //         const response: any = await getStartups({id: job.companyId})
+    //         const {startups} = response.body
+    //         if (startups.length) {
+    //             setCompany(startups[0])
+    //         }
+    //     })()
+    // }, [setCompany, job.companyId])
 
     let div = document.createElement("div")
     div.innerHTML = job.details
@@ -45,13 +47,17 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
     if (salaryArray.length)
         salaryRange = salaryArray.join(" - ")
 
+    const handleViewDetails = () => {
+        history.push(Urls.jobs.singleJob(job.id))
+    }
+
     return (
-        <Box mb={2}>
+        <Box className="clickable" onClick={handleViewDetails} mb={2}>
             <Card>
                 <CardHeader
                     avatar={
-                        <Avatar src={company?.avatar} variant={"square"}>
-                            {company?.name[0].toUpperCase()}
+                        <Avatar src={job.company?.avatar} variant={"square"}>
+                            {job.company?.name[0].toUpperCase()}
                         </Avatar>
                     }
                     title={
@@ -61,7 +67,7 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                     }
                     subheader={
                         <div className="job-category">
-                            {job.category?.name}
+                            {job.company?.name}, {job.category?.name}
                         </div>
                     }/>
 
@@ -72,12 +78,6 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                         <Grid container justify={"space-between"} spacing={2}>
                             <Grid item>
                                 <Grid container spacing={2} justify={"flex-start"}>
-                                    {
-                                        company?.name && <Grid xs={12} item className="company-name">
-                                            <a href={Urls.profiles.singleStartup(company?.id)}>{company?.name}</a>
-                                        </Grid>
-                                    }
-
                                     {
                                         job.location && <Grid xs={12} item className="job-location">
                                             <LocationOnIcon className="job-location-icon"/> <span>{job.location}</span>

@@ -10,11 +10,10 @@ import ListItemLink from "../ListItemLink/ListItemLink";
 import {MainMenuItems} from "./MainMenuItems";
 import {white} from "../../theme/custom-colors";
 import Avatar from "@material-ui/core/Avatar";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import {Urls} from "../../routes/Urls";
 
 import {ReactComponent as MyVillageLogo} from "../../assets/images/mv-colored-logo.svg"
+import {ReactComponent as MyVillageIcon} from "../../assets/images/favicon.svg"
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -30,12 +29,11 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
 import './AppBar.css'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
 import XAsyncTypeahead from "../XAsyncTypeahead";
+import {MoreHoriz} from "@material-ui/icons";
 
 type Anchor = 'left' | 'right';
 
@@ -133,22 +131,27 @@ export default function ApplicationBar() {
         if (locationArray.includes('events')) setActiveMenu('events')
         if (locationArray.includes('jobs')) setActiveMenu('jobs')
         if (locationArray.includes('freelancers')) setActiveMenu('freelancers')
+        if (locationArray.includes('developers')) setActiveMenu('developers')
     })
 
     return (
         <header className="Appbar-root">
 
-            <Grid spacing={3} container>
-                {!isMobile && <Grid xs={2} lg={1} item>
-                    <MyVillageLogo className="Appbar-logo"/>
-                </Grid>}
-                <Grid xs={10} lg={3} item>
+            <Grid spacing={2} container>
+                <Grid xs={1} lg={1} item>
+                    {
+                        isMobile ?
+                            <MyVillageIcon className="Appbar-logo"/> :
+                            <MyVillageLogo className="Appbar-logo"/>
+                    }
+                </Grid>
+                <Grid xs={9} lg={3} item>
                     <div className="Appbar-searchbox">
                         <XAsyncTypeahead
                             placeholder="What are you looking for?"/>
                     </div>
                 </Grid>
-                {!isMobile && <Grid style={{textAlign: "right"}} lg={6} item>
+                {!isMobile && <Grid style={{textAlign: "right"}} lg={7} item>
                     <ul className="Appbar-menu">
                         <li className={activeMenu === 'feed' ? 'active' : ''}>
                             <a href={Urls.feed}>Feed</a>
@@ -165,26 +168,39 @@ export default function ApplicationBar() {
                         <li className={activeMenu === 'jobs' ? 'active' : ''}>
                             <a href={Urls.jobs.home}>Work in tech</a>
                         </li>
+
+                        {/*<li>*/}
+                        {/*    <a href="#">*/}
+                        {/*        <MoreVert />*/}
+                        {/*    </a>*/}
+                        {/*    <div className="dropdown">Here is a div that is white</div>*/}
+                        {/*</li>*/}
+
                         <li className={activeMenu === 'freelancers' ? 'active' : ''}>
                             <a href={Urls.profiles.freelancers}>Freelancers</a>
                         </li>
-                        {/*<li className={activeMenu === 'jobs' ? 'active' : ''}>*/}
-                        {/*    <a href={Urls.jobs.list}>Freelancers</a>*/}
-                        {/*</li>*/}
+                        <li className={activeMenu === 'developers' ? 'active' : ''}>
+                            <a href={Urls.profiles.developers}>Developers</a>
+                        </li>
                     </ul>
                 </Grid>}
-                <Grid xs={1} lg={2}  style={{textAlign: "right"}} item>
+                <Grid xs={1} item>
                     {isMobile ?
-                        <div onClick={toggleDrawer(anchor, true)}
-                             className="Appbar-profile">
-                            <MenuIcon className="Appbar-menu-icon"/>
+                        <div className="Appbar-profile">
+                            <Button onClick={toggleDrawer(anchor, true)}
+                                    color={"secondary"}
+                                    variant={"contained"}>
+                                <MenuIcon className="Appbar-menu-icon"/>
+                            </Button>
                         </div> :
                         user ?
                             <div className="Appbar-login-button">
                                 <Button
                                     onClick={handleProfileView}
-                                    variant={"contained"}
-                                    color={"secondary"}>Update your profile</Button>
+                                    variant={"text"}
+                                    color={"secondary"}>
+                                    <MoreHoriz/>
+                                </Button>
                             </div> :
                             <div className="Appbar-login-button">
                                 <Button

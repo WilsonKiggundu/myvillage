@@ -41,15 +41,6 @@ const Community = ({category} : IProps) => {
 
     const history = useHistory()
 
-    const handleConnect = (personId: string) => {
-
-        if (user){
-            dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
-        }else{
-            setOpenSnackbar(true)
-        }
-    }
-
     useEffect(() => {
 
         document.title = 'Community / My Village'
@@ -85,7 +76,15 @@ const Community = ({category} : IProps) => {
     }
 
     const handleLoadMore = () => {
-        dispatch(loadPeople())
+        dispatch(loadPeople({category}))
+    }
+
+    const handleConnect = (personId: string) => {
+        if (user){
+            dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
+        }else{
+            setOpenSnackbar(true)
+        }
     }
 
 

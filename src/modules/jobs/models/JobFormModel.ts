@@ -6,8 +6,8 @@ export default {
             label: 'Job category*',
             requiredErrorMsg: 'Category is required'
         },
-        companyId: {
-            name: 'companyId',
+        company: {
+            name: 'company',
             label: 'Company*',
             requiredErrorMsg: 'Company is required'
         },

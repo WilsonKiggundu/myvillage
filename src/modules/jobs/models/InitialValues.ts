@@ -5,7 +5,7 @@ const {
 
         // overview
         title,
-        companyId,
+        company,
         category,
         jobType,
         location,
@@ -38,7 +38,7 @@ export default {
     [deadline.name]: '',
     [qualifications.name]: '',
     [details.name]: '',
-    [companyId.name]: '',
+    [company.name]: '',
     [experience.name]: '',
     [jobType.name]: '',
     [maxSalary.name]: '',
