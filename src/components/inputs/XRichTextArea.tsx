@@ -10,6 +10,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import './css/XRichTextArea.css'
 import FormHelperText from "@material-ui/core/FormHelperText";
+import {red} from "@material-ui/core/colors";
 
 export type EditorTheme = 'snow' | 'bubble'
 
@@ -36,7 +37,9 @@ const XRichTextArea = ({name, helperText, ...props}: TextFieldProps & IProps) =>
 
                     {
                         helperText ? <FormHelperText>{helperText}</FormHelperText> :
-                            showError && <FormHelperText>{error}</FormHelperText>
+                            showError && <FormHelperText>
+                            <div className="error-text">{error}</div>
+                            </FormHelperText>
                     }
                 </>
             )}

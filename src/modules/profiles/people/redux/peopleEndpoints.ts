@@ -77,6 +77,54 @@ export const delPersonEducation = async (payload: any) => {
     return payload
 }
 
+export const postPersonEmployment = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.employment)
+    return await postAsync(url, payload)
+}
+
+export const putPersonEmployment = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.employment)
+    return await putAsync(url, payload)
+}
+
+export const delPersonEmployment = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.employment)
+    await deleteAsync(url, payload)
+    return payload
+}
+
+export const postPersonProject = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.project)
+    return await postAsync(url, payload)
+}
+
+export const putPersonProject = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.project)
+    return await putAsync(url, payload)
+}
+
+export const delPersonProject = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.project)
+    await deleteAsync(url, payload)
+    return payload
+}
+
+export const postPersonStack = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.stack)
+    return await postAsync(url, payload)
+}
+
+export const putPersonStack = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.stack)
+    return await putAsync(url, payload)
+}
+
+export const delPersonStack = async (payload: any) => {
+    const url = makeUrl("Profiles", Endpoints.person.stack)
+    await deleteAsync(url, payload)
+    return payload
+}
+
 export const getPersonConnection = async (payload: any) => {
     const url = makeUrl("Profiles", Endpoints.person.connection)
     return await getWithoutLoginAsync(url, payload)

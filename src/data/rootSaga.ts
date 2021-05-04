@@ -24,6 +24,7 @@ import {
 import {
     addPersonContactWatcher,
     addPersonEducationWatcher,
+    addPersonEmploymentWatcher,
     deletePersonCategoriesWatcher,
     deletePersonConnectionWatcher,
     deletePersonContactWatcher,
@@ -36,12 +37,19 @@ import {
     updatePersonConnectionWatcher,
     updatePersonContactWatcher,
     updatePersonEducationWatcher,
+    updatePersonEmploymentWatcher,
     updatePersonInterestsWatcher,
     updatePersonSkillsWatcher,
-    updatePersonWatcher
+    updatePersonWatcher,
+    deletePersonEmploymentWatcher,
+    addPersonProjectWatcher,
+    updatePersonProjectWatcher,
+    deletePersonProjectWatcher,
+    addPersonStackWatcher, updatePersonStackWatcher, deletePersonStackWatcher
 } from "../modules/profiles/people/redux/peopleWatchers";
 import {eventsListWatcher, addEventWatcher} from "../modules/events/redux/eventsWatchers";
 import {addJobWatcher, jobCategoriesListWatcher, jobsListWatcher} from "../modules/jobs/redux/jobsSelectors";
+import {editPersonEducation} from "../modules/profiles/people/redux/peopleActions";
 
 export default function* rootSaga(){
     yield all([
@@ -49,7 +57,7 @@ export default function* rootSaga(){
         // people
         peopleListWatcher(),
         updatePersonWatcher(),
-
+        
         updatePersonCategoriesWatcher(),
         deletePersonCategoriesWatcher(),
 
@@ -66,6 +74,18 @@ export default function* rootSaga(){
         addPersonEducationWatcher(),
         updatePersonEducationWatcher(),
         deletePersonEducationWatcher(),
+
+        addPersonEmploymentWatcher(),
+        updatePersonEmploymentWatcher(),
+        deletePersonEmploymentWatcher(),
+
+        addPersonProjectWatcher(),
+        updatePersonProjectWatcher(),
+        deletePersonProjectWatcher(),
+
+        addPersonStackWatcher(),
+        updatePersonStackWatcher(),
+        deletePersonStackWatcher(),
 
         fetchPersonConnectionWatcher(),
         updatePersonConnectionWatcher(),

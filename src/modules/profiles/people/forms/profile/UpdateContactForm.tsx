@@ -32,14 +32,7 @@ const UpdateContactForm = ({onClose, contact, profile}: IProps) => {
     const dispatch = useDispatch()
     const user = useSelector(userSelector)
 
-    // const initialValues = {...contact}
-    const initialValues: IContact = {
-        belongsTo: user.profile.sub,
-        details: "Personal email",
-        value: "wil.kiggundu@gmail.com",
-        category: 1,
-        type: 1
-    }
+    const initialValues = {...contact}
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
         try {

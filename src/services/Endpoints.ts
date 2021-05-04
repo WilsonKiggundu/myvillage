@@ -82,6 +82,9 @@ export const Endpoints = {
     person: {
         base: "/api/person",
         award: "/api/person/awards",
+        employment: "/api/person/employment",
+        project: "/api/person/project",
+        stack: "/api/person/stack",
         category: "/api/person/categories",
         interest: "/api/person/interests",
         skill: "/api/person/skills",

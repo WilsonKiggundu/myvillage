@@ -10,6 +10,9 @@ export interface IPerson {
     interests: []
     skills: []
     awards: []
+    employment: []
+    stack: []
+    projects: []
     bio: string
     avatar?: string
     gender?: string

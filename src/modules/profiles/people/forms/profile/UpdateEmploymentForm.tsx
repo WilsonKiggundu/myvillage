@@ -3,7 +3,7 @@ import {FormikHelpers} from "formik";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup"
 import {reqObject, reqString} from "../../../../../data/validations";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../../components/inputs/XTextInput";
 import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
@@ -11,52 +11,57 @@ import {IPerson} from "../../IPerson";
 import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
 import {getAsync, makeUrl} from "../../../../../utils/ajax";
 import {Endpoints} from "../../../../../services/Endpoints";
-import {addPersonEducation, editPersonEducation} from "../../redux/peopleActions";
+import XSelectInput from "../../../../../components/inputs/XSelectInput";
+import XRichTextArea from "../../../../../components/inputs/XRichTextArea";
+import {CheckBox} from "@material-ui/icons";
+import XCheckBoxInput from "../../../../../components/inputs/XCheckBoxInput";
+import {months} from "../../../../../data/constants";
+import {IEmployment} from "../../../../../interfaces/IEmployment";
+import {userSelector} from "../../../../../data/coreSelectors";
+import {addPersonEmployment, editPersonEmployment} from "../../redux/peopleActions";
+// import {addPersonEmployment, editPersonEmployment} from "../../redux/peopleActions";
 
 interface IProps {
     onClose?: () => any
     id?: string
     person: IPerson
-    education?: any
+    employment?: IEmployment
 }
 
 const schema = yup.object().shape(
     {
-        institute: reqObject,
+        company: reqString,
         title: reqString,
-        startYear: reqString,
-        endYear: reqString,
+        from: reqString,
         description: reqString
     }
 )
 
-const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
+const UpdateEmploymentForm = ({onClose, employment}: IProps) => {
+
+    const user = useSelector(userSelector)
     const dispatch = useDispatch()
 
-    const initialValues = {...education}
-
-    const [schools, setSchools] = useState<any>([])
-
-    useEffect(() => {
-        (async () => {
-            const lookupUrl = makeUrl("Profiles", Endpoints.lookup.school)
-            const response: any = await getAsync(lookupUrl, {});
-
-            if (response.status === 200) {
-                setSchools(response.body.map((m: any) => ({id: m.id, name: m.name})))
-            }
-
-        })();
-    }, [setSchools])
+    const initialValues : IEmployment = {
+        personId: user.profile.sub,
+        company: employment?.company ?? '',
+        title: employment?.title ?? '',
+        from: employment?.from ?? '',
+        until: employment?.until ?? '',
+        description: employment?.description ?? '',
+    }
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
-        values.personId = person.id
 
-        dispatch(values.id ? editPersonEducation(values) : addPersonEducation(values))
+        if (employment?.id){
+            values.id = employment.id
+            dispatch(editPersonEmployment(values))
+        }else{
+            dispatch(addPersonEmployment(values))
+        }
 
         if (onClose) onClose()
-
-        //actions.resetForm()
+        actions.resetForm()
     }
 
     return (
@@ -66,77 +71,50 @@ const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                <Grid item xs={12}>
-                    {education?.institute ? (
-                        <XSelectInputCreatable
-                            variant={"standard"}
-                            name={"institute"}
-                            defaultValue={education?.institute}
-                            allowAddNew={true}
-                            multiple={false}
-                            label={"Select or add a school"}
-                            options={schools}/>
-                    ) : (
-                        <XSelectInputCreatable
-                            variant={"standard"}
-                            name={"institute"}
-                            allowAddNew={true}
-                            multiple={false}
-                            label={"Select or add a school"}
-                            options={schools}/>
-                    )}
+                <Grid item xs={12} md={6}>
+                    <XTextInput
+                        variant={"filled"}
+                        label={"Company"}
+                        name={"company"}
+                        helperText={"Where did you work?"}
+                    />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <XTextInput
-                        label={"Degree / Diploma / Certificate"}
+                        variant={"filled"}
+                        label={"Job Title"}
                         name={"title"}
-                        helperText={"Ex. BSc. Electrical Engineering"}
+                        helperText={"Ex. Senior Software Engineer"}
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={6}>
                     <XTextInput
-                        label={"Field of study"}
-                        name={"fieldOfStudy"}
-                        helperText={"Ex. Electronics"}
+                        label={"From"}
+                        variant={"filled"}
+                        placeholder={"year, month"}
+                        name={"from"}
+                        helperText={"Year when you started?"}
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={6}>
                     <XTextInput
-                        label={"Grade"}
-                        name={"grade"}
-                        helperText={"Ex. First class honors. Optional"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <XTextInput
-                        label={"Start year"}
-                        name={"startYear"}
-                        helperText={"Ex. 2007"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                    <XTextInput
-                        label={"End year (or expected)"}
-                        name={"endYear"}
-                        helperText={"Ex. 2011"}
+                        label={"Until"}
+                        variant={"filled"}
+                        placeholder={"year, month"}
+                        name={"until"}
+                        helperText={"Leave blank if you still work here"}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <XTextAreaInput
-                        rows={3}
-                        rowsMax={12}
-                        label={"Description"}
-                        name={"description"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <XTextAreaInput
+                    <p><strong>Description</strong></p>
+                    <XRichTextArea
                         rows={1}
                         multiline={true}
                         rowsMax={4}
-                        label={"Activities"}
-                        name={"activities"}
-                        helperText={"Ex. Volleyball, debating club"}
+                        label={"Description"}
+                        name={"description"}
+                        placeholder={"Description"}
+                        helperText={""}
                     />
                 </Grid>
             </Grid>
@@ -145,4 +123,4 @@ const UpdateEducationForm = ({onClose, id, education, person}: IProps) => {
     )
 }
 
-export default UpdateEducationForm
+export default UpdateEmploymentForm

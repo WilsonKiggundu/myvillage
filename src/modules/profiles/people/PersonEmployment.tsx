@@ -6,7 +6,6 @@ import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import AddIcon from "@material-ui/icons/Add";
 import React, {useState} from "react";
-import UpdateEducationForm from "./forms/profile/UpdateEducationForm";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -15,8 +14,9 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
 import {useDispatch} from "react-redux";
-import {deletePersonEducation} from "./redux/peopleActions";
-import SchoolIcon from '@material-ui/icons/School';
+import {Work} from "@material-ui/icons";
+import UpdateEmploymentForm from "./forms/profile/UpdateEmploymentForm";
+import {deletePersonEmployment} from "./redux/peopleActions";
 
 interface IProps {
     person: IPerson
@@ -26,22 +26,25 @@ interface IProps {
 const PersonEmployment = ({person, canEdit}: IProps) => {
 
     const dispatch = useDispatch()
-    const {awards} = person
-    const [openAddEductionDialog, setOpenAddEductionDialog] = useState<boolean>(false)
-    const [selectedAward, setSelectedAward] = useState<any>(null)
+    const {employment} = person
+    const [openDialog, toggleDialog] = useState<boolean>(false)
+    const [selected, setSelected] = useState<any>(null)
 
-    const handleUpdate = (award: any) => {
-        setSelectedAward(award)
-        setOpenAddEductionDialog(true)
+    const handleUpdate = (employment: any) => {
+        setSelected(employment)
+        toggleDialog(true)
     }
 
-    const handleDelete = (award: any) => {
-        dispatch(deletePersonEducation({awardId: award.id, personId: award.personId}))
+    const handleDelete = (employment: any) => {
+        dispatch(deletePersonEmployment({
+            personId: employment.personId,
+            employmentId: employment.id
+        }))
     }
 
     const handleClose = () => {
-        setOpenAddEductionDialog(false)
-        setSelectedAward(null)
+        toggleDialog(false)
+        setSelected(null)
     }
 
     return (
@@ -51,7 +54,7 @@ const PersonEmployment = ({person, canEdit}: IProps) => {
                     action={
                         canEdit ? (
                             <IconButton
-                                onClick={() => setOpenAddEductionDialog(true)}
+                                onClick={() => toggleDialog(true)}
                                 aria-label="settings">
                                 <AddIcon/>
                             </IconButton>
@@ -59,54 +62,45 @@ const PersonEmployment = ({person, canEdit}: IProps) => {
                     }
                     title={
                         <Grid container spacing={1} justify={"flex-start"}>
-                            <Grid item><SchoolIcon /></Grid>
-                            <Grid item><div className="card-title">Education background</div></Grid>
+                            <Grid item><Work/></Grid>
+                            <Grid item>
+                                <div className="card-title">Employment History</div>
+                            </Grid>
                         </Grid>
                     }
                 />
 
-                {awards?.length ? (
+                {employment.length ? (
                     <CardContent>
                         {
-                            awards.map((it: any, index: number) => (
+                            employment.map((it: any, index: number) => (
                                 <Box key={index}>
                                     <Grid container key={index}>
                                         <Grid xs={11} item>
                                             <Typography variant={"h6"} component={"div"}>
-                                                {it.institute?.name || it.school?.name}
+                                                {it.title}
                                             </Typography>
                                             <Typography component={"div"}>
-                                                {it.title}, {it.fieldOfStudy}
+                                                {it.company}
                                             </Typography>
                                             <Typography component={"div"} style={{color: grey[400]}}>
-                                                {it.grade}, {it.startYear} - {it.endYear}
+                                                {it.from} - {it.until}
                                             </Typography>
 
                                             <Box mt={2}>
                                                 <Typography style={{color: grey[400]}}>
                                                     <small>Details</small>
                                                 </Typography>
-                                                <Typography
+                                                <div
                                                     style={{
-                                                        whiteSpace:'pre-line',
                                                         paddingTop: 5,
                                                         color: grey[700],
-                                                        fontSize: '0.9rem'}}
-                                                    component={"div"}>
-                                                    {it.description}
-                                                </Typography>
+                                                        fontSize: '0.9rem'
+                                                    }}
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: it.description
+                                                    }}/>
                                             </Box>
-
-                                            {it.activities && <Box mt={2}>
-                                                <Typography style={{color: grey[400]}}>
-                                                    <small>Activities</small>
-                                                </Typography>
-                                                <Typography
-                                                    component={"div"}
-                                                    style={{color: grey[700], fontSize: '0.9rem'}}>
-                                                    {it.activities}
-                                                </Typography>
-                                            </Box>}
 
                                         </Grid>
 
@@ -130,12 +124,12 @@ const PersonEmployment = ({person, canEdit}: IProps) => {
                 ) : ""}
 
                 {canEdit ? (
-                    <XDialog title={"Update education"}
+                    <XDialog title={"Update employment"}
                              maxWidth={"md"}
                              onClose={handleClose}
-                             open={openAddEductionDialog}>
-                        <UpdateEducationForm
-                            education={selectedAward}
+                             open={openDialog}>
+                        <UpdateEmploymentForm
+                            employment={selected}
                             onClose={handleClose}
                             person={person}/>
                     </XDialog>
