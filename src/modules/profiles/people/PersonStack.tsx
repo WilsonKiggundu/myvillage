@@ -104,7 +104,7 @@ const PersonStack = ({person, canEdit}: IProps) => {
                                         }
                                     />
 
-                                    <ListItemSecondaryAction>
+                                    {canEdit && <ListItemSecondaryAction>
                                         <IconButton
                                             onClick={() => handleUpdate(it)}
                                             edge="end" aria-label="edit">
@@ -115,7 +115,7 @@ const PersonStack = ({person, canEdit}: IProps) => {
                                             edge="end" aria-label="delete">
                                             <DeleteIcon/>
                                         </IconButton>
-                                    </ListItemSecondaryAction>
+                                    </ListItemSecondaryAction>}
                                 </ListItem>
                                 {index < stacks.length - 1 ? <Divider/> : ""}
                             </div>
