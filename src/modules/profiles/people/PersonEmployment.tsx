@@ -116,7 +116,7 @@ const PersonEmployment = ({person, canEdit}: IProps) => {
 
                                     </Grid>
 
-                                    <Divider style={{marginTop: 15, marginBottom: 30}}/>
+                                    {index < employment.length - 1 ? <Divider style={{marginTop: 30, marginBottom: 30}}/> : ""}
                                 </Box>
                             ))
                         }

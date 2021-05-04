@@ -101,5 +101,6 @@ export const Endpoints = {
         skill: "/api/lookup/skills",
         need: "/api/lookup/needs",
         upload: "/api/lookup/uploads",
+        stack: "/api/lookup/stack",
     },
 }

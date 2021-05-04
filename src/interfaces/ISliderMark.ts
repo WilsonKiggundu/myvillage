@@ -1,6 +1,4 @@
-export interface ITechStack {
-    id?: string
-    personId?: string
-    stack: string
-    level: string
+export interface ISliderMark {
+    label: string
+    value: number
 }

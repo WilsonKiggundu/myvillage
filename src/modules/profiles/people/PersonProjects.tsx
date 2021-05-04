@@ -18,7 +18,7 @@ import {deletePersonProject} from "./redux/peopleActions";
 import GitHubIcon from '@material-ui/icons/GitHub';
 import UpdateProjectForm from "./forms/profile/UpdateProjectForm";
 import {IProject} from "../../../interfaces/IProject";
-import {Chip} from "@material-ui/core";
+import {Chip, ListItem} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import LanguageIcon from '@material-ui/icons/Language';
 
@@ -162,7 +162,9 @@ const PersonProjects = ({person, canEdit}: IProps) => {
 
                                     </Grid>
 
-                                    <Divider style={{marginTop: 15, marginBottom: 30}}/>
+                                    {index < projects.length - 1 ? <Divider style={{marginTop: 30, marginBottom: 30}}/> : ""}
+
+
                                 </Box>
                             ))
                         }

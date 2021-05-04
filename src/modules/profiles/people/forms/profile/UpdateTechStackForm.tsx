@@ -1,61 +1,58 @@
 import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
-import React from "react";
+import React, {useState} from "react";
 import * as yup from "yup"
 import {reqString} from "../../../../../data/validations";
 import {useDispatch, useSelector} from "react-redux";
-import {Grid} from "@material-ui/core";
+import {Grid, FormControlLabel, FormLabel, RadioGroup, FormControl, Radio, FormHelperText} from "@material-ui/core";
 import XTextInput from "../../../../../components/inputs/XTextInput";
-import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
-import {addPersonProject, editPersonProject} from "../../redux/peopleActions";
+import {addPersonStack, editPersonStack} from "../../redux/peopleActions";
 import {userSelector} from "../../../../../data/coreSelectors";
-import {IProject} from "../../../../../interfaces/IProject";
-import XRichTextArea from "../../../../../components/inputs/XRichTextArea";
-import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
+import {ITechStack} from "../../../../../interfaces/ITechStack";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
+import XRadioInput from "../../../../../components/inputs/XRadioInput";
 
 interface IProps {
     onClose?: () => any
-    project?: IProject
+    stack?: ITechStack
 }
 
 const schema = yup.object().shape(
     {
-        title: reqString,
-        from: reqString,
-        role: reqString,
-        description: reqString
+        stack: reqString
     }
 )
 
-const UpdateProjectForm = ({onClose, project}: IProps) => {
+const UpdateTechStackForm = ({onClose, stack}: IProps) => {
     const user = useSelector(userSelector)
     const dispatch = useDispatch()
 
-    const initialValues : IProject = {
+    const [level, setLevel] = useState<string | undefined>(stack?.level ?? 'intermediate');
+
+    const initialValues: ITechStack = {
         personId: user.profile.sub,
-        description: project?.description ?? '',
-        from: project?.from ?? '',
-        role: project?.role ?? '',
-        title: project?.title ?? '',
-        client: project?.client ?? '',
-        url: project?.url ?? '',
-        linkToGitRepo: project?.linkToGitRepo ?? '',
-        until: project?.until ?? '',
-        techStack: project?.techStack ?? '',
+        stack: stack?.stack ?? '',
+        level: stack?.level ?? ''
     }
+
+    const handleChange = (event : any) => {
+        setLevel(event.target.value);
+    };
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-        if (project?.id) {
-            values.id = project.id
-            dispatch(editPersonProject(values))
+        values.level = level
+
+        if (stack?.id) {
+            values.id = stack.id
+            dispatch(editPersonStack(values))
         } else {
-            dispatch(addPersonProject(values))
+            dispatch(addPersonStack(values))
         }
 
         if (onClose) onClose()
         actions.resetForm()
-
     }
 
     return (
@@ -65,81 +62,25 @@ const UpdateProjectForm = ({onClose, project}: IProps) => {
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                <Grid item xs={12} md={6}>
-                    <XTextInput
-                        variant={"filled"}
-                        label={"Name *"}
-                        placeholder={"Name of the project"}
-                        name={"title"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <XTextInput
-                        variant={"outlined"}
-                        label={"Client"}
-                        placeholder={"Name of the client"}
-                        name={"client"}
-                        helperText={"Optional"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <XTextInput
-                        variant={"filled"}
-                        label={"Role *"}
-                        placeholder={"What is/was your role on the project?"}
-                        name={"role"}
-                        helperText={"Ex. Backend engineer, UI/UX designer"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <XTextInput
-                        variant={"filled"}
-                        label={"Since *"}
-                        placeholder={"Month, Year"}
-                        helperText={"When did you start working on the project?"}
-                        name={"from"}
-                    />
-                </Grid>
-
                 <Grid item xs={12}>
-                    <p><strong>Description *</strong></p>
-                    <XRichTextArea
-                        rows={1}
-                        multiline={true}
-                        rowsMax={4}
-                        label={"Description"}
-                        name={"description"}
-                        placeholder={"Description"}
-                        helperText={"Write a brief description about the project"}
-                    />
-                </Grid>
-
-                <Grid item xs={12} md={6}>
                     <XTextInput
-                        variant={"outlined"}
-                        placeholder={"Link to live environment"}
-                        label={"Project Url"}
-                        name={"url"}
-                        helperText={"Link to the deployed solution. Ignore if not applicable"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <XTextInput
-                        variant={"outlined"}
-                        placeholder={"Link to GIT repository"}
-                        label={"Git Repo"}
-                        name={"linkToGitRepo"}
-                        helperText={"Link to the repository solution. Ignore if not applicable"}
+                        variant={"filled"}
+                        label={"Stack"}
+                        autoFocus
+                        placeholder={"Ex. Mongoose, jQuery"}
+                        helperText={"Language / Library / Framework / Environment"}
+                        name={"stack"}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <XTextAreaInput
-                        multiline
-                        variant={"outlined"}
-                        label={"Tech Stack"}
-                        name={"techStack"}
-                        helperText={"Ignore if not applicable"}
-                    />
+                    <FormControl component="fieldset">
+                        <FormHelperText>At what level of expertise are you?</FormHelperText>
+                        <RadioGroup row aria-label="level" name="level" value={level} onChange={handleChange}>
+                            <FormControlLabel value="Beginner" control={<Radio />} label="Beginner" />
+                            <FormControlLabel value="Intermediate" control={<Radio />} label="Intermediate" />
+                            <FormControlLabel value="Expert" control={<Radio />} label="Expert" />
+                        </RadioGroup>
+                    </FormControl>
                 </Grid>
             </Grid>
 
@@ -147,4 +88,4 @@ const UpdateProjectForm = ({onClose, project}: IProps) => {
     )
 }
 
-export default UpdateProjectForm
+export default UpdateTechStackForm

@@ -721,6 +721,94 @@ export default function reducer(state = initialState, action: any) {
             ...state
         }
     }
+    
+    // STACK
+    else if (action.type === EDIT_PERSON_STACK) {
+        return {...state}
+    } else if (action.type === EDIT_PERSON_STACK_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const stack = person.stacks.find((f: any) => f.id === id)
+        const stackIndex = person.stacks.indexOf(stack)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                stacks: {
+                    [stackIndex]: {
+                        $set: action.payload.body
+                    }
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_STACK_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_STACK) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_STACK_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                stacks: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_STACK_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_STACK) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_STACK_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.stacks.find((f: any) => f.id === awardId)
+        const stackIndex = person.stacks.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                stacks: {
+                    $splice: [[stackIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_STACK_FAILED) {
+        return {
+            ...state
+        }
+    }
 
     // CONNECTION
     else if (action.type === FETCH_PERSON_CONNECTION) {
