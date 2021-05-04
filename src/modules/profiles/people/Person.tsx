@@ -30,6 +30,7 @@ import {IContact} from "../../../interfaces/IContact";
 import {EmailSettings} from "../../../data/constants";
 import XTextInput from "../../../components/inputs/XTextInput";
 import PersonEmployment from "./PersonEmployment";
+import PersonProjects from "./PersonProjects";
 
 const Person = ({match}: any) => {
     const {id} = match.params
@@ -165,6 +166,7 @@ const Person = ({match}: any) => {
                             <PersonContacts canEdit={canEdit} person={person}/>
                             <PersonAwards canEdit={canEdit} person={person}/>
                             <PersonEmployment person={person} canEdit={canEdit} />
+                            <PersonProjects person={person} canEdit={canEdit} />
                             <PersonInterests canEdit={canEdit} person={person}/>
                             <PersonSkills canEdit={canEdit} person={person}/>
                             <PersonConnections canEdit={canEdit} person={person}/>

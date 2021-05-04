@@ -634,6 +634,94 @@ export default function reducer(state = initialState, action: any) {
         }
     }
 
+    // PROJECT
+    else if (action.type === EDIT_PERSON_PROJECT) {
+        return {...state}
+    } else if (action.type === EDIT_PERSON_PROJECT_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const project = person.projects.find((f: any) => f.id === id)
+        const projectIndex = person.projects.indexOf(project)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                projects: {
+                    [projectIndex]: {
+                        $set: action.payload.body
+                    }
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_PROJECT_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_PROJECT) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_PROJECT_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                projects: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_PROJECT_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_PROJECT) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_PROJECT_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.projects.find((f: any) => f.id === awardId)
+        const projectIndex = person.projects.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                projects: {
+                    $splice: [[projectIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_PROJECT_FAILED) {
+        return {
+            ...state
+        }
+    }
+
     // CONNECTION
     else if (action.type === FETCH_PERSON_CONNECTION) {
         return {

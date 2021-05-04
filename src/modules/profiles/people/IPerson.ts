@@ -1,3 +1,6 @@
+import {IProject} from "../../../interfaces/IProject";
+import {IEmployment} from "../../../interfaces/IEmployment";
+
 export interface IPerson {
     id: string
     firstname: string
@@ -10,9 +13,9 @@ export interface IPerson {
     interests: []
     skills: []
     awards: []
-    employment: []
+    employment: IEmployment[]
     stack: []
-    projects: []
+    projects: IProject[]
     bio: string
     avatar?: string
     gender?: string

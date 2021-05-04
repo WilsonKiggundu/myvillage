@@ -1,62 +1,61 @@
 import XForm from "../../../../../components/forms/XForm";
 import {FormikHelpers} from "formik";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import * as yup from "yup"
-import {reqObject, reqString} from "../../../../../data/validations";
-import {useDispatch} from "react-redux";
+import {reqString} from "../../../../../data/validations";
+import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@material-ui/core";
 import XTextInput from "../../../../../components/inputs/XTextInput";
-import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
-import {IPerson} from "../../IPerson";
 import XSelectInputCreatable from "../../../../../components/inputs/XSelectInputCreatable";
-import {getAsync, makeUrl} from "../../../../../utils/ajax";
-import {Endpoints} from "../../../../../services/Endpoints";
 import {addPersonProject, editPersonProject} from "../../redux/peopleActions";
+import {userSelector} from "../../../../../data/coreSelectors";
+import {IProject} from "../../../../../interfaces/IProject";
+import XRichTextArea from "../../../../../components/inputs/XRichTextArea";
+import XTextAreaInput from "../../../../../components/inputs/XTextAreaInput";
 
 interface IProps {
     onClose?: () => any
-    id?: string
-    person: IPerson
-    education?: any
+    project?: IProject
 }
 
 const schema = yup.object().shape(
     {
-        institute: reqObject,
         title: reqString,
-        startYear: reqString,
-        endYear: reqString,
+        from: reqString,
+        role: reqString,
         description: reqString
     }
 )
 
-const UpdateProjectForm = ({onClose, id, education, person}: IProps) => {
+const UpdateProjectForm = ({onClose, project}: IProps) => {
+    const user = useSelector(userSelector)
     const dispatch = useDispatch()
 
-    const initialValues = {...education}
-
-    const [schools, setSchools] = useState<any>([])
-
-    useEffect(() => {
-        (async () => {
-            const lookupUrl = makeUrl("Profiles", Endpoints.lookup.school)
-            const response: any = await getAsync(lookupUrl, {});
-
-            if (response.status === 200) {
-                setSchools(response.body.map((m: any) => ({id: m.id, name: m.name})))
-            }
-
-        })();
-    }, [setSchools])
+    const initialValues : IProject = {
+        personId: user.profile.sub,
+        description: project?.description ?? '',
+        from: project?.from ?? '',
+        role: project?.role ?? '',
+        title: project?.title ?? '',
+        client: project?.client ?? '',
+        url: project?.url ?? '',
+        linkToGitRepo: project?.linkToGitRepo ?? '',
+        until: project?.until ?? '',
+        techStack: project?.techStack ?? '',
+    }
 
     const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
-        values.personId = person.id
 
-        dispatch(values.id ? editPersonProject(values) : addPersonProject(values))
+        if (project?.id) {
+            values.id = project.id
+            dispatch(editPersonProject(values))
+        } else {
+            dispatch(addPersonProject(values))
+        }
 
         if (onClose) onClose()
+        actions.resetForm()
 
-        //actions.resetForm()
     }
 
     return (
@@ -66,77 +65,80 @@ const UpdateProjectForm = ({onClose, id, education, person}: IProps) => {
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>
-                <Grid item xs={12}>
-                    {education?.institute ? (
-                        <XSelectInputCreatable
-                            variant={"standard"}
-                            name={"institute"}
-                            defaultValue={education?.institute}
-                            allowAddNew={true}
-                            multiple={false}
-                            label={"Select or add a school"}
-                            options={schools}/>
-                    ) : (
-                        <XSelectInputCreatable
-                            variant={"standard"}
-                            name={"institute"}
-                            allowAddNew={true}
-                            multiple={false}
-                            label={"Select or add a school"}
-                            options={schools}/>
-                    )}
-                </Grid>
                 <Grid item xs={12} md={6}>
                     <XTextInput
-                        label={"Degree / Diploma / Certificate"}
+                        variant={"filled"}
+                        label={"Name *"}
+                        placeholder={"Name of the project"}
                         name={"title"}
-                        helperText={"Ex. BSc. Electrical Engineering"}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <XTextInput
-                        label={"Field of study"}
-                        name={"fieldOfStudy"}
-                        helperText={"Ex. Electronics"}
+                        variant={"outlined"}
+                        label={"Client"}
+                        placeholder={"Name of the client"}
+                        name={"client"}
+                        helperText={"Optional"}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <XTextInput
-                        label={"Grade"}
-                        name={"grade"}
-                        helperText={"Ex. First class honors. Optional"}
+                        variant={"filled"}
+                        label={"Role *"}
+                        placeholder={"What is/was your role on the project?"}
+                        name={"role"}
+                        helperText={"Ex. Backend engineer, UI/UX designer"}
                     />
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={6}>
                     <XTextInput
-                        label={"Start year"}
-                        name={"startYear"}
-                        helperText={"Ex. 2007"}
+                        variant={"filled"}
+                        label={"Since *"}
+                        placeholder={"Month, Year"}
+                        helperText={"When did you start working on the project?"}
+                        name={"from"}
                     />
                 </Grid>
-                <Grid item xs={12} md={3}>
-                    <XTextInput
-                        label={"End year (or expected)"}
-                        name={"endYear"}
-                        helperText={"Ex. 2011"}
-                    />
-                </Grid>
+
                 <Grid item xs={12}>
-                    <XTextAreaInput
-                        rows={3}
-                        rowsMax={12}
-                        label={"Description"}
-                        name={"description"}
-                    />
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <XTextAreaInput
+                    <p><strong>Description *</strong></p>
+                    <XRichTextArea
                         rows={1}
                         multiline={true}
                         rowsMax={4}
-                        label={"Activities"}
-                        name={"activities"}
-                        helperText={"Ex. Volleyball, debating club"}
+                        label={"Description"}
+                        name={"description"}
+                        placeholder={"Description"}
+                        helperText={"Write a brief description about the project"}
+                    />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                    <XTextInput
+                        variant={"outlined"}
+                        placeholder={"Link to live environment"}
+                        label={"Project Url"}
+                        name={"url"}
+                        helperText={"Link to the deployed solution. Ignore if not applicable"}
+                    />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <XTextInput
+                        variant={"outlined"}
+                        placeholder={"Link to GIT repository"}
+                        label={"Git Repo"}
+                        name={"linkToGitRepo"}
+                        helperText={"Link to the repository solution. Ignore if not applicable"}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <XTextAreaInput
+                        multiline
+                        variant={"outlined"}
+                        label={"Tech Stack"}
+                        name={"techStack"}
+                        helperText={"Ignore if not applicable"}
                     />
                 </Grid>
             </Grid>

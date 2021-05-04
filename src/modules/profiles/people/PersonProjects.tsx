@@ -6,7 +6,6 @@ import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import AddIcon from "@material-ui/icons/Add";
 import React, {useState} from "react";
-import UpdateEducationForm from "./forms/profile/UpdateEducationForm";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -15,8 +14,13 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
 import {useDispatch} from "react-redux";
-import {deletePersonEducation} from "./redux/peopleActions";
-import SchoolIcon from '@material-ui/icons/School';
+import {deletePersonProject} from "./redux/peopleActions";
+import GitHubIcon from '@material-ui/icons/GitHub';
+import UpdateProjectForm from "./forms/profile/UpdateProjectForm";
+import {IProject} from "../../../interfaces/IProject";
+import {Chip} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import LanguageIcon from '@material-ui/icons/Language';
 
 interface IProps {
     person: IPerson
@@ -26,22 +30,25 @@ interface IProps {
 const PersonProjects = ({person, canEdit}: IProps) => {
 
     const dispatch = useDispatch()
-    const {awards} = person
-    const [openAddEductionDialog, setOpenAddEductionDialog] = useState<boolean>(false)
-    const [selectedAward, setSelectedAward] = useState<any>(null)
+    const {projects} = person
+    const [openDialog, setOpenDialog] = useState<boolean>(false)
+    const [selected, setSelected] = useState<any>(null)
 
-    const handleUpdate = (award: any) => {
-        setSelectedAward(award)
-        setOpenAddEductionDialog(true)
+    const handleUpdate = (project: any) => {
+        setSelected(project)
+        setOpenDialog(true)
     }
 
-    const handleDelete = (award: any) => {
-        dispatch(deletePersonEducation({awardId: award.id, personId: award.personId}))
+    const handleDelete = (project: any) => {
+        dispatch(deletePersonProject({
+            projectId: project.id,
+            personId: project.personId
+        }))
     }
 
     const handleClose = () => {
-        setOpenAddEductionDialog(false)
-        setSelectedAward(null)
+        setOpenDialog(false)
+        setSelected(null)
     }
 
     return (
@@ -51,7 +58,7 @@ const PersonProjects = ({person, canEdit}: IProps) => {
                     action={
                         canEdit ? (
                             <IconButton
-                                onClick={() => setOpenAddEductionDialog(true)}
+                                onClick={() => setOpenDialog(true)}
                                 aria-label="settings">
                                 <AddIcon/>
                             </IconButton>
@@ -59,27 +66,29 @@ const PersonProjects = ({person, canEdit}: IProps) => {
                     }
                     title={
                         <Grid container spacing={1} justify={"flex-start"}>
-                            <Grid item><SchoolIcon /></Grid>
-                            <Grid item><div className="card-title">Education background</div></Grid>
+                            <Grid item><GitHubIcon/></Grid>
+                            <Grid item>
+                                <div className="card-title">Projects worked on</div>
+                            </Grid>
                         </Grid>
                     }
                 />
 
-                {awards?.length ? (
+                {projects?.length ? (
                     <CardContent>
                         {
-                            awards.map((it: any, index: number) => (
+                            projects.map((project: IProject, index: number) => (
                                 <Box key={index}>
                                     <Grid container key={index}>
                                         <Grid xs={11} item>
                                             <Typography variant={"h6"} component={"div"}>
-                                                {it.institute?.name || it.school?.name}
+                                                {project.title}
                                             </Typography>
                                             <Typography component={"div"}>
-                                                {it.title}, {it.fieldOfStudy}
+                                                {project.role}, {project.client}
                                             </Typography>
                                             <Typography component={"div"} style={{color: grey[400]}}>
-                                                {it.grade}, {it.startYear} - {it.endYear}
+                                                {project.from} - {project.until}
                                             </Typography>
 
                                             <Box mt={2}>
@@ -88,23 +97,25 @@ const PersonProjects = ({person, canEdit}: IProps) => {
                                                 </Typography>
                                                 <Typography
                                                     style={{
-                                                        whiteSpace:'pre-line',
+                                                        whiteSpace: 'pre-line',
                                                         paddingTop: 5,
                                                         color: grey[700],
-                                                        fontSize: '0.9rem'}}
-                                                    component={"div"}>
-                                                    {it.description}
-                                                </Typography>
+                                                        fontSize: '0.9rem'
+                                                    }}
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: project.description
+                                                    }}
+                                                    component={"div"}/>
                                             </Box>
 
-                                            {it.activities && <Box mt={2}>
-                                                <Typography style={{color: grey[400]}}>
-                                                    <small>Activities</small>
-                                                </Typography>
+                                            {project.techStack && <Box mt={4} mb={4}>
                                                 <Typography
                                                     component={"div"}
                                                     style={{color: grey[700], fontSize: '0.9rem'}}>
-                                                    {it.activities}
+                                                    <Chip variant={"default"} color={"secondary"} label={"Tech stack"} style={{marginRight: 5, marginBottom: 5}}/>
+                                                    {project.techStack.split(',').map((m: string, index: number) => (
+                                                        <Chip key={index} label={m} style={{marginRight: 5, marginBottom: 5}}/>
+                                                    ))}
                                                 </Typography>
                                             </Box>}
 
@@ -112,13 +123,42 @@ const PersonProjects = ({person, canEdit}: IProps) => {
 
                                         {canEdit ?
                                             <Grid xs={1} style={{textAlign: "right"}} item>
-                                                <IconButton onClick={() => handleUpdate(it)}>
+                                                <IconButton onClick={() => handleUpdate(project)}>
                                                     <EditIcon/>
                                                 </IconButton>
-                                                <IconButton onClick={() => handleDelete(it)}>
+                                                <IconButton onClick={() => handleDelete(project)}>
                                                     <DeleteIcon/>
                                                 </IconButton>
                                             </Grid> : ""}
+
+                                        <Grid item xs={12}>
+                                            <Grid spacing={2} justify={"flex-start"} container>
+                                                <Grid item>
+                                                    {project.url && <Box mt={4}>
+                                                        <Button href={project.url}
+                                                                variant={"outlined"}
+                                                                target={"_blank"}
+                                                                color={"secondary"}
+                                                                size={"medium"}>
+                                                            <LanguageIcon/>&nbsp;&nbsp;View project
+                                                        </Button>
+                                                    </Box>}
+                                                </Grid>
+                                                <Grid item>
+                                                    {project.linkToGitRepo && <Box mt={4}>
+                                                        <Button href={project.linkToGitRepo}
+                                                                target={"_blank"}
+                                                                variant={"contained"}
+                                                                disableElevation
+                                                                color={"primary"}
+                                                                size={"medium"}>
+                                                            <GitHubIcon/>&nbsp;&nbsp;
+                                                            Browse repository
+                                                        </Button>
+                                                    </Box>}
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
 
                                     </Grid>
 
@@ -130,14 +170,13 @@ const PersonProjects = ({person, canEdit}: IProps) => {
                 ) : ""}
 
                 {canEdit ? (
-                    <XDialog title={"Update education"}
+                    <XDialog title={"Update project"}
                              maxWidth={"md"}
                              onClose={handleClose}
-                             open={openAddEductionDialog}>
-                        <UpdateEducationForm
-                            education={selectedAward}
-                            onClose={handleClose}
-                            person={person}/>
+                             open={openDialog}>
+                        <UpdateProjectForm
+                            project={selected}
+                            onClose={handleClose}/>
                     </XDialog>
                 ) : ""}
             </Card>
