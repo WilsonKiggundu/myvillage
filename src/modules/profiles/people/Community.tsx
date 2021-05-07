@@ -53,7 +53,7 @@ const Community = ({category} : IProps) => {
     })
 
     useEffect(() => {
-        dispatch(loadPeople({category}))
+        dispatch(loadPeople())
     }, [dispatch])
 
     if (people && _.isEmpty(people.data)) {
@@ -76,7 +76,7 @@ const Community = ({category} : IProps) => {
     }
 
     const handleLoadMore = () => {
-        dispatch(loadPeople({category}))
+        dispatch(loadPeople())
     }
 
     const handleConnect = (personId: string) => {

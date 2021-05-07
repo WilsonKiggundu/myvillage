@@ -44,7 +44,7 @@ const XPeopleList = ({people, category, request} : IProps) => {
     return (
         <Grid spacing={2} justify={"flex-start"} container>
             {people.map((person: IPerson) => (
-                <Grid item key={person.id} xs={12} sm={4} md={4} xl={3} lg={3}>
+                <Grid item key={person.id} xs={12} sm={6} md={4} xl={3} lg={3}>
                     <ContactCard person={person}>
                         <div className="profile-bio-teaser">
                             {person.bio}

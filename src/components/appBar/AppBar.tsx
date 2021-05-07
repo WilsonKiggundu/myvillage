@@ -58,7 +58,7 @@ export default function ApplicationBar() {
     const appbarStyles = appBarStyles()
     const theme = useTheme();
 
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const user: User = useSelector(userSelector)
     const isAuthenticated = user != null
 
@@ -199,7 +199,9 @@ export default function ApplicationBar() {
                                     onClick={handleProfileView}
                                     variant={"text"}
                                     color={"secondary"}>
-                                    <MoreHoriz/>
+                                    <Avatar src={user.profile.picture}>
+                                        {user.profile?.given_name ? user.profile.given_name[0].toUpperCase() : ''}
+                                    </Avatar>
                                 </Button>
                             </div> :
                             <div className="Appbar-login-button">
@@ -232,6 +234,7 @@ export default function ApplicationBar() {
                         width: 'auto'
                     }}/>
                 </div>
+
                 <Divider style={{color: "white"}}/>
 
                 {
@@ -288,6 +291,12 @@ export default function ApplicationBar() {
                             </ListItemLink>
                         )) : ""
                     }
+
+                    <Divider />
+
+                    {user && <ListItemLink handleClick={handleLogout}>
+                        <ListItemText primary={"Logout"} />
+                    </ListItemLink>}
                 </List>
 
             </Drawer>
