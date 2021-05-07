@@ -73,6 +73,7 @@ const XSelectInput = (props: IProps) => {
             multiline={rest.multiline}
             fullWidth
             error={showError}
+            variant={variant}
             input={<Input/>}
             multiple={rest.multiple}
             inputProps={{name}}

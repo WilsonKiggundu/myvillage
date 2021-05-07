@@ -24,6 +24,7 @@ import {globalStyles} from "../../theme/styles";
 import {white} from "../../theme/custom-colors";
 import Hidden from '@material-ui/core/Hidden';
 import './CreateProfile.css'
+import {ReactComponent as MyVillageLogo} from "../../assets/images/mv-colored-logo.svg"
 
 interface IProps {
     history: any
@@ -91,7 +92,7 @@ export const CreateProfile = (props: IProps) => {
                         <Box className='box' style={{backgroundColor: palette.tertiary.light, color: white, height:'100%'}} p={3}>
                             <Grid container spacing={4}>
                                 <Grid item>
-                                    <img alt={"logo"} src={Logo} style={{height: 100, width: 'auto'}}/>
+                                    <MyVillageLogo />
                                 </Grid>
                                 <Grid item>
                                     <Box mb={3}>

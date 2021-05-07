@@ -29,6 +29,10 @@ import {APPEND_PERSON} from "./redux/peopleReducer";
 import {IContact} from "../../../interfaces/IContact";
 import {EmailSettings} from "../../../data/constants";
 import XTextInput from "../../../components/inputs/XTextInput";
+import PersonEmployment from "./PersonEmployment";
+import PersonProjects from "./PersonProjects";
+import PersonStack from "./PersonStack";
+import {isDeveloper} from "./IPerson";
 
 const Person = ({match}: any) => {
     const {id} = match.params
@@ -51,6 +55,9 @@ const Person = ({match}: any) => {
 
     const user = useSelector(userSelector)
     const canEdit: boolean = id === user?.profile.sub
+
+    const [isDev, setIsDev] = useState<boolean>(false)
+
 
     useEffect(() => {
         (async () => {
@@ -77,6 +84,7 @@ const Person = ({match}: any) => {
     useEffect(() => {
         if (person) {
             document.title = `${person.firstname} ${person.lastname} / My Village`
+            setIsDev(isDeveloper(person))
         }
     }, [person])
 
@@ -161,11 +169,16 @@ const Person = ({match}: any) => {
                         <>
                             {/*<ProfileCoverPhoto person={person}/>*/}
                             <PersonCard canEdit={canEdit} person={person}/>
-                            <PersonContacts canEdit={canEdit} person={person}/>
                             <PersonAwards canEdit={canEdit} person={person}/>
+                            <PersonEmployment person={person} canEdit={canEdit} />
+                            <PersonProjects person={person} canEdit={canEdit} />
+
+                            {isDev && <PersonStack person={person} canEdit={canEdit} />}
+
                             <PersonInterests canEdit={canEdit} person={person}/>
                             <PersonSkills canEdit={canEdit} person={person}/>
                             <PersonConnections canEdit={canEdit} person={person}/>
+                            <PersonContacts canEdit={canEdit} person={person}/>
                             <PersonPosts canEdit={canEdit} person={person}/>
 
                             {jobApplicationStatus === "pending" && context === 'job_application' && jobId && jobApplicationId ?

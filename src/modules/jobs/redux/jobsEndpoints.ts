@@ -15,12 +15,12 @@ export const applyForJob = async (params: any) => {
 }
 
 export const getJobById = async (id: any) => {
-    const url = makeUrl("Jobs", Endpoints.jobs.api)
-    return await getWithoutLoginAsync(url + '/' + id)
+    const url = makeUrl("Profiles", Endpoints.jobs.api)
+    return await getWithoutLoginAsync(url, {id: id})
 }
 
 export const getJobs = async (params?: any) => {
-    const url = makeUrl("Jobs", Endpoints.jobs.api)
+    const url = makeUrl("Profiles", Endpoints.jobs.api)
     return await getWithoutLoginAsync(url, params)
 }
 

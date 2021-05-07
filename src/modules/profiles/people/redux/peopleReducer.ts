@@ -21,6 +21,18 @@ export const DELETE_PERSON_INTERESTS = 'people/DELETE_PERSON_INTERESTS';
 export const DELETE_PERSON_INTERESTS_SUCCEEDED = 'people/DELETE_PERSON_INTERESTS_SUCCEEDED';
 export const DELETE_PERSON_INTERESTS_FAILED = 'people/DELETE_PERSON_INTERESTS_FAILED';
 
+export const ADD_PERSON_STACK = 'people/ADD_PERSON_STACK';
+export const ADD_PERSON_STACK_SUCCEEDED = 'people/ADD_PERSON_STACK_SUCCEEDED';
+export const ADD_PERSON_STACK_FAILED = 'people/ADD_PERSON_STACK_FAILED';
+
+export const EDIT_PERSON_STACK = 'people/EDIT_PERSON_STACK';
+export const EDIT_PERSON_STACK_SUCCEEDED = 'people/EDIT_PERSON_STACK_SUCCEEDED';
+export const EDIT_PERSON_STACK_FAILED = 'people/EDIT_PERSON_STACK_FAILED';
+
+export const DELETE_PERSON_STACK = 'people/DELETE_PERSON_STACK';
+export const DELETE_PERSON_STACK_SUCCEEDED = 'people/DELETE_PERSON_STACK_SUCCEEDED';
+export const DELETE_PERSON_STACK_FAILED = 'people/DELETE_PERSON_STACK_FAILED';
+
 export const EDIT_PERSON_SKILLS = 'people/EDIT_PERSON_SKILLS';
 export const EDIT_PERSON_SKILLS_SUCCEEDED = 'people/EDIT_PERSON_SKILLS_SUCCEEDED';
 export const EDIT_PERSON_SKILLS_FAILED = 'people/EDIT_PERSON_SKILLS_FAILED';
@@ -40,6 +52,30 @@ export const ADD_PERSON_EDUCATION_FAILED = 'people/ADD_PERSON_EDUCATION_FAILED';
 export const DELETE_PERSON_EDUCATION = 'people/DELETE_PERSON_EDUCATION';
 export const DELETE_PERSON_EDUCATION_SUCCEEDED = 'people/DELETE_PERSON_EDUCATION_SUCCEEDED';
 export const DELETE_PERSON_EDUCATION_FAILED = 'people/DELETE_PERSON_EDUCATION_FAILED';
+
+export const EDIT_PERSON_PROJECT = 'people/EDIT_PERSON_PROJECT';
+export const EDIT_PERSON_PROJECT_SUCCEEDED = 'people/EDIT_PERSON_PROJECT_SUCCEEDED';
+export const EDIT_PERSON_PROJECT_FAILED = 'people/EDIT_PERSON_PROJECT_FAILED';
+
+export const ADD_PERSON_PROJECT = 'people/ADD_PERSON_PROJECT';
+export const ADD_PERSON_PROJECT_SUCCEEDED = 'people/ADD_PERSON_PROJECT_SUCCEEDED';
+export const ADD_PERSON_PROJECT_FAILED = 'people/ADD_PERSON_PROJECT_FAILED';
+
+export const DELETE_PERSON_PROJECT = 'people/DELETE_PERSON_PROJECT';
+export const DELETE_PERSON_PROJECT_SUCCEEDED = 'people/DELETE_PERSON_PROJECT_SUCCEEDED';
+export const DELETE_PERSON_PROJECT_FAILED = 'people/DELETE_PERSON_PROJECT_FAILED';
+
+export const EDIT_PERSON_EMPLOYMENT = 'people/EDIT_PERSON_EMPLOYMENT';
+export const EDIT_PERSON_EMPLOYMENT_SUCCEEDED = 'people/EDIT_PERSON_EMPLOYMENT_SUCCEEDED';
+export const EDIT_PERSON_EMPLOYMENT_FAILED = 'people/EDIT_PERSON_EMPLOYMENT_FAILED';
+
+export const ADD_PERSON_EMPLOYMENT = 'people/ADD_PERSON_EMPLOYMENT';
+export const ADD_PERSON_EMPLOYMENT_SUCCEEDED = 'people/ADD_PERSON_EMPLOYMENT_SUCCEEDED';
+export const ADD_PERSON_EMPLOYMENT_FAILED = 'people/ADD_PERSON_EMPLOYMENT_FAILED';
+
+export const DELETE_PERSON_EMPLOYMENT = 'people/DELETE_PERSON_EMPLOYMENT';
+export const DELETE_PERSON_EMPLOYMENT_SUCCEEDED = 'people/DELETE_PERSON_EMPLOYMENT_SUCCEEDED';
+export const DELETE_PERSON_EMPLOYMENT_FAILED = 'people/DELETE_PERSON_EMPLOYMENT_FAILED';
 
 export const FETCH_PERSON_CONNECTION = 'people/FETCH_PERSON_CONNECTION';
 export const FETCH_PERSON_CONNECTION_SUCCEEDED = 'people/FETCH_PERSON_CONNECTION_SUCCEEDED';
@@ -89,13 +125,18 @@ const initialState: any = {
 
 export default function reducer(state = initialState, action: any) {
 
-    if (action.type === APPEND_PERSON){
+    // APPEND PERSON
+
+    if (action.type === APPEND_PERSON) {
         return {
             ...state,
             data: [...state.data, action.payload],
             isLoading: false
         }
-    } else if (action.type === FETCH_PEOPLE) {
+    }
+
+    // FETCH PEOPLE
+    else if (action.type === FETCH_PEOPLE) {
         return {
             ...state,
             isLoading: true
@@ -119,7 +160,10 @@ export default function reducer(state = initialState, action: any) {
             ...state,
             error: action.payload,
         }
-    } else if (action.type === EDIT_PERSON) {
+    }
+
+    // EDIT PERSON
+    else if (action.type === EDIT_PERSON) {
         return {
             ...state
         }
@@ -161,7 +205,10 @@ export default function reducer(state = initialState, action: any) {
         return {
             ...state
         }
-    } else if (action.type === EDIT_PERSON_CATEGORIES_SUCCEEDED) {
+    }
+
+    // CATEGORIES
+    else if (action.type === EDIT_PERSON_CATEGORIES_SUCCEEDED) {
 
         const categories = action.payload.body
 
@@ -209,7 +256,10 @@ export default function reducer(state = initialState, action: any) {
         return {
             ...state
         }
-    } else if (action.type === EDIT_PERSON_INTERESTS) {
+    }
+
+    // INTERESTS
+    else if (action.type === EDIT_PERSON_INTERESTS) {
         return {
             ...state
         }
@@ -259,7 +309,10 @@ export default function reducer(state = initialState, action: any) {
         return {
             ...state
         }
-    } else if (action.type === EDIT_PERSON_SKILLS) {
+    }
+
+    // SKILLS
+    else if (action.type === EDIT_PERSON_SKILLS) {
         return {
             ...state
         }
@@ -311,6 +364,96 @@ export default function reducer(state = initialState, action: any) {
             ...state,
         }
     } else if (action.type === DELETE_PERSON_SKILLS_FAILED) {
+        return {
+            ...state
+        }
+    }
+
+    // EDUCATION
+    else if (action.type === EDIT_PERSON_EDUCATION) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_EDUCATION_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const award = person.awards.find((f: any) => f.id === id)
+        const awardIndex = person.awards.indexOf(award)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    [awardIndex]: {
+                        $set: action.payload.body
+                    }
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_EDUCATION_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_EDUCATION) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_EDUCATION_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_EDUCATION_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_EDUCATION) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_EDUCATION_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.awards.find((f: any) => f.id === awardId)
+        const awardIndex = person.awards.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $splice: [[awardIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_EDUCATION_FAILED) {
         return {
             ...state
         }
@@ -401,7 +544,274 @@ export default function reducer(state = initialState, action: any) {
         return {
             ...state
         }
-    } else if (action.type === FETCH_PERSON_CONNECTION) {
+    }
+
+    // EMPLOYMENT
+    else if (action.type === EDIT_PERSON_EMPLOYMENT) {
+        return {...state}
+    } else if (action.type === EDIT_PERSON_EMPLOYMENT_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const employment = person.employment.find((f: any) => f.id === id)
+        const employmentIndex = person.employment.indexOf(employment)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                employment: {
+                    [employmentIndex]: {
+                        $set: action.payload.body
+                    }
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_EMPLOYMENT_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_EMPLOYMENT) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_EMPLOYMENT_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                employment: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_EMPLOYMENT_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_EMPLOYMENT) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_EMPLOYMENT_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.employment.find((f: any) => f.id === awardId)
+        const employmentIndex = person.employment.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                employment: {
+                    $splice: [[employmentIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_EMPLOYMENT_FAILED) {
+        return {
+            ...state
+        }
+    }
+
+    // PROJECT
+    else if (action.type === EDIT_PERSON_PROJECT) {
+        return {...state}
+    } else if (action.type === EDIT_PERSON_PROJECT_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const project = person.projects.find((f: any) => f.id === id)
+        const projectIndex = person.projects.indexOf(project)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                projects: {
+                    [projectIndex]: {
+                        $set: action.payload.body
+                    }
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_PROJECT_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_PROJECT) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_PROJECT_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                projects: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_PROJECT_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_PROJECT) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_PROJECT_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.projects.find((f: any) => f.id === awardId)
+        const projectIndex = person.projects.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                projects: {
+                    $splice: [[projectIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_PROJECT_FAILED) {
+        return {
+            ...state
+        }
+    }
+    
+    // STACK
+    else if (action.type === EDIT_PERSON_STACK) {
+        return {...state}
+    } else if (action.type === EDIT_PERSON_STACK_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const stack = person.stacks.find((f: any) => f.id === id)
+        const stackIndex = person.stacks.indexOf(stack)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                stacks: {
+                    [stackIndex]: {
+                        $set: action.payload.body
+                    }
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_STACK_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_STACK) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_STACK_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                stacks: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_STACK_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_STACK) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_STACK_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.stacks.find((f: any) => f.id === awardId)
+        const stackIndex = person.stacks.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                stacks: {
+                    $splice: [[stackIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_STACK_FAILED) {
+        return {
+            ...state
+        }
+    }
+
+    // CONNECTION
+    else if (action.type === FETCH_PERSON_CONNECTION) {
         return {
             ...state
         }

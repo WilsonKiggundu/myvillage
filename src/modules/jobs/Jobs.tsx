@@ -20,7 +20,7 @@ import JobListItem from "./JobListItem";
 import userManager from "../../utils/userManager";
 import * as yup from "yup";
 import {Alert, Autocomplete} from "@material-ui/lab";
-import {Button, Snackbar, TextField} from "@material-ui/core";
+import {Button, Snackbar, TextField, useMediaQuery, useTheme} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import JobFilter from "./forms/JobFilter";
 import { handleLogin } from "../../utils/authHelpers";
@@ -39,6 +39,9 @@ const Jobs = () => {
     const jobs = useSelector(jobsSelector)
     const user = useSelector(userSelector)
 
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+
     const [canCreateJob, setCanCreateJob] = useState<boolean>(false)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
@@ -46,39 +49,13 @@ const Jobs = () => {
         dispatch(loadJobs())
     }, [dispatch])
 
-    useEffect(() => {
-
-        getStartups({personId: user?.profile?.sub})
-            .then((response: any) => {
-                if (response.status === 200 && response.body.startups.length) {
-                    setCanCreateJob(true)
-                } else {
-                    // setOpenJobDialog(false)
-                }
-            }).catch(error => {
-            if (error.toString().indexOf('Unauthorized') != -1) {
-                userManager.signinRedirect(
-                    {
-                        data: {
-                            path: window.location.pathname
-                        }
-                    }
-                )
-            }
-        })
-
-    }, [setCanCreateJob])
-
     const handleViewJob = (id: string) => {
         const url = Urls.jobs.singleJob(id)
         history.push(url)
     }
 
     const handleCreate = () => {
-        if (user) window.location.replace(Urls.jobs.create)
-        else{
-            setOpenSnackbar(true)
-        }
+        window.location.replace(Urls.jobs.create)
     }
 
     useEffect(() => {
@@ -111,26 +88,28 @@ const Jobs = () => {
                 </Grid>
             </Grid>
 
-            {canCreateJob ? <>
+            <>
                 <XFab
+                    disabled={!user}
+                    variant={isMobile ? "round" : "extended"}
                     onClick={handleCreate}
                     position={"fixed"}
                     bottom={20}
                     right={20}
-                    color={"secondary"}>
-                    <AddIcon/>
+                    color={"primary"}>
+                    <AddIcon/> {!isMobile && <span className="text-inherit">Post a job</span>}
                 </XFab>
 
-                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
-                    <Alert onClose={() => setOpenSnackbar(false)} severity="warning">
-                        You need to be logged in to post a job. &nbsp;&nbsp;
-                        <Button onClick={handleLogin} size={"small"} variant={"outlined"} color={"secondary"}>
-                            Continue to login
-                        </Button>
-                    </Alert>
-                </Snackbar>
+                {/*<Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>*/}
+                {/*    <Alert onClose={() => setOpenSnackbar(false)} severity="warning">*/}
+                {/*        You need to be logged in to post a job. &nbsp;&nbsp;*/}
+                {/*        <Button onClick={handleLogin} size={"small"} variant={"outlined"} color={"secondary"}>*/}
+                {/*            Continue to login*/}
+                {/*        </Button>*/}
+                {/*    </Alert>*/}
+                {/*</Snackbar>*/}
 
-            </> : ""}
+            </>
 
         </Container>
     )

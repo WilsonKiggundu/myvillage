@@ -1,32 +1,30 @@
 import React from "react";
 import {Route, Router, Switch} from "react-router-dom";
-import history from "../utils/history"
 import {Urls} from "./Urls";
 import MainLayout from "../components/layout/MainLayout";
 import Home from "../modules/home/Home";
 import Startups from "../modules/profiles/startups/Startups";
 import Startup from "../modules/profiles/startups/Startup";
-import People from "../modules/profiles/people/Community";
 import Person from "../modules/profiles/people/Person";
 import Jobs from "../modules/jobs/Jobs";
 import Callback from "../modules/auth/Callback";
 import {Logout} from "../modules/auth/Logout";
-import {LogoutCallback} from "../modules/auth/LogoutCallback";
 import {SilentRenew} from "../modules/auth/SilientRenew";
 import Feed from "../modules/feed/Feed";
 import {CreateProfile} from "../modules/profiles/CreateProfile";
 import NewArticle from "../modules/articles/NewArticle";
 import Calendar from "../modules/events/Calendar";
 import EventsList from "../modules/events/EventsList";
-import {PrivateRoute} from "./PrivateRoute";
-import store from "../data/store";
-import userManager from "../utils/userManager";
 import Job from "../modules/jobs/Job";
 import Community from "../modules/profiles/people/Community";
 import CreateJob from "../modules/jobs/CreateJob";
 import CreateEvent from "../modules/events/CreateEvent";
 import Event from "../modules/events/Event";
 import JobsHome from "../modules/jobs/JobsHome";
+import FreelancerHome from "../modules/freelancers/Home";
+import DeveloperHome from "../modules/developers/Home";
+import Developers from "../modules/developers/Developers";
+import FreelanceProjects from "../modules/freelancers/FreelanceProjects";
 
 export const Routes = (
     <Switch>
@@ -59,6 +57,11 @@ export const Routes = (
             <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
             <Route exact path={Urls.event} component={Event}/>
             <Route exact path={Urls.calendar} component={Calendar}/>
+            <Route exact path={Urls.profiles.freelancers} component={FreelancerHome}/>
+            <Route exact path={Urls.profiles.developers} component={DeveloperHome}/>
+            <Route exact path={Urls.profiles.searchFreelancers} render={() => <Community category="freelancer" />}/>
+            <Route exact path={Urls.profiles.searchDevelopers} component={Developers}/>
+            <Route exact path={Urls.freelancers.projects} component={FreelanceProjects}/>
         </MainLayout>
 
         {/*<Route path={'/404'} component={NotFound} />*/}

@@ -25,6 +25,8 @@ import { useHistory } from "react-router-dom";
 import {postJob} from "./redux/jobsEndpoints";
 import {ADD_JOB} from "./redux/jobsReducer";
 import Toast from "../../utils/Toast";
+import Button from "@material-ui/core/Button";
+import {handleLogin} from "../../utils/authHelpers";
 
 interface IProps {
 
@@ -32,6 +34,11 @@ interface IProps {
 
 const CreateJob = (props: IProps) => {
     const user = useSelector(userSelector)
+
+    if (!user){
+        handleLogin()
+    }
+
     const {formId, formField} = JobFormModel
     const dispatch = useDispatch()
     const history = useHistory()
@@ -57,11 +64,13 @@ const CreateJob = (props: IProps) => {
             }))
         }
 
+        const {id, name} = values.company
+
         const job: any = {
             category: {
                 id: values.category
             },
-            companyId: values.companyId,
+            companyId: id ?? name,
             deadline: values.deadline,
             details: values.details,
             benefits: values.benefits,
@@ -122,16 +131,26 @@ const CreateJob = (props: IProps) => {
                         <Box mb={2}>
                             <Card>
                                 <Box mt={2} mb={2} mr={2} ml={2}>
-                                    <Grid justify={"flex-end"} container>
+                                    <Grid spacing={2} justify={"flex-end"} container>
+                                        <Grid item>
+                                            <Button
+                                                color={"inherit"}
+                                                size={"large"}
+                                                onClick={() => history.go(-1)}
+                                                variant={"text"}
+                                            >Cancel</Button>
+                                        </Grid>
                                         <Grid item>
                                             {isSubmitting ?
                                                 <CircularProgress variant={"indeterminate"}/> :
-                                                <button
+                                                <Button
                                                     type="submit"
-                                                    className="CreateJob-button"
+                                                    size={"large"}
+                                                    variant={"contained"}
+                                                    color={"secondary"}
                                                 >
                                                     Post Job
-                                                </button>
+                                                </Button>
                                             }
                                         </Grid>
                                     </Grid>

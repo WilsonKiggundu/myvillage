@@ -5,12 +5,14 @@ import {Endpoints} from "../../../services/Endpoints";
 import XSelectInput from "../../../components/inputs/XSelectInput";
 import {countries} from "../../../data/Countries";
 import {ICountry} from "../../../interfaces/ICountry";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
 import {IJobCategory} from "../../../interfaces/IJob";
 import XSelectInputCreatable from "../../../components/inputs/XSelectInputCreatable";
 import XDateInput from "../../../components/inputs/XDateInput";
+import {IStartup} from "../../../interfaces/IStartup";
+import {getAsync, makeUrl} from "../../../utils/ajax";
 
 interface IProps {
     formField: any
@@ -18,7 +20,19 @@ interface IProps {
 
 const JobOverview = ({formField}: IProps) => {
     const user = useSelector(userSelector)
-    const [categories, setCategories] = useState<IJobCategory[]>([])
+    const [startups, setStartups] = useState<any[]>([])
+
+    useEffect(() => {
+        (async () => {
+            const url = makeUrl("Profiles", Endpoints.business.base)
+            const response: any = await getAsync(url, {});
+
+            if (response.status === 200){
+                const startups = response.body.startups.map((m: any) => ({id: m.id, name: m.name}))
+                setStartups(startups)
+            }
+        })();
+    }, [setStartups])
 
     return (
         <Box mb={2}>
@@ -38,18 +52,29 @@ const JobOverview = ({formField}: IProps) => {
                             />
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <XSelectInputAsync
-                                name="companyId"
-                                placeholder={"* Company"}
+
+                            <XSelectInputCreatable
+                                variant={"outlined"}
+                                name={"company"}
+                                allowAddNew={true}
+                                multiple={false}
+                                label={"* Company name"}
                                 helperText={"Start typing your company name."}
-                                data={{
-                                    label: 'name',
-                                    field: 'startups',
-                                    params: {page: 1, pageSize: 25, personId: user.profile.sub},
-                                    avatar: 'avatar',
-                                    endpoint: Endpoints.base + Endpoints.business.base
-                                }}
-                                variant={"outlined"} />
+                                options={startups}
+                            />
+
+                            {/*<XSelectInputAsync*/}
+                            {/*    name="companyId"*/}
+                            {/*    placeholder={"* Company"}*/}
+                            {/*    helperText={"Start typing your company name."}*/}
+                            {/*    data={{*/}
+                            {/*        label: 'name',*/}
+                            {/*        field: 'startups',*/}
+                            {/*        params: {page: 1, pageSize: 25, personId: user.profile.sub},*/}
+                            {/*        avatar: 'avatar',*/}
+                            {/*        endpoint: Endpoints.base + Endpoints.business.base*/}
+                            {/*    }}*/}
+                            {/*    variant={"outlined"} />*/}
                         </Grid>
 
                         <Grid item xs={12} lg={6}>

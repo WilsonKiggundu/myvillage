@@ -24,6 +24,7 @@ import {
 import {
     addPersonContactWatcher,
     addPersonEducationWatcher,
+    addPersonEmploymentWatcher,
     deletePersonCategoriesWatcher,
     deletePersonConnectionWatcher,
     deletePersonContactWatcher,
@@ -36,12 +37,24 @@ import {
     updatePersonConnectionWatcher,
     updatePersonContactWatcher,
     updatePersonEducationWatcher,
+    updatePersonEmploymentWatcher,
     updatePersonInterestsWatcher,
     updatePersonSkillsWatcher,
-    updatePersonWatcher
+    updatePersonWatcher,
+    deletePersonEmploymentWatcher,
+    addPersonProjectWatcher,
+    updatePersonProjectWatcher,
+    deletePersonProjectWatcher,
+    addPersonStackWatcher, updatePersonStackWatcher, deletePersonStackWatcher
 } from "../modules/profiles/people/redux/peopleWatchers";
 import {eventsListWatcher, addEventWatcher} from "../modules/events/redux/eventsWatchers";
 import {addJobWatcher, jobCategoriesListWatcher, jobsListWatcher} from "../modules/jobs/redux/jobsSelectors";
+import {editPersonEducation} from "../modules/profiles/people/redux/peopleActions";
+import {
+    createFreelanceProjectsWatcher, deleteFreelanceProjectsWatcher,
+    fetchFreelanceProjectsWatcher,
+    updateFreelanceProjectsWatcher
+} from "../modules/freelancers/redux/freelanceProjectWatchers";
 
 export default function* rootSaga(){
     yield all([
@@ -49,7 +62,7 @@ export default function* rootSaga(){
         // people
         peopleListWatcher(),
         updatePersonWatcher(),
-
+        
         updatePersonCategoriesWatcher(),
         deletePersonCategoriesWatcher(),
 
@@ -66,6 +79,18 @@ export default function* rootSaga(){
         addPersonEducationWatcher(),
         updatePersonEducationWatcher(),
         deletePersonEducationWatcher(),
+
+        addPersonEmploymentWatcher(),
+        updatePersonEmploymentWatcher(),
+        deletePersonEmploymentWatcher(),
+
+        addPersonProjectWatcher(),
+        updatePersonProjectWatcher(),
+        deletePersonProjectWatcher(),
+
+        addPersonStackWatcher(),
+        updatePersonStackWatcher(),
+        deletePersonStackWatcher(),
 
         fetchPersonConnectionWatcher(),
         updatePersonConnectionWatcher(),
@@ -108,6 +133,12 @@ export default function* rootSaga(){
         deleteStartupInterestsWatcher(),
 
         updateStartupRolesWatcher(),
-        deleteStartupRolesWatcher()
+        deleteStartupRolesWatcher(),
+
+        // freelance projects
+        fetchFreelanceProjectsWatcher(),
+        updateFreelanceProjectsWatcher(),
+        createFreelanceProjectsWatcher(),
+        deleteFreelanceProjectsWatcher()
     ])
 }

@@ -29,7 +29,7 @@ import {
     EDIT_PERSON_CONTACT,
     EDIT_PERSON_CONTACT_SUCCEEDED,
     EDIT_PERSON_CONTACT_FAILED,
-    
+
     EDIT_PERSON_SKILLS,
     EDIT_PERSON_SKILLS_SUCCEEDED,
     EDIT_PERSON_SKILLS_FAILED,
@@ -52,16 +52,58 @@ import {
     ADD_PERSON_EDUCATION_SUCCEEDED,
     ADD_PERSON_EDUCATION_FAILED,
     FETCH_PERSON_CONNECTION,
-    FETCH_PERSON_CONNECTION_SUCCEEDED, FETCH_PERSON_CONNECTION_FAILED
+    FETCH_PERSON_CONNECTION_SUCCEEDED,
+    FETCH_PERSON_CONNECTION_FAILED,
+    EDIT_PERSON_PROJECT,
+    EDIT_PERSON_PROJECT_SUCCEEDED,
+    EDIT_PERSON_PROJECT_FAILED,
+    ADD_PERSON_PROJECT,
+    ADD_PERSON_PROJECT_SUCCEEDED,
+    ADD_PERSON_PROJECT_FAILED,
+    DELETE_PERSON_PROJECT,
+    DELETE_PERSON_PROJECT_SUCCEEDED,
+    DELETE_PERSON_PROJECT_FAILED,
+    EDIT_PERSON_STACK,
+    EDIT_PERSON_STACK_SUCCEEDED,
+    EDIT_PERSON_STACK_FAILED,
+    DELETE_PERSON_STACK,
+    DELETE_PERSON_STACK_SUCCEEDED,
+    DELETE_PERSON_STACK_FAILED,
+    EDIT_PERSON_EMPLOYMENT,
+    EDIT_PERSON_EMPLOYMENT_SUCCEEDED,
+    EDIT_PERSON_EMPLOYMENT_FAILED,
+    ADD_PERSON_EMPLOYMENT,
+    ADD_PERSON_EMPLOYMENT_SUCCEEDED,
+    ADD_PERSON_EMPLOYMENT_FAILED,
+    DELETE_PERSON_EMPLOYMENT,
+    DELETE_PERSON_EMPLOYMENT_SUCCEEDED,
+    DELETE_PERSON_EMPLOYMENT_FAILED,
+    ADD_PERSON_STACK,
+    ADD_PERSON_STACK_SUCCEEDED,
+    ADD_PERSON_STACK_FAILED
 } from "./peopleReducer";
 import {
-    delPersonCategories, delPersonConnection, delPersonEducation,
-    delPersonInterests, delPersonSkills,
-    getPeople, getPersonConnection, postPersonEducation,
+    delPersonCategories,
+    delPersonConnection,
+    delPersonEducation,
+    delPersonInterests,
+    delPersonSkills,
+    getPeople,
+    getPersonConnection,
+    postPersonEducation,
     putPerson,
-    delPersonContact, postPersonContact, putPersonContact,
-    putPersonCategories, putPersonConnection, putPersonEducation,
-    putPersonInterests, putPersonSkills
+    delPersonContact,
+    postPersonContact,
+    putPersonContact,
+    putPersonCategories,
+    putPersonConnection,
+    putPersonEducation,
+    putPersonInterests,
+    putPersonSkills,
+    putPersonEmployment,
+    postPersonEmployment,
+    delPersonEmployment,
+    putPersonProject, postPersonProject, delPersonProject, putPersonStack, postPersonStack, delPersonStack
 } from "./peopleEndpoints";
 import {UploadType} from "../../../posts/forms/UploadFile";
 
@@ -137,6 +179,42 @@ export function deletePersonInterestsFailed(payload: any) {
     return { type: DELETE_PERSON_INTERESTS_FAILED, payload };
 }
 
+export function addPersonStack(payload?: any) {
+    return { type: ADD_PERSON_STACK, payload };
+}
+
+export function addPersonStackSuccess(payload: any) {
+    return { type: ADD_PERSON_STACK_SUCCEEDED, payload };
+}
+
+export function addPersonStackFailed(payload: any) {
+    return { type: ADD_PERSON_STACK_FAILED, payload };
+}
+
+export function editPersonStack(payload?: any) {
+    return { type: EDIT_PERSON_STACK, payload };
+}
+
+export function editPersonStackSuccess(payload: any) {
+    return { type: EDIT_PERSON_STACK_SUCCEEDED, payload };
+}
+
+export function editPersonStackFailed(payload: any) {
+    return { type: EDIT_PERSON_STACK_FAILED, payload };
+}
+
+export function deletePersonStack(payload?: any) {
+    return { type: DELETE_PERSON_STACK, payload };
+}
+
+export function deletePersonStackSuccess(payload: any) {
+    return { type: DELETE_PERSON_STACK_SUCCEEDED, payload };
+}
+
+export function deletePersonStackFailed(payload: any) {
+    return { type: DELETE_PERSON_STACK_FAILED, payload };
+}
+
 export function editPersonSkills(payload?: any) {
     return { type: EDIT_PERSON_SKILLS, payload };
 }
@@ -195,6 +273,81 @@ export function deletePersonEducationSuccess(payload: any) {
 
 export function deletePersonEducationFailed(payload: any) {
     return { type: DELETE_PERSON_EDUCATION_FAILED, payload };
+}
+
+// person project
+
+export function editPersonProject(payload?: any) {
+    return { type: EDIT_PERSON_PROJECT, payload };
+}
+
+export function editPersonProjectSuccess(payload: any) {
+    return { type: EDIT_PERSON_PROJECT_SUCCEEDED, payload };
+}
+
+export function editPersonProjectFailed(payload: any) {
+    return { type: EDIT_PERSON_PROJECT_FAILED, payload };
+}
+
+export function addPersonProject(payload?: any) {
+    return { type: ADD_PERSON_PROJECT, payload };
+}
+
+export function addPersonProjectSuccess(payload: any) {
+    return { type: ADD_PERSON_PROJECT_SUCCEEDED, payload };
+}
+
+export function addPersonProjectFailed(payload: any) {
+    return { type: ADD_PERSON_PROJECT_FAILED, payload };
+}
+
+export function deletePersonProject(payload?: any) {
+    return { type: DELETE_PERSON_PROJECT, payload };
+}
+
+export function deletePersonProjectSuccess(payload: any) {
+    return { type: DELETE_PERSON_PROJECT_SUCCEEDED, payload };
+}
+
+export function deletePersonProjectFailed(payload: any) {
+    return { type: DELETE_PERSON_PROJECT_FAILED, payload };
+}
+
+// person employment
+export function editPersonEmployment(payload?: any) {
+    return { type: EDIT_PERSON_EMPLOYMENT, payload };
+}
+
+export function editPersonEmploymentSuccess(payload: any) {
+    return { type: EDIT_PERSON_EMPLOYMENT_SUCCEEDED, payload };
+}
+
+export function editPersonEmploymentFailed(payload: any) {
+    return { type: EDIT_PERSON_EMPLOYMENT_FAILED, payload };
+}
+
+export function addPersonEmployment(payload?: any) {
+    return { type: ADD_PERSON_EMPLOYMENT, payload };
+}
+
+export function addPersonEmploymentSuccess(payload: any) {
+    return { type: ADD_PERSON_EMPLOYMENT_SUCCEEDED, payload };
+}
+
+export function addPersonEmploymentFailed(payload: any) {
+    return { type: ADD_PERSON_EMPLOYMENT_FAILED, payload };
+}
+
+export function deletePersonEmployment(payload?: any) {
+    return { type: DELETE_PERSON_EMPLOYMENT, payload };
+}
+
+export function deletePersonEmploymentSuccess(payload: any) {
+    return { type: DELETE_PERSON_EMPLOYMENT_SUCCEEDED, payload };
+}
+
+export function deletePersonEmploymentFailed(payload: any) {
+    return { type: DELETE_PERSON_EMPLOYMENT_FAILED, payload };
 }
 
 export function loadPersonConnection(payload?: any) {
@@ -351,6 +504,94 @@ export function* removePersonEducation(action: any){
         yield put(deletePersonEducationSuccess(response))
     } catch (error) {
         yield put(deletePersonEducationFailed(error.message));
+    }
+}
+
+export function* updatePersonEmployment(action: any){
+    try {
+
+        const response = yield call<any>(putPersonEmployment, action.payload)
+        yield put(editPersonEmploymentSuccess(response))
+    } catch (error) {
+        yield put(editPersonEmploymentFailed(error.message));
+    }
+}
+
+export function* createPersonEmployment(action: any){
+    try {
+
+        const response = yield call<any>(postPersonEmployment, action.payload)
+        yield put(addPersonEmploymentSuccess(response))
+    } catch (error) {
+        yield put(addPersonEmploymentFailed(error.message));
+    }
+}
+
+export function* removePersonEmployment(action: any){
+    try {
+        const response = yield call<any>(delPersonEmployment, action.payload)
+        yield put(deletePersonEmploymentSuccess(response))
+    } catch (error) {
+        yield put(deletePersonEmploymentFailed(error.message));
+    }
+}
+
+export function* updatePersonProject(action: any){
+    try {
+
+        const response = yield call<any>(putPersonProject, action.payload)
+        yield put(editPersonProjectSuccess(response))
+    } catch (error) {
+        yield put(editPersonProjectFailed(error.message));
+    }
+}
+
+export function* createPersonProject(action: any){
+    try {
+
+        const response = yield call<any>(postPersonProject, action.payload)
+        yield put(addPersonProjectSuccess(response))
+    } catch (error) {
+        yield put(addPersonProjectFailed(error.message));
+    }
+}
+
+export function* removePersonProject(action: any){
+    try {
+        const response = yield call<any>(delPersonProject, action.payload)
+        yield put(deletePersonProjectSuccess(response))
+    } catch (error) {
+        yield put(deletePersonProjectFailed(error.message));
+    }
+}
+
+
+export function* updatePersonStack(action: any){
+    try {
+
+        const response = yield call<any>(putPersonStack, action.payload)
+        yield put(editPersonStackSuccess(response))
+    } catch (error) {
+        yield put(editPersonStackFailed(error.message));
+    }
+}
+
+export function* createPersonStack(action: any){
+    try {
+
+        const response = yield call<any>(postPersonStack, action.payload)
+        yield put(addPersonStackSuccess(response))
+    } catch (error) {
+        yield put(addPersonStackFailed(error.message));
+    }
+}
+
+export function* removePersonStack(action: any){
+    try {
+        const response = yield call<any>(delPersonStack, action.payload)
+        yield put(deletePersonStackSuccess(response))
+    } catch (error) {
+        yield put(deletePersonStackFailed(error.message));
     }
 }
 

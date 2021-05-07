@@ -22,13 +22,12 @@ import Grid from "@material-ui/core/Grid";
 import {useSelector} from "react-redux";
 import {PleaseWait} from "../../components/PleaseWait";
 import Container from "@material-ui/core/Container";
-import {getStartupContact, getStartups} from "../profiles/startups/redux/startupsEndpoints";
+import {getStartupContact} from "../profiles/startups/redux/startupsEndpoints";
 import {Urls} from "../../routes/Urls";
 import AttachmentIcon from '@material-ui/icons/Attachment';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {applyForJob, getJobById} from "./redux/jobsEndpoints";
 import {userSelector} from "../../data/coreSelectors";
-import Toast from "../../utils/Toast";
 import userManager from "../../utils/userManager";
 import XDrawer, {Anchor} from "../../components/drawer/XDrawer";
 import {getAsync, makeUrl} from "../../utils/ajax";
@@ -50,9 +49,11 @@ import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 
 const Job = ({match}: any) => {
 
+    const id = parseInt(match.params.id, 10)
     const history = useHistory()
     const user = useSelector(userSelector)
-    const id = parseInt(match.params.id, 10)
+    // let job = useSelector((state) => jobSelector(state, id))
+
     const [company, setCompany] = useState<any | undefined>(undefined)
     const [job, setJob] = useState<IJob | undefined>(undefined)
 
@@ -154,11 +155,10 @@ const Job = ({match}: any) => {
             try {
 
                 const response: any = await getJobById(id)
-                const res: any = await getStartups({id: response.body.companyId})
+                const job = response.body[0]
 
-                setCompany(res.body.startups[0])
+                document.title = `${job.title} / My Village`
 
-                const job = response.body
                 setJob(job)
 
                 const {applicants, profileId} = job
@@ -176,8 +176,6 @@ const Job = ({match}: any) => {
                         setCanApply(true)
                     }
                 }
-
-                document.title = `${response.body.title} / My Village`
 
             } catch (e) {
 
@@ -352,7 +350,8 @@ const Job = ({match}: any) => {
                                                                 color={"default"}
                                                                 variant={"outlined"}>
                                                                 View applicants
-                                                            </Button> : <span style={{color: "red"}}>No applications yet</span>
+                                                            </Button> :
+                                                            <span style={{color: "red"}}>No applications yet</span>
                                                         }
 
                                                         <XDrawer

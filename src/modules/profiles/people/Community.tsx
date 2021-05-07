@@ -27,7 +27,11 @@ import {Endpoints} from "../../../services/Endpoints";
 import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
 import PeopleFilter from "./forms/PeopleFilter";
 
-const Community = () => {
+interface IProps{
+    category?: string
+}
+
+const Community = ({category} : IProps) => {
 
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
     const people = useSelector(peopleSelector)
@@ -36,15 +40,6 @@ const Community = () => {
     const dispatch = useDispatch()
 
     const history = useHistory()
-
-    const handleConnect = (personId: string) => {
-
-        if (user){
-            dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
-        }else{
-            setOpenSnackbar(true)
-        }
-    }
 
     useEffect(() => {
 
@@ -84,15 +79,18 @@ const Community = () => {
         dispatch(loadPeople())
     }
 
+    const handleConnect = (personId: string) => {
+        if (user){
+            dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
+        }else{
+            setOpenSnackbar(true)
+        }
+    }
+
 
     return (
         <Container maxWidth={"lg"}>
-            <Grid spacing={2} justify={"flex-start"} container>
-
-                {/*<Grid xs={12} item>*/}
-                {/*    <PeopleFilter />*/}
-                {/*</Grid>*/}
-
+            <Grid spacing={2} justify={"center"} container>
                 {people.data.map((person: IPerson) => (
                     <Grid item key={person.id} xs={12} sm={4} md={4} xl={3} lg={3}>
                         <ContactCard person={person}>

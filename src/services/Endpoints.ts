@@ -31,6 +31,10 @@ export const Endpoints = {
         api: '/api/uploads'
     },
 
+    freelanceProjects: {
+      api: '/api/freelance/project'
+    },
+
     jobs: {
         base: jobsBaseUrl,
         api: '/api/jobs',
@@ -82,6 +86,9 @@ export const Endpoints = {
     person: {
         base: "/api/person",
         award: "/api/person/awards",
+        employment: "/api/person/employment",
+        project: "/api/person/project",
+        stack: "/api/person/stack",
         category: "/api/person/categories",
         interest: "/api/person/interests",
         skill: "/api/person/skills",
@@ -98,5 +105,6 @@ export const Endpoints = {
         skill: "/api/lookup/skills",
         need: "/api/lookup/needs",
         upload: "/api/lookup/uploads",
+        stack: "/api/lookup/stack",
     },
 }

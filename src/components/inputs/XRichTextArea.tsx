@@ -35,8 +35,11 @@ const XRichTextArea = ({name, helperText, ...props}: TextFieldProps & IProps) =>
                     />
 
                     {
-                        helperText ? <FormHelperText>{helperText}</FormHelperText> :
-                            showError && <FormHelperText>{error}</FormHelperText>
+                        showError ?
+                            <FormHelperText>
+                                <div className="error-text">{error}</div>
+                            </FormHelperText> :
+                            <FormHelperText>{helperText}</FormHelperText>
                     }
                 </>
             )}

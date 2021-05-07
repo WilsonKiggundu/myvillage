@@ -303,50 +303,32 @@ export const put = (url: string, data: any, callBack: CallbackFunction, errorCal
 export const putAsync = (url: string, data: any) => {
     return new Promise((resolve, reject) => {
 
-        userManager.getUser().then((user: User | null) => {
-            if (user) {
-                return superagent.put(url)
-                    .set('Authorization', `Bearer ${user.access_token}`)
-                    .set('Accept', 'application/json')
-                    .set('Content-Type', 'application/json')
-                    .send(data)
-                    .timeout(timeout)
-                    .end((err, res) => {
-                        if (!err) resolve(res)
-                        else reject(err)
-                    })
-            } else {
-                userManager.signinSilent()
-            }
-        }).catch(error => {
-            Toast.error(error.message)
-        })
+        return superagent.put(url)
+            // .set('Authorization', `Bearer ${user.access_token}`)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send(data)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
 
     })
 }
 
 export const deleteAsync = (url: string, params: any) => {
     return new Promise((resolve, reject) => {
-
-        userManager.getUser().then((user: User | null) => {
-            if (user) {
-                return superagent.delete(url)
-                    .set('Authorization', `Bearer ${user.access_token}`)
-                    .set('Accept', 'application/json')
-                    .set('Content-Type', 'application/json')
-                    .query(params)
-                    .timeout(timeout)
-                    .end((err, res) => {
-                        if (!err) resolve(res)
-                        else reject(err)
-                    })
-            } else {
-                userManager.signinSilent()
-            }
-        }).catch(error => {
-            Toast.error(error.message)
-        })
-
+        return superagent.delete(url)
+            // .set('Authorization', `Bearer ${user.access_token}`)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .query(params)
+            .timeout(timeout)
+            .end((err, res) => {
+                if (!err) resolve(res)
+                else reject(err)
+            })
     })
 }
 

@@ -9,7 +9,7 @@ const {
         deadline,
         qualifications,
         details,
-        companyId,
+        company,
         experience,
         jobType
     }
@@ -23,7 +23,7 @@ export default [
         [category.name]: Yup.string().required(`${category.requiredErrorMsg}`),
         [qualifications.name]: Yup.string().required(`${qualifications.requiredErrorMsg}`),
         [details.name]: Yup.string().required(`${details.requiredErrorMsg}`),
-        [companyId.name]: Yup.string().required(`${companyId.requiredErrorMsg}`),
+        [company.name]: Yup.string().required(`${company.requiredErrorMsg}`),
         // [experience.name]: Yup.string().required(`${experience.requiredErrorMsg}`),
         [jobType.name]: Yup.string().required(`${jobType.requiredErrorMsg}`)
     }),
