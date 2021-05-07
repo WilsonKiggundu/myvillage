@@ -31,6 +31,10 @@ export const Endpoints = {
         api: '/api/uploads'
     },
 
+    freelanceProjects: {
+      api: '/api/freelance/project'
+    },
+
     jobs: {
         base: jobsBaseUrl,
         api: '/api/jobs',

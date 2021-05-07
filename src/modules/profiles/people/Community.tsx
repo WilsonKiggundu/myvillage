@@ -90,7 +90,7 @@ const Community = ({category} : IProps) => {
 
     return (
         <Container maxWidth={"lg"}>
-            <Grid spacing={2} justify={"flex-start"} container>
+            <Grid spacing={2} justify={"center"} container>
 
                 {/*<Grid xs={12} item>*/}
                 {/*    <PeopleFilter />*/}

@@ -1,0 +1,1 @@
+export const freelanceProjectsSelector = (state: any) => state.freelanceProjects

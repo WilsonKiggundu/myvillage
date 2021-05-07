@@ -1,23 +1,19 @@
-import {Button, Container, Grid, Snackbar, useMediaQuery, useTheme} from "@material-ui/core";
+import {Box, Button, CardContent, Container, Grid, useMediaQuery, useTheme} from "@material-ui/core";
 import React, {useState} from "react";
 import XImageLoader from "../../components/XImageLoader";
 import Image from '../../assets/images/freelancers.png'
 
 import './css/Freelancers.css'
-import {ChevronRight, Work} from "@material-ui/icons";
-import StarIcon from '@material-ui/icons/Star';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import WorkIcon from '@material-ui/icons/Work';
-
-import {ReactComponent as Freelancers} from "../../assets/images/freelancers_two.svg";
-import {Alert} from "@material-ui/lab";
-import {handleLogin} from "../../utils/authHelpers";
+import {ChevronRight} from "@material-ui/icons";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../data/coreSelectors";
 import {XLoginSnackbar} from "../../components/XLoginSnackbar";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {Urls} from "../../routes/Urls";
+import XDialog from "../../components/dialogs/XDialog";
+import CreateProject from "./forms/CreateProject";
+
+import SearchIcon from '@material-ui/icons/Search';
 
 const FreelancerHome = () => {
 
@@ -26,19 +22,20 @@ const FreelancerHome = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
     const user = useSelector(userSelector)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
+    const [openAddProjectDialog, setOpenAddProjectDialog] = useState<boolean>(false)
 
     const handlePostJob = () => {
-        if (user){
+        if (user) {
             history.push(Urls.jobs.create)
-        }else{
+        } else {
             setOpenSnackbar(true)
         }
     }
 
     const handleEarnAsAFreelancer = () => {
-        if (user){
+        if (user) {
 
-        }else{
+        } else {
             setOpenSnackbar(true)
         }
     }
@@ -50,27 +47,36 @@ const FreelancerHome = () => {
                     <Grid spacing={2} justify={"center"} container>
                         <Grid item xs={12} lg={5}>
                             <div className="Freelancers-title">
-                                Do you want anything done?
+                                Getting the job done!
                             </div>
 
                             <div className="Freelancers-main-title">
-                                Choose from our network of Freelancers.
+                                Unlocking Uganda’s best freelancers.
                             </div>
 
                             <div className="Freelancers-leading-text">
-                                They will get the job done, the way you want it done.
+
                             </div>
 
                             <Grid container justify={"center"} spacing={2} className="Freelancers-buttons">
                                 <Grid item>
                                     <Button
-                                        href={Urls.profiles.searchFreelancers}
+                                        onClick={() => setOpenAddProjectDialog(true)}
                                         className="Freelancers-button"
                                         variant={"contained"}
                                         size={"large"}
                                         disableElevation color={"primary"}>
-                                        Hire a Freelancer <ChevronRight/>
+                                        Post your Project <ChevronRight/>
                                     </Button>
+
+                                    <XDialog title={"What's your job?"}
+                                             maxWidth={"md"}
+                                             onClose={() => setOpenAddProjectDialog(false)}
+                                             open={openAddProjectDialog}>
+                                        <CreateProject
+                                            onClose={() => setOpenAddProjectDialog(false)}/>
+                                    </XDialog>
+
                                 </Grid>
                                 <Grid item>
                                     <Button
@@ -84,6 +90,10 @@ const FreelancerHome = () => {
                                 </Grid>
                             </Grid>
 
+                            <div className="Freelancers-leading-text">
+                                Are you a freelancer? <a href={Urls.freelancers.projects}>Find a project</a>.
+                            </div>
+
                         </Grid>
                         <Grid item xs={12} lg={7}>
                             <XImageLoader width={"100%"} effect={"opacity"} src={Image}/>
@@ -94,72 +104,65 @@ const FreelancerHome = () => {
                     </Grid>
                 </Container>
             </div>
-
-            <div>
-                <Container maxWidth={"lg"}>
-                    <Grid container spacing={8}>
-                        <Grid item xs={12}>
-                            <div className="Process-title">What is the process?</div>
-                        </Grid>
-                        {!isMobile && <Grid item lg={6}>
-                            <Freelancers style={{marginTop: -150}} width={'100%'} />
-                        </Grid>}
-                        <Grid item lg={6}>
+            <Container maxWidth={"lg"}>
+                <Grid container spacing={8}>
+                    <Grid item xs={12}>
+                        <div className="Process-title">What is the process?</div>
+                    </Grid>
+                    <Grid item lg={12}>
+                        <Box mb={6}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} md={6}>
-                                    <div className="Process-card">
-                                        <WorkIcon className="Process-card-icon" />
-                                        <h3>Post</h3>
-                                        <p>It starts with you posting the job that you want to get done.</p>
-                                        <Button onClick={handlePostJob} color={"secondary"} variant={"outlined"}>Post a job</Button>
+                                    <div className="Freelancers-process-card">
+                                        <h3>Complete your profile</h3>
+                                        <p>Select your skills and expertise. Upload a professional profile photo. Go through
+                                            the Verification Center checklist
+                                        </p>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <div className="Process-card">
-                                        <VisibilityIcon className="Process-card-icon" />
-                                        <h3>Choose</h3>
-                                        <p>Browser the network of freelancers and invite them to the job</p>
-                                        <Button color={"default"} variant={"outlined"}>Choose a freelancer</Button>
+                                    <div className="Freelancers-process-card">
+                                        <h3>Browse jobs that suit you</h3>
+                                        <p>We have jobs available for all skills. Maximize your job opportunities by
+                                            optimizing your filters. Save your search and get alerted when relevant jobs are
+                                            available.</p>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <div className="Process-card">
-                                        <AttachMoneyIcon className="Process-card-icon" />
-                                        <h3>Hire</h3>
-                                        <p>You can use whichever criteria to choose the best match for you.</p>
+                                    <div className="Freelancers-process-card">
+                                        <h3>Write your best pitch</h3>
+                                        <p>Prepare the best pitch possible and take time to get acquainted with the project
+                                            and why you are the best person for the job. Writing a new brief for each
+                                            project is more effective than using the same one!</p>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <div className="Process-card">
-                                        <StarIcon className="Process-card-icon" />
-                                        <h3>Rate</h3>
-                                        <p>Give them a thumbs-up for the good job done.</p>
+                                    <div className="Freelancers-process-card">
+                                        <h3>Get your payment</h3>
+                                        <p>Be ready with all your work tools for when you get hired. We look forward to
+                                            quality work and as you earn on the agreed amount.</p>
                                     </div>
                                 </Grid>
                             </Grid>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Container>
+
+            <div className="Freelancers-bg-purple">
+                <Container maxWidth={"lg"}>
+                    <Grid container justify={"center"} spacing={8}>
+                        <Grid item>
+                            <a className="Freelancer-find-button"
+                               href={Urls.profiles.searchFreelancers}>
+                                Find a Freelancer
+                            </a>
                         </Grid>
                     </Grid>
                 </Container>
             </div>
 
-            {/*<div className="Freelancers-bg-purple">*/}
-            {/*    <Container maxWidth={"lg"}>*/}
-            {/*        <Grid container spacing={8}>*/}
-            {/*            <Grid item xs={12}>*/}
-            {/*                <div className="Process-title">What's unique about it?</div>*/}
-            {/*            </Grid>*/}
-            {/*            <Grid item xs={12} md={4}>*/}
-            {/*                <div className="Process-card">*/}
-            {/*                    <StarIcon className="Process-card-icon" />*/}
-            {/*                    <h3>Rate</h3>*/}
-            {/*                    <p>Give them a thumbs-up for the good job done.</p>*/}
-            {/*                </div>*/}
-            {/*            </Grid>*/}
-            {/*        </Grid>*/}
-            {/*    </Container>*/}
-            {/*</div>*/}
-
-            {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)} />}
+            {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)}/>}
         </Container>
     )
 }

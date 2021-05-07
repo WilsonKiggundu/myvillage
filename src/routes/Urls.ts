@@ -12,6 +12,9 @@ export const Urls = ({
     silentRenew: "/silent-renew",
     home: "/",
     feed: "/feed",
+    freelancers: {
+      projects: '/freelancers/projects'
+    },
     profiles: {
         freelancers: '/freelancers',
         developers: '/developers',

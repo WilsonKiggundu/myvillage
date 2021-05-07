@@ -50,6 +50,11 @@ import {
 import {eventsListWatcher, addEventWatcher} from "../modules/events/redux/eventsWatchers";
 import {addJobWatcher, jobCategoriesListWatcher, jobsListWatcher} from "../modules/jobs/redux/jobsSelectors";
 import {editPersonEducation} from "../modules/profiles/people/redux/peopleActions";
+import {
+    createFreelanceProjectsWatcher, deleteFreelanceProjectsWatcher,
+    fetchFreelanceProjectsWatcher,
+    updateFreelanceProjectsWatcher
+} from "../modules/freelancers/redux/freelanceProjectWatchers";
 
 export default function* rootSaga(){
     yield all([
@@ -128,6 +133,12 @@ export default function* rootSaga(){
         deleteStartupInterestsWatcher(),
 
         updateStartupRolesWatcher(),
-        deleteStartupRolesWatcher()
+        deleteStartupRolesWatcher(),
+
+        // freelance projects
+        fetchFreelanceProjectsWatcher(),
+        updateFreelanceProjectsWatcher(),
+        createFreelanceProjectsWatcher(),
+        deleteFreelanceProjectsWatcher()
     ])
 }

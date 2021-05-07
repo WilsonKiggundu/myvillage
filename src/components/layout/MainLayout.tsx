@@ -22,7 +22,7 @@ function MainLayout(props: IProps) {
     const trackingId = process.env.GA_TRACKING_ID ?? ''
     ReactGA.initialize(trackingId)
     ReactGA.set({
-        userId: user.profile.sub
+        userId: user?.profile.sub
     })
 
     useEffect(() => {

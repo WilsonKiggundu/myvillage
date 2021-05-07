@@ -27,8 +27,6 @@ const JobOverview = ({formField}: IProps) => {
             const url = makeUrl("Profiles", Endpoints.business.base)
             const response: any = await getAsync(url, {});
 
-            console.log(response)
-
             if (response.status === 200){
                 const startups = response.body.startups.map((m: any) => ({id: m.id, name: m.name}))
                 setStartups(startups)

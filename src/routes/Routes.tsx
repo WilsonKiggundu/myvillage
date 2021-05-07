@@ -24,6 +24,7 @@ import JobsHome from "../modules/jobs/JobsHome";
 import FreelancerHome from "../modules/freelancers/Home";
 import DeveloperHome from "../modules/developers/Home";
 import Developers from "../modules/developers/Developers";
+import FreelanceProjects from "../modules/freelancers/FreelanceProjects";
 
 export const Routes = (
     <Switch>
@@ -60,6 +61,7 @@ export const Routes = (
             <Route exact path={Urls.profiles.developers} component={DeveloperHome}/>
             <Route exact path={Urls.profiles.searchFreelancers} render={() => <Community category="freelancer" />}/>
             <Route exact path={Urls.profiles.searchDevelopers} component={Developers}/>
+            <Route exact path={Urls.freelancers.projects} component={FreelanceProjects}/>
         </MainLayout>
 
         {/*<Route path={'/404'} component={NotFound} />*/}
