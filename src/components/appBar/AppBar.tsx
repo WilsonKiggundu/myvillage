@@ -194,7 +194,7 @@ export default function ApplicationBar() {
                             </Button>
                         </div> :
                         user ?
-                            <div className="Appbar-login-button">
+                            <div className="Appbar-user-icon">
                                 <Button
                                     onClick={handleProfileView}
                                     variant={"text"}

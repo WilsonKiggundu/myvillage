@@ -1,6 +1,6 @@
 import {IPerson} from "./IPerson";
 import UpdateProfileForm from "./forms/profile/UpdateProfileForm";
-import {Divider, Typography} from "@material-ui/core";
+import {Divider, Grid, Typography} from "@material-ui/core";
 import XDialog from "../../../components/dialogs/XDialog";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
@@ -31,6 +31,18 @@ import {LazyLoadImage} from 'react-lazy-load-image-component'
 
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
+import {
+    FacebookIcon,
+    FacebookShareButton,
+    LinkedinShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+    LinkedinIcon,
+    TwitterIcon,
+    WhatsappIcon
+} from "react-share";
+import {Facebook, LinkedIn, Twitter, WhatsApp} from "@material-ui/icons";
+import SocialShare from "../../../components/SocialShare";
 
 interface IProps {
     person: IPerson
@@ -54,6 +66,7 @@ const PersonCard = ({person, canEdit}: IProps) => {
 
     const user = useSelector(userSelector)
     const {connections} = person
+    const url = window.location.href
 
     if(!connections?.length) dispatch(loadPersonConnection({personId: user?.profile?.sub}))
 
@@ -209,6 +222,9 @@ const PersonCard = ({person, canEdit}: IProps) => {
                         ) : ""}
                     </Box>
 
+                    <SocialShare
+                        description={person.bio.substr(0, 80)}
+                        title={`Checkout ${person.firstname} ${person.lastname} on MyVillage`} />
                     {/*<ProfileRating readonly rating={3}/>*/}
 
                 </CardContent>
