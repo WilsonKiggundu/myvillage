@@ -21,8 +21,7 @@ export const getToken = (setTokenFound, profileId) => {
     return messaging.getToken({vapidKey: 'BGk4C4grZ38Yvf8MJ4ldBiqA7j9bLdtvF5sql-voDrvETtR03g_JOihTc6Jv9U-oXPdWHe6tRGh4HRcjPY1Bp6Y'}).then((currentToken) => {
         if (currentToken) {
             console.log('current token for client: ', currentToken);
-            setTokenFound(true);
-            // Track the token -> client mapping, by sending to backend server
+            setTokenFound(true)
 
             const url = makeUrl("Profiles", Endpoints.devices.create)
             postWithoutLogin(url, {profileId, token: currentToken})
