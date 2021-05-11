@@ -71,7 +71,7 @@ const XAsyncTypeahead = (props) => {
             minLength={3}
             onSearch={handleSearch}
             options={options}
-            placeholder="Search anything..."
+            placeholder="Search MyVillage"
             renderMenu={(options, menuProps, state) => {
                 let index = 0;
                 const types = _.groupBy(options, 'type');

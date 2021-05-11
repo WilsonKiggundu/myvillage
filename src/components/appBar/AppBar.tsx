@@ -33,7 +33,7 @@ import './AppBar.css'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
 import XAsyncTypeahead from "../XAsyncTypeahead";
-import {MoreHoriz} from "@material-ui/icons";
+import {MoreVert} from "@material-ui/icons";
 
 type Anchor = 'left' | 'right';
 
@@ -137,7 +137,7 @@ export default function ApplicationBar() {
     return (
         <header className="Appbar-root">
 
-            <Grid spacing={2} container>
+            <Grid container justify={"space-between"}>
                 <Grid xs={1} lg={1} item>
                     {
                         isMobile ?
@@ -145,7 +145,7 @@ export default function ApplicationBar() {
                             <MyVillageLogo className="Appbar-logo"/>
                     }
                 </Grid>
-                <Grid xs={9} lg={3} item>
+                <Grid xs={10} lg={3} item>
                     <div className="Appbar-searchbox">
                         <XAsyncTypeahead
                             placeholder="What are you looking for?"/>
@@ -187,11 +187,9 @@ export default function ApplicationBar() {
                 <Grid xs={1} md={1} item>
                     {isMobile ?
                         <div className="Appbar-profile">
-                            <Button onClick={toggleDrawer(anchor, true)}
-                                    color={"secondary"}
-                                    variant={"contained"}>
-                                <MenuIcon className="Appbar-menu-icon"/>
-                            </Button>
+                            <MoreVert
+                                onClick={toggleDrawer(anchor, true)}
+                                className="Appbar-menu-icon"/>
                         </div> :
                         user ?
                             <div className="Appbar-user-icon">
@@ -292,10 +290,10 @@ export default function ApplicationBar() {
                         )) : ""
                     }
 
-                    <Divider />
+                    <Divider/>
 
                     {user && <ListItemLink handleClick={handleLogout}>
-                        <ListItemText primary={"Logout"} />
+                        <ListItemText primary={"Logout"}/>
                     </ListItemLink>}
                 </List>
 
