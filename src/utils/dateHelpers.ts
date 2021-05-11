@@ -164,6 +164,7 @@ export const timeFormat = (date: any): string => {
 }
 
 export const timeAgo = (date: any): string => {
+    if (!date) return ''
     const parsedDate = parseISO(date)
     return formatDistanceToNow(parsedDate, { includeSeconds: true, addSuffix: true })
 }

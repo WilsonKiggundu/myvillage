@@ -13,34 +13,49 @@ const firebaseConfig = {
     measurementId: "G-1BP8T7ML8C"
 };
 
-firebase.initializeApp(firebaseConfig)
 
-const messaging = firebase.messaging()
+// if (firebase.messaging.isSupported()){
+    firebase.initializeApp(firebaseConfig)
 
-export const getToken = (setTokenFound, profileId) => {
-    return messaging.getToken({vapidKey: 'BGk4C4grZ38Yvf8MJ4ldBiqA7j9bLdtvF5sql-voDrvETtR03g_JOihTc6Jv9U-oXPdWHe6tRGh4HRcjPY1Bp6Y'}).then((currentToken) => {
-        if (currentToken) {
-            console.log('current token for client: ', currentToken);
-            setTokenFound(true)
+    const messaging = firebase.messaging.isSupported() ? firebase.messaging() : null
 
-            const url = makeUrl("Profiles", Endpoints.devices.create)
-            postWithoutLogin(url, {profileId, token: currentToken})
+    export const getToken = (setTokenFound, profileId) => {
+        return messaging ? messaging
+            .getToken({vapidKey: 'BGk4C4grZ38Yvf8MJ4ldBiqA7j9bLdtvF5sql-voDrvETtR03g_JOihTc6Jv9U-oXPdWHe6tRGh4HRcjPY1Bp6Y'})
+            .then((currentToken) => {
+                if (currentToken) {
+                    // console.log('current token for client: ', currentToken);
+                    setTokenFound(true)
 
-            // show on the UI that permission is secured
-        } else {
-            console.log('No registration token available. Request permission to generate one.');
-            setTokenFound(false);
-            // shows on the UI that permission is required
-        }
-    }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-        // catch error while creating client token
-    });
-}
+                    const url = makeUrl("Profiles", Endpoints.devices.create)
+                    postWithoutLogin(url, {profileId, token: currentToken})
 
-export const onMessageListener = () =>
-    new Promise((resolve) => {
-        messaging.onMessage((payload) => {
-            resolve(payload);
+                    // show on the UI that permission is secured
+                } else {
+                    console.log('No registration token available. Request permission to generate one.');
+                    setTokenFound(false);
+                    // shows on the UI that permission is required
+                }
+            }).catch((err) => {
+                console.log('An error occurred while retrieving token. ', err);
+                // catch error while creating client token
+            }) : null;
+    }
+
+    export const onMessageListener = () =>
+        new Promise((resolve) => {
+            messaging.onMessage((payload) => {
+                // console.log(payload)
+                const data = JSON.parse(payload.data['gcm.notification.data'])
+                const date = payload.data['gcm.notification.date']
+                const options = JSON.parse(payload.data['gcm.notification.options'])
+                const requireInteraction = payload.data['gcm.notification.requireInteraction']
+                const notification = payload.notification
+
+                // console.log({data, date, options, requireInteraction, ...notification})
+                resolve({data, date, options, requireInteraction, ...notification});
+            });
         });
-    });
+// }
+
+

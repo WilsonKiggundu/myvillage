@@ -237,7 +237,7 @@ export const postWithoutLogin = (url: string, data: any, apikey?: string) => {
         .send(data)
         .timeout(timeout)
         .end((err, res) => {
-            console.log(res)
+            // console.log(res)
         })
 }
 

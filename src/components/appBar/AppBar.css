@@ -55,6 +55,7 @@
     color: #FFFFFF;
     cursor: pointer;
     line-height: 65px;
+    text-align: right;
 }
 
 .Appbar-profile-avatar{
@@ -78,7 +79,8 @@
 }
 
 .Appbar-login-button{
-    margin: 15px 15px 0 0;
+    margin: 15px 0 0 0;
+    text-align: right;
 }
 
 .Appbar-login-button button{

@@ -184,7 +184,7 @@ export default function ApplicationBar() {
                         </li>
                     </ul>
                 </Grid>}
-                <Grid xs={1} item>
+                <Grid xs={1} md={1} item>
                     {isMobile ?
                         <div className="Appbar-profile">
                             <Button onClick={toggleDrawer(anchor, true)}
