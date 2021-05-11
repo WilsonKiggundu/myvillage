@@ -35,6 +35,10 @@ export const Endpoints = {
       api: '/api/freelance/project'
     },
 
+    templates: {
+        email: '/api/email/template'
+    },
+
     jobs: {
         base: jobsBaseUrl,
         api: '/api/jobs',

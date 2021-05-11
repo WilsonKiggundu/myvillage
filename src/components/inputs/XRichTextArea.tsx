@@ -17,6 +17,16 @@ interface IProps {
     name: string
 }
 
+const editorConfiguration = {
+    toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'alignment', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+    image: {
+        styles: []
+    },
+    alignment: {
+        options: ['left', 'center', 'right']
+    }
+}
+
 const XRichTextArea = ({name, helperText, ...props}: TextFieldProps & IProps) => {
     const [field, meta] = useField({name});
     const error = hasValue(meta.error) ? meta.error : undefined
@@ -28,6 +38,7 @@ const XRichTextArea = ({name, helperText, ...props}: TextFieldProps & IProps) =>
                 <>
                     <CKEditor
                         editor={ClassicEditor}
+                        // config={editorConfiguration}
                         data={field.value}
                         onChange={(event: any, editor: any) => {
                             form.setFieldValue(field.name, editor.getData())

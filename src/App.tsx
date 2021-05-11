@@ -70,7 +70,7 @@ const App: React.FC = () => {
                                     <Grid item>
                                         <h6>{notification.title}</h6>
                                         {notification.body && <p>{notification.body}</p>}
-                                        <small>{timeAgo(notification.date)}</small>
+                                        {/*<small>{timeAgo(notification.date)}</small>*/}
                                     </Grid>
                                 </Grid>
                             </Alert>

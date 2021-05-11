@@ -41,5 +41,8 @@ export const Urls = ({
     createEvent: "/events/create",
     singleEvent: (id: any) => `/events/${id}/details`,
     event: '/events/:id/details',
-    calendar: '/calendar'
+    calendar: '/calendar',
+    templates: {
+        create: '/email/templates/create'
+    }
 })
