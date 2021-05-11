@@ -45,6 +45,7 @@ import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
 import {IContact} from "../../interfaces/IContact";
 import {sendEmail} from "../../services/NotificationService";
 import {XLoginSnackbar} from "../../components/XLoginSnackbar";
+import SocialShare from "../../components/SocialShare";
 
 
 const Job = ({match}: any) => {
@@ -309,7 +310,13 @@ const Job = ({match}: any) => {
                                                 {longDate(job.deadline)}
                                             </Grid>
                                         </Grid>
+
+
                                     </CardContent>
+
+                                    <SocialShare description={
+                                        `at ${job.company ? job.company.name : job.companyId}. Closes on ${longDate(job.deadline)}`
+                                    } title={"#JobOpportunity " + job.title} />
 
                                     <Divider/>
 

@@ -39,6 +39,7 @@ import EventAttachments from "./EventAttachments";
 import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import {IPerson} from "../profiles/people/IPerson";
+import SocialShare from "../../components/SocialShare";
 
 const Event = ({match}: any) => {
 
@@ -46,6 +47,7 @@ const Event = ({match}: any) => {
     const user = useSelector(userSelector)
     const id = parseInt(match.params.id, 10)
     const [event, setEvent] = useState<IEvent | undefined>(undefined)
+    const [eventDetails, setEventDetails] = useState<string>('')
 
     const [applyButton, setApplyButton] = useState<any>({label: 'Apply now', visible: true, disabled: false})
     const [alreadyApplied, setAlreadyApplied] = useState<boolean>(false)
@@ -64,6 +66,12 @@ const Event = ({match}: any) => {
 
                 const event = response.body
                 setEvent(event)
+
+                let div = document.createElement("div")
+                div.innerHTML = event?.details
+
+                const eventDetails = div.textContent || div.innerText || ""
+                setEventDetails(eventDetails)
 
                 document.title = `${event.title} / My Village`
 
@@ -143,6 +151,8 @@ const Event = ({match}: any) => {
         })
     }
 
+
+
     return (
         <Container maxWidth={"md"}>
             <Grid justify={"center"} container spacing={2}>
@@ -218,6 +228,11 @@ const Event = ({match}: any) => {
                                                     id={event.id}/>
                                             </Grid>
                                         </Grid>
+
+                                        <SocialShare
+                                            title={`#UpcomingEvent - ${longDate(event.startDateTime)}`}
+                                            description={eventDetails.substr(0, 100)} />
+
                                     </CardContent>
 
                                     {

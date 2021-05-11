@@ -225,6 +225,22 @@ export const postWithoutLoginAsync = (url: string, data: any, apikey?: string) =
     })
 }
 
+export const postWithoutLogin = (url: string, data: any, apikey?: string) => {
+    let request = superagent.post(url)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+
+    if (apikey)
+        request = request.set('APIKEY', apikey)
+
+    return request
+        .send(data)
+        .timeout(timeout)
+        .end((err, res) => {
+            // console.log(res)
+        })
+}
+
 export const postFile = (file: any, callBack: CallbackFunction, errorCallBack?: ErrorCallback, endCallBack?: EndCallback) => {
     const url = Endpoints.cdn.base + Endpoints.cdn.api
 

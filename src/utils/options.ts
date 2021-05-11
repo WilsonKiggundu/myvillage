@@ -7,6 +7,17 @@ export const Options = {
         {id: "female", name: 'Female'}
     ],
 
+    EMAIL_TYPES: [
+        {id: 1, name: "Welcome"},
+        {id: 2, name: "Update Profile"},
+        {id: 3, name: "Job Posted"},
+        {id: 4, name: "Job Application"},
+        {id: 5, name: "Event Added"},
+        {id: 6, name: "Event Attendance"},
+        {id: 7, name: "Profile Connection"},
+        {id: 8, name: "Profile Creation"}
+    ],
+
     EVENT_TYPES: [
         {id: "event", name: "Event"},
         {id: "meeting", name: "Meeting"},
