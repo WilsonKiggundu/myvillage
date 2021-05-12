@@ -16,7 +16,6 @@ const App: React.FC = () => {
     const [show, setShow] = useState(false);
     const [notification, setNotification] = useState<any>({});
     const [isTokenFound, setTokenFound] = useState(false);
-    const history = useHistory()
 
     onMessageListener().then(payload => {
         setShow(true);
@@ -36,6 +35,9 @@ const App: React.FC = () => {
     const handleNotification = (notification: any) => {
         if (notification.data.postId) {
             window.location.replace(`${Urls.feed}?postId=${notification.data.postId}`)
+        }
+        if (notification.data.profileId) {
+            window.location.replace(`${Urls.profiles.onePerson(notification.data.profileId)}`)
         }
     }
 

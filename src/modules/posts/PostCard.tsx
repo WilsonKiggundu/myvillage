@@ -215,7 +215,7 @@ const PostCard = ({post}: IProps) => {
                             <List>
                                 <ListItem>
                                     <ListItemAvatar>
-                                        <Avatar/>
+                                        <Avatar src={user.profile.picture}/>
                                     </ListItemAvatar>
                                     <ListItemText primary="Write a comment..."/>
                                 </ListItem>

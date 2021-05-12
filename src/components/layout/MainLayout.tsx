@@ -7,6 +7,7 @@ import ReactGA from 'react-ga'
 
 import './MainLayout.css'
 import {userSelector} from "../../data/coreSelectors";
+import {GA_TRACKING_ID} from "../../data/constants";
 
 interface IProps {
     user?: any
@@ -18,12 +19,14 @@ interface IProps {
 function MainLayout(props: IProps) {
 
     const user = useSelector(userSelector)
+    const trackingId = GA_TRACKING_ID
 
-    const trackingId = process.env.GA_TRACKING_ID ?? ''
-    ReactGA.initialize(trackingId)
-    ReactGA.set({
-        userId: user?.profile.sub
-    })
+    if (trackingId){
+        ReactGA.initialize(trackingId)
+        ReactGA.set({
+            userId: user?.profile.sub
+        })
+    }
 
     useEffect(() => {
         document.body.style.backgroundColor = '#F1F1F0'
