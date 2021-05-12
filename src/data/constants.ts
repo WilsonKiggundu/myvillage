@@ -103,3 +103,5 @@ export const months = [
         name: 'December'
     },
 ]
+
+export const GA_TRACKING_ID = "UA-192556411-3"
