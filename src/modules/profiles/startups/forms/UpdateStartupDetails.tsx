@@ -21,8 +21,8 @@ const schema = yup.object().shape(
     {
         name: reqString,
         description: reqString,
-        employeeCount: reqString,
-        incorporationDate: reqString,
+        // employeeCount: reqString,
+        // incorporationDate: reqString,
         category: reqString
     }
 )
