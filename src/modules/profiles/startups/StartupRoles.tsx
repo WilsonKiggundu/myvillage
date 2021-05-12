@@ -37,6 +37,8 @@ export default function StartupRoles({startup}: IProps) {
     const {roles} = startup
     const [addDialog, setAddDialog] = useState<boolean>(false)
 
+    const people = roles?.filter((r: any) => r.role !== 'PageAdmin')
+
     const user = useSelector(userSelector)
     let canEdit = startup.roles?.some((role: any) => role.personId === user?.profile.sub) ?? false
 
@@ -64,9 +66,9 @@ export default function StartupRoles({startup}: IProps) {
                 />
                 <Divider/>
                 <CardContent style={{margin: -15}}>
-                    {roles && roles.length > 0 ? (
+                    {people && people.length > 0 ? (
                         <List>
-                            {roles?.map((role: any, index: number) => {
+                            {people?.map((role: any, index: number) => {
                                 return (
                                     <Box key={index}>
                                         <ListItem
@@ -98,7 +100,7 @@ export default function StartupRoles({startup}: IProps) {
                                                 </IconButton>
                                             </ListItemSecondaryAction>
                                         </ListItem>
-                                        {index < roles?.length - 1 ? <Divider variant="fullWidth" component="li"/> : ""}
+                                        {index < people?.length - 1 ? <Divider variant="fullWidth" component="li"/> : ""}
                                     </Box>
                                 )
                             })}
