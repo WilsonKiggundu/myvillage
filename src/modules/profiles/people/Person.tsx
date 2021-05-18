@@ -32,7 +32,8 @@ import XTextInput from "../../../components/inputs/XTextInput";
 import PersonEmployment from "./PersonEmployment";
 import PersonProjects from "./PersonProjects";
 import PersonStack from "./PersonStack";
-import {isDeveloper} from "./IPerson";
+import {isDeveloper, isLancer} from "./IPerson";
+import PersonFreelanceProfile from "./PersonFreelanceProfile";
 
 const Person = ({match}: any) => {
     const {id} = match.params
@@ -57,6 +58,7 @@ const Person = ({match}: any) => {
     const canEdit: boolean = id === user?.profile.sub
 
     const [isDev, setIsDev] = useState<boolean>(false)
+    const [isFreelancer, setIsFreelancer] = useState<boolean>(false)
 
 
     useEffect(() => {
@@ -85,6 +87,7 @@ const Person = ({match}: any) => {
         if (person) {
             document.title = `${person.firstname} ${person.lastname} / My Village`
             setIsDev(isDeveloper(person))
+            setIsFreelancer(isLancer(person))
         }
     }, [person])
 
@@ -174,11 +177,12 @@ const Person = ({match}: any) => {
                             <PersonProjects person={person} canEdit={canEdit} />
 
                             {isDev && <PersonStack person={person} canEdit={canEdit} />}
+                            {isFreelancer && <PersonFreelanceProfile person={person} canEdit={canEdit} />}
 
                             <PersonInterests canEdit={canEdit} person={person}/>
                             <PersonSkills canEdit={canEdit} person={person}/>
                             <PersonConnections canEdit={canEdit} person={person}/>
-                            <PersonContacts canEdit={canEdit} person={person}/>
+                            {!isFreelancer && !canEdit && <PersonContacts canEdit={canEdit} person={person}/>}
                             <PersonPosts canEdit={canEdit} person={person}/>
 
                             {jobApplicationStatus === "pending" && context === 'job_application' && jobId && jobApplicationId ?

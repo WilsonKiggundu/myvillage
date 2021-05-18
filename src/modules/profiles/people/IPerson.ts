@@ -17,6 +17,7 @@ export interface IPerson {
     employment: IEmployment[]
     stacks: ITechStack[]
     projects: IProject[]
+    freelanceTerms: any,
     bio: string
     avatar?: string
     gender?: string
@@ -34,5 +35,9 @@ export const getInitials = (firstname: string, lastname: string) => {
 
 export const isDeveloper = (person: IPerson) => {
     return person.categories.map((m: any) => m.category.name).includes('Developer')
+}
+
+export const isLancer = (person: IPerson) => {
+    return person.categories.map((m: any) => m.category.name).includes('Freelancer')
 }
 

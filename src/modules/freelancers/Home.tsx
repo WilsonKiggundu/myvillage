@@ -14,6 +14,7 @@ import XDialog from "../../components/dialogs/XDialog";
 import CreateProject from "./forms/CreateProject";
 
 import SearchIcon from '@material-ui/icons/Search';
+import UpdateFreelanceTermsForm from "./forms/UpdateFreelanceTerms";
 
 const FreelancerHome = () => {
 
@@ -23,6 +24,7 @@ const FreelancerHome = () => {
     const user = useSelector(userSelector)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
     const [openAddProjectDialog, setOpenAddProjectDialog] = useState<boolean>(false)
+    const [openUpdateTermsDialog, setOpenUpdateTermsDialog] = useState<boolean>(false)
 
     const handlePostJob = () => {
         if (user) {
@@ -34,7 +36,7 @@ const FreelancerHome = () => {
 
     const handleEarnAsAFreelancer = () => {
         if (user) {
-
+            window.location.replace(Urls.profiles.onePerson(user.profile.sub))
         } else {
             setOpenSnackbar(true)
         }
@@ -58,7 +60,7 @@ const FreelancerHome = () => {
 
                             </div>
 
-                            <Grid container justify={"center"} spacing={2} className="Freelancers-buttons">
+                            <Grid container justify={"flex-start"} spacing={2} className="Freelancers-buttons">
                                 <Grid item>
                                     <Button
                                         onClick={() => setOpenAddProjectDialog(true)}
@@ -78,20 +80,29 @@ const FreelancerHome = () => {
                                     </XDialog>
 
                                 </Grid>
-                                <Grid item>
+                                {user && <Grid item>
                                     <Button
                                         onClick={handleEarnAsAFreelancer}
                                         className="Freelancers-button2"
                                         variant={"outlined"}
                                         size={"large"}
-                                        disableElevation color={"secondary"}>
-                                        Earn as a Freelancer
+                                        disableElevation color={"default"}>
+                                        Update your Freelance Profile
                                     </Button>
-                                </Grid>
+
+                                    <XDialog
+                                        title={"Update your freelance profile"}
+                                        open={openUpdateTermsDialog}
+                                        maxWidth={"sm"}
+                                        onClose={() => setOpenUpdateTermsDialog(false)}>
+                                        <UpdateFreelanceTermsForm onClose={() => setOpenUpdateTermsDialog(false)}/>
+                                    </XDialog>
+
+                                </Grid>}
                             </Grid>
 
                             <div className="Freelancers-leading-text">
-                                Are you a freelancer? <a href={Urls.freelancers.projects}>Find a project</a>.
+                                Are you a freelancer? <a href={Urls.freelancers.projects}>Find a project</a>
                             </div>
 
                         </Grid>

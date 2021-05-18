@@ -38,6 +38,9 @@ const PersonConnections = ({person, canEdit}: IProps) => {
         window.location.replace(Urls.profiles.onePerson(personId))
     }
 
+    const bgColors = ['#636569', '#ff9015', '#62cbc9']
+    const color = bgColors[Math.floor(Math.random() * bgColors.length)];
+
     const [openAddConnectionsDialog, setOpenAddConnectionsDialog] = useState<boolean>(false)
 
     return (
@@ -56,7 +59,7 @@ const PersonConnections = ({person, canEdit}: IProps) => {
                     title={
                         <Grid container spacing={1} justify={"flex-start"}>
                             <Grid item><GroupIcon /></Grid>
-                            <Grid item><div className="card-title">People in my network</div></Grid>
+                            <Grid item><div className="card-title">My network</div></Grid>
                         </Grid>
                     }
                 />
@@ -65,20 +68,32 @@ const PersonConnections = ({person, canEdit}: IProps) => {
                     {
                         connections?.length ?
                             (
-                                <AvatarGroup spacing={"medium"} max={9}>
+                                <AvatarGroup spacing={"small"} max={9}>
                                     {connections
-                                        .map((conn: any, index: number) => (
-                                            <Avatar
-                                                style={{cursor: 'pointer'}}
-                                                onClick={() => handleViewProfile(conn.personId)}
-                                                key={index} alt={conn.person.firstname} src={conn.person.avatar}>
-                                                <strong>{conn.person.firstname[0].toUpperCase()}{conn.person.lastname[0].toUpperCase()}</strong>
-                                            </Avatar>
-                                        ))}
+                                        .map((conn: any, index: number) => {
+
+                                            const backgroundColor = bgColors[Math.floor(Math.random() * bgColors.length)]
+                                            const initials = (conn.person.firstname[0] + conn.person.lastname[0]).toUpperCase()
+
+                                            return (
+                                                <Avatar
+                                                    placeholder={initials}
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        backgroundColor,
+                                                        width: 100,
+                                                        height: 100
+                                                    }}
+                                                    onClick={() => handleViewProfile(conn.personId)}
+                                                    key={index} alt={conn.person.firstname} src={conn.person.avatar}>
+                                                    <strong>{initials}</strong>
+                                                </Avatar>
+                                            )
+                                        })}
                                 </AvatarGroup>
                             ) :
                             <Box mb={2}>
-                                <PleaseWait label={"Loading connections..."}/>
+
                             </Box>
                     }
                 </CardContent>
