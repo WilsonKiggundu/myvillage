@@ -67,6 +67,7 @@ const PersonCard = ({person, canEdit}: IProps) => {
     const user = useSelector(userSelector)
     const {connections} = person
     const url = window.location.href
+    const bio = person.bio?.length <= 80 ? person.bio : person.bio?.substr(0, 80)
 
     if(!connections?.length) dispatch(loadPersonConnection({personId: user?.profile?.sub}))
 
@@ -223,8 +224,8 @@ const PersonCard = ({person, canEdit}: IProps) => {
                     </Box>
 
                     <SocialShare
-                        description={person.bio.substr(0, 80)}
-                        title={`Checkout ${person.firstname} ${person.lastname} on MyVillage`} />
+                        description={bio}
+                        title={`Checkout ${person.firstname} ${person.lastname}'s profile on MyVillage`} />
                     {/*<ProfileRating readonly rating={3}/>*/}
 
                 </CardContent>
