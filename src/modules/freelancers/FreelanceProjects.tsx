@@ -329,7 +329,7 @@ const FreelanceProjects = () => {
                                                 <Button
                                                     onClick={() => handleHireMe(project)}
                                                     variant={"contained"}
-                                                    disabled={loading}
+                                                    disabled={loading || project.status !== 1}
                                                     color={"secondary"}
                                                     disableElevation>
                                                     Hire me

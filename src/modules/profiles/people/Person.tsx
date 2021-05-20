@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, CardContent, Container, Hidden} from "@material-ui/core";
+import {Button, Container} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import PersonCard from "./PersonCard";
 import PersonInterests from "./PersonInterests";
@@ -8,10 +8,9 @@ import PersonSkills from "./PersonSkills";
 import {useDispatch, useSelector} from "react-redux";
 import {PleaseWait} from "../../../components/PleaseWait";
 import PersonPosts from "./PersonPosts";
-import ProfileCoverPhoto from "../ProfileCoverPhoto";
 import PersonConnections from "./PersonConnections";
 import {userSelector} from "../../../data/coreSelectors";
-import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../../utils/ajax";
+import {getWithoutLoginAsync, makeUrl, postAsync} from "../../../utils/ajax";
 import {Endpoints} from "../../../services/Endpoints";
 import {useHistory, useLocation} from "react-router-dom";
 import XDialog from "../../../components/dialogs/XDialog";
@@ -28,12 +27,16 @@ import {personSelector} from "./redux/peopleSelectors";
 import {APPEND_PERSON} from "./redux/peopleReducer";
 import {IContact} from "../../../interfaces/IContact";
 import {EmailSettings} from "../../../data/constants";
-import XTextInput from "../../../components/inputs/XTextInput";
 import PersonEmployment from "./PersonEmployment";
 import PersonProjects from "./PersonProjects";
 import PersonStack from "./PersonStack";
 import {isDeveloper, isLancer} from "./IPerson";
 import PersonFreelanceProfile from "./PersonFreelanceProfile";
+import * as yup from "yup";
+import {reqObject, reqString} from "../../../data/validations";
+import PersonFreelanceProjectActions from "./PersonFreelanceProjectActions";
+
+
 
 const Person = ({match}: any) => {
     const {id} = match.params
@@ -47,6 +50,8 @@ const Person = ({match}: any) => {
 
     const context = useQuery().get('context')
     const jobId = useQuery().get('jobId')
+    const projectId = useQuery().get('projectId')
+    const requestId = useQuery().get('requestId')
     const jobName = useQuery().get('jobName')
     const jobApplicationId = useQuery().get('applicationId')
     const jobApplicationStatus = useQuery().get('status')
@@ -59,7 +64,6 @@ const Person = ({match}: any) => {
 
     const [isDev, setIsDev] = useState<boolean>(false)
     const [isFreelancer, setIsFreelancer] = useState<boolean>(false)
-
 
     useEffect(() => {
         (async () => {
@@ -91,8 +95,8 @@ const Person = ({match}: any) => {
         }
     }, [person])
 
-    const initialValues = {
-        acceptMessage: '',
+    const initialValues : any = {
+        message: undefined,
         applicationId: jobApplicationId,
         jobId: jobId
     }
@@ -107,6 +111,18 @@ const Person = ({match}: any) => {
         }
     }
 
+    const handleRejectFreelanceProject = async (projectId: string, personId: string) => {
+        try {
+            // const url = makeUrl("Jobs", Endpoints.jobs.update(applicationId))
+            // const response: any = await postAsync(url, {status: 'rejected'})
+            // history.push(Urls.jobs.singleJob(jobId))
+        } catch (e) {
+            Toast.error(e.toString())
+        }
+    }
+
+    const handleRejectRequest = async (values: any, actions: any) => {}
+
     const handleAccept = async (values: any, actions: any) => {
 
         try {
@@ -116,7 +132,7 @@ const Person = ({match}: any) => {
             const personContacts: any = await getPersonContact(id)
             const emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
 
-            if (emails.length){
+            if (emails.length) {
 
                 const body = `<!DOCTYPE html>
                     <html lang="en">
@@ -158,7 +174,7 @@ const Person = ({match}: any) => {
 
         } catch (e) {
             Toast.error(e.toString())
-        }finally {
+        } finally {
             setShowAcceptDialog(false)
             history.push(Urls.jobs.singleJob(values.jobId))
         }
@@ -173,11 +189,11 @@ const Person = ({match}: any) => {
                             {/*<ProfileCoverPhoto person={person}/>*/}
                             <PersonCard canEdit={canEdit} person={person}/>
                             <PersonAwards canEdit={canEdit} person={person}/>
-                            <PersonEmployment person={person} canEdit={canEdit} />
-                            <PersonProjects person={person} canEdit={canEdit} />
+                            <PersonEmployment person={person} canEdit={canEdit}/>
+                            <PersonProjects person={person} canEdit={canEdit}/>
 
-                            {isDev && <PersonStack person={person} canEdit={canEdit} />}
-                            {isFreelancer && <PersonFreelanceProfile person={person} canEdit={canEdit} />}
+                            {isDev && <PersonStack person={person} canEdit={canEdit}/>}
+                            {isFreelancer && <PersonFreelanceProfile person={person} canEdit={canEdit}/>}
 
                             <PersonInterests canEdit={canEdit} person={person}/>
                             <PersonSkills canEdit={canEdit} person={person}/>
@@ -186,48 +202,53 @@ const Person = ({match}: any) => {
                             <PersonPosts canEdit={canEdit} person={person}/>
 
                             {jobApplicationStatus === "pending" && context === 'job_application' && jobId && jobApplicationId ?
-                                <Card>
-                                    <CardContent>
-                                        <Grid spacing={2} alignContent={"center"} container justify={"center"}>
-                                            <Grid item>
-                                                <Button
-                                                    onClick={() => handleReject(jobId, jobApplicationId)}
-                                                    color={"default"}
-                                                    variant={"outlined"}>Reject</Button>
-                                            </Grid>
-                                            <Grid item>
-                                                <Button
-                                                    onClick={() => setShowAcceptDialog(true)}
-                                                    color={"secondary"} variant={"contained"}>
-                                                    Accept
-                                                </Button>
-
-                                                <XDialog
-                                                    title={"Accept application"}
-                                                    contentText={"Please specify the message that you want to send to the applicant. This could be details of the next steps."}
-                                                    open={showAcceptDialog}
-                                                    onClose={() => setShowAcceptDialog(false)}>
-
-                                                    <XForm
-                                                        initialValues={initialValues}
-                                                        submitButtonLabel={"Notify applicant"}
-                                                        onSubmit={handleAccept}>
-                                                        <XRichTextArea
-                                                            helperText={"This will be sent via email to the applicant"}
-                                                            label={"Acceptance message"}
-                                                            name={"acceptMessage"}/>
-
-                                                            {/*<Hidden>*/}
-                                                            {/*    <XTextInput name={"applicationId"} />*/}
-                                                            {/*</Hidden>*/}
-
-                                                    </XForm>
-                                                </XDialog>
-
-                                            </Grid>
+                                <div className="action-buttons-wrapper">
+                                    <Grid spacing={2} alignContent={"center"} container justify={"center"}>
+                                        <Grid item>
+                                            <Button
+                                                onClick={() => handleReject(jobId, jobApplicationId)}
+                                                color={"default"}
+                                                variant={"outlined"}>Reject</Button>
                                         </Grid>
-                                    </CardContent>
-                                </Card>
+                                        <Grid item>
+                                            <Button
+                                                onClick={() => setShowAcceptDialog(true)}
+                                                color={"secondary"} variant={"contained"}>
+                                                Accept
+                                            </Button>
+
+                                            <XDialog
+                                                title={"Accept application"}
+                                                contentText={"Please specify the message that you want to send to the applicant. This could be details of the next steps."}
+                                                open={showAcceptDialog}
+                                                onClose={() => setShowAcceptDialog(false)}>
+
+                                                <XForm
+                                                    initialValues={initialValues}
+                                                    submitButtonLabel={"Notify applicant"}
+                                                    onSubmit={handleAccept}>
+                                                    <XRichTextArea
+                                                        helperText={"This will be sent via email to the applicant"}
+                                                        label={"Acceptance message"}
+                                                        name={"acceptMessage"}/>
+
+                                                    {/*<Hidden>*/}
+                                                    {/*    <XTextInput name={"applicationId"} />*/}
+                                                    {/*</Hidden>*/}
+
+                                                </XForm>
+                                            </XDialog>
+
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                                : ""}
+
+                            {context === 'freelance_project' && projectId ?
+                                <PersonFreelanceProjectActions
+                                    requestId={requestId}
+                                    person={person}
+                                    projectId={projectId} />
                                 : ""}
 
                         </>

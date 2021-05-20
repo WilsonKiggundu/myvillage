@@ -26,20 +26,20 @@ interface IProps {
 
 const PersonFreelanceProfile = ({person, canEdit}: IProps) => {
 
-    const {rate, details, currency} = person.freelanceTerms
     const [openDialog, setOpenDialog] = useState<boolean>(false)
     const [rateType, setRateType] = useState<string>('hour')
 
     useEffect(() => {
-        const {rateType} = person.freelanceTerms
-
-        if (rateType === 1) setRateType('hour')
-        else if (rateType === 2) setRateType('day')
-        else if (rateType === 3) setRateType('week')
-        else if (rateType === 4) setRateType('month')
-        else if (rateType === 5) setRateType('quarter')
-        else if (rateType === 6) setRateType('year')
-        else setRateType('hour')
+        if (person.freelanceTerms){
+            const {rateType} = person.freelanceTerms
+            if (rateType === 1) setRateType('hour')
+            else if (rateType === 2) setRateType('day')
+            else if (rateType === 3) setRateType('week')
+            else if (rateType === 4) setRateType('month')
+            else if (rateType === 5) setRateType('quarter')
+            else if (rateType === 6) setRateType('year')
+            else setRateType('hour')
+        }
 
     }, [person.freelanceTerms])
 
@@ -69,13 +69,13 @@ const PersonFreelanceProfile = ({person, canEdit}: IProps) => {
                     <CardContent>
                         <Box mb={2}>
                             <strong>Rates</strong><br/>
-                            {currency} {rate} per {rateType}
+                            {person.freelanceTerms.currency} {person.freelanceTerms.rate} per {person.freelanceTerms.rateType}
                         </Box>
 
                         <Divider />
 
                         <Box mt={2}>
-                            <div dangerouslySetInnerHTML={{__html: details}} />
+                            <div dangerouslySetInnerHTML={{__html: person.freelanceTerms.details}} />
                         </Box>
 
                     </CardContent>

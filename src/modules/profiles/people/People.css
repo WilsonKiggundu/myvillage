@@ -61,3 +61,15 @@
     font-size: 15px;
     font-weight: 500;
 }
+
+.action-buttons-wrapper{
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    border-top: solid 1px #f1f1f1;
+    width: 100%;
+    text-align: center;
+    background: white;
+    padding: 15px 0;
+}
