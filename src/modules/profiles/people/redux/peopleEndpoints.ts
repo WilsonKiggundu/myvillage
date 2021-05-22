@@ -12,6 +12,14 @@ export const getPeople = async (params?: any) => {
     return await getWithoutLoginAsync(url, params ? params : {page: nextPage, pageSize: 16})
 }
 
+export const updatePersonEmail = async (person: any) => {
+
+    let url = makeUrl("Profiles", Endpoints.person.base)
+    url += '/email'
+
+    return await putAsync(url, person)
+}
+
 export const putPerson = async (person: any, uploadType?: UploadType) => {
 
     let url = makeUrl("Profiles", Endpoints.person.base)
