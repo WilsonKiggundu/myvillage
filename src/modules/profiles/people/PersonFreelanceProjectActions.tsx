@@ -99,13 +99,11 @@ const PersonFreelanceProjectActions = ({person, projectId, requestId}: IProps) =
                         color={"primary"}
                         disableElevation
                         variant={"contained"}>Request more info</Button>
-
                     <XDialog
                         title={"Request more info"}
                         contentText={"Please specify the message that you want to send to the applicant."}
                         open={showGetDetailsDialog}
                         onClose={() => setShowGetDetailsDialog(false)}>
-
                         <XForm
                             initialValues={initialValues}
                             submitButtonLabel={"Send Request"}
