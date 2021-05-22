@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useRef} from 'react';
+import React, {forwardRef, useEffect, useRef, useState} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {useLayoutStyles} from "./styles";
 import ApplicationBar from "../appBar/AppBar";
@@ -8,6 +8,10 @@ import ReactGA from 'react-ga'
 import './MainLayout.css'
 import {userSelector} from "../../data/coreSelectors";
 import {GA_TRACKING_ID} from "../../data/constants";
+import {getAsync, makeUrl} from "../../utils/ajax";
+import {Endpoints} from "../../services/Endpoints";
+import UpdateCategoryForm from "../../modules/profiles/people/forms/profile/UpdateCategoryForm";
+import XDialog from "../dialogs/XDialog";
 
 interface IProps {
     user?: any
@@ -18,8 +22,32 @@ interface IProps {
 
 function MainLayout(props: IProps) {
 
+    const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState<boolean>(false)
+    const [person, setPerson] = useState<any>()
     const user = useSelector(userSelector)
     const trackingId = GA_TRACKING_ID
+
+
+    // check if logged in user has setup their categories
+    useEffect(() => {
+        (async () => {
+            const url = makeUrl("Profiles", Endpoints.person.base)
+
+            if (user) {
+                try {
+                    const response: any = await getAsync(`${url}/${user.profile.sub}`);
+                    const person = response.body
+                    if (!person.categories.length){
+                        setPerson(person)
+                        setOpenAddCategoryDialog(true)
+                    }
+                } catch (e) {
+                    console.log("Failed to fetch user" + e)
+                }
+            }
+
+        })();
+    }, [user])
 
     if (trackingId){
         ReactGA.initialize(trackingId)
@@ -39,6 +67,14 @@ function MainLayout(props: IProps) {
             <main className="MainLayout-main">
                 {props.children}
             </main>
+
+            <XDialog title={"Update Categories"}
+                     open={openAddCategoryDialog}
+                     onClose={() => setOpenAddCategoryDialog(false)}>
+                <UpdateCategoryForm
+                    person={person}
+                    onClose={() => setOpenAddCategoryDialog(false)}/>
+            </XDialog>
         </>
     );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {PleaseWait} from "../../components/PleaseWait";
 import {CallbackComponent, USER_SIGNED_OUT} from "redux-oidc";
 import userManager from "../../utils/userManager";
@@ -9,6 +9,9 @@ import {Endpoints} from "../../services/Endpoints";
 import * as superagent from "superagent";
 import { useHistory } from "react-router-dom";
 import {useDispatch} from "react-redux";
+import {putPerson, updatePersonEmail} from "../profiles/people/redux/peopleEndpoints";
+import UpdateCategoryForm from "../profiles/people/forms/profile/UpdateCategoryForm";
+import XDialog from "../../components/dialogs/XDialog";
 
 const Callback = () => {
 
@@ -27,8 +30,18 @@ const Callback = () => {
                     .set('Authorization', `Bearer ${access_token}`)
                     .set('Accept', 'application/json')
                     .timeout(0)
-                    .end(handleResponse((response) => {
-                        if (response) {
+                    .end(handleResponse(async (person) => {
+                        if (person) {
+
+                            if (!person.email) {
+                                await updatePersonEmail({
+                                    id: person.id,
+                                    email: user.profile.email
+                                })
+                            }
+
+                            // history.push(Urls.profiles.create)
+
                             history.push(user.state ? user.state : Urls.feed)
                         } else {
                             history.push(Urls.profiles.create)

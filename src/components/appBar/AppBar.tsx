@@ -1,5 +1,5 @@
 import React, {MouseEvent, useEffect, useState} from "react";
-import {Button, Divider, Drawer, Typography, useTheme} from "@material-ui/core";
+import {Button, Card, CardContent, Divider, Drawer, Typography, useTheme} from "@material-ui/core";
 import {appBarStyles} from "./styles";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
@@ -34,6 +34,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
 import XAsyncTypeahead from "../XAsyncTypeahead";
 import {MoreVert} from "@material-ui/icons";
+import XStyledMenu from "../XStyledMenu";
+import SendIcon from "@material-ui/icons/Send";
 
 type Anchor = 'left' | 'right';
 
@@ -62,13 +64,14 @@ export default function ApplicationBar() {
     const user: User = useSelector(userSelector)
     const isAuthenticated = user != null
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+    const [profileMenuEl, setProfileMenuEl] = React.useState<null | HTMLElement>(null);
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget)
+        setProfileMenuEl(event.currentTarget)
     }
 
     const closeProfileMenu = () => {
-        setAnchorEl(null)
+        setProfileMenuEl(null)
     }
 
     const [state, setState] = useState({
@@ -194,13 +197,28 @@ export default function ApplicationBar() {
                         user ?
                             <div className="Appbar-user-icon">
                                 <Button
-                                    onClick={handleProfileView}
+                                    onClick={showProfileMenu}
                                     variant={"text"}
                                     color={"secondary"}>
                                     <Avatar src={user.profile.picture}>
                                         {user.profile?.given_name ? user.profile.given_name[0].toUpperCase() : ''}
                                     </Avatar>
                                 </Button>
+
+                                <XStyledMenu anchor={profileMenuEl} items={[
+                                    {
+                                        onClick: handleProfileView,
+                                        icon: <Avatar />,
+                                        primaryText: "My Profile",
+                                        secondaryText: `${user.profile?.given_name} ${user.profile?.family_name}`
+                                    },
+                                    {
+                                        primaryText: "Logout",
+                                        secondaryText: "Terminate Session",
+                                        onClick: handleLogout
+                                    }
+                                ]} onClose={closeProfileMenu} />
+
                             </div> :
                             <div className="Appbar-login-button">
                                 <Button

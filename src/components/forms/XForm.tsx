@@ -91,7 +91,7 @@ const XForm = (props: IProps) => {
                                     loading={props.loading}
                                     label={props.submitButtonLabel ?? "Submit"}
                                     onClick={submitForm}>
-                                    <CircularProgress variant={"indeterminate"} color={"primary"}/>
+                                    <CircularProgress size={25} variant={"indeterminate"} color={"inherit"}/>
                                 </XSubmitButton>
                             </Grid>
 

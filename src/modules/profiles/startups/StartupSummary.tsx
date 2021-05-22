@@ -22,6 +22,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import './css/StartupSummary.css'
 import XImageLoader from "../../../components/XImageLoader";
 import {ChevronRight} from "@material-ui/icons";
+import SocialShare from "../../../components/SocialShare";
 
 interface IProps {
     startup: IStartup
@@ -154,6 +155,9 @@ export default function StartupSummary({startup}: IProps) {
 
                     <CardContent style={{textAlign: "center"}}>
                         <Grid style={{marginTop: 15}} container justify={"center"}>
+                            <SocialShare
+                                description={startup.description}
+                                title={`Checkout ${startup.name}'s profile on MyVillage`} />
 
                         </Grid>
 
