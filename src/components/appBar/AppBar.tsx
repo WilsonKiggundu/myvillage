@@ -130,7 +130,7 @@ export default function ApplicationBar() {
         if (locationArray.includes('people')) setActiveMenu('community')
         if (locationArray.includes('events')) setActiveMenu('events')
         if (locationArray.includes('jobs')) setActiveMenu('jobs')
-        // if (locationArray.includes('freelancers')) setActiveMenu('freelancers')
+        if (locationArray.includes('freelancers')) setActiveMenu('freelancers')
         if (locationArray.includes('developers')) setActiveMenu('developers')
     })
 
@@ -176,9 +176,9 @@ export default function ApplicationBar() {
                         {/*    <div className="dropdown">Here is a div that is white</div>*/}
                         {/*</li>*/}
 
-                        {/*<li className={activeMenu === 'freelancers' ? 'active' : ''}>*/}
-                        {/*    <a href={Urls.profiles.freelancers}>Freelancers</a>*/}
-                        {/*</li>*/}
+                        <li className={activeMenu === 'freelancers' ? 'active' : ''}>
+                            <a href={Urls.profiles.freelancers}>Freelancers</a>
+                        </li>
                         <li className={activeMenu === 'developers' ? 'active' : ''}>
                             <a href={Urls.profiles.developers}>Developers</a>
                         </li>

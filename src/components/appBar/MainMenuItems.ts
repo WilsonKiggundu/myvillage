@@ -26,11 +26,11 @@ export const MainMenuItems = [
         icon: "",
         url: Urls.jobs.home
     },
-    // {
-    //     label: "Freelancers",
-    //     icon: "",
-    //     url: Urls.profiles.freelancers
-    // },
+    {
+        label: "Freelancers",
+        icon: "",
+        url: Urls.profiles.freelancers
+    },
     {
         label: "Developers",
         icon: "",
