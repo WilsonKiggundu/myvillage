@@ -74,11 +74,13 @@ const CreateProject = ({onClose}: IProps) => {
         values.budget = budget.id
         values.paymentOption = paymentOption.id
         dispatch(addFreelanceProject(values))
+
+        if (onClose) onClose()
     }
 
     return (
         <XForm
-            debug={true}
+            debug={false}
             schema={schema}
             initialValues={initialValues}
             onSubmit={handleSubmit}>

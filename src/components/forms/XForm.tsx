@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Form, Formik, FormikHelpers} from 'formik';
+import {Formik, FormikHelpers} from 'formik';
 
 import {Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -83,17 +83,17 @@ const XForm = (props: IProps) => {
                                 </Grid>
                             }
 
-                            {
-                                !props.hideSubmitButton && <Grid item>
-                                    <XSubmitButton
-                                        style={{textTransform: "inherit", fontSize: '17px'}}
-                                        color={"secondary"}
-                                        label={props.submitButtonLabel ?? "Submit"}
-                                        onClick={submitForm}>
-                                        <CircularProgress variant={"indeterminate"} color={"primary"}/>
-                                    </XSubmitButton>
-                                </Grid>
-                            }
+                            <Grid item>
+                                <XSubmitButton
+                                    style={{textTransform: "inherit", fontSize: '17px'}}
+                                    color={"secondary"}
+                                    disableElevation
+                                    loading={props.loading}
+                                    label={props.submitButtonLabel ?? "Submit"}
+                                    onClick={submitForm}>
+                                    <CircularProgress variant={"indeterminate"} color={"primary"}/>
+                                </XSubmitButton>
+                            </Grid>
 
                         </Grid>
                     </Box>

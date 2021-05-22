@@ -5,7 +5,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {createStyles, Theme} from "@material-ui/core/styles";
-import {Divider} from "@material-ui/core";
+import {Box, Divider} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 import AppBar from "@material-ui/core/AppBar";
@@ -75,7 +75,10 @@ export default function XDialog(props: IProps) {
                     <DialogTitle id="form-dialog-title">
                         <Grid container justify={"flex-end"}>
                             <Grid item xs={8}>
-                                <Typography style={{padding: "8px 0"}} variant={"h5"} component={"h3"}>
+                                <Typography
+                                    style={{padding: "8px 0", fontWeight: 600}}
+                                    variant={"h5"}
+                                    component={"h3"}>
                                     {props.title}
                                 </Typography>
                             </Grid>
@@ -98,9 +101,11 @@ export default function XDialog(props: IProps) {
             <DialogContent>
                 {
                     props.contentText ?
-                        <DialogContentText style={{fontSize: '0.9rem', color: grey[500]}}>
-                            {props.contentText}
-                        </DialogContentText>
+                        <Box mt={2}>
+                            <DialogContentText style={{fontSize: '1.1rem', color: grey[700]}}>
+                                {props.contentText}
+                            </DialogContentText>
+                        </Box>
                         : ""
                 }
                 <div style={{marginLeft: '-16px', marginRight: '-16px'}}>

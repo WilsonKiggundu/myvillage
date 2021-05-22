@@ -53,6 +53,18 @@ export const DELETE_PERSON_EDUCATION = 'people/DELETE_PERSON_EDUCATION';
 export const DELETE_PERSON_EDUCATION_SUCCEEDED = 'people/DELETE_PERSON_EDUCATION_SUCCEEDED';
 export const DELETE_PERSON_EDUCATION_FAILED = 'people/DELETE_PERSON_EDUCATION_FAILED';
 
+export const EDIT_PERSON_FREELANCE_PROFILE = 'people/EDIT_PERSON_FREELANCE_PROFILE';
+export const EDIT_PERSON_FREELANCE_PROFILE_SUCCEEDED = 'people/EDIT_PERSON_FREELANCE_PROFILE_SUCCEEDED';
+export const EDIT_PERSON_FREELANCE_PROFILE_FAILED = 'people/EDIT_PERSON_FREELANCE_PROFILE_FAILED';
+
+export const ADD_PERSON_FREELANCE_PROFILE = 'people/ADD_PERSON_FREELANCE_PROFILE';
+export const ADD_PERSON_FREELANCE_PROFILE_SUCCEEDED = 'people/ADD_PERSON_FREELANCE_PROFILE_SUCCEEDED';
+export const ADD_PERSON_FREELANCE_PROFILE_FAILED = 'people/ADD_PERSON_FREELANCE_PROFILE_FAILED';
+
+export const DELETE_PERSON_FREELANCE_PROFILE = 'people/DELETE_PERSON_FREELANCE_PROFILE';
+export const DELETE_PERSON_FREELANCE_PROFILE_SUCCEEDED = 'people/DELETE_PERSON_FREELANCE_PROFILE_SUCCEEDED';
+export const DELETE_PERSON_FREELANCE_PROFILE_FAILED = 'people/DELETE_PERSON_FREELANCE_PROFILE_FAILED';
+
 export const EDIT_PERSON_PROJECT = 'people/EDIT_PERSON_PROJECT';
 export const EDIT_PERSON_PROJECT_SUCCEEDED = 'people/EDIT_PERSON_PROJECT_SUCCEEDED';
 export const EDIT_PERSON_PROJECT_FAILED = 'people/EDIT_PERSON_PROJECT_FAILED';
@@ -541,6 +553,176 @@ export default function reducer(state = initialState, action: any) {
             ...state,
         }
     } else if (action.type === DELETE_PERSON_EDUCATION_FAILED) {
+        return {
+            ...state
+        }
+    }
+
+    // FREELANCE_PROFILE
+    else if (action.type === EDIT_PERSON_FREELANCE_PROFILE) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_FREELANCE_PROFILE_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                freelanceTerms: { $set: action.payload.body }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_FREELANCE_PROFILE_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_FREELANCE_PROFILE) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_FREELANCE_PROFILE_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_FREELANCE_PROFILE_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_FREELANCE_PROFILE) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_FREELANCE_PROFILE_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.awards.find((f: any) => f.id === awardId)
+        const awardIndex = person.awards.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $splice: [[awardIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_FREELANCE_PROFILE_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_FREELANCE_PROFILE) {
+        return {
+            ...state
+        }
+    } else if (action.type === EDIT_PERSON_FREELANCE_PROFILE_SUCCEEDED) {
+
+        const {personId, id} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const award = person.awards.find((f: any) => f.id === id)
+        const awardIndex = person.awards.indexOf(award)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    [awardIndex]: {
+                        $set: action.payload.body
+                    }
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === EDIT_PERSON_FREELANCE_PROFILE_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_FREELANCE_PROFILE) {
+        return {
+            ...state
+        }
+    } else if (action.type === ADD_PERSON_FREELANCE_PROFILE_SUCCEEDED) {
+
+        const {personId} = action.payload.body
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $push: [action.payload.body]
+                }
+            }
+        })
+
+        return {
+            ...state,
+        }
+    } else if (action.type === ADD_PERSON_FREELANCE_PROFILE_FAILED) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_FREELANCE_PROFILE) {
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_PERSON_FREELANCE_PROFILE_SUCCEEDED) {
+
+        const {personId, awardId} = action.payload
+
+        const person = state.data.find((f: any) => f.id === personId)
+        const personIndex = state.data.indexOf(person)
+
+        const toRemove = person.awards.find((f: any) => f.id === awardId)
+        const awardIndex = person.awards.indexOf(toRemove)
+
+        state.data = update(state.data, {
+            [personIndex]: {
+                awards: {
+                    $splice: [[awardIndex, 1]]
+                }
+            }
+        })
+
+
+        return {
+            ...state,
+        }
+    } else if (action.type === DELETE_PERSON_FREELANCE_PROFILE_FAILED) {
         return {
             ...state
         }

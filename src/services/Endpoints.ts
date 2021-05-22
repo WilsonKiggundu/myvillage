@@ -32,7 +32,8 @@ export const Endpoints = {
     },
 
     freelanceProjects: {
-      api: '/api/freelance/project'
+        api: '/api/freelance/project',
+        people: '/api/freelance/project/people'
     },
 
     templates: {
@@ -98,6 +99,7 @@ export const Endpoints = {
         skill: "/api/person/skills",
         contact: "/api/person/contacts",
         connection: "/api/person/connections",
+        freelance: "/api/person/freelance",
     },
 
     contact: "/api/contact",
