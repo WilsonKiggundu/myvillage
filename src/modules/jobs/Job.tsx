@@ -83,13 +83,13 @@ const Job = ({match}: any) => {
 
                 setJob(job)
 
-                const {applicants, profileId} = job
+                const {applications, profileId} = job
                 const postedByCurrentUser = profileId === user.profile.sub
 
                 if (postedByCurrentUser) {
                     setCanViewApplicants(true)
                 } else {
-                    const alreadyApplied = applicants?.map((m: any) => (m.profileId))
+                    const alreadyApplied = applications?.map((m: any) => (m.id))
                         .includes(user.profile.sub)
 
                     if (alreadyApplied) {
@@ -133,7 +133,7 @@ const Job = ({match}: any) => {
                                                         onClick={() => handleApply(job)}
                                                         variant={"contained"}
                                                         disableElevation
-                                                        disabled={alreadyApplied}
+                                                        disabled={alreadyApplied || !user}
                                                         color={"secondary"}>
                                                     {applying ? <CircularProgress color={"inherit"} size={25} /> : "Apply Now"}
                                                 </Button>
@@ -189,7 +189,7 @@ const Job = ({match}: any) => {
                                         `at ${job.company ? job.company.name : job.companyId}. Closes on ${longDate(job.deadline)}`
                                     } title={"#JobOpportunity " + job.title}/>
 
-                                    {!canViewApplicants && <>
+                                    {canViewApplicants && <>
                                         <ViewApplicants job={job} />
                                     </>}
 

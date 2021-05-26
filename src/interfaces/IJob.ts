@@ -19,6 +19,7 @@ export interface IJob {
     skills?: string
     company?: IStartup
     applicants?: []
+    applications?: []
     uploads?: []
 }
 
