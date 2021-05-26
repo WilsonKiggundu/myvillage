@@ -12,6 +12,7 @@ export interface IJob {
     title: string
     category: IJobCategory
     id?: any
+    jobId: string
     jobType?: string
     minSalary?: string
     maxSalary?: string

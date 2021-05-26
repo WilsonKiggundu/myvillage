@@ -1,4 +1,4 @@
-import {Box, Card, CardContent, CardHeader} from "@material-ui/core";
+import {Box, Card, CardContent, CardHeader, Divider} from "@material-ui/core";
 import React from "react";
 import XRichTextArea from "../../../components/inputs/XRichTextArea";
 
@@ -15,6 +15,7 @@ const JobSkills = ({formField}: IProps) => {
                     title={"Required skills"}
                     subheader={"What skills are you looking for from the potential candidates?"}
                 />
+                <Divider />
                 <CardContent>
                     <XRichTextArea
                         rows={8}

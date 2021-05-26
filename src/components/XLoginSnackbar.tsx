@@ -11,12 +11,17 @@ interface IProps {
 export const XLoginSnackbar = ({open, onClose}: IProps) => {
     return (
         <Snackbar
-            anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+            anchorOrigin={{vertical: "top", horizontal: "center"}}
             open={open} autoHideDuration={6000}
             onClose={onClose}>
-            <Alert onClose={onClose} severity="warning">
-                You need to login. &nbsp;&nbsp;
-                <Button onClick={handleLogin} size={"small"} variant={"outlined"} color={"secondary"}>
+            <Alert onClose={onClose} icon={false} severity="error">
+                <p>You need to login to continue.</p>
+                <Button
+                    onClick={handleLogin}
+                    size={"small"}
+                    variant={"contained"}
+                    disableElevation
+                    color={"primary"}>
                     Continue to login
                 </Button>
             </Alert>

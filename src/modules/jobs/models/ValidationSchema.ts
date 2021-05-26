@@ -11,7 +11,8 @@ const {
         details,
         company,
         experience,
-        jobType
+        jobType,
+        replyEmail,
     }
 } = jobFormModel;
 
@@ -24,6 +25,7 @@ export default [
         [qualifications.name]: Yup.string().required(`${qualifications.requiredErrorMsg}`),
         [details.name]: Yup.string().required(`${details.requiredErrorMsg}`),
         [company.name]: Yup.string().required(`${company.requiredErrorMsg}`),
+        [replyEmail.name]: Yup.string().required(`${replyEmail.requiredErrorMsg}`),
         // [experience.name]: Yup.string().required(`${experience.requiredErrorMsg}`),
         [jobType.name]: Yup.string().required(`${jobType.requiredErrorMsg}`)
     }),

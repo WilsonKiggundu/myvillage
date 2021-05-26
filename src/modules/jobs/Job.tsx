@@ -4,69 +4,46 @@ import {
     Avatar,
     Box,
     Button,
-    ButtonGroup,
     Card,
     CardHeader,
     CircularProgress,
     Divider,
-    IconButton,
     List,
     ListItem,
     ListItemIcon,
-    ListItemSecondaryAction,
-    ListItemText,
-    ListSubheader
+    ListItemText
 } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import {useSelector} from "react-redux";
 import {PleaseWait} from "../../components/PleaseWait";
 import Container from "@material-ui/core/Container";
-import {getStartupContact} from "../profiles/startups/redux/startupsEndpoints";
 import {Urls} from "../../routes/Urls";
 import AttachmentIcon from '@material-ui/icons/Attachment';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {applyForJob, getJobById} from "./redux/jobsEndpoints";
 import {userSelector} from "../../data/coreSelectors";
 import userManager from "../../utils/userManager";
-import XDrawer, {Anchor} from "../../components/drawer/XDrawer";
-import {getAsync, makeUrl} from "../../utils/ajax";
-import {Endpoints} from "../../services/Endpoints";
-import {IPerson} from "../profiles/people/IPerson";
-import {IApplicant} from "../../interfaces/IApplicant";
 import {longDate, timeAgo} from "../../utils/dateHelpers";
 import {useHistory} from "react-router-dom";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
-import HourglassFullIcon from '@material-ui/icons/HourglassFull';
-import {IEmailObject} from "../../interfaces/IEmailObject";
-import {EmailSettings} from "../../data/constants";
-import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
-import {IContact} from "../../interfaces/IContact";
-import {sendEmail} from "../../services/NotificationService";
-import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 import SocialShare from "../../components/SocialShare";
+import ViewApplicants from "./ViewApplicants";
+import Toast from "../../utils/Toast";
 
 
 const Job = ({match}: any) => {
+    const {id} = match.params
 
-    const id = parseInt(match.params.id, 10)
     const history = useHistory()
     const user = useSelector(userSelector)
-    // let job = useSelector((state) => jobSelector(state, id))
 
     const [company, setCompany] = useState<any | undefined>(undefined)
     const [job, setJob] = useState<IJob | undefined>(undefined)
 
-    const [applyButton, setApplyButton] = useState<any>({label: 'Apply now', visible: true, disabled: false})
+    const [applying, setApplying] = useState<boolean>(false)
     const [alreadyApplied, setAlreadyApplied] = useState<boolean>(false)
-    const [canApply, setCanApply] = useState<boolean>(false)
+    const [canApply, setCanApply] = useState<boolean>(true)
     const [canViewApplicants, setCanViewApplicants] = useState<boolean>(false)
 
-    const [allApplications, setAllApplications] = useState<any>([])
-    const [acceptedApplications, setAcceptedApplications] = useState<any>([])
-    const [rejectedApplications, setRejectedApplications] = useState<any>([])
-    const [pendingApplications, setPendingApplications] = useState<any>([])
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
     const handleApply = async (job: IJob) => {
@@ -74,78 +51,20 @@ const Job = ({match}: any) => {
         if (!user) {
             setOpenSnackbar(true)
         } else {
-            setApplyButton({
-                disabled: true,
-                label: <CircularProgress size={25}/>
-            })
+
+            setApplying(true)
 
             try {
                 await applyForJob({
-                    id: job.id,
-                    profileId: user.profile.sub
+                    JobId: job.jobId,
+                    applicantId: user.profile.sub
                 })
 
+                setApplying(false)
                 setAlreadyApplied(true)
 
-                const body = `<!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Title</title>
-                </head>
-                <body style="text-align: center; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; background-color: #f1f1f1">
-                    <div style="padding: 25px; width: 100%; background-color: #1c1c1c; color: #ffffff;">
-                        <h1>Someone applied for the ${job.title} role</h1>
-                    </div>
-                    <div style="background-color: #ffffff; padding: 15px; margin: 0 auto; max-width: 80%">
-                        <p>
-                            <a style="background-color: #e98a2b; text-decoration: none; color: white; padding: 15px;" 
-                                href="${Urls.base}${Urls.jobs.singleJob(job.id)}">
-                                Open the job
-                            </a>
-                        </p>
-                    </div>
-                    <div style="padding: 25px; font-size: 10px; color: #cccccc">
-                        <p>This is an auto-generated email sent from an unmonitored emailing list. You may not reply to it directly.</p>
-                    </div>
-                </body>
-            </html>`
-
-                const {profileId, companyId} = job
-                let recipients: string[]
-
-                const emailToSend: IEmailObject = {
-                    body: body,
-                    recipient: "",
-                    senderEmail: EmailSettings.senderEmail,
-                    senderName: EmailSettings.senderName,
-                    subject: "Job application"
-                }
-
-                const personContacts: any = await getPersonContact(profileId)
-                let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
-
-                if (emails.length) {
-                    recipients = emails.map((contact: IContact) => contact.value)
-                } else {
-                    const companyContacts: any = await getStartupContact(companyId)
-                    const companyEmails: IContact[] = companyContacts.body.filter((contact: IContact) => contact.type === 2)
-                    recipients = companyEmails.map((contact: IContact) => contact.value)
-                }
-
-                if (recipients.length) {
-                    emailToSend.recipient = recipients.join(',')
-                    await sendEmail(emailToSend)
-                }
-
             } catch (error) {
-                // console.log(error)
-                //
-                // Toast.error(error.toString())
-            } finally {
-                setApplyButton({
-                    visible: false
-                })
+                Toast.error(error)
             }
         }
     }
@@ -157,6 +76,8 @@ const Job = ({match}: any) => {
 
                 const response: any = await getJobById(id)
                 const job = response.body[0]
+
+                console.log(job)
 
                 document.title = `${job.title} / My Village`
 
@@ -194,63 +115,6 @@ const Job = ({match}: any) => {
         window.open(path, '_blank')
     }
 
-    const [openDrawer, setOpenDrawer] = useState<boolean>(false)
-    const [drawerAnchor, setDrawerAnchor] = useState<Anchor>("right")
-    const [applicants, setApplicants] = useState<IApplicant[] | undefined>(undefined)
-
-    const toggleDrawer = async (anchor: Anchor, open: boolean) => {
-        setOpenDrawer(open)
-        setDrawerAnchor(anchor)
-
-        if (open) {
-            const applicants: IApplicant[] | undefined = []
-            const url = makeUrl("Profiles", Endpoints.person.base)
-
-            if (job?.applicants) {
-
-                await Promise.all(job.applicants.map(async (application: any) => {
-                    const response: any = await getAsync(url, {id: application.profileId})
-                    const person: IPerson = response.body.persons[0]
-                    applicants.push({
-                        id: application.id,
-                        avatar: person.avatar ?? "",
-                        profileId: application.profileId,
-                        date: timeAgo(application.dateTime),
-                        name: person.firstname + " " + person.lastname,
-                        status: application.status
-                    })
-                }))
-
-                setAllApplications(applicants)
-                setAcceptedApplications(applicants.filter((f: IApplicant) => f.status === 'accepted'))
-                setRejectedApplications(applicants.filter((f: IApplicant) => f.status === 'rejected'))
-                setPendingApplications(applicants.filter((f: IApplicant) => !f.status))
-
-                setApplicants(applicants)
-            }
-
-        }
-
-    }
-
-    const handleViewApplicant = (id: string, applicationId: any, status: string, jobName: string) => {
-        const query: any = {
-            jobId: job?.id,
-            jobName: jobName,
-            applicationId: applicationId,
-            status: status,
-            context: "job_application"
-        }
-
-        const queryString = Object.keys(query).map(key => key + '=' + query[key]).join('&');
-
-        const url = Urls.profiles.onePerson(id)
-        history.push({
-            pathname: url,
-            search: `?${queryString}`
-        })
-    }
-
     return (
         <Container maxWidth={"md"}>
             <Grid justify={"center"} container spacing={2}>
@@ -266,9 +130,16 @@ const Job = ({match}: any) => {
                                             </Avatar>
                                         }
                                         action={
-                                            <IconButton>
-                                                <MoreVertIcon/>
-                                            </IconButton>
+                                            <div style={{padding: 15}}>
+                                                <Button className="apply-button"
+                                                        onClick={() => handleApply(job)}
+                                                        variant={"contained"}
+                                                        disableElevation
+                                                        disabled={alreadyApplied}
+                                                        color={"secondary"}>
+                                                    {applying ? <CircularProgress color={"inherit"} size={25} /> : "Apply Now"}
+                                                </Button>
+                                            </div>
                                         }
                                         title={
                                             <div className="job-title">
@@ -314,159 +185,15 @@ const Job = ({match}: any) => {
 
                                     </CardContent>
 
-                                    <SocialShare description={
-                                        `at ${job.company ? job.company.name : job.companyId}. Closes on ${longDate(job.deadline)}`
-                                    } title={"#JobOpportunity " + job.title} />
-
                                     <Divider/>
 
-                                    <CardContent>
-                                        <Grid container justify={"center"}>
+                                    <SocialShare description={
+                                        `at ${job.company ? job.company.name : job.companyId}. Closes on ${longDate(job.deadline)}`
+                                    } title={"#JobOpportunity " + job.title}/>
 
-                                            {
-                                                !user && <XLoginSnackbar
-                                                    open={openSnackbar}
-                                                    onClose={() => setOpenSnackbar(false)}/>
-                                            }
-
-                                            <Grid item>
-                                                {
-                                                    alreadyApplied &&
-                                                    <span style={{color: "green"}}>You have applied for this job.</span>
-                                                }
-
-                                                {
-                                                    canApply && applyButton.visible &&
-                                                    <Button className="apply-button"
-                                                            onClick={() => handleApply(job)}
-                                                            variant={"contained"}
-                                                            disableElevation
-                                                            disabled={applyButton.disabled}
-                                                            color={"secondary"}>
-                                                        {applyButton.label}
-                                                    </Button>
-                                                }
-
-                                                {
-                                                    canViewApplicants &&
-                                                    <>
-                                                        {job.applicants?.length ?
-                                                            <Button
-                                                                style={{textTransform: 'inherit'}}
-                                                                onClick={() => toggleDrawer("right", true)}
-                                                                color={"default"}
-                                                                variant={"outlined"}>
-                                                                View applicants
-                                                            </Button> :
-                                                            <span style={{color: "red"}}>No applications yet</span>
-                                                        }
-
-                                                        <XDrawer
-                                                            onClose={() => toggleDrawer("right", false)}
-                                                            open={openDrawer}
-                                                            anchor={drawerAnchor}>
-                                                            <div className="Drawer">
-                                                                {
-                                                                    applicants ?
-                                                                        <>
-
-                                                                            <List
-                                                                                subheader={
-                                                                                    <ListSubheader
-                                                                                        className="Drawer-subheader">
-                                                                                        Applications
-                                                                                    </ListSubheader>
-                                                                                }>
-
-                                                                                <div
-                                                                                    className="application-button-group">
-                                                                                    <ButtonGroup color={"default"}>
-                                                                                        <Button
-                                                                                            onClick={() => setApplicants(allApplications)}>
-                                                                                            All
-                                                                                            ({allApplications.length})
-                                                                                        </Button>
-                                                                                        {
-                                                                                            pendingApplications.length ?
-                                                                                                <Button
-                                                                                                    onClick={() => setApplicants(pendingApplications)}
-                                                                                                >
-                                                                                                    Pending
-                                                                                                    ({pendingApplications.length})
-                                                                                                </Button> : ""
-                                                                                        }
-                                                                                        {
-                                                                                            acceptedApplications.length ?
-                                                                                                <Button
-                                                                                                    onClick={() => setApplicants(acceptedApplications)}
-                                                                                                    className="application-accept-button">
-                                                                                                    Accepted
-                                                                                                    ({acceptedApplications.length})
-                                                                                                </Button> : ""
-                                                                                        }
-                                                                                        {
-                                                                                            rejectedApplications.length ?
-                                                                                                <Button
-                                                                                                    onClick={() => setApplicants(rejectedApplications)}
-                                                                                                    className="application-reject-button">
-                                                                                                    Rejected
-                                                                                                    ({rejectedApplications.length})
-                                                                                                </Button> : ""
-                                                                                        }
-                                                                                    </ButtonGroup>
-                                                                                </div>
-
-                                                                                {applicants ? applicants.map((applicant: IApplicant, index: number) => (
-                                                                                    <div key={index}>
-                                                                                        <ListItem
-                                                                                            onClick={
-                                                                                                () => handleViewApplicant(
-                                                                                                    applicant.profileId,
-                                                                                                    applicant.id,
-                                                                                                    applicant.status ?? 'pending',
-                                                                                                    job?.title
-                                                                                                )
-                                                                                            }
-                                                                                            button
-                                                                                            alignItems="flex-start">
-                                                                                            <ListItemText
-                                                                                                primary={
-                                                                                                    applicant.name
-                                                                                                }
-                                                                                                secondary={
-                                                                                                    <span
-                                                                                                        className="Drawer-timeago">
-                                                                                                    {applicant.date}
-                                                                                                </span>
-                                                                                                }/>
-                                                                                            <ListItemSecondaryAction>
-                                                                                                {
-                                                                                                    applicant.status === 'accepted' ?
-                                                                                                        <CheckCircleIcon
-                                                                                                            className="application-accept-icon"/> :
-                                                                                                        applicant.status === 'rejected' ?
-                                                                                                            <CancelIcon
-                                                                                                                className="application-reject-icon"/> :
-                                                                                                            <HourglassFullIcon/>
-                                                                                                }
-                                                                                            </ListItemSecondaryAction>
-
-                                                                                        </ListItem>
-                                                                                        <Divider/>
-                                                                                    </div>
-                                                                                )) : ""}
-                                                                            </List>
-                                                                        </> :
-                                                                        <PleaseWait label={"Loading applicants..."}/>
-                                                                }
-                                                            </div>
-                                                        </XDrawer>
-                                                    </>
-
-                                                }
-                                            </Grid>
-                                        </Grid>
-                                    </CardContent>
+                                    {!canViewApplicants && <>
+                                        <ViewApplicants job={job} />
+                                    </>}
 
                                 </Card>
                             </Box>

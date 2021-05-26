@@ -33,7 +33,7 @@ import './AppBar.css'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
 import XAsyncTypeahead from "../XAsyncTypeahead";
-import {MoreVert} from "@material-ui/icons";
+import {Add, AddCircle, MoreVert, Search, SearchRounded} from "@material-ui/icons";
 import XStyledMenu from "../XStyledMenu";
 import SendIcon from "@material-ui/icons/Send";
 
@@ -68,6 +68,11 @@ export default function ApplicationBar() {
     const [profileMenuEl, setProfileMenuEl] = React.useState<null | HTMLElement>(null);
     const showProfileMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setProfileMenuEl(event.currentTarget)
+    }
+
+    const [workInTechMenuEl, setWorkInTechMenuEl] = React.useState<null | HTMLElement>(null);
+    const showWorkInTechMenu = (event: MouseEvent<HTMLElement>) => {
+        setWorkInTechMenuEl(event.currentTarget)
     }
 
     const closeProfileMenu = () => {
@@ -170,6 +175,18 @@ export default function ApplicationBar() {
                         </li>
                         <li className={activeMenu === 'jobs' ? 'active' : ''}>
                             <a href={Urls.jobs.home}>Work in tech</a>
+                            {/*<XStyledMenu anchor={workInTechMenuEl} items={[*/}
+                            {/*    {*/}
+                            {/*        onClick: handleProfileView,*/}
+                            {/*        icon: <AddCircle />,*/}
+                            {/*        primaryText: "Post a Job",*/}
+                            {/*    },*/}
+                            {/*    {*/}
+                            {/*        primaryText: "Find a Job",*/}
+                            {/*        icon: <SearchRounded />,*/}
+                            {/*        onClick: handleLogout*/}
+                            {/*    }*/}
+                            {/*]} onClose={closeProfileMenu} />*/}
                         </li>
 
                         {/*<li>*/}

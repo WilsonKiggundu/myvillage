@@ -57,6 +57,11 @@ export default {
             label: 'Job location',
             requiredErrorMsg: 'Job location is required'
         },
+        replyEmail: {
+            name: 'replyEmail',
+            label: 'Reply email',
+            requiredErrorMsg: 'Email is required'
+        },
         jobType: {
             name: 'jobType',
             label: 'Job type*',

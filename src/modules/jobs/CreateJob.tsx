@@ -45,9 +45,26 @@ const CreateJob = (props: IProps) => {
 
     const currentValidationSchema = ValidationSchema[0];
     const [files, setFiles] = useState<any>([])
+    
+    const initialValues = {
+        location: '',
+        title: '',
+        category: '',
+        skills: '',
+        benefits: '',
+        deadline: '',
+        qualifications: '',
+        details: '',
+        company: '',
+        experience: '',
+        jobType: '',
+        maxSalary: '',
+        minSalary: '',
+        replyEmail: user?.profile.email
+    }
 
     const handleSubmit = async (values: any, actions: any) => {
-        actions.setSubmitting(true)
+        // actions.setSubmitting(true)
 
         // upload the files
         let uploads: IUpload[] = []
@@ -83,19 +100,20 @@ const CreateJob = (props: IProps) => {
             qualifications: values.qualifications,
             skills: values.skills,
             title: values.title,
+            replyEmail: values.replyEmail,
             uploads,
         }
 
         try {
             const response = await postJob(job)
 
-            dispatch({
-                type: ADD_JOB,
-                payload: response
-            })
+            // dispatch({
+            //     type: ADD_JOB,
+            //     payload: response
+            // })
 
-            Toast.success("Job added successfully", "bottom-center")
-            history.push(Urls.jobs.list)
+            Toast.success("Job added successfully")
+            // history.push(Urls.jobs.list)
 
         } catch (e) {
             Toast.error("An error occurred while adding the job.", "bottom-center")
@@ -115,7 +133,7 @@ const CreateJob = (props: IProps) => {
     return (
         <Container maxWidth={"md"}>
             <Formik
-                initialValues={InitialValues}
+                initialValues={initialValues}
                 validationSchema={currentValidationSchema}
                 onSubmit={handleSubmit}
             >
@@ -131,13 +149,13 @@ const CreateJob = (props: IProps) => {
                         <Box mb={2}>
                             <Card>
                                 <Box mt={2} mb={2} mr={2} ml={2}>
-                                    <Grid spacing={2} justify={"flex-end"} container>
+                                    <Grid spacing={2} justify={"center"} container>
                                         <Grid item>
                                             <Button
                                                 color={"inherit"}
                                                 size={"large"}
                                                 onClick={() => history.go(-1)}
-                                                variant={"text"}
+                                                variant={"outlined"}
                                             >Cancel</Button>
                                         </Grid>
                                         <Grid item>
@@ -145,6 +163,7 @@ const CreateJob = (props: IProps) => {
                                                 <CircularProgress variant={"indeterminate"}/> :
                                                 <Button
                                                     type="submit"
+                                                    disableElevation
                                                     size={"large"}
                                                     variant={"contained"}
                                                     color={"secondary"}
