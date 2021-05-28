@@ -19,20 +19,19 @@ import {postFileAsync} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import EventValidationSchema from "./models/EventValidationSchema";
 import EventModel from "./models/EventModel";
-import {addEvent} from "./redux/eventsActions";
 import EventAttachments from "./forms/EventAttachments";
 import XTextInput from "../../components/inputs/XTextInput";
 import {Options} from "../../utils/options";
 import XDateInput from "../../components/inputs/XDateInput";
-import XTimeInput from "../../components/inputs/XTimeInput";
 import XSelectInputCreatable from "../../components/inputs/XSelectInputCreatable";
 import XRichTextArea from "../../components/inputs/XRichTextArea";
 
 import './CreateEvent.css'
 import {IOption} from "../../components/inputs/inputHelpers";
-import {IEvent} from "../../interfaces/IEvent";
 import {format, parseISO} from "date-fns";
 import {Urls} from "../../routes/Urls";
+import Toast from "../../utils/Toast";
+import {postEvent} from "./redux/eventsEndpoints";
 
 const CreateEvent = () => {
 
@@ -45,13 +44,13 @@ const CreateEvent = () => {
     const timeOptions: IOption[] = []
 
     useEffect(() => {
-        for (let h = 0; h < 24; h++){
+        for (let h = 0; h < 24; h++) {
 
             let hour
 
             if (h < 10) {
                 hour = `0${h}`
-            } else{
+            } else {
                 hour = h
             }
 
@@ -109,16 +108,12 @@ const CreateEvent = () => {
             uploads: uploads
         }
 
-        console.log(event)
-
-        try {
-            dispatch(addEvent(event))
-        } catch (e) {
-
-        } finally {
-            // actions.resetForm()
-            // window.location.replace(Urls.events)
-        }
+        postEvent(event)
+            .then((response: any) => {
+                Toast.success("Event added successfully")
+                window.location.replace(Urls.events)
+            })
+            .catch(error => Toast.error("Error while adding event"));
 
     }
 

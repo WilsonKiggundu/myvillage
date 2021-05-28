@@ -2,7 +2,7 @@ import {Endpoints} from "../../../services/Endpoints";
 import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../../utils/ajax";
 import {IEvent} from "../../../interfaces/IEvent";
 
-export const postEvent = async (event: IEvent) => {
+export const postEvent = async (event: any) => {
     const url = makeUrl("Events", Endpoints.events.api)
     return await postAsync(url, event)
 }

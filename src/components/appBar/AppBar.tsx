@@ -70,13 +70,14 @@ export default function ApplicationBar() {
         setProfileMenuEl(event.currentTarget)
     }
 
-    const [workInTechMenuEl, setWorkInTechMenuEl] = React.useState<null | HTMLElement>(null);
-    const showWorkInTechMenu = (event: MouseEvent<HTMLElement>) => {
-        setWorkInTechMenuEl(event.currentTarget)
+    const [communityMenuEl, setCommunityMenuEl] = React.useState<null | HTMLElement>(null);
+    const showCommunityMenu = (event: MouseEvent<HTMLElement>) => {
+        setCommunityMenuEl(event.currentTarget)
     }
 
-    const closeProfileMenu = () => {
+    const closeMenu = () => {
         setProfileMenuEl(null)
+        setCommunityMenuEl(null)
     }
 
     const [state, setState] = useState({
@@ -102,7 +103,7 @@ export default function ApplicationBar() {
     };
 
     const handleProfileView = () => {
-        closeProfileMenu()
+        closeMenu()
         history.push(Urls.profiles.onePerson(user?.profile?.sub))
         setState({left: false, right: false})
     }
@@ -175,18 +176,6 @@ export default function ApplicationBar() {
                         </li>
                         <li className={activeMenu === 'jobs' ? 'active' : ''}>
                             <a href={Urls.jobs.home}>Work in tech</a>
-                            {/*<XStyledMenu anchor={workInTechMenuEl} items={[*/}
-                            {/*    {*/}
-                            {/*        onClick: handleProfileView,*/}
-                            {/*        icon: <AddCircle />,*/}
-                            {/*        primaryText: "Post a Job",*/}
-                            {/*    },*/}
-                            {/*    {*/}
-                            {/*        primaryText: "Find a Job",*/}
-                            {/*        icon: <SearchRounded />,*/}
-                            {/*        onClick: handleLogout*/}
-                            {/*    }*/}
-                            {/*]} onClose={closeProfileMenu} />*/}
                         </li>
 
                         {/*<li>*/}
@@ -234,7 +223,7 @@ export default function ApplicationBar() {
                                         secondaryText: "Terminate Session",
                                         onClick: handleLogout
                                     }
-                                ]} onClose={closeProfileMenu} />
+                                ]} onClose={closeMenu} />
 
                             </div> :
                             <div className="Appbar-login-button">

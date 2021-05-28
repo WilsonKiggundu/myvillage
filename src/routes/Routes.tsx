@@ -25,7 +25,7 @@ import FreelancerHome from "../modules/freelancers/Home";
 import DeveloperHome from "../modules/developers/Home";
 import Developers from "../modules/developers/Developers";
 import FreelanceProjects from "../modules/freelancers/FreelanceProjects";
-import AddEmailTemplate from "../modules/email-templates/AddTemplate";
+import Freelancers from "../modules/freelancers/Freelancers";
 
 export const Routes = (
     <Switch>
@@ -60,21 +60,10 @@ export const Routes = (
             <Route exact path={Urls.calendar} component={Calendar}/>
             <Route exact path={Urls.profiles.freelancers} component={FreelancerHome}/>
             <Route exact path={Urls.profiles.developers} component={DeveloperHome}/>
-            <Route exact path={Urls.profiles.searchFreelancers} render={() => <Community category="freelancer" />}/>
+            <Route exact path={Urls.profiles.searchFreelancers} component={Freelancers}/>
             <Route exact path={Urls.profiles.searchDevelopers} component={Developers}/>
             <Route exact path={Urls.freelancers.projects} component={FreelanceProjects}/>
-            <Route exact path={Urls.templates.create} component={AddEmailTemplate}/>
         </MainLayout>
-
-        {/*<Route path={'/404'} component={NotFound} />*/}
-        {/*<Redirect to={'/404'} />*/}
-        {/*<Switch>*/}
-        {/*    <MainLayout>*/}
-        {/*        <Switch>*/}
-
-        {/*        </Switch>*/}
-        {/*    </MainLayout>*/}
-        {/*</Switch>*/}
     </Switch>
 )
 

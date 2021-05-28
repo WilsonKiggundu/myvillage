@@ -25,12 +25,12 @@ const ContactCard = (props: IProps, scrollPosition: any) => {
                 <Avatar src={avatar} className ={'avatar'}>
                     {getInitials(firstname, lastname)}
                 </Avatar>
-                <LazyLoadImage
-                    width={"100%"}
-                    className="cover-photo-image"
-                    src={coverPhoto}
-                    effect={'blur'}
-                />
+                {/*<LazyLoadImage*/}
+                {/*    width={"100%"}*/}
+                {/*    className="cover-photo-image"*/}
+                {/*    src={coverPhoto}*/}
+                {/*    effect={'blur'}*/}
+                {/*/>*/}
             </div>
             <CardContent>
                 <section className="profile-details">
