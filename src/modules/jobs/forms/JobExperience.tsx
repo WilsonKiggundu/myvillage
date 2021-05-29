@@ -1,4 +1,4 @@
-import {Box, Card, CardContent, CardHeader} from "@material-ui/core";
+import {Box, Card, CardContent, CardHeader, Divider} from "@material-ui/core";
 import React from "react";
 import XRichTextArea from "../../../components/inputs/XRichTextArea";
 import XTextInput from "../../../components/inputs/XTextInput";
@@ -17,6 +17,7 @@ const JobExperience = ({formField}: IProps) => {
                     title={"Prerequisite experience"}
                     subheader={"Specify the minimum years of experience you want the candidates to have?"}
                 />
+                <Divider />
                 <CardContent>
                     <XTextAreaInput
                         rows={1}

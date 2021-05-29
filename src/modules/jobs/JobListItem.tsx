@@ -6,10 +6,9 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 import './Jobs.css'
 import {longDate} from "../../utils/dateHelpers";
-import {IStartup} from "../../interfaces/IStartup";
-import {getStartups} from "../profiles/startups/redux/startupsEndpoints";
 import {Urls} from "../../routes/Urls";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
 interface IProps {
     job: IJob
@@ -21,17 +20,11 @@ interface IProps {
 const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
 
     const history = useHistory()
-    // const [company, setCompany] = useState<IStartup | undefined>(undefined)
+    const [jobId, setJobId] = useState<string>(job.jobId)
 
-    // useEffect(() => {
-    //     (async () => {
-    //         const response: any = await getStartups({id: job.companyId})
-    //         const {startups} = response.body
-    //         if (startups.length) {
-    //             setCompany(startups[0])
-    //         }
-    //     })()
-    // }, [setCompany, job.companyId])
+    useEffect(() => {
+        setJobId(job.jobId ?? job.id)
+    }, [job])
 
     let div = document.createElement("div")
     div.innerHTML = job.details
@@ -48,12 +41,12 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
         salaryRange = salaryArray.join(" - ")
 
     const handleViewDetails = () => {
-        history.push(Urls.jobs.singleJob(job.id))
+        history.push(Urls.jobs.singleJob(jobId))
     }
 
     return (
-        <Box className="clickable" onClick={handleViewDetails} mb={2}>
-            <Card>
+        <Box mb={2}>
+            <Card className="clickable" elevation={0} onClick={handleViewDetails}>
                 <CardHeader
                     avatar={
                         <Avatar src={job.company?.avatar} variant={"square"}>
@@ -105,18 +98,18 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                         </Box>
                     }
 
-                    <Divider />
+                    <Divider/>
 
                     {
                         showVewDetailsButton && <Box mt={3}>
                             <Grid container spacing={2} justify={"space-between"}>
-                                <Grid className="job-salary-range" item>
-                                    {salaryRange && <span>{salaryRange}</span>}
-                                </Grid>
+                                {salaryRange && <Grid className="job-salary-range" item>
+                                    <span>{salaryRange}</span>
+                                </Grid>}
                                 <Grid item>
-                                    <a href={Urls.jobs.singleJob(job.id)} className="job-details-button">
+                                    <Button variant={"outlined"} onClick={handleViewDetails}>
                                         View details
-                                    </a>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Box>

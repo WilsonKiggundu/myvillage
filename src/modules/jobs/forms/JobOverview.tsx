@@ -1,4 +1,4 @@
-import {Box, Card, CardContent, CardHeader, Grid} from "@material-ui/core";
+import {Box, Card, CardContent, CardHeader, Divider, Grid} from "@material-ui/core";
 import XTextInput from "../../../components/inputs/XTextInput";
 import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
 import {Endpoints} from "../../../services/Endpoints";
@@ -38,8 +38,8 @@ const JobOverview = ({formField}: IProps) => {
         <Box mb={2}>
             <Card>
                 <CardHeader
-                    title={"Overview"}
-                    subheader={"* Required fields"} />
+                    title={"Overview"} />
+                    <Divider />
                 <CardContent>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -87,6 +87,15 @@ const JobOverview = ({formField}: IProps) => {
                                     label: 'name',
                                     endpoint: Endpoints.jobs.base + Endpoints.jobs.api + '/categories'
                                 }}/>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <XTextInput
+                                helperText={"Notifications will be sent to this email. For example, when someone applies for the job"}
+                                name={"replyEmail"}
+                                variant={"outlined"}
+                                label={"* Notification Email"}
+                            />
                         </Grid>
 
                         <Grid item xs={12} md={6}>

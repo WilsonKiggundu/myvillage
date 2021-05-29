@@ -1,4 +1,4 @@
-import {Box, Card, CardContent, CardHeader} from "@material-ui/core";
+import {Box, Card, CardContent, CardHeader, Divider} from "@material-ui/core";
 import React from "react";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
@@ -16,6 +16,7 @@ const JobDescription = ({categories, formField}: IProps) => {
         <Box mb={2}>
             <Card>
                 <CardHeader title={"Job description"} subheader={"What will the candidate be doing on a daily basis?"}/>
+                <Divider />
                 <CardContent>
                     <XRichTextArea
                         rows={8}

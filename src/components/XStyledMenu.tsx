@@ -9,11 +9,12 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import {Divider} from "@material-ui/core";
+import './XStyledMenu.css'
 
 const StyledMenu = withStyles({
     paper: {
         border: '1px solid #d3d4d5',
-    },
+    }
 })((props: MenuProps) => (
     <Menu
         elevation={0}
@@ -58,7 +59,7 @@ export default function XStyledMenu({anchor, items, onClose}: IProps) {
             onClose={onClose}
         >
             {items.map((item: any, index: number) => (
-                <>
+                <div key={index}>
                     <StyledMenuItem onClick={item.onClick}>
                         {item.icon && <ListItemIcon>
                             {item.icon}
@@ -66,7 +67,7 @@ export default function XStyledMenu({anchor, items, onClose}: IProps) {
                         <ListItemText primary={item.primaryText} secondary={item.secondaryText} />
                     </StyledMenuItem>
                     {index < items.length - 1 && <Divider />}
-                </>
+                </div>
             ))}
         </StyledMenu>
     );

@@ -1,4 +1,4 @@
-import {Box, Card, CardContent, CardHeader, Grid} from "@material-ui/core";
+import {Box, Card, CardContent, CardHeader, Divider, Grid} from "@material-ui/core";
 import XTextInput from "../../../components/inputs/XTextInput";
 import XSelectInputAsync from "../../../components/inputs/XSelectInputAsync";
 import {Endpoints} from "../../../services/Endpoints";
@@ -40,6 +40,7 @@ const JobAttachments = ({formField, onDragDrop}: IProps) => {
                 <CardHeader title={"Attachments"}
                     subheader={"You can attach any documents, files that are relevant to the job."}
                 />
+                <Divider />
                 <CardContent>
                     <DropzoneArea
                         // acceptedFiles={acceptedTypes}

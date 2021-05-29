@@ -53,11 +53,7 @@ const FreelancerHome = () => {
                             </div>
 
                             <div className="Freelancers-main-title">
-                                Unlocking Uganda’s best freelancers.
-                            </div>
-
-                            <div className="Freelancers-leading-text">
-
+                                Unlocking Africa’s best freelancers.
                             </div>
 
                             <Grid container justify={"flex-start"} spacing={2} className="Freelancers-buttons">
@@ -87,7 +83,7 @@ const FreelancerHome = () => {
                                         variant={"outlined"}
                                         size={"large"}
                                         disableElevation color={"default"}>
-                                        Update your Freelance Profile
+                                        Earn as a Freelancer
                                     </Button>
 
                                     <XDialog
@@ -104,6 +100,15 @@ const FreelancerHome = () => {
                             <div className="Freelancers-leading-text">
                                 Are you a freelancer? <a href={Urls.freelancers.projects}>Find a project</a>
                             </div>
+
+                            <Grid container justify={"flex-start"} spacing={8}>
+                                <Grid item>
+                                    <a className="Freelancer-find-button"
+                                       href={Urls.profiles.searchFreelancers}>
+                                        Find a Freelancer
+                                    </a>
+                                </Grid>
+                            </Grid>
 
                         </Grid>
                         <Grid item xs={12} lg={7}>

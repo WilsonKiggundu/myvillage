@@ -27,7 +27,7 @@ const EventsList = () => {
 
     const [openAddEventDialog, setOpenAddEventDialog] = useState<boolean>(false)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
-    const [eventsView, setEventsView] = useState<EventView>("calendar")
+    const [eventsView, setEventsView] = useState<EventView>("list")
 
     const dispatch = useDispatch()
     const events = useSelector(eventsSelector)
@@ -63,20 +63,20 @@ const EventsList = () => {
 
     return (
         <>
-            <Box mb={2}>
-                <Grid container justify={"center"}>
-                    <Grid item>
-                        <ButtonGroup color={"primary"}>
-                            <Button onClick={() => setEventsView("list")}>
-                                <ListIcon/>
-                            </Button>
-                            <Button onClick={() => setEventsView("calendar")}>
-                                <CalendarTodayIcon/>
-                            </Button>
-                        </ButtonGroup>
-                    </Grid>
-                </Grid>
-            </Box>
+            {/*<Box mb={2}>*/}
+            {/*    <Grid container justify={"center"}>*/}
+            {/*        <Grid item>*/}
+            {/*            <ButtonGroup color={"primary"}>*/}
+            {/*                <Button onClick={() => setEventsView("list")}>*/}
+            {/*                    <ListIcon/>*/}
+            {/*                </Button>*/}
+            {/*                <Button onClick={() => setEventsView("calendar")}>*/}
+            {/*                    <CalendarTodayIcon/>*/}
+            {/*                </Button>*/}
+            {/*            </ButtonGroup>*/}
+            {/*        </Grid>*/}
+            {/*    </Grid>*/}
+            {/*</Box>*/}
 
             {eventsView === "list" &&
             <Container maxWidth={"md"}>

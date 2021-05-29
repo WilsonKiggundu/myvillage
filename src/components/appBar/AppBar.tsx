@@ -33,7 +33,7 @@ import './AppBar.css'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuIcon from "@material-ui/icons/Menu";
 import XAsyncTypeahead from "../XAsyncTypeahead";
-import {MoreVert} from "@material-ui/icons";
+import {Add, AddCircle, MoreVert, Search, SearchRounded} from "@material-ui/icons";
 import XStyledMenu from "../XStyledMenu";
 import SendIcon from "@material-ui/icons/Send";
 
@@ -70,8 +70,14 @@ export default function ApplicationBar() {
         setProfileMenuEl(event.currentTarget)
     }
 
-    const closeProfileMenu = () => {
+    const [communityMenuEl, setCommunityMenuEl] = React.useState<null | HTMLElement>(null);
+    const showCommunityMenu = (event: MouseEvent<HTMLElement>) => {
+        setCommunityMenuEl(event.currentTarget)
+    }
+
+    const closeMenu = () => {
         setProfileMenuEl(null)
+        setCommunityMenuEl(null)
     }
 
     const [state, setState] = useState({
@@ -97,7 +103,7 @@ export default function ApplicationBar() {
     };
 
     const handleProfileView = () => {
-        closeProfileMenu()
+        closeMenu()
         history.push(Urls.profiles.onePerson(user?.profile?.sub))
         setState({left: false, right: false})
     }
@@ -217,7 +223,7 @@ export default function ApplicationBar() {
                                         secondaryText: "Terminate Session",
                                         onClick: handleLogout
                                     }
-                                ]} onClose={closeProfileMenu} />
+                                ]} onClose={closeMenu} />
 
                             </div> :
                             <div className="Appbar-login-button">

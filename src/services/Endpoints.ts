@@ -43,7 +43,10 @@ export const Endpoints = {
     jobs: {
         base: jobsBaseUrl,
         api: '/api/jobs',
-        update: (id: string) => `/api/jobs/applicant/${id}/update`
+        apply: '/api/jobs/apply',
+        application: {
+            update: '/api/jobs/application/update'
+        }
     },
 
     notification: {
