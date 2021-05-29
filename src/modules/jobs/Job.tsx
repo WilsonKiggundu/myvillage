@@ -189,9 +189,7 @@ const Job = ({match}: any) => {
                                         `at ${job.company ? job.company.name : job.companyId}. Closes on ${longDate(job.deadline)}`
                                     } title={"#JobOpportunity " + job.title}/>
 
-                                    {canViewApplicants && <>
-                                        <ViewApplicants job={job} />
-                                    </>}
+                                    {canViewApplicants && <ViewApplicants job={job} />}
 
                                 </Card>
                             </Box>

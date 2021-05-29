@@ -14,15 +14,11 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import XImageLoader from "../XImageLoader";
 
-// interface IProps {
-//     images: IUpload[]
-// }
-
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         overflow: 'hidden',
         backgroundColor: theme.palette.background.paper,
     },
@@ -42,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const XImageGridList = ({images, scrollPosition}) => {
+const XImageGridList = ({images, height = 250, scrollPosition}) => {
 
     const theme = useTheme()
     const isMobile = theme.breakpoints.down("xs")
@@ -86,17 +82,18 @@ const XImageGridList = ({images, scrollPosition}) => {
 
     return (
         <div className={classes.root}>
-            <GridList className={classes.gridList} cols={columns()} cellHeight={250}>
+            <GridList className={classes.gridList} cols={columns()}>
                 {images.map((image, index) => (
                     <GridListTile
                         className={classes.clickable}
                         onClick={() => handleImageClick(image.path, index)}
                         key={index} cols={1}>
                         <XImageLoader
-                            width={'100%'}
+                            height={200}
+                            width={'auto'}
                             src={image.path}
                             alt={image.fileName}
-                            effect={'opacity'}
+                            effect={'black-and-white'}
                         />
                     </GridListTile>
                 ))}

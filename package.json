@@ -1,6 +1,6 @@
 {
   "name": "myvillage",
-  "version": "1.18.1",
+  "version": "1.18.2",
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^26.0.0",
@@ -34,6 +34,7 @@
     "fontsource-roboto": "^3.0.3",
     "history": "^5.0.0",
     "immutability-helper": "^3.1.1",
+    "is-image": "^3.0.0",
     "jsonpath": "^1.0.2",
     "lodash": "^4.17.20",
     "material-ui-dropzone": "^3.5.0",

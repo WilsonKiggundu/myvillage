@@ -17,6 +17,7 @@ import {PleaseWait} from "../../components/PleaseWait";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle"
 import CancelIcon from "@material-ui/icons/Cancel"
 import HourglassFullIcon from "@material-ui/icons/HourglassFull"
+import Badge from "@material-ui/core/Badge";
 
 interface IProps {
     job: IJob
@@ -34,11 +35,10 @@ const ViewApplicants = ({job}: IProps) => {
     const [rejectedApplications, setRejectedApplications] = useState<any>([])
     const [pendingApplications, setPendingApplications] = useState<any>([])
 
-    const handleViewApplicant = (id: string, applicationId: any, status: string, jobName: string) => {
+    const handleViewApplicant = (id: string, requestId: any, status: string) => {
         const query: any = {
             jobId: job?.id,
-            jobName: jobName,
-            applicationId: applicationId,
+            requestId: requestId,
             status: status,
             context: "job_application"
         }
@@ -57,28 +57,25 @@ const ViewApplicants = ({job}: IProps) => {
         setDrawerAnchor(anchor)
 
         if (open) {
-            const applicants: IApplicant[] | undefined = []
-            const url = makeUrl("Profiles", Endpoints.person.base)
+            const applicants: any = []
 
-            if (job?.applicants) {
+            if (job?.applications) {
 
-                await Promise.all(job.applicants.map(async (application: any) => {
-                    const response: any = await getAsync(url, {id: application.profileId})
-                    const person: IPerson = response.body.persons[0]
+                job.applications.map((application: any) => {
                     applicants.push({
-                        id: application.id,
-                        avatar: person?.avatar ?? "",
+                        requestId: application.id,
+                        avatar: application.avatar ?? "",
                         profileId: application.profileId,
                         date: timeAgo(application.dateTime),
-                        name: person?.firstname + " " + person?.lastname,
+                        name: application.name,
                         status: application.status
                     })
-                }))
+                })
 
                 setAllApplications(applicants)
-                setAcceptedApplications(applicants.filter((f: IApplicant) => f.status === 'accepted'))
-                setRejectedApplications(applicants.filter((f: IApplicant) => f.status === 'rejected'))
-                setPendingApplications(applicants.filter((f: IApplicant) => !f.status))
+                setAcceptedApplications(applicants.filter((f: any) => f.status === 4))
+                setRejectedApplications(applicants.filter((f: any) => f.status === 2))
+                setPendingApplications(applicants.filter((f: any) => f.status === 1))
 
                 setApplicants(applicants)
             }
@@ -93,14 +90,16 @@ const ViewApplicants = ({job}: IProps) => {
             <CardContent>
                 <Grid container justify={"center"}>
                     <Grid item>
-                        {job.applicants?.length ?
-                            <Button
-                                style={{textTransform: 'inherit'}}
-                                onClick={() => toggleDrawer("right", true)}
-                                color={"default"}
-                                variant={"outlined"}>
-                                View applicants
-                            </Button> :
+                        {job.applications?.length ?
+                            <Badge color={"secondary"} badgeContent={job.applications?.length}>
+                                <Button
+                                    style={{textTransform: 'inherit'}}
+                                    onClick={() => toggleDrawer("right", true)}
+                                    color={"default"}
+                                    variant={"outlined"}>
+                                    View Applications
+                                </Button>
+                            </Badge> :
                             <span style={{color: "red"}}>No applications yet</span>
                         }
                     </Grid>
@@ -169,8 +168,7 @@ const ViewApplicants = ({job}: IProps) => {
                                                     () => handleViewApplicant(
                                                         applicant.profileId,
                                                         applicant.id,
-                                                        applicant.status ?? 'pending',
-                                                        job?.title
+                                                        applicant.status ?? 'pending'
                                                     )
                                                 }
                                                 button
