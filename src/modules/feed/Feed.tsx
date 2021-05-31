@@ -25,6 +25,8 @@ const Feed = () => {
 
     const user = useSelector(userSelector)
 
+    if (!user) handleLogin()
+
     useEffect(() => {
 
         document.title = 'Feed / My Village'

@@ -1,6 +1,6 @@
-import {Avatar, Link, List, Typography} from "@material-ui/core";
+import {Avatar, IconButton, Link, List, Typography} from "@material-ui/core";
 import CardHeader from "@material-ui/core/CardHeader";
-import React, {useState} from "react";
+import React, {MouseEvent, useState} from "react";
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import Box from "@material-ui/core/Box";
 import grey from "@material-ui/core/colors/grey";
@@ -25,12 +25,12 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import './css/PostCard.css'
-import {IEmailObject} from "../../interfaces/IEmailObject";
-import {sendEmail} from "../../services/NotificationService";
-import {EmailSettings} from "../../data/constants";
-import {getPersonContact} from "../profiles/people/redux/peopleEndpoints";
-import {IContact} from "../../interfaces/IContact";
 import {XLoginSnackbar} from "../../components/XLoginSnackbar";
+import {MoreVert} from "@material-ui/icons";
+import XStyledMenu from "../../components/XStyledMenu";
+import {makeUrl, postAsync} from "../../utils/ajax";
+import {Endpoints} from "../../services/Endpoints";
+import Toast from "../../utils/Toast";
 
 
 interface IProps {
@@ -40,7 +40,6 @@ interface IProps {
 const PostCard = ({post}: IProps) => {
 
     const user = useSelector(userSelector)
-    const alreadyLiked = post.alreadyLikedByUser
     const [showComments, setShowComments] = useState<boolean>(false)
     const [commentsPage, setCommentsPage] = useState<number>(1)
     const dispatch = useDispatch()
@@ -52,54 +51,18 @@ const PostCard = ({post}: IProps) => {
     const [openLikesDialog, setOpenLikesDialog] = useState<boolean>(false)
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
 
+    const [actionMenuEl, setActionMenuEl] = React.useState<null | HTMLElement>(null);
+    const showActionMenu = (event: MouseEvent<HTMLButtonElement>) => {
+        setActionMenuEl(event.currentTarget)
+    }
+
     const handleLike = async (postId: string) => {
         if (!user) {
             setOpenSnackbar(true)
-        }
-        else{
+        } else {
             const personId = user?.profile.sub
             dispatch(likePost({entityId: postId, personId}))
-
-            const personContacts: any = await getPersonContact(personId)
-            let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
-            const recipient = emails.map((contact: IContact) => contact.value).join(',')
-
-            const body = `<!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Title</title>
-                </head>
-                <body style="text-align: center; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; background-color: #f1f1f1">
-                    <div style="padding: 25px; width: 100%; background-color: #1c1c1c; color: #ffffff;">
-                        <h1>${post.author?.firstname},<br/>someone liked your post</h1>
-                    </div>
-                    <div style="background-color: #ffffff; padding: 15px; margin: 0 auto; max-width: 80%">
-                        <p>
-                            <a style="background-color: #e98a2b; text-decoration: none; color: white; padding: 15px;" 
-                                href="${Urls.base}${Urls.profiles.onePerson(personId)}">
-                                View profile
-                            </a>
-                        </p>
-                    </div>
-                    <div style="padding: 25px; font-size: 10px; color: #cccccc">
-                        <p>This is an auto-generated email sent from an unmonitored emailing list. You may not reply to it directly.</p>
-                    </div>
-                </body>
-            </html>`
-
-            const emailToSend: IEmailObject = {
-                body: body,
-                recipient: recipient,
-                senderEmail: EmailSettings.senderEmail,
-                senderName: EmailSettings.senderName,
-                subject: "MyVillage news feed"
-            }
-
-            await sendEmail(emailToSend)
         }
-
-
     }
 
     const handleAddComment = () => {
@@ -112,18 +75,40 @@ const PostCard = ({post}: IProps) => {
         history.push(url)
     }
 
+    const handleHidePost = (postId: string) => {
+        setActionMenuEl(null)
+        const url = makeUrl("Profiles", Endpoints.blog.blacklist)
+        postAsync(url, {personId: user?.profile.sub, blacklistId: postId})
+            .then(() => Toast.success("Success"))
+            .catch(error => Toast.error(error))
+    }
+
+    const handleBlockAuthor = (authorId: string) => {
+        setActionMenuEl(null)
+        const url = makeUrl("Profiles", Endpoints.person.blacklist)
+        const personId = user?.profile.sub
+
+        if (personId !== authorId){
+            postAsync(url, {personId, blacklistId: authorId})
+                .then(() => Toast.success("Success"))
+                .catch(error => Toast.error(error))
+        }
+    }
+
     const handleShowComments = async (page: number) => {
         setShowComments(true)
         setCommentsPage(page)
         await dispatch(loadComments({postId: post.id, page}))
     }
 
+
+
     return (
         <Box className="PostCard" mt={2}>
             {post ? (
                 <div>
 
-                    {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)} />}
+                    {!user && <XLoginSnackbar open={openSnackbar} onClose={() => setOpenSnackbar(false)}/>}
 
                     <CardHeader
                         avatar={<Avatar src={post.author?.avatar}>
@@ -142,6 +127,32 @@ const PostCard = ({post}: IProps) => {
                         subheader={<small style={{color: grey[500]}}>
                             {timeAgo(post.dateCreated)}
                         </small>}
+                        action={
+                            <>
+                                <IconButton
+                                    aria-label="more"
+                                    aria-controls="long-menu"
+                                    aria-haspopup="true"
+                                    onClick={showActionMenu}
+                                >
+                                    <MoreVert/>
+                                </IconButton>
+                                <XStyledMenu
+                                    anchor={actionMenuEl}
+                                    items={[
+                                        {
+                                            onClick: () => handleHidePost(post.id),
+                                            primaryText: "Hide Post",
+                                        },
+                                        {
+                                            disabled: user?.profile.sub === post.authorId,
+                                            primaryText: "Block Author",
+                                            onClick: () => handleBlockAuthor(post.authorId)
+                                        }
+                                    ]}
+                                    onClose={() => setActionMenuEl(null)}/>
+                            </>
+                        }
                     />
 
                     <div className="PostCard-content">

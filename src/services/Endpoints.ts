@@ -74,6 +74,7 @@ export const Endpoints = {
     blog: {
         article: '/api/blog/articles',
         post: '/api/blog/posts',
+        blacklist: '/api/blog/posts/blacklist',
         comment: '/api/blog/comments',
         likes: '/api/blog/posts/likes',
     },
@@ -103,6 +104,7 @@ export const Endpoints = {
         contact: "/api/person/contacts",
         connection: "/api/person/connections",
         freelance: "/api/person/freelance",
+        blacklist: "/api/person/blacklist",
     },
 
     contact: "/api/contact",
