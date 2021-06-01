@@ -24,7 +24,7 @@ export const getPosts = async () => {
     const profileId = user?.profile?.sub
 
     const url = makeUrl("Profiles", Endpoints.blog.post)
-    return await getWithoutLoginAsync(url, {page: nextPage, userId: profileId})
+    return await getAsync(url, {page: nextPage})
 }
 
 export const createComment = async (comment: any) => {

@@ -45,6 +45,7 @@ const StyledMenuItem = withStyles((theme) => ({
 interface IProps {
     anchor: null | HTMLElement
     items: any,
+    disabled?: boolean,
     onClose: () => void
 }
 
@@ -60,7 +61,7 @@ export default function XStyledMenu({anchor, items, onClose}: IProps) {
         >
             {items.map((item: any, index: number) => (
                 <div key={index}>
-                    <StyledMenuItem onClick={item.onClick}>
+                    <StyledMenuItem disabled={item.disabled} onClick={item.onClick}>
                         {item.icon && <ListItemIcon>
                             {item.icon}
                         </ListItemIcon>}
