@@ -55,6 +55,17 @@
     padding-right: 1em;
 }
 
+.profile-category-teaser{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    margin-bottom: 15px;
+    position: relative;
+    height: 1.2em;
+    overflow: hidden;
+    padding-right: 1em;
+}
+
 .card-title{
     margin-top: 6px;
     margin-left: 10px;

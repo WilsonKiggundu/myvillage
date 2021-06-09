@@ -24,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
     },
     gridList: {
         flexWrap: 'nowrap',
+        width: '100%',
+        maxHeight: 450,
         transform: 'translateZ(0)',
     },
 
@@ -82,21 +84,25 @@ const XImageGridList = ({images, height = 250, scrollPosition}) => {
 
     return (
         <div className={classes.root}>
-            <GridList className={classes.gridList} cols={columns()}>
-                {images.map((image, index) => (
-                    <GridListTile
-                        className={classes.clickable}
-                        onClick={() => handleImageClick(image.path, index)}
-                        key={index} cols={1}>
-                        <XImageLoader
-                            height={200}
-                            width={'auto'}
-                            src={image.path}
-                            alt={image.fileName}
-                            effect={'black-and-white'}
-                        />
-                    </GridListTile>
-                ))}
+            <GridList cellHeight={200} className={classes.gridList} cols={columns()}>
+                {images.map((image, index) => {
+                    const imgWidth = images.length === 1 ? '100%' : 'auto'
+                    const imgHeight = images.length === 1 ? 'auto' : '100%'
+                    return (
+                        <GridListTile
+                            className={classes.clickable}
+                            onClick={() => handleImageClick(image.path, index)}
+                            key={index} cols={1}>
+                            <XImageLoader
+                                height={imgHeight}
+                                width={imgWidth}
+                                src={image.path}
+                                alt={image.fileName}
+                                effect={'black-and-white'}
+                            />
+                        </GridListTile>
+                    )
+                })}
             </GridList>
 
             <Backdrop className={classes.backdrop} open={showBackdrop} onClick={showNextImage}>
