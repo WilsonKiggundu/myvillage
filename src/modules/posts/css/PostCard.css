@@ -10,7 +10,8 @@
 }
 
 .Post-details{
-    white-space: pre-line; 
+    white-space: pre-line;
+    line-break: anywhere;
     margin: 15px;
 }
 

@@ -119,6 +119,7 @@ const StartAPostCard = (props: IProps) => {
                                     title={"Upload photos"}
                                     open={openPhotoDialog}>
                                     <UploadFile
+                                        addCaption={true}
                                         addToFeed={true}
                                         showUploadButton={true}
                                         filesLimit={10}
