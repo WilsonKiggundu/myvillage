@@ -66,7 +66,7 @@ const UploadFile = ({done, id, addCaption, showUploadButton, type, addToFeed, ca
         "Say something about the photo(s)..."
 
 
-    const [loading, setLoading] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(false)
 
     const handleDragDrop = (files: any) => {
         if (files.length) {
@@ -141,7 +141,7 @@ const UploadFile = ({done, id, addCaption, showUploadButton, type, addToFeed, ca
             submitButtonLabel={"Upload"}
             hideSubmitButton={!showUploadButton}
             schema={schema}
-            loading={true}
+            loading={loading}
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             <Grid spacing={2} container>

@@ -35,7 +35,7 @@ const ContactCard = (props: IProps, scrollPosition: any) => {
             <CardContent>
                 <section className="profile-details">
                     <section className="profile-name">{firstname} {lastname}</section>
-                    <section className="profile-category">
+                    <section className="profile-category profile-category-teaser">
                         {categories.map((c: any) => c.category?.name).join(', ')}
                     </section>
                     <section className="profile-connections">

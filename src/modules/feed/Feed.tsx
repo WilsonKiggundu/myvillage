@@ -15,7 +15,6 @@ import {PostContentLoader} from "../../components/loaders/PostContentLoader";
 import ErrorPage from "../exceptions/Error";
 import {scrolledToBottom} from "../../utils/scrollHelpers";
 import {userSelector} from "../../data/coreSelectors";
-import userManager from "../../utils/userManager";
 import {handleLogin} from "../../utils/authHelpers";
 
 const Feed = () => {
@@ -44,7 +43,11 @@ const Feed = () => {
 
     if (_.isEmpty(posts.data) && posts.isLoading) return (
         <Container maxWidth={"md"}>
-            <PostContentLoader/>
+            <Grid container spacing={2} justify={"center"}>
+                <Grid xs={12} md={10} lg={8} item>
+                    <PostContentLoader/>
+                </Grid>
+            </Grid>
         </Container>
     )
 
@@ -55,7 +58,7 @@ const Feed = () => {
     return (
         <Container maxWidth={"md"}>
             <Grid container spacing={2} justify={"center"}>
-                <Grid xs={12} item>
+                <Grid xs={12} md={10} lg={8} item>
                     <StartAPostCard placeholder={"What's on your mind?"}/>
                     <Box>
                         {_.isEmpty(posts.data) && <p>No results found</p>}

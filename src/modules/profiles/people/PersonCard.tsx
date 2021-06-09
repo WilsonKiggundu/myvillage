@@ -180,7 +180,7 @@ const PersonCard = ({person, canEdit}: IProps) => {
                                     textAlign: isMobile ? 'center' : 'center'
                                 }}
                                 variant={"body2"}>
-                                {person.bio}
+                                <div dangerouslySetInnerHTML={{__html: person.bio}} />
                             </Typography>
                         </Box>
                         : ""}
