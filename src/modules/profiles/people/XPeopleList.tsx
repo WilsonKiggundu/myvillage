@@ -47,7 +47,7 @@ const XPeopleList = ({people, category, request} : IProps) => {
                 <Grid item key={person.id} xs={12} sm={6} md={4} xl={3} lg={3}>
                     <ContactCard person={person}>
                         <div className="profile-bio-teaser">
-                            {person.bio}
+                            <div dangerouslySetInnerHTML={{__html: person.bio}} />
                         </div>
                         <Box mt={3}>
                             <Grid container spacing={2}>
