@@ -31,7 +31,7 @@ import XStyledMenu from "../../components/XStyledMenu";
 import {makeUrl, postAsync} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import Toast from "../../utils/Toast";
-
+import Linkify from "react-linkify"
 
 interface IProps {
     post: IPost
@@ -156,7 +156,11 @@ const PostCard = ({post}: IProps) => {
                     />
 
                     <div className="PostCard-content">
-                        {post.details && <div className="Post-details">{post.details}</div>}
+                        {post.details &&
+                            <Linkify>
+                                <div className="Post-details">{post.details}</div>
+                            </Linkify>
+                        }
                         {
                             uploads?.length ?
                                 <XImageGridList images={uploads}/>
