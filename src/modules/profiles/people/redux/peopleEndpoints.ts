@@ -9,7 +9,7 @@ export const getPeople = async (params?: any) => {
     const {nextPage} = state.people.request
 
     const url = makeUrl("Profiles", Endpoints.person.base)
-    return await getWithoutLoginAsync(url, params ? params : {page: nextPage, pageSize: 16})
+    return await getWithoutLoginAsync(url, params ? params : {page: nextPage, pageSize: 20})
 }
 
 export const updatePersonEmail = async (person: any) => {

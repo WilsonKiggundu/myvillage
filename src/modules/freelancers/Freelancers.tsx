@@ -44,7 +44,7 @@ const Freelancers = () => {
             <XPeopleList
                 people={freelancers.data}
                 request={freelancers.request}
-                category={"developers"}/>
+                category={"freelancers"}/>
         </Container>
     )
 }
