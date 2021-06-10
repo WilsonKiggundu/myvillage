@@ -1,10 +1,10 @@
 import {Box, Button, CardContent, Container, Grid, useMediaQuery, useTheme} from "@material-ui/core";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import XImageLoader from "../../components/XImageLoader";
 import Image from '../../assets/images/freelancers.png'
 
 import './css/Freelancers.css'
-import {ChevronRight} from "@material-ui/icons";
+import {ChevronRight, Search} from "@material-ui/icons";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../data/coreSelectors";
 import {XLoginSnackbar} from "../../components/XLoginSnackbar";
@@ -13,8 +13,8 @@ import {Urls} from "../../routes/Urls";
 import XDialog from "../../components/dialogs/XDialog";
 import CreateProject from "./forms/CreateProject";
 
-import SearchIcon from '@material-ui/icons/Search';
 import UpdateFreelanceTermsForm from "./forms/UpdateFreelanceTerms";
+import {handleSignup} from "../../utils/authHelpers";
 
 const FreelancerHome = () => {
 
@@ -25,6 +25,10 @@ const FreelancerHome = () => {
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
     const [openAddProjectDialog, setOpenAddProjectDialog] = useState<boolean>(false)
     const [openUpdateTermsDialog, setOpenUpdateTermsDialog] = useState<boolean>(false)
+
+    useEffect(() => {
+        document.title = 'Freelancers / My Village'
+    })
 
     const handlePostJob = () => {
         if (user) {
@@ -38,7 +42,7 @@ const FreelancerHome = () => {
         if (user) {
             window.location.replace(Urls.profiles.onePerson(user.profile.sub))
         } else {
-            setOpenSnackbar(true)
+            handleSignup()
         }
     }
 
@@ -47,7 +51,7 @@ const FreelancerHome = () => {
             <div className="Freelancers-bg-white">
                 <Container maxWidth={"lg"}>
                     <Grid spacing={2} justify={"center"} container>
-                        <Grid item xs={12} lg={5}>
+                        <Grid item xs={12} lg={6}>
                             <div className="Freelancers-title">
                                 Getting the job done!
                             </div>
@@ -57,10 +61,31 @@ const FreelancerHome = () => {
                             </div>
 
                             <Grid container justify={"flex-start"} spacing={2} className="Freelancers-buttons">
+
+                                <Grid item>
+                                    <Button
+                                        onClick={handleEarnAsAFreelancer}
+                                        className="Freelancers-button"
+                                        variant={"contained"}
+                                        size={"large"}
+                                        color={"secondary"}>
+                                        Create a Freelancer profile
+                                    </Button>
+
+                                    <XDialog
+                                        title={"Update your freelance profile"}
+                                        open={openUpdateTermsDialog}
+                                        maxWidth={"sm"}
+                                        onClose={() => setOpenUpdateTermsDialog(false)}>
+                                        <UpdateFreelanceTermsForm onClose={() => setOpenUpdateTermsDialog(false)}/>
+                                    </XDialog>
+
+                                </Grid>
+
                                 <Grid item>
                                     <Button
                                         onClick={() => setOpenAddProjectDialog(true)}
-                                        className="Freelancers-button"
+                                        className="Freelancers-button2"
                                         variant={"contained"}
                                         size={"large"}
                                         disableElevation color={"primary"}>
@@ -76,25 +101,6 @@ const FreelancerHome = () => {
                                     </XDialog>
 
                                 </Grid>
-                                {user && <Grid item>
-                                    <Button
-                                        onClick={handleEarnAsAFreelancer}
-                                        className="Freelancers-button2"
-                                        variant={"outlined"}
-                                        size={"large"}
-                                        disableElevation color={"default"}>
-                                        Earn as a Freelancer
-                                    </Button>
-
-                                    <XDialog
-                                        title={"Update your freelance profile"}
-                                        open={openUpdateTermsDialog}
-                                        maxWidth={"sm"}
-                                        onClose={() => setOpenUpdateTermsDialog(false)}>
-                                        <UpdateFreelanceTermsForm onClose={() => setOpenUpdateTermsDialog(false)}/>
-                                    </XDialog>
-
-                                </Grid>}
                             </Grid>
 
                             <div className="Freelancers-leading-text">
@@ -103,15 +109,19 @@ const FreelancerHome = () => {
 
                             <Grid container justify={"flex-start"} spacing={8}>
                                 <Grid item>
-                                    <a className="Freelancer-find-button"
-                                       href={Urls.profiles.searchFreelancers}>
-                                        Find a Freelancer
-                                    </a>
+                                    <Button
+                                        href={Urls.profiles.searchFreelancers}
+                                        className="Freelancers-button2"
+                                        variant={"outlined"}
+                                        size={"large"}
+                                        disableElevation color={"default"}>
+                                        <Search />&nbsp;&nbsp;Find a Freelancer
+                                    </Button>
                                 </Grid>
                             </Grid>
 
                         </Grid>
-                        <Grid item xs={12} lg={7}>
+                        <Grid item xs={12} lg={6}>
                             <XImageLoader width={"100%"} effect={"opacity"} src={Image}/>
                         </Grid>
                         <Grid item xs={12}>

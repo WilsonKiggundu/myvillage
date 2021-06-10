@@ -27,21 +27,25 @@ interface IProps {
 const PersonFreelanceProfile = ({person, canEdit}: IProps) => {
 
     const [openDialog, setOpenDialog] = useState<boolean>(false)
-    const [rateType, setRateType] = useState<string>('hour')
 
-    useEffect(() => {
-        if (person.freelanceTerms){
-            const {rateType} = person.freelanceTerms
-            if (rateType === 1) setRateType('hour')
-            else if (rateType === 2) setRateType('day')
-            else if (rateType === 3) setRateType('week')
-            else if (rateType === 4) setRateType('month')
-            else if (rateType === 5) setRateType('quarter')
-            else if (rateType === 6) setRateType('year')
-            else setRateType('hour')
+    const getRateTypeLabel = (type: number) => {
+        switch (type) {
+            case 1:
+                return 'hour'
+            case 2:
+                return 'day'
+            case 3:
+                return 'week'
+            case 4:
+                return 'month'
+            case 5:
+                return 'quarter'
+            case 6:
+                return 'year'
+            default:
+                return type
         }
-
-    }, [person.freelanceTerms])
+    }
 
     return (
         <Box mb={2}>
@@ -69,7 +73,7 @@ const PersonFreelanceProfile = ({person, canEdit}: IProps) => {
                     <CardContent>
                         <Box mb={2}>
                             <strong>Rates</strong><br/>
-                            {person.freelanceTerms.currency} {person.freelanceTerms.rate} per {person.freelanceTerms.rateType}
+                            {person.freelanceTerms.currency} {person.freelanceTerms.rate} per {getRateTypeLabel(person.freelanceTerms.rateType)}
                         </Box>
 
                         <Divider />
