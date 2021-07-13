@@ -29,41 +29,41 @@ import Freelancers from "../modules/freelancers/Freelancers";
 
 export const Routes = (
     <Switch>
-        <Route exact path={Urls.callback} component={Callback}/>
-        <Route exact path={Urls.logout} component={Logout}/>
-        <Route exact path={Urls.silentRenew} component={SilentRenew}/>
-        <Route exact path={Urls.home} component={Home}/>
-        <Route exact path={Urls.profiles.create} component={CreateProfile}/>
+        {/*<Route exact path={Urls.callback} component={Callback}/>*/}
+        {/*<Route exact path={Urls.logout} component={Logout}/>*/}
+        {/*<Route exact path={Urls.silentRenew} component={SilentRenew}/>*/}
+        {/*<Route exact path={Urls.home} component={Home}/>*/}
+        {/*<Route exact path={Urls.profiles.create} component={CreateProfile}/>*/}
 
-        <MainLayout>
-            <Route exact path={Urls.feed} component={Feed}/>
-            <Route exact path={Urls.profiles.startups} component={Startups}/>
-            <Route exact path={Urls.profiles.startup} component={Startup}/>
-            <Route exact path={Urls.profiles.people} component={Community}/>
-            <Route exact path={Urls.profiles.person} render={(props) => <Person {...props} />}/>
+        {/*<MainLayout>*/}
+        {/*    <Route exact path={Urls.feed} component={Feed}/>*/}
+        {/*    <Route exact path={Urls.profiles.startups} component={Startups}/>*/}
+        {/*    <Route exact path={Urls.profiles.startup} component={Startup}/>*/}
+        {/*    <Route exact path={Urls.profiles.people} component={Community}/>*/}
+        {/*    <Route exact path={Urls.profiles.person} render={(props) => <Person {...props} />}/>*/}
 
-            <Route exact path={Urls.jobs.list} component={Jobs}/>
-            <Route exact path={Urls.job} component={Job}/>
-            <Route exact path={Urls.jobs.create} component={CreateJob}/>
-            <Route exact path={Urls.jobs.home} component={JobsHome}/>
+        {/*    <Route exact path={Urls.jobs.list} component={Jobs}/>*/}
+        {/*    <Route exact path={Urls.job} component={Job}/>*/}
+        {/*    <Route exact path={Urls.jobs.create} component={CreateJob}/>*/}
+        {/*    <Route exact path={Urls.jobs.home} component={JobsHome}/>*/}
 
-            <Route
-                exact
-                path={Urls.articles.create}
-                component={
-                    () => <NewArticle placeholder={"Start typing your article here..."}/>
-                }
-            />
-            <Route exact path={Urls.events} component={() => <EventsList/>}/>
-            <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
-            <Route exact path={Urls.event} component={Event}/>
-            <Route exact path={Urls.calendar} component={Calendar}/>
-            <Route exact path={Urls.profiles.freelancers} component={FreelancerHome}/>
-            <Route exact path={Urls.profiles.developers} component={DeveloperHome}/>
-            <Route exact path={Urls.profiles.searchFreelancers} component={Freelancers}/>
-            <Route exact path={Urls.profiles.searchDevelopers} component={Developers}/>
-            <Route exact path={Urls.freelancers.projects} component={FreelanceProjects}/>
-        </MainLayout>
+        {/*    <Route*/}
+        {/*        exact*/}
+        {/*        path={Urls.articles.create}*/}
+        {/*        component={*/}
+        {/*            () => <NewArticle placeholder={"Start typing your article here..."}/>*/}
+        {/*        }*/}
+        {/*    />*/}
+        {/*    <Route exact path={Urls.events} component={() => <EventsList/>}/>*/}
+        {/*    <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>*/}
+        {/*    <Route exact path={Urls.event} component={Event}/>*/}
+        {/*    <Route exact path={Urls.calendar} component={Calendar}/>*/}
+        {/*    <Route exact path={Urls.profiles.freelancers} component={FreelancerHome}/>*/}
+        {/*    <Route exact path={Urls.profiles.developers} component={DeveloperHome}/>*/}
+        {/*    <Route exact path={Urls.profiles.searchFreelancers} component={Freelancers}/>*/}
+        {/*    <Route exact path={Urls.profiles.searchDevelopers} component={Developers}/>*/}
+        {/*    <Route exact path={Urls.freelancers.projects} component={FreelanceProjects}/>*/}
+        {/*</MainLayout>*/}
     </Switch>
 )
 
