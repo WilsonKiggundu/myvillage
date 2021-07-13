@@ -1,13 +1,10 @@
 import React, {forwardRef, useEffect, useRef, useState} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {useLayoutStyles} from "./styles";
 import ApplicationBar from "../appBar/AppBar";
 import {useSelector} from "react-redux";
-import ReactGA from 'react-ga'
 
 import './MainLayout.css'
 import {userSelector} from "../../data/coreSelectors";
-import {GA_TRACKING_ID} from "../../data/constants";
 import {getAsync, makeUrl} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import UpdateCategoryForm from "../../modules/profiles/people/forms/profile/UpdateCategoryForm";
@@ -25,7 +22,6 @@ function MainLayout(props: IProps) {
     const [openAddCategoryDialog, setOpenAddCategoryDialog] = useState<boolean>(false)
     const [person, setPerson] = useState<any>()
     const user = useSelector(userSelector)
-    const trackingId = GA_TRACKING_ID
 
 
     // check if logged in user has setup their categories
@@ -48,13 +44,6 @@ function MainLayout(props: IProps) {
 
         })();
     }, [user])
-
-    if (trackingId){
-        ReactGA.initialize(trackingId)
-        ReactGA.set({
-            userId: user?.profile.sub
-        })
-    }
 
     useEffect(() => {
         document.body.style.backgroundColor = '#F1F1F0'

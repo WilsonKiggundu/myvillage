@@ -2,6 +2,7 @@
   "name": "myvillage",
   "version": "1.20.3",
   "private": true,
+  "main": "electron-starter.js",
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^26.0.0",
     "@ckeditor/ckeditor5-build-classic": "^26.0.0",
@@ -27,6 +28,7 @@
     "@types/yup": "^0.29.9",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "chart.js": "^3.4.0",
     "clsx": "^1.1.1",
     "cross-fetch": "^3.0.6",
     "date-fns": "^2.16.1",
@@ -45,6 +47,7 @@
     "react-bootstrap": "^1.5.2",
     "react-bootstrap-typeahead": "^5.1.4",
     "react-bulleted-textarea": "^1.1.2",
+    "react-chartjs-2": "^3.0.3",
     "react-color": "^2.19.3",
     "react-confirm": "^0.1.20",
     "react-content-loader": "^5.1.4",
@@ -80,7 +83,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -120,6 +124,7 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-preset-react-app": "^3.1.1",
+    "electron": "^13.1.2",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-react-app": "^6.0.0",

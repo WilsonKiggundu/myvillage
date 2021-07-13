@@ -3,6 +3,7 @@ export const Urls = ({
     devices: {
       publicKey: '/api/devices/key'
     },
+    survey: '/devscape',
     articles: {
         create: '/articles/create'
     },
