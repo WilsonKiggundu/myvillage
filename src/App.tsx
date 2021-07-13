@@ -36,7 +36,7 @@ import Developers from "./modules/developers/Developers";
 import FreelanceProjects from "./modules/freelancers/FreelanceProjects";
 
 export const App = () => {
-    useTracking('G-WCYNV9YTKE')
+    useTracking('G-5M4EMPQZS9')
 
     return (
             <Switch>
