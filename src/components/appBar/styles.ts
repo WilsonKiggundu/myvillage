@@ -1,6 +1,7 @@
 import {fade, makeStyles} from "@material-ui/core/styles";
-import {white} from "../../theme/custom-colors";
+import {black, white} from "../../theme/custom-colors";
 import palette from "../../theme/palette";
+import {grey} from "@material-ui/core/colors";
 
 const drawerWidth = 300
 
@@ -37,9 +38,9 @@ export const appBarStyles = makeStyles((theme) => ({
     },
     drawerPaper: {
         width: drawerWidth,
-        backgroundColor: palette.primary.main,
+        backgroundColor: grey[200],
         opacity: 0.98,
-        color: white
+        color: black
     },
     drawerHeader: {
         display: 'flex',
@@ -51,7 +52,7 @@ export const appBarStyles = makeStyles((theme) => ({
     },
 
     drawerContainer: {
-        overflow: 'auto'
+        overflow: 'hidden'
     },
 
     content: {

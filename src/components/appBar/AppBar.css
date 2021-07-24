@@ -97,8 +97,8 @@
 }
 
 .Appbar-searchbox{
-    width: 100%;
-    margin: 15px 5px 0 0px;
+    width: 95%;
+    margin: 15px auto;
 }
 
 .Appbar-menu .dropdown{

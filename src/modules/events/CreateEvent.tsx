@@ -32,6 +32,7 @@ import {format, parseISO} from "date-fns";
 import {Urls} from "../../routes/Urls";
 import Toast from "../../utils/Toast";
 import {postEvent} from "./redux/eventsEndpoints";
+import XTimeInput from "../../components/inputs/XTimeInput";
 
 const CreateEvent = () => {
 
@@ -100,7 +101,6 @@ const CreateEvent = () => {
             type: values.type.name,
             location: values.location,
             details: values.details,
-            conferenceUrl: values.conferenceUrl,
             frequency: values.frequency,
             createdBy: user.profile.sub,
             startDateTime: `${date}T${values.startTime.id}:00`,
@@ -144,69 +144,115 @@ const CreateEvent = () => {
                                                 name={"title"}
                                                 helperText={"Give your event a descriptive name so that it can easily be found"}
                                                 multiline={false}
-                                                variant={"outlined"}
+                                                variant={"standard"}
+                                                placeholder={"Enter the title"}
                                                 label={"Event title"}
                                             />
                                         </Grid>
-                                        <Grid item xs={12}>
+                                        <Grid item xs={12} md={6}>
                                             <XSelectInputCreatable
-                                                helperText={"What type of event is it? You can add any option if it does not exist"}
+                                                helperText={"You can add any option if it does not exist"}
                                                 label={"Event Type"}
+                                                placeholder={"What type of event is it?"}
                                                 name={"type"}
-                                                allowAddNew
+                                                defaultValue={
+                                                    {id: "webinar", name: "Webinar"}
+                                                }
                                                 options={Options.EVENT_TYPES}
                                                 variant={"outlined"}
                                             />
                                         </Grid>
 
+                                        <Grid item xs={12} md={6}>
+                                            <XSelectInputCreatable
+                                                defaultValue={
+                                                    {id: "zoom", name: "On Zoom"}
+                                                }
+                                                placeholder={"Where is the event happening?"}
+                                                variant={"outlined"}
+                                                helperText={'For Zoom events, Zoom webinar ' +
+                                                'will be created automatically'}
+                                                allowAddNew
+                                                options={Options.EVENT_LOCATIONS}
+                                                name={"location"}
+                                                label={"Location"}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <XSelectInputCreatable
+                                                multiple
+                                                variant={"outlined"}
+                                                helperText={''}
+                                                options={Options.REGIONS}
+                                                name={"region"}
+                                                label={"Region"}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <XSelectInputCreatable
+                                                placeholder={"Select or add partner"}
+                                                allowAddNew
+                                                variant={"outlined"}
+                                                helperText={''}
+                                                options={Options.IMPLEMENTING_PARTNERS}
+                                                name={"partner"}
+                                                label={"Implementing Partner"}
+                                            />
+                                        </Grid>
+
                                         <Grid item xs={12}>
                                             <XDateInput
-                                                disableToolbar
                                                 disablePast
                                                 name={"date"}
-                                                label={"Event date"}
+                                                placeholder={"Event date"}
                                                 helperText={"When is the event?"}
                                                 multiline={false}
                                                 autoFocus={false}
-                                                pickerVariant={"inline"}
+                                                pickerVariant={"dialog"}
                                                 variant={"outlined"}
                                             />
                                         </Grid>
 
                                         <Grid item xs={6}>
-                                            <XSelectInputCreatable
-                                                options={timeOptions}
-                                                name={"startTime"}
-                                                variant={"outlined"}
-                                                helperText={"What time does the event start?"}
-                                                allowAddNew
-                                                label={"Start time"}
-                                            />
+
+                                            <XTimeInput helperText={"What time does the event start?"}
+                                                        disablePast
+                                                        variant={"outlined"}
+                                                        placeholder={"Start time"}
+                                                        name={"startTime"} />
+
+                                            {/*<XSelectInputCreatable*/}
+                                            {/*    options={timeOptions}*/}
+                                            {/*    name={"startTime"}*/}
+                                            {/*    variant={"standard"}*/}
+                                            {/*    helperText={"What time does the event start?"}*/}
+                                            {/*    allowAddNew*/}
+                                            {/*    label={"Start time"}*/}
+                                            {/*/>*/}
                                         </Grid>
 
                                         <Grid item xs={6}>
-                                            <XSelectInputCreatable
-                                                options={timeOptions}
-                                                name={"endTime"}
-                                                allowAddNew
-                                                helperText={"And when does it end?"}
-                                                variant={"outlined"}
-                                                label={"End time"}
-                                            />
-                                        </Grid>
 
-                                        <Grid item xs={12}>
-                                            <XTextInput
-                                                variant={"outlined"}
-                                                helperText={'You can use a Google map pin'}
-                                                name={"location"}
-                                                label={"Event location"}
-                                            />
+                                            <XTimeInput helperText={"What time does the event end?"}
+                                                        placeholder={"End time"}
+                                                        variant={"outlined"}
+                                                        name={"endTime"} />
+
+                                            {/*<XSelectInputCreatable*/}
+                                            {/*    options={timeOptions}*/}
+                                            {/*    name={"endTime"}*/}
+                                            {/*    allowAddNew*/}
+                                            {/*    helperText={"And when does it end?"}*/}
+                                            {/*    variant={"standard"}*/}
+                                            {/*    label={"End time"}*/}
+                                            {/*/>*/}
                                         </Grid>
 
                                         <Grid item xs={12}>
                                             <div className="event-form-label">
-                                                Add description
+                                                Description / Agenda
                                             </div>
                                             <XRichTextArea
                                                 variant={"standard"}
@@ -215,14 +261,14 @@ const CreateEvent = () => {
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12}>
-                                            <XTextInput
-                                                variant={"outlined"}
-                                                helperText={'Ex. Zoom link, Google Meet'}
-                                                name={"conferenceUrl"}
-                                                label={"Add a link to video call"}
-                                            />
-                                        </Grid>
+                                        {/*<Grid item xs={12}>*/}
+                                        {/*    <XTextInput*/}
+                                        {/*        variant={"standard"}*/}
+                                        {/*        helperText={'Ex. Zoom link, Google Meet'}*/}
+                                        {/*        name={"conferenceUrl"}*/}
+                                        {/*        label={"Add a link to video call"}*/}
+                                        {/*    />*/}
+                                        {/*</Grid>*/}
 
                                         <Grid item xs={12}>
                                             <div className="event-form-label">
@@ -250,6 +296,7 @@ const CreateEvent = () => {
                                                     <CircularProgress variant={"indeterminate"}/> :
                                                     <Button
                                                         type={"submit"}
+                                                        disableElevation
                                                         variant={"contained"}
                                                         color={"secondary"}>
                                                         Create event

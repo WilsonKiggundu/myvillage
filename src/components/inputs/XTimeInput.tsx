@@ -1,45 +1,53 @@
 import React from "react";
-import {Field, FieldProps} from 'formik';
+import {Field, FieldProps, useField} from 'formik';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import {KeyboardTimePicker, MuiPickersUtilsProvider,} from '@material-ui/pickers'
+import {KeyboardTimePicker, KeyboardTimePickerProps, MuiPickersUtilsProvider,} from '@material-ui/pickers'
+import {KeyboardDatePickerProps} from "@material-ui/pickers/DatePicker/DatePicker";
+import {hasValue} from "./inputHelpers";
 
 interface IProps {
     name: string
     label?: string
+    variant?: 'outlined' | 'filled' | 'standard'
     placeholder?: string
+    pickerVariant?: 'inline' | 'dialog' | 'static'
+    disableFuture?: boolean
+    disablePast?: boolean
 }
 
-const Component = ({field, form, placeholder, ...other}: FieldProps & IProps) => {
+type PickerProps = Omit<KeyboardTimePickerProps, 'variant' | 'inputVariant'>;
 
-    function handleChange(date: any) {
-        return form.setFieldValue(field.name, date, true);
+const XTimeInput = (props: IProps & Partial<PickerProps>) => {
+
+    const {variant, helperText, pickerVariant, margin = 'normal', ...rest} = props
+    const [field, meta, helpers] = useField({name: props.name});
+    const error = hasValue(meta.error) ? meta.error : undefined
+    const showError = Boolean(error && meta.touched)
+
+    function handleChange(time: any) {
+        return helpers.setValue(time);
     }
 
     return <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardTimePicker
-            {...other}
-            margin="normal"
+            {...rest}
+            // margin="normal"
             id="time-picker"
+            fullWidth
+            variant={pickerVariant}
             value={field.value}
             format={"HH:mm"}
+            helperText={(showError && error) || helperText}
+            error={Boolean(showError)}
             onChange={handleChange}
+            onBlur={() => helpers.setTouched(true)}
+            inputVariant={variant}
             KeyboardButtonProps={{
                 'aria-label': 'change time',
             }}
         />
-
     </MuiPickersUtilsProvider>
-}
-
-const XTimeInput = (props: IProps) => {
-    return (
-        <Field
-            name={props.name}
-            label={props.label}
-            component={Component}
-        />
-    )
 }
 
 export default XTimeInput

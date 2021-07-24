@@ -16,7 +16,7 @@ switch (process.env.REACT_APP_ENV) {
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     default:
-        profileBaseUrl = "https://localhost:5001"
+        profileBaseUrl = "https://localhost:7001"
         eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
         notificationsBaseUrl = "https://commservice-test.innovationvillage.co.ug"
         jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"

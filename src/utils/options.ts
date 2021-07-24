@@ -19,9 +19,25 @@ export const Options = {
     ],
 
     EVENT_TYPES: [
-        {id: "event", name: "Event"},
-        {id: "meeting", name: "Meeting"},
-        {id: "conference", name: "Conference"}
+        {id: "physical", name: "Physical Event"},
+        {id: "webinar", name: "Webinar"}
+    ],
+
+    EVENT_LOCATIONS: [
+        {id: "zoom", name: "On Zoom"}
+    ],
+
+    REGIONS: [
+        {id: "central", name: "Central"},
+        {id: "northern", name: "Northern"},
+        {id: "eastern", name: "Eastern"},
+        {id: "western", name: "Western"}
+    ],
+
+    IMPLEMENTING_PARTNERS: [
+        {id: "Tukole", name: "Tukole"},
+        {id: "Kitchen Station", name: "Kitchen Station"},
+        {id: "MoTIV", name: "MoTIV"}
     ],
 
     STARTUP_CATEGORIES: [

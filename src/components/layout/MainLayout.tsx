@@ -49,6 +49,8 @@ function MainLayout(props: IProps) {
         document.body.style.backgroundColor = '#F1F1F0'
     }, [user])
 
+    const truthy = false;
+
     return (
         <>
             <CssBaseline/>

@@ -1,5 +1,12 @@
 .MainLayout-main{
     padding-top: 80px;
+    margin-left: 240px;
+}
+
+@media screen and (max-width: 567px) {
+    .MainLayout-main{
+        margin-left: 0;
+    }
 }
 
 #push-notification{

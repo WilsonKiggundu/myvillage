@@ -1,5 +1,5 @@
 import React, {MouseEvent, useEffect, useState} from "react";
-import {Button, Card, CardContent, Divider, Drawer, Typography, useTheme} from "@material-ui/core";
+import {Button, Card, CardContent, Divider, Drawer, Toolbar, Typography, useTheme} from "@material-ui/core";
 import {appBarStyles} from "./styles";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
@@ -11,6 +11,7 @@ import {MainMenuItems} from "./MainMenuItems";
 import {white} from "../../theme/custom-colors";
 import Avatar from "@material-ui/core/Avatar";
 import {Urls} from "../../routes/Urls";
+import AppsIcon from '@material-ui/icons/Apps';
 
 import {ReactComponent as MyVillageLogo} from "../../assets/images/mv-colored-logo.svg"
 import {ReactComponent as MyVillageIcon} from "../../assets/images/favicon.svg"
@@ -38,7 +39,7 @@ import XStyledMenu from "../XStyledMenu";
 import SendIcon from "@material-ui/icons/Send";
 
 type Anchor = 'left' | 'right';
-
+const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     small: {
         width: theme.spacing(3),
@@ -47,6 +48,27 @@ const useStyles = makeStyles((theme) => ({
     large: {
         width: theme.spacing(7),
         height: theme.spacing(7),
+    },
+    appBar: {
+        backgroundColor: "#1C1C1C",
+        color: "#FFFFFF",
+        width: "100%",
+        position: "fixed",
+        zIndex: theme.zIndex.drawer + 1
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerContainer: {
+        overflow: 'auto',
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
     },
 }));
 
@@ -81,7 +103,7 @@ export default function ApplicationBar() {
     }
 
     const [state, setState] = useState({
-        left: false,
+        left: true,
         right: false
     })
 
@@ -144,120 +166,125 @@ export default function ApplicationBar() {
     })
 
     return (
-        <header className="Appbar-root">
+        <>
 
-            <Grid container justify={"space-between"}>
-                <Grid xs={1} lg={1} item>
-                    {
-                        isMobile ?
-                            <MyVillageIcon className="Appbar-logo"/> :
-                            <MyVillageLogo className="Appbar-logo"/>
-                    }
-                </Grid>
-                <Grid xs={10} lg={3} item>
-                    <div className="Appbar-searchbox">
-                        <XAsyncTypeahead
-                            placeholder="What are you looking for?"/>
-                    </div>
-                </Grid>
-                {!isMobile && <Grid style={{textAlign: "right"}} lg={7} item>
-                    <ul className="Appbar-menu">
-                        <li className={activeMenu === 'feed' ? 'active' : ''}>
-                            <a href={Urls.feed}>Feed</a>
-                        </li>
-                        <li className={activeMenu === 'startups' ? 'active' : ''}>
-                            <a href={Urls.profiles.startups}>Startups</a>
-                        </li>
-                        <li className={activeMenu === 'community' ? 'active' : ''}>
-                            <a href={Urls.profiles.people}>Community</a>
-                        </li>
-                        <li className={activeMenu === 'events' ? 'active' : ''}>
-                            <a href={Urls.events}>Events</a>
-                        </li>
-                        <li className={activeMenu === 'jobs' ? 'active' : ''}>
-                            <a href={Urls.jobs.home}>Work in tech</a>
-                        </li>
+            <header className={classes.appBar}>
 
-                        {/*<li>*/}
-                        {/*    <a href="#">*/}
-                        {/*        <MoreVert />*/}
-                        {/*    </a>*/}
-                        {/*    <div className="dropdown">Here is a div that is white</div>*/}
-                        {/*</li>*/}
+                <Grid container justify={"space-between"}>
+                    <Grid xs={1} lg={1} item>
+                        {
+                            isMobile ?
+                                <MyVillageIcon className="Appbar-logo"/> :
+                                <MyVillageLogo className="Appbar-logo"/>
+                        }
+                    </Grid>
+                    <Grid xs={10} lg={5} item>
+                        <div className="Appbar-searchbox">
+                            <XAsyncTypeahead
+                                placeholder="What are you looking for?"/>
+                        </div>
+                    </Grid>
+                    {/*{!isMobile && <Grid style={{textAlign: "right"}} lg={7} item>*/}
+                    {/*    <ul className="Appbar-menu">*/}
+                    {/*        <li className={activeMenu === 'feed' ? 'active' : ''}>*/}
+                    {/*            <a href={Urls.feed}>Feed</a>*/}
+                    {/*        </li>*/}
+                    {/*        <li className={activeMenu === 'startups' ? 'active' : ''}>*/}
+                    {/*            <a href={Urls.profiles.startups}>Startups</a>*/}
+                    {/*        </li>*/}
+                    {/*        <li className={activeMenu === 'community' ? 'active' : ''}>*/}
+                    {/*            <a href={Urls.profiles.people}>Community</a>*/}
+                    {/*        </li>*/}
+                    {/*        <li className={activeMenu === 'events' ? 'active' : ''}>*/}
+                    {/*            <a href={Urls.events}>Events</a>*/}
+                    {/*        </li>*/}
+                    {/*        <li className={activeMenu === 'jobs' ? 'active' : ''}>*/}
+                    {/*            <a href={Urls.jobs.home}>Work in tech</a>*/}
+                    {/*        </li>*/}
 
-                        <li className={activeMenu === 'freelancers' ? 'active' : ''}>
-                            <a href={Urls.profiles.freelancers}>Freelancers</a>
-                        </li>
-                        <li className={activeMenu === 'developers' ? 'active' : ''}>
-                            <a href={Urls.profiles.developers}>Developers</a>
-                        </li>
-                    </ul>
-                </Grid>}
-                <Grid xs={1} md={1} item>
-                    {isMobile ?
-                        <div className="Appbar-profile">
-                            <MoreVert
-                                onClick={toggleDrawer(anchor, true)}
-                                className="Appbar-menu-icon"/>
-                        </div> :
-                        user ?
-                            <div className="Appbar-user-icon">
-                                <Button
-                                    onClick={showProfileMenu}
-                                    variant={"text"}
-                                    color={"secondary"}>
-                                    <Avatar src={user.profile.picture}>
-                                        {user.profile?.given_name ? user.profile.given_name[0].toUpperCase() : ''}
-                                    </Avatar>
-                                </Button>
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <a href="#">*!/*/}
+                    {/*        /!*        <MoreVert />*!/*/}
+                    {/*        /!*    </a>*!/*/}
+                    {/*        /!*    <div className="dropdown">Here is a div that is white</div>*!/*/}
+                    {/*        /!*</li>*!/*/}
 
-                                <XStyledMenu anchor={profileMenuEl} items={[
-                                    {
-                                        onClick: handleProfileView,
-                                        icon: <Avatar />,
-                                        primaryText: "My Profile",
-                                        secondaryText: `${user.profile?.given_name} ${user.profile?.family_name}`
-                                    },
-                                    {
-                                        primaryText: "Logout",
-                                        secondaryText: "Terminate Session",
-                                        onClick: handleLogout
-                                    }
-                                ]} onClose={closeMenu} />
-
+                    {/*        <li className={activeMenu === 'freelancers' ? 'active' : ''}>*/}
+                    {/*            <a href={Urls.profiles.freelancers}>Freelancers</a>*/}
+                    {/*        </li>*/}
+                    {/*        <li className={activeMenu === 'developers' ? 'active' : ''}>*/}
+                    {/*            <a href={Urls.profiles.developers}>Developers</a>*/}
+                    {/*        </li>*/}
+                    {/*    </ul>*/}
+                    {/*</Grid>}*/}
+                    <Grid xs={1} md={1} item>
+                        {isMobile ?
+                            <div className="Appbar-profile">
+                                <AppsIcon
+                                    onClick={toggleDrawer(anchor, true)}
+                                    className="Appbar-menu-icon"/>
                             </div> :
-                            <div className="Appbar-login-button">
-                                <Button
-                                    onClick={handleLogin}
-                                    variant={"outlined"}
-                                    color={"secondary"}>Login</Button>
-                            </div>
-                    }
+                            user ?
+                                <div className="Appbar-user-icon">
+                                    <Button
+                                        onClick={showProfileMenu}
+                                        variant={"text"}
+                                        color={"secondary"}>
+                                        <Avatar src={user.profile.picture}>
+                                            {user.profile?.given_name ? user.profile.given_name[0].toUpperCase() : ''}
+                                        </Avatar>
+                                    </Button>
+
+                                    <XStyledMenu anchor={profileMenuEl} items={[
+                                        {
+                                            onClick: handleProfileView,
+                                            icon: <Avatar />,
+                                            primaryText: "My Profile",
+                                            secondaryText: `${user.profile?.given_name} ${user.profile?.family_name}`
+                                        },
+                                        {
+                                            primaryText: "Logout",
+                                            secondaryText: "Terminate Session",
+                                            onClick: handleLogout
+                                        }
+                                    ]} onClose={closeMenu} />
+
+                                </div> :
+                                <div className="Appbar-login-button">
+                                    <Button
+                                        onClick={handleLogin}
+                                        variant={"outlined"}
+                                        color={"secondary"}>Login</Button>
+                                </div>
+                        }
+                    </Grid>
                 </Grid>
-            </Grid>
+
+            </header>
 
             <Drawer
-                variant="temporary"
+                variant="permanent"
                 anchor={anchor}
                 onClose={toggleDrawer(anchor, false)}
                 open={state[anchor]}
                 classes={{paper: appbarStyles.drawerPaper}}
                 className={appbarStyles.drawer}>
-                <div className={appbarStyles.drawerHeader}>
-                    <IconButton style={{color: white}} onClick={toggleDrawer(anchor, false)}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
-                    </IconButton>
+                <Toolbar />
+                {/*<div className={appbarStyles.drawerHeader}>*/}
+                {/*    <IconButton style={{color: white}} onClick={toggleDrawer(anchor, false)}>*/}
+                {/*        {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}*/}
+                {/*    </IconButton>*/}
 
-                    <div className={appbarStyles.grow}/>
+                {/*    <div className={appbarStyles.grow}/>*/}
 
-                    <MyVillageLogo style={{
-                        height: 50,
-                        margin: 10,
-                        width: 'auto'
-                    }}/>
-                </div>
+                {/*    <MyVillageLogo style={{*/}
+                {/*        height: 50,*/}
+                {/*        margin: 10,*/}
+                {/*        width: 'auto'*/}
+                {/*    }}/>*/}
+                {/*</div>*/}
 
-                <Divider style={{color: "white"}}/>
+                {/*<Divider style={{color: "white"}}/>*/}
 
                 {
                     isAuthenticated &&
@@ -303,7 +330,7 @@ export default function ApplicationBar() {
                     </Box>
                 }
 
-                <Divider style={{color: "white"}}/>
+                <Divider color={"#FFFFFF"} style={{color: "white", height: 6}}/>
 
                 <List>
                     {
@@ -322,7 +349,7 @@ export default function ApplicationBar() {
                 </List>
 
             </Drawer>
+        </>
 
-        </header>
     );
 }
