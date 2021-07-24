@@ -28,10 +28,11 @@ import './css/PostCard.css'
 import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 import {MoreVert} from "@material-ui/icons";
 import XStyledMenu from "../../components/XStyledMenu";
-import {makeUrl, postAsync} from "../../utils/ajax";
+import {deleteAsync, makeUrl, postAsync} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import Toast from "../../utils/Toast";
 import Linkify from "react-linkify"
+import {DELETE_POST, FETCH_COMMENTS} from "./redux/postsReducer";
 
 interface IProps {
     post: IPost
@@ -88,11 +89,23 @@ const PostCard = ({post}: IProps) => {
         const url = makeUrl("Profiles", Endpoints.person.blacklist)
         const personId = user?.profile.sub
 
-        if (personId !== authorId){
+        if (personId !== authorId) {
             postAsync(url, {personId, blacklistId: authorId})
                 .then(() => Toast.success("Success"))
                 .catch(error => Toast.error(error))
         }
+    }
+
+    const handleDeletePost = (id: string) => {
+        setActionMenuEl(null)
+        const url = makeUrl("Profiles", Endpoints.blog.post)
+        const personId = user?.profile.sub
+
+        deleteAsync(url, {id})
+            .then(() => {
+                dispatch({ type: DELETE_POST, payload: {id} })
+            })
+            .catch(error => Toast.error(error))
     }
 
     const handleShowComments = async (page: number) => {
@@ -101,6 +114,26 @@ const PostCard = ({post}: IProps) => {
         await dispatch(loadComments({postId: post.id, page}))
     }
 
+    const menuDeleteItem = {
+        primaryText: "Delete",
+        onClick: () => handleDeletePost(post.id)
+    }
+
+    const menuItems = [
+        {
+            onClick: () => handleHidePost(post.id),
+            primaryText: "Hide Post",
+        },
+        {
+            disabled: user?.profile.sub === post.authorId,
+            primaryText: "Block Author",
+            onClick: () => handleBlockAuthor(post.authorId)
+        }
+    ]
+
+    if (post.authorId === user?.profile.sub){
+        menuItems.push(menuDeleteItem)
+    }
 
 
     return (
@@ -128,6 +161,7 @@ const PostCard = ({post}: IProps) => {
                             {timeAgo(post.dateCreated)}
                         </small>}
                         action={
+
                             <>
                                 <IconButton
                                     aria-label="more"
@@ -139,17 +173,7 @@ const PostCard = ({post}: IProps) => {
                                 </IconButton>
                                 <XStyledMenu
                                     anchor={actionMenuEl}
-                                    items={[
-                                        {
-                                            onClick: () => handleHidePost(post.id),
-                                            primaryText: "Hide Post",
-                                        },
-                                        {
-                                            disabled: user?.profile.sub === post.authorId,
-                                            primaryText: "Block Author",
-                                            onClick: () => handleBlockAuthor(post.authorId)
-                                        }
-                                    ]}
+                                    items={menuItems}
                                     onClose={() => setActionMenuEl(null)}/>
                             </>
                         }
@@ -157,9 +181,9 @@ const PostCard = ({post}: IProps) => {
 
                     <div className="PostCard-content">
                         {post.details &&
-                            <Linkify>
-                                <div className="Post-details">{post.details}</div>
-                            </Linkify>
+                        <Linkify>
+                            <div className="Post-details">{post.details}</div>
+                        </Linkify>
                         }
                         {
                             uploads?.length ?

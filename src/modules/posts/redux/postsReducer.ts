@@ -2,6 +2,7 @@ import {IPost, IPostLike} from "../../../interfaces/IPost";
 import {IComment} from "../../../interfaces/IComment";
 import {IEvent} from "../../../interfaces/IEvent";
 import update from 'immutability-helper'
+import {act} from "react-dom/test-utils";
 
 export const LIKE_POST = 'posts/LIKE_POST'
 export const LIKE_POST_SUCCEEDED = 'posts/LIKE_POST_SUCCEEDED'
@@ -14,6 +15,10 @@ export const ADD_POST_COMMENT_FAILED = 'posts/ADD_POST_COMMENT_FAILED'
 export const ADD_POST = 'posts/ADD_POST'
 export const ADD_POST_SUCCEEDED = 'posts/ADD_POST_SUCCEEDED'
 export const ADD_POST_FAILED = 'posts/ADD_POST_FAILED'
+
+export const DELETE_POST = 'posts/DELETE_POST'
+export const DELETE_POST_SUCCEEDED = 'posts/DELETE_POST_SUCCEEDED'
+export const DELETE_POST_FAILED = 'posts/DELETE_POST_FAILED'
 
 export const FETCH_POSTS = 'posts/FETCH_POSTS';
 export const FETCH_POSTS_SUCCEEDED = 'posts/FETCH_POSTS_SUCCESS';
@@ -77,6 +82,29 @@ export default function reducer(state = initialState, action: any) {
             ...state
         }
     } else if (action.type === ADD_POST_FAILED) {
+        return {
+            ...state
+        }
+    }  else if (action.type === DELETE_POST) {
+
+        const {id} = action.payload
+
+        const post = state.data.find((f: any) => f.id === id)
+        const postIndex = state.data.indexOf(post)
+
+        state.data = update(state.data, {$splice: [[postIndex, 1]]})
+
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_POST_SUCCEEDED) {
+
+        console.log(action.payload.body)
+
+        return {
+            ...state
+        }
+    } else if (action.type === DELETE_POST_FAILED) {
         return {
             ...state
         }
