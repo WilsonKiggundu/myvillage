@@ -11,7 +11,8 @@
 
 .Post-details{
     white-space: pre-line;
-    line-break: anywhere;
+    /*line-break: anywhere;*/
+    word-break: keep-all;
     margin: 15px;
 }
 
