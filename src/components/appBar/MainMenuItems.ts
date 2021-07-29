@@ -1,14 +1,13 @@
 import {Urls} from "../../routes/Urls";
+import LayersIcon from '@material-ui/icons/Layers';
 
 export const MainMenuItems = [
     {
         label: "Feed",
-        icon: "",
         url: Urls.feed
     },
     {
         label: "Startups",
-        icon: "",
         url: Urls.profiles.startups
     },
     {

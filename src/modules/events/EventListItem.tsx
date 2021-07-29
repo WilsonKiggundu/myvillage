@@ -1,12 +1,13 @@
 import {IEvent} from "../../interfaces/IEvent";
-import {Box, Grid} from "@material-ui/core";
-import Progress from "../../components/progress/Progress";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import React, {useState} from "react";
+import {Box, Button, Divider, Grid} from "@material-ui/core";
+import React from "react";
 import {format, parseISO} from "date-fns";
 import './event-card.css'
 import {useHistory} from "react-router-dom";
 import {Urls} from "../../routes/Urls";
+import {ChevronRight, LocationOn} from "@material-ui/icons";
+import EventIcon from "@material-ui/icons/Event";
+import {longDate, timeFormat} from "../../utils/dateHelpers";
 
 const EventListItem = (event: IEvent) => {
 
@@ -35,13 +36,11 @@ const EventListItem = (event: IEvent) => {
                 </Grid>
             )}
             <Grid item lg={event.uploads?.length ? 8 : 12} className='event-description'>
-                <Grid className='title-and-progress'>
-                    <div className="event-title">
-                        <a href={Urls.singleEvent(event.id)}>
-                            {event.title}
-                        </a>
-                    </div>
-                </Grid>
+                <div className="event-title">
+                    <a href={Urls.singleEvent(event.id)}>
+                        {event.title}
+                    </a>
+                </div>
 
                 {
                     eventDetails && <Box mt={3} mb={2}>
@@ -55,26 +54,42 @@ const EventListItem = (event: IEvent) => {
                     className='event-rsvp'
                     justify={"space-between"}
                 >
-                    <Grid item xs={12} lg={6}>
+                    <Grid item xs={12}>
                         <Grid container>
-                            {
-                                event.location &&
-                                <Grid item xs={12} className='event-location'>
-                                    <LocationOnIcon className="event-location-icon"/>
-                                    <span className="event-location-venue">{event.location}</span>
-                                </Grid>
-                            }
 
-                            <Grid style={{marginTop: '-25px'}} item xs={12}>
-                                <div className="event-date-time">
-                                    <strong>{eventDate}</strong><br/>
-                                    <small>{startingTime} - {endingTime}</small>
-                                </div>
-                            </Grid>
+                            <Box mb={4} mt={4}>
+                                <Grid spacing={2} container justify={"flex-start"}>
+                                    <Grid item xs={12}>
+                                        <div className="event-icon">
+                                            <LocationOn color={"secondary"} style={{fontSize: 30}}/>
+                                        </div>
+                                        <strong>Location</strong><br/>
+                                        <div>{event.location}</div>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <div className="event-icon">
+                                            <EventIcon style={{fontSize: 30}}/>
+                                        </div>
+                                        <strong>Starts on</strong><br/>
+                                        {longDate(event.startDateTime)}<br/>
+                                        <span className="event-time">{timeFormat(event.startDateTime)}</span>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <div className="event-icon">
+                                            <EventIcon style={{fontSize: 30}}/>
+                                        </div>
+                                        <strong>Ends on</strong><br/>
+                                        {longDate(event.endDateTime)}<br/>
+                                        <span className="event-time">{timeFormat(event.endDateTime)}</span>
+                                    </Grid>
+                                </Grid>
+                            </Box>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} lg={6}>
-                        {/*<EventActionButtons iconSize={"sm"} showLabels={true} id={event.id} />*/}
+                    <Grid item xs={12}>
+                        <Button variant={"outlined"} size={"medium"} color={"default"} disableElevation>
+                            Details <ChevronRight />
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>

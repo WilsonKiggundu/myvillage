@@ -10,15 +10,7 @@ interface IProps {
 }
 
 const EventCard = ({event, featured}: IProps) => {
-    return (
-        <>
-            {
-                featured ?
-                    <FeaturedEvent {...event} /> :
-                    <EventListItem {...event} />
-            }
-        </>
-    )
+    return  <EventListItem {...event} />
 }
 
 export default EventCard

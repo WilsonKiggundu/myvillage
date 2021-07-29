@@ -1,45 +1,29 @@
 import {IEvent} from "../../interfaces/IEvent";
 import React, {useEffect, useState} from "react";
-import {
-    Box,
-    Button,
-    ButtonGroup,
-    Card,
-    CardHeader,
-    CircularProgress,
-    Divider,
-    List,
-    ListItem,
-    ListItemSecondaryAction,
-    ListItemText,
-    ListSubheader
-} from "@material-ui/core";
-import CardContent from "@material-ui/core/CardContent";
+import {Box, Button, CircularProgress, Divider} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {useSelector} from "react-redux";
 import {PleaseWait} from "../../components/PleaseWait";
 import Container from "@material-ui/core/Container";
 import {Urls} from "../../routes/Urls";
-import {getEventById, postEvent} from "./redux/eventsEndpoints";
+import {getEventById} from "./redux/eventsEndpoints";
 import {userSelector} from "../../data/coreSelectors";
-import Toast from "../../utils/Toast";
 import userManager from "../../utils/userManager";
-import XDrawer, {Anchor} from "../../components/drawer/XDrawer";
-import {IApplicant} from "../../interfaces/IApplicant";
-import {longDate, timeAgo, timeFormat} from "../../utils/dateHelpers";
+import {Anchor} from "../../components/drawer/XDrawer";
+import {longDate, timeFormat} from "../../utils/dateHelpers";
 import {useHistory} from "react-router-dom";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
-import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+import EventIcon from '@material-ui/icons/Event'
 
 import './event-card.css'
 import {LocationOn} from "@material-ui/icons";
-import EventActionButtons from "./EventActionButtons";
 import EventAttachments from "./EventAttachments";
-import {getAsync, getWithoutLoginAsync, makeUrl, postAsync} from "../../utils/ajax";
+import {getWithoutLoginAsync, makeUrl, postAsync} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
 import {IPerson} from "../profiles/people/IPerson";
 import SocialShare from "../../components/SocialShare";
+import {isBefore} from "date-fns";
+import {handleLogin, handleSignup} from "../../utils/authHelpers";
+import Toast from "../../utils/Toast";
 
 const Event = ({match}: any) => {
 
@@ -48,6 +32,9 @@ const Event = ({match}: any) => {
     const id = parseInt(match.params.id, 10)
     const [event, setEvent] = useState<IEvent | undefined>(undefined)
     const [eventDetails, setEventDetails] = useState<string>('')
+    const [isPastEvent, setIsPastEvent] = useState<boolean>(false)
+
+    const [submitting, setSubmitting] = useState<boolean>(false)
 
     const [applyButton, setApplyButton] = useState<any>({label: 'Apply now', visible: true, disabled: false})
     const [alreadyApplied, setAlreadyApplied] = useState<boolean>(false)
@@ -65,6 +52,10 @@ const Event = ({match}: any) => {
                 const response: any = await getEventById(id)
 
                 const event = response.body
+
+                event.type = (event.type === "physical" ? "Physical Event" : event.type).toUpperCase()
+                setIsPastEvent(isBefore(event.endDateTime, new Date()))
+
                 setEvent(event)
 
                 let div = document.createElement("div")
@@ -108,7 +99,7 @@ const Event = ({match}: any) => {
                     const response: any = await getWithoutLoginAsync(url, {id: attendance.profileId})
                     const person: IPerson = response.body.persons[0]
 
-                    if (person){
+                    if (person) {
                         attendances.push({
                             // id: attendance.id,
                             avatar: person.avatar ?? "",
@@ -134,6 +125,28 @@ const Event = ({match}: any) => {
 
     }
 
+    const handleRegister = async (eventId: any, profileId: string) => {
+
+        // setSubmitting(true)
+
+        if (!user) await handleLogin()
+
+        try {
+            const endpoint = `${Endpoints.events.api}/${eventId}/register/${profileId}`
+            const url = makeUrl("Profiles", endpoint)
+
+            await postAsync(url, {})
+
+            setSubmitting(false)
+            Toast.success("Your registration has been successful")
+
+        } catch (error) {
+            Toast.error(error.toString())
+        } finally {
+
+        }
+    }
+
     const handleViewAttendant = (profileId: string, category: string, eventName: string) => {
         const query: any = {
             eventId: event?.id,
@@ -152,211 +165,212 @@ const Event = ({match}: any) => {
     }
 
 
-
     return (
         <Container maxWidth={"md"}>
             <Grid justify={"center"} container spacing={2}>
                 <Grid item xs={12}>
                     {event ? (
-                        <>
-                            <Box mb={2}>
-                                <Card>
-                                    <CardHeader
-                                        title={
-                                            <div className="event-title">
-                                                {event.title}
-                                            </div>
-                                        }
-                                        subheader={
-                                            <div className="event-category">
-                                                {longDate(event.startDateTime)}
-                                            </div>
-                                        }/>
-
-                                    <Divider/>
-
-                                    <CardContent>
-                                        <Grid spacing={2} container justify={"flex-start"}>
-                                            <Grid item xs={6} sm={6} md={4} lg={3}>
-                                                <div className="event-location-icon">
-                                                    <LocationOn/>
-                                                </div>
-                                                <div>{event.location}</div>
-                                            </Grid>
-                                            <Grid item xs={6} sm={6} md={4} lg={3}>
-                                                <strong>Starts on</strong><br/>
-                                                {longDate(event.startDateTime)}<br/>
-                                                <span className="event-time">{timeFormat(event.startDateTime)}</span>
-                                            </Grid>
-                                            <Grid item xs={6} sm={6} md={4} lg={3}>
-                                                <strong>Ends on</strong><br/>
-                                                {longDate(event.endDateTime)}<br/>
-                                                <span className="event-time">{timeFormat(event.endDateTime)}</span>
-                                            </Grid>
-                                            <Grid item xs={6} sm={6} md={4} lg={3}>
-                                                <strong>Event type</strong><br/>
-                                                {event.type}
-                                            </Grid>
-                                        </Grid>
-                                    </CardContent>
-
-                                    <Divider/>
-
-                                    <CardContent>
-                                        <div
-                                            dangerouslySetInnerHTML={{
-                                                __html: event.details
-                                            }}
-                                        />
-
-                                        <EventAttachments uploads={event.uploads}/>
-                                    </CardContent>
-
-                                    <Divider/>
-
-                                    <CardContent>
-                                        <Grid
-                                            className="featured-event-button-container"
-                                            container
-                                            spacing={2}
-                                            justify={"flex-start"}>
-                                            <Grid item xs={12}>
-                                                <EventActionButtons
-                                                    iconSize={"lg"}
-                                                    bgColor={"#ffffff"}
-                                                    showLabels
-                                                    id={event.id}/>
-                                            </Grid>
-                                        </Grid>
-
-                                        <SocialShare
-                                            title={`#UpcomingEvent - ${longDate(event.startDateTime)}`}
-                                            description={eventDetails.substr(0, 100)} />
-
-                                    </CardContent>
-
+                        <div className="event-canvas">
+                            <Grid container justify={"space-between"} spacing={2}>
+                                <Grid item xs={12} md={8}>
+                                    <h1 className="event-title">{event.title}</h1>
+                                    <label>{event.type}</label>
+                                </Grid>
+                                <Grid style={{textAlign: "right"}} item xs={12} md={4}>
                                     {
-                                        event.attendances?.length ?
-                                            <>
-                                                <Divider/>
-
-                                                <CardContent>
-                                                    <Grid container justify={"center"}>
-                                                        <Grid item>
-                                                            <Button
-                                                                onClick={() => toggleDrawer("right", true)}
-                                                                color={"default"}
-                                                                variant={"outlined"}>
-                                                                {event.attendances?.length} responses
-                                                            </Button>
-                                                        </Grid>
-                                                    </Grid>
-                                                </CardContent>
-
-                                                <XDrawer
-                                                    onClose={() => toggleDrawer("right", false)}
-                                                    open={openDrawer}
-                                                    anchor={drawerAnchor}>
-                                                    <div className="Drawer">
-                                                        {
-                                                            attendances ?
-                                                                <>
-
-                                                                    <List
-                                                                        subheader={
-                                                                            <ListSubheader
-                                                                                className="Drawer-subheader">
-                                                                                Attendance
-                                                                            </ListSubheader>
-                                                                        }>
-
-                                                                        <div
-                                                                            className="application-button-group">
-                                                                            <ButtonGroup color={"default"}>
-                                                                                <Button
-                                                                                    onClick={() => setAttendances(allResponses)}>
-                                                                                    All
-                                                                                    ({allResponses.length})
-                                                                                </Button>
-                                                                                {
-                                                                                    maybeResponses.length ?
-                                                                                        <Button
-                                                                                            onClick={() => setAttendances(maybeResponses)}>
-                                                                                            May be
-                                                                                            ({maybeResponses.length})
-                                                                                        </Button> : ""
-                                                                                }
-                                                                                {
-                                                                                    notAttendingResponses.length ?
-                                                                                        <Button
-                                                                                            onClick={() => setAttendances(notAttendingResponses)}
-                                                                                            className="application-reject-button">
-                                                                                            Not attending
-                                                                                            ({notAttendingResponses.length})
-                                                                                        </Button> : ""
-                                                                                }
-                                                                                {
-                                                                                    attendingResponses.length ?
-                                                                                        <Button
-                                                                                            onClick={() => setAttendances(attendingResponses)}
-                                                                                            className="application-accept-button">
-                                                                                            Attending
-                                                                                            ({attendingResponses.length})
-                                                                                        </Button> : ""
-                                                                                }
-                                                                            </ButtonGroup>
-                                                                        </div>
-
-                                                                        {attendances ? attendances.map((attendance: any, index: number) => (
-                                                                            <div key={index}>
-                                                                                <ListItem
-                                                                                    onClick={
-                                                                                        () => handleViewAttendant(
-                                                                                            attendance.profileId,
-                                                                                            attendance.category,
-                                                                                            event?.title
-                                                                                        )
-                                                                                    }
-                                                                                    button
-                                                                                    alignItems="flex-start">
-                                                                                    <ListItemText
-                                                                                        primary={
-                                                                                            attendance.name
-                                                                                        }
-                                                                                        secondary={
-                                                                                            <span
-                                                                                                className="Drawer-timeago">
-                                                                                                    {attendance.category}
-                                                                                                </span>
-                                                                                        }/>
-                                                                                    <ListItemSecondaryAction>
-                                                                                        {
-                                                                                            attendance.category === 'attending' ?
-                                                                                                <CheckCircleIcon
-                                                                                                    className="application-accept-icon"/> :
-                                                                                                attendance.category === 'not-attending' ?
-                                                                                                    <CancelIcon
-                                                                                                        className="application-reject-icon"/> :
-                                                                                                    ""
-                                                                                        }
-                                                                                    </ListItemSecondaryAction>
-
-                                                                                </ListItem>
-                                                                                <Divider/>
-                                                                            </div>
-                                                                        )) : ""}
-                                                                    </List>
-                                                                </> :
-                                                                <PleaseWait label={"Loading applicants..."}/>
-                                                        }
-                                                    </div>
-                                                </XDrawer>
-
-                                            </> : ""
+                                        isPastEvent ?
+                                            <Button disableElevation variant={"contained"} color={"secondary"}>
+                                                Rate this event
+                                            </Button> :
+                                            <Button onClick={() => handleRegister(event.id, user.profile.sub)}
+                                                    disableElevation variant={"contained"}
+                                                    disabled={submitting}
+                                                    color={"secondary"}>
+                                                {submitting ? <CircularProgress size={20} /> : "Register to attend" }
+                                            </Button>
                                     }
-                                </Card>
+                                </Grid>
+                            </Grid>
+
+                            <Box mb={4} mt={4}>
+                                <Grid spacing={2} container justify={"flex-start"}>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <div className="event-icon">
+                                            <LocationOn color={"secondary"} style={{fontSize: 50}}/>
+                                        </div>
+                                        <strong>Location</strong><br/>
+                                        <div>{event.location}</div>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <div className="event-icon">
+                                            <EventIcon style={{fontSize: 50}}/>
+                                        </div>
+                                        <strong>Starts on</strong><br/>
+                                        {longDate(event.startDateTime)}<br/>
+                                        <span className="event-time">{timeFormat(event.startDateTime)}</span>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <div className="event-icon">
+                                            <EventIcon style={{fontSize: 50}}/>
+                                        </div>
+                                        <strong>Ends on</strong><br/>
+                                        {longDate(event.endDateTime)}<br/>
+                                        <span className="event-time">{timeFormat(event.endDateTime)}</span>
+                                    </Grid>
+                                </Grid>
                             </Box>
-                        </>
+                            <Box>
+                                <h5>Event details / Agenda</h5>
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: event.details
+                                    }}
+                                />
+
+                                <EventAttachments uploads={event.uploads}/>
+
+                                {/*<Grid*/}
+                                {/*    className="featured-event-button-container"*/}
+                                {/*    container*/}
+                                {/*    spacing={2}*/}
+                                {/*    justify={"flex-start"}>*/}
+                                {/*    <Grid item xs={12}>*/}
+                                {/*        <EventActionButtons*/}
+                                {/*            iconSize={"lg"}*/}
+                                {/*            bgColor={"#ffffff"}*/}
+                                {/*            showLabels*/}
+                                {/*            id={event.id}/>*/}
+                                {/*    </Grid>*/}
+                                {/*</Grid>*/}
+
+                                <Divider/>
+
+                                {event.attendances?.map((attendant: any, index: number) => {
+                                    return <p>{attendant.profileId}</p>
+                                })}
+
+                                <SocialShare
+                                    title={`#UpcomingEvent - ${longDate(event.startDateTime)}`}
+                                    description={eventDetails.substr(0, 100)}/>
+
+                                {/*{*/}
+                                {/*    event.attendances?.length ?*/}
+                                {/*        <>*/}
+                                {/*            <Divider/>*/}
+                                {/*            <Grid container justify={"center"}>*/}
+                                {/*                <Grid item>*/}
+                                {/*                    <Button*/}
+                                {/*                        onClick={() => toggleDrawer("right", true)}*/}
+                                {/*                        color={"default"}*/}
+                                {/*                        variant={"outlined"}>*/}
+                                {/*                        {event.attendances?.length} responses*/}
+                                {/*                    </Button>*/}
+                                {/*                </Grid>*/}
+                                {/*            </Grid>*/}
+
+                                {/*            /!*<XDrawer*!/*/}
+                                {/*            /!*    onClose={() => toggleDrawer("right", false)}*!/*/}
+                                {/*            /!*    open={openDrawer}*!/*/}
+                                {/*            /!*    anchor={drawerAnchor}>*!/*/}
+                                {/*            /!*    <div className="Drawer">*!/*/}
+                                {/*            /!*        {*!/*/}
+                                {/*            /!*            attendances ?*!/*/}
+                                {/*            /!*                <>*!/*/}
+
+                                {/*            /!*                    <List*!/*/}
+                                {/*            /!*                        subheader={*!/*/}
+                                {/*            /!*                            <ListSubheader*!/*/}
+                                {/*            /!*                                className="Drawer-subheader">*!/*/}
+                                {/*            /!*                                Attendance*!/*/}
+                                {/*            /!*                            </ListSubheader>*!/*/}
+                                {/*            /!*                        }>*!/*/}
+
+                                {/*            /!*                        <div*!/*/}
+                                {/*            /!*                            className="application-button-group">*!/*/}
+                                {/*            /!*                            <ButtonGroup color={"default"}>*!/*/}
+                                {/*            /!*                                <Button*!/*/}
+                                {/*            /!*                                    onClick={() => setAttendances(allResponses)}>*!/*/}
+                                {/*            /!*                                    All*!/*/}
+                                {/*            /!*                                    ({allResponses.length})*!/*/}
+                                {/*            /!*                                </Button>*!/*/}
+                                {/*            /!*                                {*!/*/}
+                                {/*            /!*                                    maybeResponses.length ?*!/*/}
+                                {/*            /!*                                        <Button*!/*/}
+                                {/*            /!*                                            onClick={() => setAttendances(maybeResponses)}>*!/*/}
+                                {/*            /!*                                            May be*!/*/}
+                                {/*            /!*                                            ({maybeResponses.length})*!/*/}
+                                {/*            /!*                                        </Button> : ""*!/*/}
+                                {/*            /!*                                }*!/*/}
+                                {/*            /!*                                {*!/*/}
+                                {/*            /!*                                    notAttendingResponses.length ?*!/*/}
+                                {/*            /!*                                        <Button*!/*/}
+                                {/*            /!*                                            onClick={() => setAttendances(notAttendingResponses)}*!/*/}
+                                {/*            /!*                                            className="application-reject-button">*!/*/}
+                                {/*            /!*                                            Not attending*!/*/}
+                                {/*            /!*                                            ({notAttendingResponses.length})*!/*/}
+                                {/*            /!*                                        </Button> : ""*!/*/}
+                                {/*            /!*                                }*!/*/}
+                                {/*            /!*                                {*!/*/}
+                                {/*            /!*                                    attendingResponses.length ?*!/*/}
+                                {/*            /!*                                        <Button*!/*/}
+                                {/*            /!*                                            onClick={() => setAttendances(attendingResponses)}*!/*/}
+                                {/*            /!*                                            className="application-accept-button">*!/*/}
+                                {/*            /!*                                            Attending*!/*/}
+                                {/*            /!*                                            ({attendingResponses.length})*!/*/}
+                                {/*            /!*                                        </Button> : ""*!/*/}
+                                {/*            /!*                                }*!/*/}
+                                {/*            /!*                            </ButtonGroup>*!/*/}
+                                {/*            /!*                        </div>*!/*/}
+
+                                {/*            /!*                        {attendances ? attendances.map((attendance: any, index: number) => (*!/*/}
+                                {/*            /!*                            <div key={index}>*!/*/}
+                                {/*            /!*                                <ListItem*!/*/}
+                                {/*            /!*                                    onClick={*!/*/}
+                                {/*            /!*                                        () => handleViewAttendant(*!/*/}
+                                {/*            /!*                                            attendance.profileId,*!/*/}
+                                {/*            /!*                                            attendance.category,*!/*/}
+                                {/*            /!*                                            event?.title*!/*/}
+                                {/*            /!*                                        )*!/*/}
+                                {/*            /!*                                    }*!/*/}
+                                {/*            /!*                                    button*!/*/}
+                                {/*            /!*                                    alignItems="flex-start">*!/*/}
+                                {/*            /!*                                    <ListItemText*!/*/}
+                                {/*            /!*                                        primary={*!/*/}
+                                {/*            /!*                                            attendance.name*!/*/}
+                                {/*            /!*                                        }*!/*/}
+                                {/*            /!*                                        secondary={*!/*/}
+                                {/*            /!*                                            <span*!/*/}
+                                {/*            /!*                                                className="Drawer-timeago">*!/*/}
+                                {/*            /!*                                                        {attendance.category}*!/*/}
+                                {/*            /!*                                                    </span>*!/*/}
+                                {/*            /!*                                        }/>*!/*/}
+                                {/*            /!*                                    <ListItemSecondaryAction>*!/*/}
+                                {/*            /!*                                        {*!/*/}
+                                {/*            /!*                                            attendance.category === 'attending' ?*!/*/}
+                                {/*            /!*                                                <CheckCircleIcon*!/*/}
+                                {/*            /!*                                                    className="application-accept-icon"/> :*!/*/}
+                                {/*            /!*                                                attendance.category === 'not-attending' ?*!/*/}
+                                {/*            /!*                                                    <CancelIcon*!/*/}
+                                {/*            /!*                                                        className="application-reject-icon"/> :*!/*/}
+                                {/*            /!*                                                    ""*!/*/}
+                                {/*            /!*                                        }*!/*/}
+                                {/*            /!*                                    </ListItemSecondaryAction>*!/*/}
+
+                                {/*            /!*                                </ListItem>*!/*/}
+                                {/*            /!*                                <Divider/>*!/*/}
+                                {/*            /!*                            </div>*!/*/}
+                                {/*            /!*                        )) : ""}*!/*/}
+                                {/*            /!*                    </List>*!/*/}
+                                {/*            /!*                </> :*!/*/}
+                                {/*            /!*                <PleaseWait label={"Loading applicants..."}/>*!/*/}
+                                {/*            /!*        }*!/*/}
+                                {/*            /!*    </div>*!/*/}
+                                {/*            /!*</XDrawer>*!/*/}
+
+                                {/*        </> : ""*/}
+                                {/*}*/}
+                            </Box>
+                        </div>
 
                     ) : <PleaseWait label={"Please wait while we fetch the event details..."}/>}
                 </Grid>

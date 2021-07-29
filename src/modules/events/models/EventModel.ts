@@ -11,6 +11,12 @@ export default {
         conferenceUrl: { name: 'conferenceUrl' },
         frequency: { name: 'frequency' },
         createdBy: { name: 'createdBy' },
+        category: { name: 'category' },
+        sector: { name: 'sector' },
+        partner: { name: 'partner' },
+        objective: { name: 'objective' },
+        region: { name: 'region' },
+        tiv_affiliation: { name: 'tiv_affiliation' },
         type: { name: 'type' }
     }
 };

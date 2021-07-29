@@ -1,3 +1,9 @@
+.event-canvas{
+    background-color: white;
+    padding: 30px;
+    margin-top: -10px;
+}
+
 .flex-display {
     display: flex;
 }
@@ -61,8 +67,12 @@
     cursor: pointer;
 }
 
+.event-body:hover{
+
+}
+
 .event-body:hover a{
-    color: #e98a2b;
+    /*color: #e98a2b;*/
 }
 
 .event-body .featured-text {
@@ -74,6 +84,16 @@
     margin-bottom: -5px;
 }
 
+.event-icon{
+    width: 60px;
+    float: left;
+    height: 100%;
+}
+
+.event-float-right{
+    float: left;
+}
+
 .card-wrapper {
     flex-direction: column;
     align-items: center;
@@ -82,8 +102,9 @@
 
 .event-title{
     font-style: normal;
-    font-weight: 900;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 25px;
 }
 
 .event-title a{
@@ -191,7 +212,7 @@
     align-items: center;
     justify-content: center;
     background-color: #FFFFFF;
-    padding: 1em;
+    padding: 0 1em;
     width: 100%;
 }
 

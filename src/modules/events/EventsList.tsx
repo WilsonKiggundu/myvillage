@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, ButtonGroup, Container, Grid} from "@material-ui/core";
+import {Container, Grid} from "@material-ui/core";
 import {XFab} from "../../components/buttons/XFab";
 import AddIcon from "@material-ui/icons/Add";
 import {PleaseWait} from "../../components/PleaseWait";
@@ -10,8 +10,6 @@ import Box from "@material-ui/core/Box";
 import {eventsSelector} from "./redux/eventsSelectors";
 import {loadEvents} from "./redux/eventsActions";
 import ErrorPage from "../exceptions/Error";
-import ListIcon from '@material-ui/icons/List';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
 import {scrolledToBottom} from "../../utils/scrollHelpers";
 import {Urls} from "../../routes/Urls";
@@ -79,24 +77,24 @@ const EventsList = () => {
             {/*</Box>*/}
 
             {eventsView === "list" &&
-            <Container maxWidth={"md"}>
-                {events.data.length ? events.data
-                        .slice()
-                        .sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
-                        // .filter((event: IEvent) => !isPast(event.startDateTime))
-                        .map((event: IEvent, index: number) => (
-                            <Grid key={index} spacing={2} container>
-                                <Grid item xs={12}>
+            <Container maxWidth={"lg"}>
+                <Grid spacing={2} container>
+                    {events.data.length ? events.data
+                            .slice()
+                            .sort((a: IEvent, b: IEvent) => a.startDateTime.localeCompare(b.startDateTime))
+                            // .filter((event: IEvent) => !isPast(event.startDateTime))
+                            .map((event: IEvent, index: number) => (
+                                <Grid key={index} item xs={12} md={6} lg={4}>
                                     <Box mb={2}>
-                                        <EventCard featured={index === 0} event={event}/>
+                                        <EventCard event={event}/>
                                     </Box>
                                 </Grid>
-                            </Grid>
-                        )) :
-                    <Alert variant={"outlined"} severity={"info"}>
-                        No events found
-                    </Alert>
-                }
+                            )) :
+                        <Alert variant={"outlined"} severity={"info"}>
+                            No events found
+                        </Alert>
+                    }
+                </Grid>
             </Container>
             }
 

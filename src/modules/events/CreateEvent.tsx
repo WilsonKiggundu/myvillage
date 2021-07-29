@@ -81,7 +81,7 @@ const CreateEvent = () => {
     const handleSubmit = async (values: any, actions: any) => {
         actions.setSubmitting(true)
 
-        // upload the files
+        // upload the files if any is attached
         let uploads: IUpload[] = []
         if (files.length) {
             await Promise.all(files.map(async (file: any) => {
@@ -95,18 +95,29 @@ const CreateEvent = () => {
         }
 
         const date = format(parseISO(values.date), 'yyyy-MM-dd')
+        const startTime = format(parseISO(values.startTime), 'HH:mm:ss')
+        const endTime = format(parseISO(values.endTime), 'HH:mm:ss')
 
         const event = {
             title: values.title,
-            type: values.type.name,
-            location: values.location,
+            type: values.type.id,
+            location: values.location.name,
+            partner: values.partner.id,
+            category: values.category.name,
+            objective: values.objective.name,
+            region: values.region.map((r: any) => r.id).join(','),
+            sector: values.sector.name,
+            tivAffiliation: values.tiv_affiliation.id === "yes",
             details: values.details,
-            frequency: values.frequency,
+            frequency: "1",
+            interval: "0",
             createdBy: user.profile.sub,
-            startDateTime: `${date}T${values.startTime.id}:00`,
-            endDateTime: `${date}T${values.endTime.id}:00`,
+            startDateTime: `${date}T${startTime}`,
+            endDateTime: `${date}T${endTime}`,
             uploads: uploads
         }
+
+        console.log(event)
 
         postEvent(event)
             .then((response: any) => {
@@ -135,29 +146,51 @@ const CreateEvent = () => {
                     <Form id="create-event-form">
                         <Box mb={2}>
                             <Card>
-                                <CardHeader title="Add event"/>
+                                <CardHeader subheader={"All fields are required unless indicated otherwise"}
+                                            title="Create an event"/>
                                 <Divider/>
                                 <CardContent>
                                     <Grid container spacing={2}>
+
                                         <Grid item xs={12}>
                                             <XTextInput
                                                 name={"title"}
                                                 helperText={"Give your event a descriptive name so that it can easily be found"}
                                                 multiline={false}
-                                                variant={"standard"}
+                                                variant={"outlined"}
                                                 placeholder={"Enter the title"}
                                                 label={"Event title"}
                                             />
                                         </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <XSelectInputCreatable
+                                                // multiple
+                                                variant={"outlined"}
+                                                options={Options.EVENT_OBJECTIVE}
+                                                name={"objective"}
+                                                label={"Objective"}
+                                                placeholder={"What's the objective of the event?"}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <XSelectInputCreatable
+                                                helperText={"Optional"}
+                                                label={"Event Category"}
+                                                placeholder={"What kind of event is it?"}
+                                                name={"category"}
+                                                options={Options.EVENT_CATEGORIES}
+                                                variant={"outlined"}
+                                            />
+                                        </Grid>
+
                                         <Grid item xs={12} md={6}>
                                             <XSelectInputCreatable
                                                 helperText={"You can add any option if it does not exist"}
                                                 label={"Event Type"}
                                                 placeholder={"What type of event is it?"}
                                                 name={"type"}
-                                                defaultValue={
-                                                    {id: "webinar", name: "Webinar"}
-                                                }
                                                 options={Options.EVENT_TYPES}
                                                 variant={"outlined"}
                                             />
@@ -165,13 +198,9 @@ const CreateEvent = () => {
 
                                         <Grid item xs={12} md={6}>
                                             <XSelectInputCreatable
-                                                defaultValue={
-                                                    {id: "zoom", name: "On Zoom"}
-                                                }
                                                 placeholder={"Where is the event happening?"}
                                                 variant={"outlined"}
-                                                helperText={'For Zoom events, Zoom webinar ' +
-                                                'will be created automatically'}
+                                                helperText={'You can type any location'}
                                                 allowAddNew
                                                 options={Options.EVENT_LOCATIONS}
                                                 name={"location"}
@@ -181,12 +210,11 @@ const CreateEvent = () => {
 
                                         <Grid item xs={12} md={6}>
                                             <XSelectInputCreatable
-                                                multiple
+                                                label={"TIV Affiliation"}
                                                 variant={"outlined"}
-                                                helperText={''}
-                                                options={Options.REGIONS}
-                                                name={"region"}
-                                                label={"Region"}
+                                                options={Options.YES_NO}
+                                                name={"tiv_affiliation"}
+                                                helperText={"Is this event affiliated to Innovation Village or MoTIV?"}
                                             />
                                         </Grid>
 
@@ -195,10 +223,34 @@ const CreateEvent = () => {
                                                 placeholder={"Select or add partner"}
                                                 allowAddNew
                                                 variant={"outlined"}
-                                                helperText={''}
+                                                helperText={'Specify the implementing partner. Optional'}
                                                 options={Options.IMPLEMENTING_PARTNERS}
                                                 name={"partner"}
                                                 label={"Implementing Partner"}
+
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <XSelectInputCreatable
+                                                multiple
+                                                variant={"outlined"}
+                                                options={Options.REGIONS}
+                                                name={"region"}
+                                                label={"Region"}
+                                                helperText={"Specify in which region the event is taking place"}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <XSelectInputCreatable
+                                                // multiple
+                                                allowAddNew
+                                                variant={"outlined"}
+                                                options={Options.EVENT_SECTORS}
+                                                name={"sector"}
+                                                label={"Sector"}
+                                                helperText={"Ex. Information Technology"}
                                             />
                                         </Grid>
 
@@ -221,16 +273,7 @@ const CreateEvent = () => {
                                                         disablePast
                                                         variant={"outlined"}
                                                         placeholder={"Start time"}
-                                                        name={"startTime"} />
-
-                                            {/*<XSelectInputCreatable*/}
-                                            {/*    options={timeOptions}*/}
-                                            {/*    name={"startTime"}*/}
-                                            {/*    variant={"standard"}*/}
-                                            {/*    helperText={"What time does the event start?"}*/}
-                                            {/*    allowAddNew*/}
-                                            {/*    label={"Start time"}*/}
-                                            {/*/>*/}
+                                                        name={"startTime"}/>
                                         </Grid>
 
                                         <Grid item xs={6}>
@@ -238,16 +281,7 @@ const CreateEvent = () => {
                                             <XTimeInput helperText={"What time does the event end?"}
                                                         placeholder={"End time"}
                                                         variant={"outlined"}
-                                                        name={"endTime"} />
-
-                                            {/*<XSelectInputCreatable*/}
-                                            {/*    options={timeOptions}*/}
-                                            {/*    name={"endTime"}*/}
-                                            {/*    allowAddNew*/}
-                                            {/*    helperText={"And when does it end?"}*/}
-                                            {/*    variant={"standard"}*/}
-                                            {/*    label={"End time"}*/}
-                                            {/*/>*/}
+                                                        name={"endTime"}/>
                                         </Grid>
 
                                         <Grid item xs={12}>
@@ -260,15 +294,6 @@ const CreateEvent = () => {
                                                 label={"Event description"}
                                             />
                                         </Grid>
-
-                                        {/*<Grid item xs={12}>*/}
-                                        {/*    <XTextInput*/}
-                                        {/*        variant={"standard"}*/}
-                                        {/*        helperText={'Ex. Zoom link, Google Meet'}*/}
-                                        {/*        name={"conferenceUrl"}*/}
-                                        {/*        label={"Add a link to video call"}*/}
-                                        {/*    />*/}
-                                        {/*</Grid>*/}
 
                                         <Grid item xs={12}>
                                             <div className="event-form-label">
@@ -283,7 +308,7 @@ const CreateEvent = () => {
 
                                 <Divider/>
 
-                                <Box mt={2} mb={2} ml={2} mr={2}>
+                                <Box mt={4} mb={4} ml={2} mr={2}>
                                     <Grid spacing={2} container justify={"center"}>
                                         <Grid item>
                                             <Button variant={"outlined"} color={"default"}>

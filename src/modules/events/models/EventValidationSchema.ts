@@ -13,7 +13,13 @@ const {
         details,
         conferenceUrl,
         frequency,
-        createdBy
+        createdBy,
+        sector,
+        region,
+        objective,
+        category,
+        partner,
+        tiv_affiliation
     }
 } = eventModel
 
@@ -26,6 +32,10 @@ export default [
         [endTime.name]: Yup.string().required('Event end time is required'),
         [details.name]: Yup.string().required('Event details are required'),
         [location.name]: Yup.string().required('Event location is required'),
-        // [conferenceUrl.name]: Yup.string().required('Event title is required')
+        [sector.name]: Yup.string().required('Event sector is required'),
+        [region.name]: Yup.string().required('Event region is required'),
+        [objective.name]: Yup.string().required('Event objective is required'),
+        [location.name]: Yup.string().required('Event location is required'),
+        [tiv_affiliation.name]: Yup.string().required('Required'),
     }),
 ];

@@ -69,9 +69,9 @@ const StartupCard = ({startup, index}: IProps) => {
                             {startupDescription}
                         </div>
 
-                        <Button variant={"outlined"} style={{textTransform: "inherit", float: 'right'}}
-                                size={"small"} color={"default"}
-                                onClick={() => handleClick(startup.id)}>View Profile <ChevronRight /></Button>
+                        {/*<Button variant={"outlined"} style={{textTransform: "inherit", float: 'left'}}*/}
+                        {/*        size={"small"} color={"default"}*/}
+                        {/*        onClick={() => handleClick(startup.id)}>View Profile <ChevronRight /></Button>*/}
                     </Grid>
                 </Grid>
 
