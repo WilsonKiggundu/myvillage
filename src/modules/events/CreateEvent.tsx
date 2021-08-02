@@ -79,7 +79,7 @@ const CreateEvent = () => {
     })
 
     const handleSubmit = async (values: any, actions: any) => {
-        actions.setSubmitting(true)
+        // actions.setSubmitting(true)
 
         // upload the files if any is attached
         let uploads: IUpload[] = []
@@ -95,8 +95,8 @@ const CreateEvent = () => {
         }
 
         const date = format(parseISO(values.date), 'yyyy-MM-dd')
-        const startTime = format(parseISO(values.startTime), 'HH:mm:ss')
-        const endTime = format(parseISO(values.endTime), 'HH:mm:ss')
+        const startTime = format(new Date(values.startTime), 'HH:mm')
+        const endTime = format(new Date(values.endTime), 'HH:mm')
 
         const event = {
             title: values.title,
@@ -112,12 +112,10 @@ const CreateEvent = () => {
             frequency: "1",
             interval: "0",
             createdBy: user.profile.sub,
-            startDateTime: `${date}T${startTime}`,
-            endDateTime: `${date}T${endTime}`,
+            startDateTime: `${date}T${startTime}:00`,
+            endDateTime: `${date}T${endTime}:00`,
             uploads: uploads
         }
-
-        console.log(event)
 
         postEvent(event)
             .then((response: any) => {

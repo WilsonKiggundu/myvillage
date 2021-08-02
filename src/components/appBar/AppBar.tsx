@@ -84,7 +84,7 @@ export default function ApplicationBar() {
     const appbarStyles = appBarStyles()
     const theme = useTheme();
 
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const user: User = useSelector(userSelector)
     const isAuthenticated = user != null
 
@@ -157,8 +157,8 @@ export default function ApplicationBar() {
 
             <header className={classes.appBar}>
 
-                <Grid container justify={"space-between"}>
-                    <Grid xs={2} lg={3} item>
+                <Grid container spacing={2} justify={"center"}>
+                    <Grid xs={1} lg={3} item>
                         <div className="Appbar-menu-icon-wrapper">
                             <MenuIcon
                                 onClick={toggleDrawer(anchor, true)}
@@ -166,37 +166,37 @@ export default function ApplicationBar() {
                             {!isMobile && <MyVillageLogo className="Appbar-logo"/>}
                         </div>
                     </Grid>
-                    <Grid xs={8} lg={6} item>
+                    <Grid xs={isMobile ? 10 : 8} lg={6} item>
                         <div className="Appbar-searchbox">
                             <XAsyncTypeahead
                                 placeholder="What are you looking for?"/>
                         </div>
                     </Grid>
-                    <Grid xs={2} lg={3} item>
+                    {!isMobile && <Grid xs={3} lg={3} item>
                         <div className="Appbar-icons-wrapper">
                             <div className="Appbar-right-icons">
                                 <Badge onClick={() => window.location.replace(Urls.events)}
-                                       className="icon" badgeContent={3} color={"secondary"}>
+                                       className="icon" color={"secondary"}>
                                     <EventIcon />
                                 </Badge>
                                 <Badge
                                     onClick={() => window.location.replace(Urls.jobs.list)}
-                                    className="icon" badgeContent={12} color={"secondary"}>
+                                    className="icon" color={"secondary"}>
                                     <WorkIcon />
                                 </Badge>
                                 <Badge
                                     onClick={() => window.location.replace(Urls.profiles.freelancers)}
-                                    className="icon" badgeContent={2} color={"default"}>
-                                    <AllInclusiveIcon />
+                                    className="icon" color={"default"}>
+                                    <CodeIcon />
                                 </Badge>
                             </div>
                         </div>
-                    </Grid>
+                    </Grid>}
                 </Grid>
 
             </header>
 
-            {user && <Drawer
+            <Drawer
                 variant={"temporary"}
                 anchor={anchor}
                 onClose={toggleDrawer(anchor, false)}
@@ -325,7 +325,7 @@ export default function ApplicationBar() {
                     </ListItemLink>}
                 </List>
 
-            </Drawer>}
+            </Drawer>
         </>
 
     );
