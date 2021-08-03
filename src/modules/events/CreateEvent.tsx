@@ -33,6 +33,7 @@ import {Urls} from "../../routes/Urls";
 import Toast from "../../utils/Toast";
 import {postEvent} from "./redux/eventsEndpoints";
 import XTimeInput from "../../components/inputs/XTimeInput";
+import {handleLogin} from "../../utils/authHelpers";
 
 const CreateEvent = () => {
 
@@ -40,42 +41,14 @@ const CreateEvent = () => {
     const {formId, formField} = EventModel
     const dispatch = useDispatch()
 
+    if (!user) handleLogin()
+
     const currentValidationSchema = EventValidationSchema[0];
     const [files, setFiles] = useState<any>([])
     const timeOptions: IOption[] = []
 
     useEffect(() => {
-        for (let h = 0; h < 24; h++) {
 
-            let hour
-
-            if (h < 10) {
-                hour = `0${h}`
-            } else {
-                hour = h
-            }
-
-            timeOptions.push({
-                id: `${hour}:00`,
-                name: `${hour}:00`
-            })
-
-            timeOptions.push({
-                id: `${hour}:15`,
-                name: `${hour}:15`
-            })
-
-            timeOptions.push({
-                id: `${hour}:30`,
-                name: `${hour}:30`
-            })
-
-            timeOptions.push({
-                id: `${hour}:45`,
-                name: `${hour}:45`
-            })
-
-        }
     })
 
     const handleSubmit = async (values: any, actions: any) => {

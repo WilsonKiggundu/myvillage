@@ -134,10 +134,12 @@ const Event = ({match}: any) => {
                                     {
                                         isPastEvent ?
                                             isEventOwner &&
-                                            <Button onClick={() => setOpenRateEventDialog(true)}
-                                                    disableElevation variant={"contained"} color={"secondary"}>
-                                                Rate this event
-                                            </Button>
+                                            <>
+                                                <Button onClick={() => setOpenRateEventDialog(true)}
+                                                        disableElevation variant={"contained"} color={"secondary"}>
+                                                    Rate this event
+                                                </Button>
+                                            </>
                                             :
                                             <Button onClick={() => handleRegister(event.id, user.profile.sub)}
                                                     disableElevation variant={"contained"}
@@ -217,6 +219,16 @@ const Event = ({match}: any) => {
 
                                 <Box mt={2} mb={2}>
                                     <Divider/>
+                                </Box>
+                                <Box mt={2} mb={2}>
+                                    <Button onClick={() => setOpenRateEventDialog(true)}
+                                            disableElevation variant={"contained"} color={""}>
+                                        Update
+                                    </Button>
+                                    <Button onClick={() => setOpenRateEventDialog(true)}
+                                            disableElevation variant={"contained"} color={"secondary"}>
+                                        Delete
+                                    </Button>
                                 </Box>
 
                                 {event.attendances?.map((attendant: any, index: number) => {
