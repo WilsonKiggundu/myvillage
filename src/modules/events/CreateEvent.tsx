@@ -35,13 +35,13 @@ import {postEvent} from "./redux/eventsEndpoints";
 import XTimeInput from "../../components/inputs/XTimeInput";
 import {handleLogin} from "../../utils/authHelpers";
 
-const CreateEvent = () => {
+const CreateEvent = async () => {
 
     const user = useSelector(userSelector)
     const {formId, formField} = EventModel
     const dispatch = useDispatch()
 
-    if (!user) handleLogin()
+    if (!user) await handleLogin()
 
     const currentValidationSchema = EventValidationSchema[0];
     const [files, setFiles] = useState<any>([])
