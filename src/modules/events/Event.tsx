@@ -220,16 +220,16 @@ const Event = ({match}: any) => {
                                 <Box mt={2} mb={2}>
                                     <Divider/>
                                 </Box>
-                                <Box mt={2} mb={2}>
-                                    <Button onClick={() => setOpenRateEventDialog(true)}
-                                            disableElevation variant={"contained"} color={""}>
-                                        Update
-                                    </Button>
-                                    <Button onClick={() => setOpenRateEventDialog(true)}
-                                            disableElevation variant={"contained"} color={"secondary"}>
-                                        Delete
-                                    </Button>
-                                </Box>
+                                {/*<Box mt={2} mb={2}>*/}
+                                {/*    <Button onClick={() => setOpenRateEventDialog(true)}*/}
+                                {/*            disableElevation variant={"contained"} color={""}>*/}
+                                {/*        Update*/}
+                                {/*    </Button>*/}
+                                {/*    <Button onClick={() => setOpenRateEventDialog(true)}*/}
+                                {/*            disableElevation variant={"contained"} color={"secondary"}>*/}
+                                {/*        Delete*/}
+                                {/*    </Button>*/}
+                                {/*</Box>*/}
 
                                 {event.attendances?.map((attendant: any, index: number) => {
                                     return <p>{attendant.profileId}</p>
