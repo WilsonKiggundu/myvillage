@@ -8,18 +8,15 @@ import {Urls} from "../../routes/Urls";
 import {getEventById} from "./redux/eventsEndpoints";
 import {userSelector} from "../../data/coreSelectors";
 import userManager from "../../utils/userManager";
-import {Anchor} from "../../components/drawer/XDrawer";
 import {longDate, timeFormat} from "../../utils/dateHelpers";
-import {useHistory} from "react-router-dom";
 import EventIcon from '@material-ui/icons/Event'
 
 import './event-card.css'
 import {LocationOn} from "@material-ui/icons";
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import EventAttachments from "./EventAttachments";
-import {getWithoutLoginAsync, makeUrl, postAsync} from "../../utils/ajax";
+import {makeUrl, postAsync} from "../../utils/ajax";
 import {Endpoints} from "../../services/Endpoints";
-import {IPerson} from "../profiles/people/IPerson";
 import SocialShare from "../../components/SocialShare";
 import {isBefore} from "date-fns";
 import {handleLogin} from "../../utils/authHelpers";
@@ -34,13 +31,14 @@ import {XFab} from "../../components/buttons/XFab";
 import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 import XDialog from "../../components/dialogs/XDialog";
 import RateEvent from "./forms/RateEvent";
+import {EventLoader} from "../../components/loaders/EventLoader";
 
 
 const Event = ({match}: any) => {
 
     const user = useSelector(userSelector)
     const id = parseInt(match.params.id, 10)
-    const [event, setEvent] = useState<any>({})
+    const [event, setEvent] = useState<any>(undefined)
     const [eventDetails, setEventDetails] = useState<string>('')
     const [isPastEvent, setIsPastEvent] = useState<boolean>(false)
     const [isEventOwner, setIsEventOwner] = useState<boolean>(false)
@@ -48,6 +46,7 @@ const Event = ({match}: any) => {
 
     const [openRateEventDialog, setOpenRateEventDialog] = useState<boolean>(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
+    const [isAttending, setIsAttending] = useState<boolean>(false)
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -63,6 +62,8 @@ const Event = ({match}: any) => {
                 event.type = (event.type === "physical" ? "Physical Event" : event.type)
                 setIsPastEvent(isBefore(new Date(event.endDateTime), new Date()))
                 setIsEventOwner(event.createdBy === user?.profile.sub)
+
+                setIsAttending(event.attendances?.filter((f: any) => f.profileId === user.profile.sub).length > 0)
 
                 setEvent(event)
 
@@ -89,11 +90,13 @@ const Event = ({match}: any) => {
         })()
     }, [id])
 
-    const handleRegister = async (eventId: any, profileId: string) => {
+    const handleRegister = async (eventId: any) => {
 
         setSubmitting(true)
 
         if (!user) await handleLogin()
+
+        const profileId = user.profile.sub
 
         try {
             const endpoint = `${Endpoints.events.api}/${eventId}/register/${profileId}`
@@ -102,6 +105,7 @@ const Event = ({match}: any) => {
             await postAsync(url, {})
 
             setSubmitting(false)
+            setIsAttending(true)
             Toast.success("Your registration has been successful")
 
         } catch (error) {
@@ -119,13 +123,25 @@ const Event = ({match}: any) => {
         }
     }
 
+    if (event === undefined) {
+        return (
+            <Container disableGutters={isMobile} maxWidth={"md"}>
+                <Grid container spacing={2} justify={"center"}>
+                    <Grid xs={12} item>
+                        <EventLoader/>
+                    </Grid>
+                </Grid>
+            </Container>
+        )
+    }
+
     return (
         <Container disableGutters={isMobile} maxWidth={"md"}>
             <Grid justify={"center"} container spacing={2}>
                 <Grid item xs={12}>
                     {event ? (
                         <div className="event-canvas">
-                            <Grid container justify={"space-between"} spacing={2}>
+                            <Grid container justify={"space-between"} spacing={4}>
                                 <Grid item xs={12} md={8}>
                                     <h1 className="event-title">{event.title}</h1>
                                     <label className="event-label">{event.type}</label>
@@ -141,11 +157,16 @@ const Event = ({match}: any) => {
                                                 </Button>
                                             </>
                                             :
-                                            <Button onClick={() => handleRegister(event.id, user.profile.sub)}
+                                            <Button onClick={() => handleRegister(event.id)}
                                                     disableElevation variant={"contained"}
-                                                    disabled={submitting}
+                                                    style={{display: 'block', width: '100%'}}
+                                                    disabled={submitting || isAttending}
                                                     color={"secondary"}>
-                                                {submitting ? <CircularProgress size={20}/> : "Register to attend"}
+                                                {
+                                                    submitting ? <CircularProgress size={20}/> :
+                                                        isAttending ? "You are attending" : "Register to attend"
+                                                }
+
                                             </Button>
                                     }
                                 </Grid>
@@ -215,7 +236,7 @@ const Event = ({match}: any) => {
                                     }}
                                 />
 
-                                <EventAttachments uploads={event.uploads}/>
+                                <EventAttachments cellHeight={400} uploads={event.uploads}/>
 
                                 <Box mt={2} mb={2}>
                                     <Divider/>
@@ -230,10 +251,6 @@ const Event = ({match}: any) => {
                                 {/*        Delete*/}
                                 {/*    </Button>*/}
                                 {/*</Box>*/}
-
-                                {event.attendances?.map((attendant: any, index: number) => {
-                                    return <p>{attendant.profileId}</p>
-                                })}
 
 
                                 {event.webinar && <Box mt={4} mb={4}>

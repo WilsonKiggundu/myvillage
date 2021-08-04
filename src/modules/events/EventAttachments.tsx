@@ -6,13 +6,14 @@ import XImageGridList from "../../components/grid-list/XImageGridList";
 
 interface IProps {
     uploads?: IUpload[]
+    cellHeight?: number
 }
 
 const handleDownload = (path: string) => {
     window.open(path, '_blank')
 }
 
-const EventAttachments = ({uploads}: IProps) => {
+const EventAttachments = ({uploads, cellHeight}: IProps) => {
 
     const [images, setImages] = useState()
 
@@ -26,7 +27,7 @@ const EventAttachments = ({uploads}: IProps) => {
             {
                 images?.length ?
                     <Box mt={2} mb={2}>
-                        <XImageGridList images={images}/>
+                        <XImageGridList height={cellHeight} images={images}/>
                     </Box> : ""
             }
         </>

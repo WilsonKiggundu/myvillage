@@ -57,7 +57,7 @@ const Startups = () => {
 
             <Grid container spacing={2} justify={"flex-start"}>
                 {startups.data.map((startup: any, index: number) => (
-                    <Grid key={index} item xs={12} md={6} lg={3}>
+                    <Grid key={index} item xs={12} md={6} lg={4}>
                         <StartupCard index={index} startup={startup}/>
                     </Grid>
                 ))}

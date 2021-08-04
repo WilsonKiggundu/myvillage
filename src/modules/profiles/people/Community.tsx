@@ -87,9 +87,8 @@ const Community = ({category} : IProps) => {
         }
     }
 
-
     return (
-        <Container maxWidth={false}>
+        <Container maxWidth={"lg"}>
             <Grid spacing={2} justify={"flex-start"} container>
                 {people.data.map((person: IPerson) => (
                     <Grid item key={person.id} xs={12} sm={4} md={4} xl={3} lg={3}>

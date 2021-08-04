@@ -47,10 +47,10 @@
 
 .startup-description-truncated{
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     position: relative;
-    height: 3em;
+    height: 6em;
     overflow: hidden;
     padding-right: 1em;
 }
