@@ -32,6 +32,7 @@ import {XLoginSnackbar} from "../../components/XLoginSnackbar";
 import XDialog from "../../components/dialogs/XDialog";
 import RateEvent from "./forms/RateEvent";
 import {EventLoader} from "../../components/loaders/EventLoader";
+import Linkify from "react-linkify";
 
 
 const Event = ({match}: any) => {
@@ -235,11 +236,13 @@ const Event = ({match}: any) => {
                             </Box>}
 
                             <Box>
-                                <div
-                                    dangerouslySetInnerHTML={{
-                                        __html: event.details
-                                    }}
-                                />
+                                <Linkify>
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: event.details
+                                        }}
+                                    />
+                                </Linkify>
 
                                 <EventAttachments cellHeight={400} uploads={event.uploads}/>
 
