@@ -13,7 +13,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import {useField, useFormikContext} from "formik";
-import {FormControl} from "@material-ui/core";
+import {Box, FormControl} from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
 const filter = createFilterOptions<IOption>();
@@ -63,90 +63,94 @@ export default function XSelectInputCreatable(props: IProps) {
     };
 
     return (
-        <FormControl error={showError} fullWidth>
-            <Autocomplete
-                disabled={isSubmitting}
-                onBlur={() => helpers.setTouched(true)}
-                multiple={rest.multiple}
-                disableCloseOnSelect={rest.multiple}
-                getOptionLabel={(option: IOption) => option.name}
-                onChange={(_, newValue: any) => {
-                    helpers.setValue(newValue || '')
-                }}
-                renderOption={(option, {selected}) => (
-                    <>
-                        {rest.multiple
-                            ? <Checkbox
-                                icon={icon}
-                                checkedIcon={checkedIcon}
-                                style={{marginRight: 8}}
-                                checked={selected}
-                            /> : ""
-                        }
-                        {option.name}
-                    </>
-                )}
-                filterOptions={(options, params) => {
-                    const filtered = filter(options, params) as any[];
-
-                    if (rest.allowAddNew) {
-                        if (params.inputValue !== '') {
-                            filtered.push({
-                                name: params.inputValue,
-                            });
-                        }
-                    }
-
-                    return filtered;
-                }}
-                options={options}
-                defaultValue={props.defaultValue}
-                selectOnFocus
-                placeholder={placeholder}
-                clearOnBlur
-                handleHomeEndKeys
-                style={{width: '100%'}}
-                freeSolo={rest.allowAddNew}
-                renderInput={(params) => (
-                    <TextField error={showError} {...params} placeholder={placeholder} label={label} variant={props.variant}/>
-                )}
-            />
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <form onSubmit={handleSubmit}>
-                    <DialogTitle id="form-dialog-title">{rest.dialogTitle}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            {rest.dialogSubtitle}
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="normal"
-                            id="name"
-                            style={{width: '100%'}}
-                            value={dialogValue}
-                            onChange={
-                                (event) => setDialogValue(event.target.value)
+        <Box mb={3}>
+            <FormControl error={showError} fullWidth>
+                <Autocomplete
+                    disabled={isSubmitting}
+                    onBlur={() => helpers.setTouched(true)}
+                    multiple={rest.multiple}
+                    disableCloseOnSelect={rest.multiple}
+                    getOptionLabel={(option: IOption) => option.name}
+                    onChange={(_, newValue: any) => {
+                        helpers.setValue(newValue || '')
+                    }}
+                    renderOption={(option, {selected}) => (
+                        <>
+                            {rest.multiple
+                                ? <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    style={{marginRight: 8}}
+                                    checked={selected}
+                                /> : ""
                             }
-                            label="Option"
-                            type="text"
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={handleSubmit} color="primary">
-                            Add
-                        </Button>
-                    </DialogActions>
-                </form>
-            </Dialog>
+                            {option.name}
+                        </>
+                    )}
+                    filterOptions={(options, params) => {
+                        const filtered = filter(options, params) as any[];
 
-            {
-                helperText ? <FormHelperText>{helperText}</FormHelperText> :
-                    showError && <FormHelperText>{meta.error}</FormHelperText>
-            }
+                        if (rest.allowAddNew) {
+                            if (params.inputValue !== '') {
+                                filtered.push({
+                                    name: params.inputValue,
+                                });
+                            }
+                        }
 
-        </FormControl>
+                        return filtered;
+                    }}
+                    options={options}
+                    defaultValue={props.defaultValue}
+                    selectOnFocus
+                    placeholder={placeholder}
+                    clearOnBlur
+                    handleHomeEndKeys
+                    style={{width: '100%'}}
+                    freeSolo={rest.allowAddNew}
+                    renderInput={(params) => (
+                        <TextField error={showError} {...params} placeholder={placeholder} label={label} variant={props.variant}/>
+                    )}
+                />
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                    <form onSubmit={handleSubmit}>
+                        <DialogTitle id="form-dialog-title">{rest.dialogTitle}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                {rest.dialogSubtitle}
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="normal"
+                                id="name"
+                                style={{width: '100%'}}
+                                value={dialogValue}
+                                onChange={
+                                    (event) => setDialogValue(event.target.value)
+                                }
+                                label="Option"
+                                type="text"
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={handleSubmit} color="primary">
+                                Add
+                            </Button>
+                        </DialogActions>
+                    </form>
+                </Dialog>
+
+
+                {
+
+                    helperText ? <FormHelperText>{helperText}</FormHelperText> :
+                        showError && <FormHelperText>{meta.error}</FormHelperText>
+                }
+
+            </FormControl>
+        </Box>
     );
 }

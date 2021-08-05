@@ -12,20 +12,32 @@ const {
         endTime,
         conferenceUrl,
         frequency,
-        createdBy
+        tiv_affiliation,
+        createdBy,
+        partner,
+        category,
+        objective,
+        region,
+        sector
     }
 } = eventModel
 
 export default {
-    [title.name]: '',
-    [companyId.name]: '',
-    [type.name]: '',
-    [date.name]: '',
-    [location.name]: '',
-    [details.name]: '',
-    [startTime.name]: '',
-    [endTime.name]: '',
-    [conferenceUrl.name]: '',
-    [frequency.name]: '',
-    [createdBy.name]: '',
+    "title": "",
+    "tiv_affiliation": {},
+    "companyId": "",
+    "type": {},
+    "date": "",
+    "location": {},
+    "details": "",
+    "startTime": "",
+    "endTime": "",
+    "conferenceUrl": "",
+    "frequency": "",
+    "createdBy": "",
+    "partner": {},
+    "category": {},
+    "objective": {},
+    "region": [],
+    "sector": {}
 }

@@ -1,8 +1,9 @@
 import {fade, makeStyles} from "@material-ui/core/styles";
-import {white} from "../../theme/custom-colors";
+import {black, white} from "../../theme/custom-colors";
 import palette from "../../theme/palette";
+import {grey} from "@material-ui/core/colors";
 
-const drawerWidth = 300
+const drawerWidth = 350
 
 export const appBarStyles = makeStyles((theme) => ({
     root: {
@@ -37,13 +38,15 @@ export const appBarStyles = makeStyles((theme) => ({
     },
     drawerPaper: {
         width: drawerWidth,
-        backgroundColor: palette.primary.main,
-        opacity: 0.98,
-        color: white
+        backgroundColor: white,
+        overflowX: "hidden",
+        color: black
     },
     drawerHeader: {
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
+        backgroundColor: '#1C1C1C',
         // padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
@@ -51,7 +54,7 @@ export const appBarStyles = makeStyles((theme) => ({
     },
 
     drawerContainer: {
-        overflow: 'auto'
+        overflow: 'hidden'
     },
 
     content: {

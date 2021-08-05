@@ -133,7 +133,7 @@ const Job = ({match}: any) => {
                                                         onClick={() => handleApply(job)}
                                                         variant={"contained"}
                                                         disableElevation
-                                                        disabled={alreadyApplied || !user}
+                                                        disabled={alreadyApplied}
                                                         color={"secondary"}>
                                                     {applying ? <CircularProgress color={"inherit"} size={25} /> : "Apply Now"}
                                                 </Button>

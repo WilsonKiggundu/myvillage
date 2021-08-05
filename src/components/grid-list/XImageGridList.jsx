@@ -84,7 +84,7 @@ const XImageGridList = ({images, height = 250, scrollPosition}) => {
 
     return (
         <div className={classes.root}>
-            <GridList cellHeight={200} className={classes.gridList} cols={columns()}>
+            <GridList cellHeight={height} className={classes.gridList} cols={columns()}>
                 {images.map((image, index) => {
                     const imgWidth = images.length === 1 ? '100%' : 'auto'
                     const imgHeight = images.length === 1 ? 'auto' : '100%'

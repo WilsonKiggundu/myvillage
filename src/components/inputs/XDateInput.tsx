@@ -36,7 +36,7 @@ const XDateInput = (props: IProps & Partial<PickerProps>) => {
     return <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
             {...rest}
-            margin={margin}
+            // margin={margin}
             fullWidth
             variant={pickerVariant}
             format={dateFormat}

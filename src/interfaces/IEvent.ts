@@ -16,4 +16,8 @@ export interface IEvent {
     uploads?: IUpload[],
     featured?: boolean
     attendances?: []
+    webinar?: any
+    challengesFaced?: string
+    lessonsLearnt?: string
+    achievements?: string
 }

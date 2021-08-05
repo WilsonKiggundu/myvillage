@@ -17,11 +17,11 @@ function Home() {
     const history = useHistory()
     const {user} = useSelector((state: any) => state.oidc)
 
-    const isAuthenticated = user != null
-
-    if (isAuthenticated) {
-        history.push(Urls.feed)
-    }
+    // const isAuthenticated = user != null
+    //
+    // if (isAuthenticated) {
+    //     history.push(Urls.feed)
+    // }
 
     const handleSignup = () => {
         window.location.replace(`${process.env.REACT_APP_AUTH_URL}/account/signup?returnUrl=${process.env.REACT_APP_SIGNUP_REDIRECT_URL}`)

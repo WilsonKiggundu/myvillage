@@ -7,10 +7,17 @@
 }
 
 .Appbar-logo{
+    margin: 0 10px 0 75px;
+    position: absolute;
+    top: 50%;
+    /*left: 50%;*/
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
     display: inline-flex;
     height: 45px;
     width: auto;
-    margin: 12px 0 0 15px;
+    /*margin: 12px 0 0 15px;*/
 }
 
 @media screen and (max-width: 567px){
@@ -53,9 +60,56 @@
     display: block;
 }
 
+.Appbar-menu-icon-wrapper, .Appbar-icons-wrapper{
+    width: 100%;
+    text-align: left;
+    height: 70px;
+    margin: 0 10px;
+    /*border: solid 1px white;*/
+    position: relative;
+}
+
+.Appbar-icons-wrapper{
+
+}
+
+.Appbar-right-icons{
+    margin: 0 10px 0 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    display: inline-flex;
+}
+
+.Appbar-right-icons .icon{
+    margin-right: 25px;
+}
+
 .Appbar-menu-icon {
-    width: 50px;
-    height: 50px;
+    margin: 0 10px 0 15px;
+    position: absolute;
+    top: 50%;
+    /*left: 50%;*/
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+@media screen and (max-width: 567px) {
+    .Appbar-menu-icon-wrapper, .Appbar-icons-wrapper{
+        margin: 0 0px;
+    }
+
+    .Appbar-right-icons{
+        margin: 0;
+    }
+
+    .Appbar-right-icons .icon{
+        margin-right: 5px;
+    }
 }
 
 .Appbar-profile{
@@ -97,8 +151,15 @@
 }
 
 .Appbar-searchbox{
-    width: 100%;
-    margin: 15px 5px 0 0px;
+    width: 85%;
+    margin: 15px auto;
+    background-color: #1c1c1c;
+}
+
+.Appbar-searchbox .form-control{
+    background-color: #c1c1c1;
+    border: solid 1px #c1c1c1;
+    opacity: 0.8;
 }
 
 .Appbar-menu .dropdown{
