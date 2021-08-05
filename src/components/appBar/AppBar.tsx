@@ -36,12 +36,13 @@ import EventIcon from '@material-ui/icons/Event';
 import WorkIcon from '@material-ui/icons/Work';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
+import LoginIcon from '@material-ui/icons/VpnKey';
 import CodeIcon from '@material-ui/icons/Code';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {white} from "../../theme/custom-colors";
+import Button from "@material-ui/core/Button";
 
 type Anchor = 'left' | 'right';
-const drawerWidth = 300;
+const drawerWidth = 250;
 const useStyles = makeStyles((theme) => ({
     small: {
         width: theme.spacing(3),
@@ -177,18 +178,27 @@ export default function ApplicationBar() {
                             <div className="Appbar-right-icons">
                                 <Badge onClick={() => window.location.replace(Urls.events)}
                                        className="icon" color={"secondary"}>
-                                    <EventIcon />
+                                    <EventIcon/>
                                 </Badge>
                                 <Badge
-                                    onClick={() => window.location.replace(Urls.jobs.list)}
+                                    onClick={() => window.location.replace(Urls.jobs.home)}
                                     className="icon" color={"secondary"}>
-                                    <WorkIcon />
+                                    <WorkIcon/>
                                 </Badge>
                                 <Badge
                                     onClick={() => window.location.replace(Urls.profiles.freelancers)}
                                     className="icon" color={"default"}>
-                                    <CodeIcon />
+                                    <CodeIcon/>
                                 </Badge>
+
+                                {
+                                    !user && <Badge
+                                        onClick={handleLogin}
+                                        className="icon" color={"secondary"}>
+                                        <LoginIcon/>
+                                    </Badge>
+                                }
+
                             </div>
                         </div>
                     </Grid>}
@@ -317,12 +327,24 @@ export default function ApplicationBar() {
 
                     <Divider/>
 
-                    {user && <ListItemLink handleClick={handleLogout}>
-                        <ListItemIcon>
-                            <ExitToAppIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={"Logout"}/>
-                    </ListItemLink>}
+                    <Box mt={2} mb={2} ml={2} mr={2}>
+                        {
+                            user ?
+                                <Button disableElevation
+                                        onClick={handleLogout}
+                                        style={{width: '100%'}}
+                                        variant={"contained"}
+                                        color={"inherit"}
+                                        size={"large"}>Logout</Button> :
+                                <Button disableElevation
+                                        onClick={handleLogin}
+                                        style={{width: '100%'}}
+                                        variant={"contained"}
+                                        color={"secondary"}
+                                        size={"large"}>Login</Button>
+                        }
+                    </Box>
+
                 </List>
 
             </Drawer>

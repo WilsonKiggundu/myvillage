@@ -61,9 +61,14 @@ const Event = ({match}: any) => {
 
                 event.type = (event.type === "physical" ? "Physical Event" : event.type)
                 setIsPastEvent(isBefore(new Date(event.endDateTime), new Date()))
-                setIsEventOwner(event.createdBy === user?.profile.sub)
 
-                setIsAttending(event.attendances?.filter((f: any) => f.profileId === user.profile.sub).length > 0)
+                if(user){
+
+                    const userId = user.profile.sub
+
+                    setIsEventOwner(event.createdBy === userId)
+                    setIsAttending(event.attendances?.filter((f: any) => f.profileId === userId).length > 0)
+                }
 
                 setEvent(event)
 
