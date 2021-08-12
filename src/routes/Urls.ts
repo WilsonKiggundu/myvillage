@@ -5,7 +5,11 @@ export const Urls = ({
     },
     survey: '/devscape',
     articles: {
-        create: '/articles/create'
+        create: '/articles/create',
+        update: '/articles/update/:id',
+        article: '/blog/read/article/:year/:month/:day/:id',
+        singleArticle:
+            (id: string, year: any, month: any, day: any) => `/blog/read/article/${year}/${month}/${day}/${id}`
     },
     callback: "/callback",
     logout: "/logout",
@@ -13,6 +17,7 @@ export const Urls = ({
     silentRenew: "/silent-renew",
     home: "/",
     feed: "/feed",
+    blog: "/blog/articles",
     freelancers: {
       projects: '/freelancers/projects'
     },

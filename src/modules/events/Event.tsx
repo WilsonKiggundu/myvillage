@@ -24,7 +24,6 @@ import Toast from "../../utils/Toast";
 
 import AddToCalendar from 'react-add-to-calendar';
 import 'react-add-to-calendar/dist/react-add-to-calendar.css'
-import '@fortawesome/free-solid-svg-icons'
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import AddIcon from "@material-ui/icons/Add";
 import {XFab} from "../../components/buttons/XFab";

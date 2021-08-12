@@ -12,6 +12,7 @@ import {Urls} from "../../routes/Urls";
 import MenuIcon from '@material-ui/icons/Menu';
 
 import {ReactComponent as MyVillageLogo} from "../../assets/images/mv-colored-logo.svg"
+import {ReactComponent as MyVillageIcon} from "../../assets/images/favicon.svg"
 import Box from "@material-ui/core/Box";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -38,6 +39,7 @@ import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import LoginIcon from '@material-ui/icons/VpnKey';
 import CodeIcon from '@material-ui/icons/Code';
+import BookIcon from '@material-ui/icons/Book';
 import {white} from "../../theme/custom-colors";
 import Button from "@material-ui/core/Button";
 
@@ -85,7 +87,7 @@ export default function ApplicationBar() {
     const appbarStyles = appBarStyles()
     const theme = useTheme();
 
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
     const user: User = useSelector(userSelector)
     const isAuthenticated = user != null
 
@@ -158,8 +160,8 @@ export default function ApplicationBar() {
 
             <header className={classes.appBar}>
 
-                <Grid container spacing={2} justify={"center"}>
-                    <Grid xs={1} lg={3} item>
+                <Grid container spacing={2} justify={"space-between"}>
+                    <Grid xs={1} sm={2} md={3} lg={3} item>
                         <div className="Appbar-menu-icon-wrapper">
                             <MenuIcon
                                 onClick={toggleDrawer(anchor, true)}
@@ -167,41 +169,44 @@ export default function ApplicationBar() {
                             {!isMobile && <MyVillageLogo className="Appbar-logo"/>}
                         </div>
                     </Grid>
-                    <Grid xs={isMobile ? 10 : 8} lg={6} item>
+                    <Grid xs={9} sm={8} md={6} lg={6} item>
                         <div className="Appbar-searchbox">
                             <XAsyncTypeahead
                                 placeholder="What are you looking for?"/>
                         </div>
                     </Grid>
-                    {!isMobile && <Grid xs={3} lg={3} item>
-                        <div className="Appbar-icons-wrapper">
-                            <div className="Appbar-right-icons">
-                                <Badge onClick={() => window.location.replace(Urls.events)}
-                                       className="icon" color={"secondary"}>
-                                    <EventIcon/>
-                                </Badge>
-                                <Badge
-                                    onClick={() => window.location.replace(Urls.jobs.home)}
-                                    className="icon" color={"secondary"}>
-                                    <WorkIcon/>
-                                </Badge>
-                                <Badge
-                                    onClick={() => window.location.replace(Urls.profiles.freelancers)}
-                                    className="icon" color={"default"}>
-                                    <CodeIcon/>
-                                </Badge>
-
-                                {
-                                    !user && <Badge
-                                        onClick={handleLogin}
-                                        className="icon" color={"secondary"}>
-                                        <LoginIcon/>
+                    <Grid xs={2} sm={2} md={3} lg={3} item>
+                        {isMobile ? <MyVillageIcon className="Appbar-logo-right"/> :
+                            <div className="Appbar-icons-wrapper">
+                                <div className="Appbar-right-icons">
+                                    <Badge onClick={() => window.location.replace(Urls.events)}
+                                           className="icon" color={"secondary"}>
+                                        <EventIcon/>
                                     </Badge>
-                                }
+                                    <Badge
+                                        onClick={() => window.location.replace(Urls.jobs.home)}
+                                        className="icon" color={"secondary"}>
+                                        <WorkIcon/>
+                                    </Badge>
+                                    <Badge
+                                        onClick={() => window.location.replace(Urls.profiles.freelancers)}
+                                        className="icon" color={"default"}>
+                                        <CodeIcon/>
+                                    </Badge>
 
+                                    {
+                                        !user && <Badge
+                                            onClick={handleLogin}
+                                            className="icon" color={"secondary"}>
+                                            <LoginIcon/>
+                                        </Badge>
+                                    }
+
+                                </div>
                             </div>
-                        </div>
-                    </Grid>}
+                        }
+
+                    </Grid>
                 </Grid>
 
             </header>
@@ -288,30 +293,23 @@ export default function ApplicationBar() {
                         </ListItemIcon>
                         <ListItemText primary={"Feed"}/>
                     </ListItemLink>
-                    <ListItemLink slag={"startups"} handleClick={() => handleClick(Urls.profiles.startups)}>
+
+                    <ListItemLink slag={"blog"} handleClick={() => handleClick(Urls.blog)}>
                         <ListItemIcon>
-                            <LayersIcon/>
+                            <BookIcon/>
                         </ListItemIcon>
-                        <ListItemText primary={"Startups"}/>
+                        <ListItemText primary={"Blog"}/>
                     </ListItemLink>
+
+                    <Divider/>
+
                     <ListItemLink slag={"community"} handleClick={() => handleClick(Urls.profiles.people)}>
                         <ListItemIcon>
                             <PeopleIcon/>
                         </ListItemIcon>
                         <ListItemText primary={"Community"}/>
                     </ListItemLink>
-                    <ListItemLink slag={"jobs"} handleClick={() => handleClick(Urls.jobs.list)}>
-                        <ListItemIcon>
-                            <WorkIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={"Work in Tech"}/>
-                    </ListItemLink>
-                    <ListItemLink slag={"events"} handleClick={() => handleClick(Urls.events)}>
-                        <ListItemIcon>
-                            <EventIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={"Events"}/>
-                    </ListItemLink>
+
                     <ListItemLink slag={"freelancers"} handleClick={() => handleClick(Urls.profiles.freelancers)}>
                         <ListItemIcon>
                             <AllInclusiveIcon/>
@@ -323,6 +321,31 @@ export default function ApplicationBar() {
                             <CodeIcon/>
                         </ListItemIcon>
                         <ListItemText primary={"Developers"}/>
+                    </ListItemLink>
+
+                    <Divider/>
+
+                    <ListItemLink slag={"startups"} handleClick={() => handleClick(Urls.profiles.startups)}>
+                        <ListItemIcon>
+                            <LayersIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary={"Startups"}/>
+                    </ListItemLink>
+
+                    <ListItemLink slag={"jobs"} handleClick={() => handleClick(Urls.jobs.list)}>
+                        <ListItemIcon>
+                            <WorkIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary={"Work in Tech"}/>
+                    </ListItemLink>
+
+                    <Divider/>
+
+                    <ListItemLink slag={"events"} handleClick={() => handleClick(Urls.events)}>
+                        <ListItemIcon>
+                            <EventIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary={"Events"}/>
                     </ListItemLink>
 
                     <Divider/>

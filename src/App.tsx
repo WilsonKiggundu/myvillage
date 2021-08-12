@@ -34,6 +34,9 @@ import DeveloperHome from "./modules/developers/Home";
 import Freelancers from "./modules/freelancers/Freelancers";
 import Developers from "./modules/developers/Developers";
 import FreelanceProjects from "./modules/freelancers/FreelanceProjects";
+import Articles from "./modules/articles/Articles";
+import Article from "./modules/articles/Article";
+import UpdateArticle from "./modules/articles/UpdateArticle";
 
 export const App = () => {
     useTracking('G-WCYNV9YTKE')
@@ -48,6 +51,8 @@ export const App = () => {
 
                 <MainLayout>
                     <Route exact path={Urls.feed} component={Feed}/>
+                    <Route exact path={Urls.blog} component={Articles}/>
+                    <Route exact path={Urls.articles.article} render={(props) => <Article {...props} />}/>
                     <Route exact path={Urls.profiles.startups} component={Startups}/>
                     <Route exact path={Urls.profiles.startup} component={Startup}/>
                     <Route exact path={Urls.profiles.people} component={Community}/>
@@ -58,13 +63,9 @@ export const App = () => {
                     <Route exact path={Urls.jobs.create} component={CreateJob}/>
                     <Route exact path={Urls.jobs.home} component={JobsHome}/>
 
-                    <Route
-                        exact
-                        path={Urls.articles.create}
-                        component={
-                            () => <NewArticle placeholder={"Start typing your article here..."}/>
-                        }
-                    />
+                    <Route exact path={Urls.articles.create} component={NewArticle} />
+                    <Route exact path={Urls.articles.update} render={(props) => <UpdateArticle {...props} />} />
+
                     <Route exact path={Urls.events} component={() => <EventsList/>}/>
                     <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
                     <Route exact path={Urls.event} component={Event}/>

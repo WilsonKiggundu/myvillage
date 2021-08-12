@@ -4,8 +4,11 @@ import {IComment} from "./IComment";
 
 export interface IPost {
     id: string
+    title: string
+    referenceId?: string
+    ref?: string
     type: any
-    details: string | undefined
+    details: string
     dateCreated: string
     authorId: string
     author?: IPerson

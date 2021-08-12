@@ -182,7 +182,9 @@ const PostCard = ({post}: IProps) => {
                     <div className="PostCard-content">
                         {post.details &&
                         <Linkify>
-                            <div className="Post-details">{post.details}</div>
+                            <div dangerouslySetInnerHTML={{
+                                __html: post.details
+                            }} className="Post-details" />
                         </Linkify>
                         }
                         {

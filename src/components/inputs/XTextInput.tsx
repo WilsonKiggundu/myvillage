@@ -5,9 +5,10 @@ import {hasValue} from "./inputHelpers";
 
 interface IProps {
     name: string
+    fontSize?: number
 }
 
-const XTextInput = ({name, margin = 'normal', ...props}: TextFieldProps & IProps) => {
+const XTextInput = ({name, fontSize, margin = 'normal', ...props}: TextFieldProps & IProps) => {
     const [field, meta] = useField({name});
     const error = hasValue(meta.error) ? meta.error : undefined
     const showError = Boolean(error && meta.touched)
@@ -17,6 +18,11 @@ const XTextInput = ({name, margin = 'normal', ...props}: TextFieldProps & IProps
             {...props}
             margin={margin}
             fullWidth
+            InputProps={{
+                style: {
+                    fontSize: fontSize ?? 12
+                }
+            }}
             error={showError}
             helperText={(showError && error) || props.helperText}
             value={field.value || ""}

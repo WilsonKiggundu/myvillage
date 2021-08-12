@@ -26,6 +26,7 @@ const schema = yup.object().shape(
 
 const initialValues = {
     details: '',
+    type: 1
 }
 
 const NewPost = ({onClose}: IProps) => {

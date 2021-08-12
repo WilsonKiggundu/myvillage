@@ -25,6 +25,7 @@ export function XFab({children, left, right, bottom, top, position, ...rest}: IP
             bottom: bottom,
             top: top,
             left: left,
+            textTransform: "inherit",
             right: right,
             zIndex: theme.zIndex.appBar + 1
         }}
