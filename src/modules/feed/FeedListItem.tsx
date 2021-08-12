@@ -8,6 +8,8 @@ interface IProps {
 }
 
 export const FeedListItem = ({item}: IProps) => {
+
+
     switch (item.entityType) {
         case 1:
             return <PostCard post={item.entity}/>

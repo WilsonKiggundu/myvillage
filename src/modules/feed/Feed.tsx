@@ -16,6 +16,9 @@ import ErrorPage from "../exceptions/Error";
 import {scrolledToBottom} from "../../utils/scrollHelpers";
 import {userSelector} from "../../data/coreSelectors";
 import {handleLogin} from "../../utils/authHelpers";
+import ArticleListItem from "../articles/ArticleListItem";
+import EventListItem from "../events/EventListItem";
+import EventPostCard from "../posts/EventPostCard";
 
 const Feed = () => {
 
@@ -63,8 +66,20 @@ const Feed = () => {
                     <Box>
                         {_.isEmpty(posts.data) && <p>No results found</p>}
                         {
-                            posts.data.map((post: IPost, index: number) =>
-                                <PostCard post={post} key={index}/>)
+                            posts.data.map((post: IPost, index: number) => {
+
+                                switch (post.type) {
+                                    case 1: return <PostCard post={post} key={post.id}/>
+                                    case 4: return <Box key={post.id} mt={2}>
+                                        <ArticleListItem id={post.referenceId} article={post} />
+                                    </Box>
+                                    case 5: return <Box key={post.id} mt={2}>
+                                        <EventPostCard post={post} id={post.ref} />
+                                    </Box>
+                                    default: return <PostCard post={post} key={post.id}/>
+                                }
+
+                            })
                         }
                         {posts.isLoading && (
                             <PleaseWait/>

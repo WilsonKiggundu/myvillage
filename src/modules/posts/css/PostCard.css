@@ -28,8 +28,9 @@
 }
 
 .PostCard-actions{
-    padding: 0 15px;
+    padding: 15px 15px;
     margin-top: 15px;
+    border-top: solid 1px #f1f1f1;
 }
 .Comment-input{
     background: #F1F1F0;

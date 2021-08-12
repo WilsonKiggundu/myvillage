@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -16,9 +16,11 @@ import {loadComments, loadPosts} from "../modules/posts/redux/postsActions";
 import {commentsSelector} from "../modules/posts/redux/postsSelectors";
 import { useHistory } from 'react-router-dom';
 import {timeAgo} from "../utils/dateHelpers";
+import {getAsync, makeUrl} from "../utils/ajax";
+import {Endpoints} from "../services/Endpoints";
 
 interface IProps {
-    postId: string
+    postId?: string
     articleId?: string
 }
 
@@ -38,15 +40,23 @@ makeStyles((theme: Theme) =>
 export default function CommentsList({postId, articleId}: IProps) {
     const classes = globalStyles();
     const history = useHistory();
-    const comments = useSelector((state) => commentsSelector(state, postId))
+    const [comments, setComments] = useState([])
 
     const handleViewAuthor = (authorId: string) => {
         const url = Urls.profiles.onePerson(authorId)
         history.push(url)
     }
 
+    useEffect(() => {
+        const url = makeUrl("Profiles", Endpoints.blog.comment)
+        getAsync(url, {articleId, postId})
+            .then((response: any) => {
+                const {comments} = response.body
+                setComments(comments)
+            })
+    }, [articleId])
+
     const content = comments.map((c: any, index: number) => (
-        
         <Grid
             key={index}
             style={

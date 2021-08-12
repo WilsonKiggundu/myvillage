@@ -1,26 +1,18 @@
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import VideocamIcon from "@material-ui/icons/Videocam";
+import BookIcon from "@material-ui/icons/Book";
 import EventIcon from "@material-ui/icons/Event";
-import Card from "@material-ui/core/Card";
 import React, {useState} from "react";
 import {globalStyles} from "../../../theme/styles";
 import XDialog from "../../../components/dialogs/XDialog";
 import UploadFile from "./UploadFile";
 import NewPost from "./NewPost";
-import NewEvent from "../../events/forms/NewEvent";
-import grey from "@material-ui/core/colors/grey";
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import AddIcon from '@material-ui/icons/Add';
 import WorkIcon from '@material-ui/icons/Work';
 
 import '../css/StartAPostCard.css'
-import {white} from "../../../theme/custom-colors";
 import {Avatar, List} from "@material-ui/core";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -28,7 +20,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {Urls} from "../../../routes/Urls";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useTheme from "@material-ui/core/styles/useTheme";
-import NewJob from "../../jobs/forms/NewJob";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../../data/coreSelectors";
 import {XLoginSnackbar} from "../../../components/XLoginSnackbar";
@@ -130,14 +121,13 @@ const StartAPostCard = (props: IProps) => {
 
                             <Grid className="button-container" item xs={3}>
                                 <Button
-                                    onClick={handleVideoUpload}
+                                    href={Urls.articles.create}
                                     size={"large"}
-                                    disabled
                                     style={{padding: 5}}
                                     className={clsx(classes.bold, classes.fullWidth)}>
-                                    <VideocamIcon  className="icon"/>
+                                    <BookIcon className="icon"/>
                                     {!isMobile && <span>
-                                        Video
+                                       Article
                                     </span>}
                                 </Button>
 

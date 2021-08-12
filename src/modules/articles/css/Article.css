@@ -1,0 +1,25 @@
+
+.article-details{
+    background: white;
+    min-height: calc(100vh - 70px);
+    margin-top: -10px;
+    padding-bottom: 25px;
+}
+
+.article-details-title{
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 50px;
+    padding: 25px 0;
+}
+
+.article-details-image{
+    background: #c1c1c1;
+    width: auto;
+    height: auto;
+    margin: 0 -24px 0 -24px;
+}
+
+.article-details-body{
+    font-size: 20px;
+}

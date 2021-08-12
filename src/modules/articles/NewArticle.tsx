@@ -1,5 +1,5 @@
-import React, {createRef, useEffect} from "react"
-import {Container} from "@material-ui/core";
+import React, {createRef, useEffect, useState} from "react"
+import {Chip, Container, Divider} from "@material-ui/core";
 import XForm from "../../components/forms/XForm";
 import Grid from "@material-ui/core/Grid";
 import XTextInput from "../../components/inputs/XTextInput";
@@ -10,7 +10,20 @@ import Box from "@material-ui/core/Box";
 import * as yup from "yup";
 import {reqString} from "../../data/validations";
 import {FormikHelpers} from "formik";
-import XTextAreaInput from "../../components/inputs/XTextAreaInput";
+import XRichTextArea from "../../components/inputs/XRichTextArea";
+import XDragAndDrop from "../../components/XDragAndDrop";
+import {Add, Image} from "@material-ui/icons";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import XCheckBoxInput from "../../components/inputs/XCheckBoxInput";
+import {IUpload} from "../../interfaces/IUpload";
+import {postFileAsync} from "../../utils/ajax";
+import {Endpoints} from "../../services/Endpoints";
+import Toast from "../../utils/Toast";
+import {Urls} from "../../routes/Urls";
+import {useSelector} from "react-redux";
+import {userSelector} from "../../data/coreSelectors";
+import {createArticle} from "./redux/articlesEndpoints";
 
 interface IProps {
     placeholder: string
@@ -18,72 +31,62 @@ interface IProps {
 
 const schema = yup.object().shape(
     {
-        title: reqString
+        title: reqString,
+        details: reqString
     }
 )
 
 const initialValues = {
-    title: ''
+    title: '',
+    details: '',
+    publish: true
 }
 
 const NewArticle = ({placeholder}: IProps) => {
 
-    // let editor: Quill | undefined = undefined
+    const user = useSelector(userSelector)
     const container = createRef<any>()
 
-    useEffect(() => {
+    const [files, setFiles] = useState<any>([])
+    const [submitting, setSubmitting] = useState<boolean>(false)
 
-        // const toolbarOptions = [
-        //     [{'header': [1, 2, 3, 4, 5, 6, false]}],
-        //     ['bold', 'italic', 'underline', 'strike'],
-        //     ['blockquote', 'code-block'],
-        //
-        //     [{'list': 'ordered'}, {'list': 'bullet'}],
-        //     [{'script': 'sub'}, {'script': 'super'}],
-        //     [{'indent': '-1'}, {'indent': '+1'}],
-        //
-        //     [{'align': []}],
-        // ];
+    const handleDragDrop = (files: any) => {
+        if (files.length) {
+            setFiles(files)
+        }
+    }
 
-        // editor = new Quill(container.current, {
-        //     theme: 'snow',
-        //     placeholder: placeholder,
-        //     readOnly: false,
-        //     formats: [
-        //         'header', 'underline', 'strike', 'blockquote', 'code-block',
-        //         'bold', 'italic', 'list', 'script', 'indent', 'align'
-        //     ],
-        //     modules: {
-        //         toolbar: toolbarOptions
-        //     }
-        // })
-        //
-        // const delta: any = {
-        //     ops: []
-        // }
-        //
-        // editor.setContents(delta)
-    })
+    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
 
-    const handleSubmit = (values: any, actions: FormikHelpers<any>) => {
+        setSubmitting(true)
 
-        // post('', toSave,
-        //     (data) => {
-        //         Toast.info("Your profile has been updated successfully")
-        //         actions.resetForm()
-        //         dispatch({
-        //             type: '',
-        //             payload: {...data}
-        //         })
-        //         if (done) {
-        //             done()
-        //         }
-        //     },
-        //     () => Toast.error("Unable to update your profile. Please try again later"),
-        //     () => {
-        //         actions.setSubmitting(false)
-        //     }
-        // )
+        // upload the files if any is attached
+        let uploads: IUpload[] = []
+        if (files.length) {
+            await Promise.all(files.map(async (file: any) => {
+                const {body}: any = await postFileAsync(file)
+                const upload: any = {
+                    fileName: body.attachment_file_name,
+                    path: Endpoints.cdn.base + body.path
+                }
+                uploads.push(upload)
+            }))
+        }
+
+        const article = {
+            authorId: user.profile.sub,
+            status: values.publish ? 2 : 1, // 1 = draft, 2 = published
+            ...values,
+            uploads,
+        }
+
+        createArticle(article)
+            .then((response: any) => {
+                Toast.success("Article added successfully")
+                // console.log(response.body)
+                window.location.replace(Urls.blog)
+            })
+            .catch(error => Toast.error("Error while adding article"));
     }
 
     return (
@@ -94,22 +97,53 @@ const NewArticle = ({placeholder}: IProps) => {
                         schema={schema}
                         initialValues={initialValues}
                         submitButtonLabel={"Publish"}
+                        loading={submitting}
                         onSubmit={handleSubmit}>
                         <Grid container>
                             <Grid item xs={12}>
                                 <XTextInput
                                     name={"title"}
-                                    helperText={"A catchy title makes your article standout of the crowd"}
-                                    label={"Enter the title..."}
+                                    multiline
+                                    style={{border: 0}}
+                                    fontSize={30}
+                                    placeholder={"Title..."}
                                     variant={"standard"}/>
                             </Grid>
+
+                            <Grid item xs={12}>
+
+                                {/*<ButtonGroup>*/}
+                                {/*    <Button style={{textTransform: 'inherit'}}*/}
+                                {/*            onClick={()=>setShowDropzone(!showDropzone)}*/}
+                                {/*            variant={"outlined"} size={"small"} color={"default"}>*/}
+                                {/*        <Image /> <span style={{marginLeft: 5}}>Upload photo</span>*/}
+                                {/*    </Button>*/}
+                                {/*</ButtonGroup>*/}
+
+                                <Box mt={4}>
+                                    <XDragAndDrop
+                                        showPreviews
+                                        dropzoneText={"Upload a cover photo for your article. " +
+                                        "This will appear on top of your article. Recommended size is 1024 X 960"}
+                                        filesLimit={1}
+                                        acceptedTypes={['image/*']}
+                                        onDragDrop={handleDragDrop}/>
+                                </Box>
+                            </Grid>
+
                             <Grid item xs={12}>
                                 <Box mt={2}>
-                                    <XTextAreaInput
+                                    <XRichTextArea
                                         name={"details"}
                                         label={"Details"}
                                         placeholder={"Start typing here..."}
-                                        />
+                                    />
+                                </Box>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Box mt={2}>
+                                    <XCheckBoxInput name={"publish"} label={"Publish now"}/>
                                 </Box>
                             </Grid>
                         </Grid>

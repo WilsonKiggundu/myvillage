@@ -1,0 +1,60 @@
+.article-list-body{
+    padding: 0;
+}
+
+.article-author{
+    color: #1c1c1c;
+    font-weight: 700;
+}
+
+.article-title{
+    font-weight: 900;
+    font-size: 1.5em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    position: relative;
+    overflow: hidden;
+    padding-right: 1em;
+    margin: 15px;
+}
+
+.article-title a{
+    color: #1c1c1c;
+    cursor: pointer;
+}
+
+.article-summary{
+    color: #aaaaaa;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    position: relative;
+    height: 4.5em;
+    line-height: 20px;
+    overflow: hidden;
+    padding-right: 1em;
+    margin: 15px;
+}
+
+.article-date{
+    color: #cccccc;
+    text-transform: uppercase;
+    margin: 15px;
+}
+
+.article-image{
+    background: #e1e1e1;
+    width: 100%;
+    height: 200px;
+    overflow-y: hidden;
+}
+
+.article-author-avatar{
+    float: left;
+    width: 30px;
+}
+
+.article-item-actions{
+    margin: 25px 15px;
+}

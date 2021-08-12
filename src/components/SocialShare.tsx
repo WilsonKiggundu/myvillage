@@ -15,10 +15,12 @@ import React from "react";
 interface IProps {
     title?: string
     description?: string
+    size?: number
+    round?: boolean
     hashtags?: ["#MyVillage"]
 }
 
-const SocialShare = ({title, description, hashtags}: IProps) => {
+const SocialShare = ({title, description, hashtags, round = true, size = 40}: IProps) => {
 
     const url = window.location.href
 
@@ -27,22 +29,22 @@ const SocialShare = ({title, description, hashtags}: IProps) => {
             <Grid container justify={"center"} spacing={2}>
                 <Grid item>
                     <FacebookShareButton quote={description} hashtag={hashtags?.join(' ')} url={url}>
-                        <FacebookIcon size={40} round/>
+                        <FacebookIcon size={size} round/>
                     </FacebookShareButton>
                 </Grid>
                 <Grid item>
                     <LinkedinShareButton title={title} summary={description} url={url}>
-                        <LinkedinIcon size={40} round/>
+                        <LinkedinIcon size={size} round/>
                     </LinkedinShareButton>
                 </Grid>
                 <Grid item>
                     <TwitterShareButton title={`${title} ${description}`} hashtags={["MyVillage"]} url={url}>
-                        <TwitterIcon size={40} round/>
+                        <TwitterIcon size={size} round/>
                     </TwitterShareButton>
                 </Grid>
                 <Grid item>
                     <WhatsappShareButton title={title} url={url}>
-                        <WhatsappIcon size={40} round/>
+                        <WhatsappIcon size={size} round/>
                     </WhatsappShareButton>
                 </Grid>
 

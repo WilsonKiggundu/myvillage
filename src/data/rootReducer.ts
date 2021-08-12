@@ -7,12 +7,14 @@ import {reducer as oidcReducer} from "redux-oidc";
 import eventsReducer from "../modules/events/redux/eventsReducer";
 import jobsReducer from "../modules/jobs/redux/jobsReducer";
 import freelanceProjectReducer from "../modules/freelancers/redux/freelanceProjectReducer";
+import articlesReducer from "../modules/articles/redux/articlesReducer";
 
 const reducers: any = {
     core: coreReducer,
     oidc: oidcReducer,
     events: eventsReducer,
     posts: postsReducer,
+    articles: articlesReducer,
     jobs: jobsReducer,
     people: peopleReducer,
     startups: startupsReducer,

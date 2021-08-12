@@ -5,11 +5,14 @@ import Checkbox, {CheckboxProps} from '@material-ui/core/Checkbox';
 
 interface IProps {
     name: string
+    value?: any
     label: string
+    onChange?: () => void
 }
 
-const XCheckBoxInput = (props: IProps & CheckboxProps) => {
-    const [field] = useField({name: props.name});
+const XCheckBoxInput = ({...props}: IProps) => {
+    const [field] = useField(props);
+
     return <FormControlLabel
         label={props.label}
         control={
@@ -17,7 +20,7 @@ const XCheckBoxInput = (props: IProps & CheckboxProps) => {
                 checked={field.value || false}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
-                name={props.name}
+                name={field.name}
                 color="secondary"
             />
         }

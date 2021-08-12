@@ -55,6 +55,11 @@ import {
     fetchFreelanceProjectsWatcher,
     updateFreelanceProjectsWatcher
 } from "../modules/freelancers/redux/freelanceProjectWatchers";
+import {
+    articlesListWatcher,
+    createArticleWatcher,
+    likeArticleWatcher
+} from "../modules/articles/redux/articlesSelectors";
 
 export default function* rootSaga(){
     yield all([
@@ -107,6 +112,11 @@ export default function* rootSaga(){
         likePostWatcher(),
         addCommentWatcher(),
         commentsListWatcher(),
+
+        // articles
+        articlesListWatcher(),
+        createArticleWatcher(),
+        likeArticleWatcher(),
 
         // events
         addEventWatcher(),

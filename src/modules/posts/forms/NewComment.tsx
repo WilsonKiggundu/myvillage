@@ -20,11 +20,13 @@ import {Urls} from "../../../routes/Urls";
 import {IEmailObject} from "../../../interfaces/IEmailObject";
 import {EmailSettings} from "../../../data/constants";
 import {sendEmail} from "../../../services/NotificationService";
+import {IArticle} from "../../../interfaces/IArticle";
 
 interface IProps {
     done?: () => any
     onClose?: () => any
     post?: IPost
+    article?: IArticle
 }
 
 const schema = yup.object().shape(
@@ -45,55 +47,17 @@ const NewComment = ({done, onClose, ...props}: IProps) => {
 
         comment.authorId = user.profile.sub
         if (props.post) comment.postId = props.post.id
+        if (props.article) comment.articleId = props.article.id
 
         try {
             dispatch(addComment(comment))
-
-            const personContacts: any = await getPersonContact(props.post?.authorId)
-            let emails: IContact[] = personContacts.body.filter((contact: IContact) => contact.type === 2)
-            const recipient = emails.map((contact: IContact) => contact.value).join(',')
-
-            const body = `<!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Title</title>
-                </head>
-                <body style="text-align: center; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; background-color: #f1f1f1">
-                    <div style="padding: 25px; width: 100%; background-color: #1c1c1c; color: #ffffff;">
-                        <h1>${props.post?.author?.firstname},<br/>someone commented on your post</h1>
-                    </div>
-                    <div style="background-color: #ffffff; padding: 15px; margin: 0 auto; max-width: 80%">
-                        <p>
-                            <a style="background-color: #e98a2b; text-decoration: none; color: white; padding: 15px;" 
-                                href="${Urls.base}${Urls.profiles.onePerson(comment.authorId)}">
-                                View profile
-                            </a>
-                        </p>
-                    </div>
-                    <div style="padding: 25px; font-size: 10px; color: #cccccc">
-                        <p>This is an auto-generated email sent from an unmonitored emailing list. You may not reply to it directly.</p>
-                    </div>
-                </body>
-            </html>`
-
-            const emailToSend: IEmailObject = {
-                body: body,
-                recipient: recipient,
-                senderEmail: EmailSettings.senderEmail,
-                senderName: EmailSettings.senderName,
-                subject: "MyVillage news feed"
-            }
-
-            await sendEmail(emailToSend)
-
         } catch (e) {
 
-        } finally {
-            actions.resetForm()
-            if (onClose) {
-                onClose()
-            }
+        }
+
+        actions.resetForm()
+        if (onClose) {
+            onClose()
         }
     }
 

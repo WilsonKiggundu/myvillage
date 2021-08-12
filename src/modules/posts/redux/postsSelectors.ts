@@ -10,7 +10,12 @@ import {ADD_POST, ADD_POST_COMMENT, FETCH_COMMENTS, FETCH_POSTS, LIKE_POST} from
 import {IPost} from "../../../interfaces/IPost";
 
 export const postsSelector = (state: any) => state.posts
-export const commentsSelector = (state: any, postId: string) => state.posts.data.find((f: IPost) => f.id === postId)?.comments
+export const commentsSelector = (state: any, entityId?: string, entityType?: string) =>
+{
+    if (entityType === "article")
+        return state.articles.data.find((f: any) => f.id === entityId)?.comments
+    return state.posts.data.find((f: IPost) => f.id === entityId)?.comments
+}
 
 export function* likePostWatcher(){
     yield takeLatest(LIKE_POST, savePostLikeAction)
