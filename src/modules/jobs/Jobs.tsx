@@ -24,6 +24,7 @@ import {Button, Snackbar, TextField, useMediaQuery, useTheme} from "@material-ui
 import SearchIcon from '@material-ui/icons/Search';
 import JobFilter from "./forms/JobFilter";
 import { handleLogin } from "../../utils/authHelpers";
+import {isBefore} from "date-fns";
 
 
 const schema = yup.object().shape(
@@ -79,7 +80,8 @@ const Jobs = () => {
 
             <Grid container spacing={2} justify={"center"}>
                 <Grid item xs={12}>
-                    {jobs && jobs.data.map((job: IJob, index: number) => <JobListItem
+                    {jobs && jobs.data.filter((job: IJob) => !isBefore(new Date(job.deadline), new Date()))
+                        .map((job: IJob, index: number) => <JobListItem
                         key={index}
                         job={job}
                         showJobDetails
