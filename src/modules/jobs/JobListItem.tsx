@@ -9,6 +9,7 @@ import {longDate} from "../../utils/dateHelpers";
 import {Urls} from "../../routes/Urls";
 import {useHistory} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import {ChevronRight} from "@material-ui/icons";
 
 interface IProps {
     job: IJob
@@ -48,11 +49,11 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
         <Box mb={2}>
             <Card className="clickable" elevation={0} onClick={handleViewDetails}>
                 <CardHeader
-                    avatar={
-                        <Avatar src={job.company?.avatar} variant={"square"}>
-                            {job.company?.name[0].toUpperCase()}
-                        </Avatar>
-                    }
+                    // avatar={
+                    //     <Avatar src={job.company?.avatar} variant={"square"}>
+                    //         {job.company?.name[0].toUpperCase()}
+                    //     </Avatar>
+                    // }
                     title={
                         <div className="job-title">
                             {job.title}
@@ -60,28 +61,28 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                     }
                     subheader={
                         <div className="job-category">
-                            {job.company?.name}, {job.category?.name}
+                            {job.category?.name}
                         </div>
                     }/>
 
-                <Divider/>
-
                 <CardContent>
                     <Box mb={3}>
-                        <Grid container justify={"space-between"} spacing={2}>
-                            <Grid item>
+                        <Grid container justify={"flex-start"} spacing={2}>
+                            <Grid item xs={12} md={4}>
                                 <Grid container spacing={2} justify={"flex-start"}>
                                     {
                                         job.location && <Grid xs={12} item className="job-location">
-                                            <LocationOnIcon className="job-location-icon"/> <span>{job.location}</span>
+                                            <LocationOnIcon className="job-location-icon"/>
+                                            <strong>Location</strong><br/>
+                                            <span>{job.location}</span>
                                         </Grid>
                                     }
                                 </Grid>
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={12} md={4}>
                                 {
                                     job.deadline && <Box mb={3}>
-                                        <div className="job-deadline">
+                                        <div className="">
                                             <strong>Application deadline</strong><br/>{longDate(job.deadline)}
                                         </div>
                                     </Box>
@@ -98,8 +99,6 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                         </Box>
                     }
 
-                    <Divider/>
-
                     {
                         showVewDetailsButton && <Box mt={3}>
                             <Grid container spacing={2} justify={"space-between"}>
@@ -108,7 +107,7 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                                 </Grid>}
                                 <Grid item>
                                     <Button variant={"outlined"} onClick={handleViewDetails}>
-                                        View details
+                                        View details <ChevronRight />
                                     </Button>
                                 </Grid>
                             </Grid>
