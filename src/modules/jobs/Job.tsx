@@ -77,8 +77,6 @@ const Job = ({match}: any) => {
                 const response: any = await getJobById(id)
                 const job = response.body[0]
 
-                console.log(job)
-
                 document.title = `${job.title} / My Village`
 
                 setJob(job)

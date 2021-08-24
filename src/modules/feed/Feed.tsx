@@ -19,6 +19,7 @@ import {handleLogin} from "../../utils/authHelpers";
 import ArticleListItem from "../articles/ArticleListItem";
 import EventListItem from "../events/EventListItem";
 import EventPostCard from "../posts/EventPostCard";
+import JobPostCard from "../posts/JobPostCard";
 
 const Feed = () => {
 
@@ -73,8 +74,11 @@ const Feed = () => {
                                     case 4: return <Box key={post.id} mt={2}>
                                         <ArticleListItem id={post.referenceId} article={post} />
                                     </Box>
-                                    case 5: return <Box key={post.id} mt={2}>
+                                    case 5: return <Box key={post.id} mt={2}>       
                                         <EventPostCard post={post} id={post.ref} />
+                                    </Box>
+                                    case 6: return <Box key={post.id} mt={2}>
+                                        <JobPostCard post={post} id={post.referenceId} />
                                     </Box>
                                     default: return <PostCard post={post} key={post.id}/>
                                 }
