@@ -37,6 +37,7 @@ import FreelanceProjects from "./modules/freelancers/FreelanceProjects";
 import Articles from "./modules/articles/Articles";
 import Article from "./modules/articles/Article";
 import UpdateArticle from "./modules/articles/UpdateArticle";
+import PersonEmailPreferences from "./modules/profiles/people/PersonEmailPreferences";
 
 export const App = () => {
     useTracking('G-WCYNV9YTKE')
@@ -62,6 +63,8 @@ export const App = () => {
                     <Route exact path={Urls.job} component={Job}/>
                     <Route exact path={Urls.jobs.create} component={CreateJob}/>
                     <Route exact path={Urls.jobs.home} component={JobsHome}/>
+
+                    <Route exact path={Urls.settings.emailNotifications} component={PersonEmailPreferences}/>
 
                     <Route exact path={Urls.articles.create} component={NewArticle} />
                     <Route exact path={Urls.articles.update} render={(props) => <UpdateArticle {...props} />} />

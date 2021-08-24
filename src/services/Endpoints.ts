@@ -118,4 +118,6 @@ export const Endpoints = {
         upload: "/api/lookup/uploads",
         stack: "/api/lookup/stack",
     },
+
+    settings: "/api/settings"
 }
