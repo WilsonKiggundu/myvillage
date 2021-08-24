@@ -105,6 +105,7 @@ export const Endpoints = {
         connection: "/api/person/connections",
         freelance: "/api/person/freelance",
         blacklist: "/api/person/blacklist",
+        settings: "/api/settings"
     },
 
     contact: "/api/contact",
@@ -117,7 +118,5 @@ export const Endpoints = {
         need: "/api/lookup/needs",
         upload: "/api/lookup/uploads",
         stack: "/api/lookup/stack",
-    },
-
-    settings: "/api/settings"
+    }
 }

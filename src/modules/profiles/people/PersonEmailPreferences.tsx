@@ -11,7 +11,7 @@ import {
     ListSubheader,
     Switch
 } from "@material-ui/core";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {emailPreferences} from "../../../data/emailPreferences";
 import {IEmailPreference} from "../../../interfaces/IEmailPreference";
 import _ from "lodash";
@@ -33,24 +33,21 @@ export default function PersonEmailPreferences() {
         .map((items, section) => ({section, items}))
         .value();
 
+    const [loading, setLoading] = useState<boolean>(true)
     const [checked, setChecked] = React.useState<string[]>([]);
+    const url = makeUrl("Profiles", Endpoints.person.settings);
 
-    const handleToggle = (value: any) => () => {
-        const currentIndex = checked.indexOf(value);
+    const handleToggle = (id: string, value: number) => () => {
+        const currentIndex = checked.indexOf(id);
         const newChecked = [...checked];
 
         const isChecked = currentIndex === -1
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(id);
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
-        // update the preference
-        const url = makeUrl("Profiles", Endpoints.settings)
-
-        console.log({personId: user.profile.sub, type: value, value: isChecked})
 
         putAsync(url, {personId: user.profile.sub, type: value, value: isChecked})
             .then(() => {
@@ -60,12 +57,13 @@ export default function PersonEmailPreferences() {
     }
 
     useEffect(() => {
-        const url = makeUrl("Profiles", Endpoints.settings)
+        const url = makeUrl("Profiles", "/api/settings");
         getAsync(url, {personId: user.profile.sub})
             .then((response: any) => {
-                const preferences = response.body
 
-                console.log({...preferences})
+                setLoading(false)
+
+                const preferences = response.body
 
                 if (preferences){
                     for (const [key, value] of Object.entries(preferences)) {
@@ -90,7 +88,9 @@ export default function PersonEmailPreferences() {
                                     const id = 'switch-list-label' + item.id
                                     return (
                                         <div key={id}>
-                                            <ListItem disabled={item.disabled} disableRipple onClick={handleToggle(item.id)} button>
+                                            <ListItem disabled={item.disabled || loading}
+                                                      disableRipple 
+                                                      onClick={handleToggle(item.id, item.value)} button>
                                                 <ListItemText
                                                     id={id}
                                                     secondary={item.secondaryLabel}
@@ -99,8 +99,8 @@ export default function PersonEmailPreferences() {
                                                     <Switch
                                                         color={"primary"}
                                                         edge="end"
-                                                        disabled={item.disabled}
-                                                        onChange={handleToggle(item.id)}
+                                                        disabled={item.disabled || loading}
+                                                        onChange={handleToggle(item.id, item.value)}
                                                         checked={checked.indexOf(item.id) !== -1}
                                                         inputProps={{'aria-labelledby': id}}
                                                     />
