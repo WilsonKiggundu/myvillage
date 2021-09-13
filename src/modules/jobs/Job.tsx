@@ -178,7 +178,6 @@ const Job = ({match}: any) => {
 
                                     <Divider/>
 
-
                                     <CardContent>
                                         <Grid spacing={2} container justify={"flex-start"}>
                                             {company?.name && <Grid item xs={6} sm={6} md={4} lg={3}>
