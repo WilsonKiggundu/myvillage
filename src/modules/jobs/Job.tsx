@@ -79,8 +79,10 @@ const Job = ({match}: any) => {
         (async () => {
             try {
 
-                const profileStatus: any = await getProfileStatus(user.profile.sub)
-                setProfileStatus(!profileStatus.body)
+                if (user){
+                    const profileStatus: any = await getProfileStatus(user.profile.sub)
+                    setProfileStatus(!profileStatus.body)
+                }
 
                 const response: any = await getJobById(id)
                 const job = response.body[0]
