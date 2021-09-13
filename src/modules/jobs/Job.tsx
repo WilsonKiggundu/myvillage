@@ -28,6 +28,10 @@ import {useHistory} from "react-router-dom";
 import SocialShare from "../../components/SocialShare";
 import ViewApplicants from "./ViewApplicants";
 import Toast from "../../utils/Toast";
+import {getProfileStatus} from "../profiles/people/redux/peopleEndpoints";
+import {Alert} from "@material-ui/lab";
+import {Stop} from "@material-ui/icons";
+import {Endpoints} from "../../services/Endpoints";
 
 
 const Job = ({match}: any) => {
@@ -45,6 +49,7 @@ const Job = ({match}: any) => {
     const [canViewApplicants, setCanViewApplicants] = useState<boolean>(false)
 
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
+    const [isCompleteProfile, setProfileStatus] = useState<boolean>(false)
 
     const handleApply = async (job: IJob) => {
 
@@ -73,6 +78,11 @@ const Job = ({match}: any) => {
 
         (async () => {
             try {
+
+                getProfileStatus(user.profile.sub)
+                    .then((response: any) => {
+                        setProfileStatus(response.body)
+                    })
 
                 const response: any = await getJobById(id)
                 const job = response.body[0]
@@ -120,18 +130,18 @@ const Job = ({match}: any) => {
                             <Box mb={2}>
                                 <Card>
                                     <CardHeader
-                                        avatar={
-                                            <Avatar src={company?.avatar} variant={"square"}>
-                                                {company?.name[0].toUpperCase()}
-                                            </Avatar>
-                                        }
+                                        // avatar={
+                                        //     <Avatar src={company?.avatar} variant={"square"}>
+                                        //         {company?.name[0].toUpperCase()}
+                                        //     </Avatar>
+                                        // }
                                         action={
                                             <div style={{padding: 15}}>
                                                 <Button className="apply-button"
                                                         onClick={() => handleApply(job)}
                                                         variant={"contained"}
                                                         disableElevation
-                                                        disabled={alreadyApplied}
+                                                        disabled={alreadyApplied || !isCompleteProfile}
                                                         color={"secondary"}>
                                                     {applying ? <CircularProgress color={"inherit"} size={25} /> : "Apply Now"}
                                                 </Button>
@@ -148,7 +158,26 @@ const Job = ({match}: any) => {
                                             </div>
                                         }/>
 
+                                    {!isCompleteProfile && <CardContent>
+                                        <Alert icon={false} title={"Your profile is incomplete"} color={"warning"}>
+                                            You are not able to apply for this job because your profile is not complete. For your profile to be complete, you need to provide the following information:
+                                            <ol>
+                                                <li>Contact information</li>
+                                                <li>Employment & Education history</li>
+                                                <li>Your skill set</li>
+                                                <li>Projects you have worked on (for developers)</li>
+                                                <li>Your developer stack (for developers)</li>
+                                                <li>Your rates (for freelancers)</li>
+                                            </ol>
+                                            &nbsp;
+                                            <a
+                                                href={Urls.profiles.onePerson(user.profile.sub)}>
+                                                Complete your profile &rarr;</a>
+                                        </Alert>
+                                    </CardContent>}
+
                                     <Divider/>
+
 
                                     <CardContent>
                                         <Grid spacing={2} container justify={"flex-start"}>

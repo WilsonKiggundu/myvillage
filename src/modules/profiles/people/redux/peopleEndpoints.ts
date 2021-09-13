@@ -4,6 +4,11 @@ import {deleteAsync, getAsync, getWithoutLoginAsync, makeUrl, postAsync, putAsyn
 import store from "../../../../data/store";
 import {UploadType} from "../../../posts/forms/UploadFile";
 
+export const getProfileStatus = async (personId: string) => {
+    const url = makeUrl("Profiles", Endpoints.person.status)
+    return await getAsync(url, {personId})
+}
+
 export const getPeople = async (params?: any) => {
     const state = store.getState()
     const {nextPage} = state.people.request

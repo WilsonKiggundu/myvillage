@@ -24,9 +24,8 @@ export const Options = {
     ],
 
     EVENT_TYPES: [
-        {id: "physical", name: "Physical Event"},
         {id: "webinar", name: "Webinar"},
-        {id: "hybrid", name: "Hybrid"},
+        {id: "meeting", name: "Meeting"}
     ],
 
     EVENT_CATEGORIES: [
@@ -63,7 +62,9 @@ export const Options = {
     ],
 
     EVENT_LOCATIONS: [
-        {id: "zoom", name: "On Zoom"}
+        {id: "zoom", name: "On Zoom"},
+        {id: "physical", name: "Physical Event"},
+        {id: "hybrid", name: "Hybrid"}
     ],
 
     EVENT_ORGANIZER: [

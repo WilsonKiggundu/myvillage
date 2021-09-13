@@ -129,34 +129,88 @@ const CreateEvent = () => {
                                                 helperText={"Give your event a descriptive name so that it can easily be found"}
                                                 multiline={false}
                                                 variant={"outlined"}
-                                                placeholder={"Enter the title"}
+                                                placeholder={"Start typing the title of the event..."}
                                                 label={"Event title"}
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12}>
+                                            <XDateInput
+                                                disablePast
+                                                name={"date"}
+                                                placeholder={"Event date"}
+                                                helperText={"When is the event?"}
+                                                multiline={false}
+                                                autoFocus={false}
+                                                pickerVariant={"dialog"}
+                                                variant={"outlined"}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={6}>
+
+                                            <XTimeInput helperText={"What time does the event start?"}
+                                                        disablePast
+                                                        variant={"outlined"}
+                                                        placeholder={"Start time"}
+                                                        name={"startTime"}/>
+                                        </Grid>
+
+                                        <Grid item xs={6}>
+                                            <XTimeInput helperText={"What time does the event end?"}
+                                                        placeholder={"End time"}
+                                                        variant={"outlined"}
+                                                        name={"endTime"}/>
+                                        </Grid>
+
+                                        <Grid item xs={12}>
+                                            <div className="event-form-label">
+                                                Description / Agenda
+                                            </div>
+                                            <XRichTextArea
+                                                variant={"standard"}
+                                                name={"details"}
+                                                label={"Event description"}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12}>
+                                            <div className="event-form-label">
+                                                Attachments
+                                            </div>
+                                            <EventAttachments formField={formField} onDragDrop={handleDragDrop}/>
+                                        </Grid>
+
+                                    </Grid>
+                                </CardContent>
+
+                                <Divider />
+
+                                <CardContent>
+                                <Grid container spacing={2}>
+
+                                        <Grid item xs={12} md={6} lg={4}>
                                             <XSelectInputCreatable
                                                 // multiple
                                                 variant={"outlined"}
                                                 options={Options.EVENT_OBJECTIVE}
                                                 name={"objective"}
                                                 label={"Objective"}
-                                                placeholder={"What's the objective of the event?"}
+                                                helperText={"What's the objective of the event?"}
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} md={6} lg={4}>
                                             <XSelectInputCreatable
-                                                helperText={"Optional"}
-                                                label={"Event Category"}
-                                                placeholder={"What kind of event is it?"}
+                                                label={"Category"}
+                                                helperText={"What kind of event is it? Optional"}
                                                 name={"category"}
                                                 options={Options.EVENT_CATEGORIES}
                                                 variant={"outlined"}
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} md={6} lg={4}>
                                             <XSelectInputCreatable
                                                 helperText={"You can add any option if it does not exist"}
                                                 label={"Event Type"}
@@ -167,7 +221,7 @@ const CreateEvent = () => {
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} md={6} lg={4}>
                                             <XSelectInputCreatable
                                                 placeholder={"Where is the event happening?"}
                                                 variant={"outlined"}
@@ -179,7 +233,7 @@ const CreateEvent = () => {
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} md={6} lg={4}>
                                             <XSelectInputCreatable
                                                 label={"TIV Affiliation"}
                                                 variant={"outlined"}
@@ -189,7 +243,7 @@ const CreateEvent = () => {
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} md={6} lg={4}>
                                             <XSelectInputCreatable
                                                 placeholder={"Select or add partner"}
                                                 allowAddNew
@@ -223,54 +277,6 @@ const CreateEvent = () => {
                                                 label={"Sector"}
                                                 helperText={"Ex. Information Technology"}
                                             />
-                                        </Grid>
-
-                                        <Grid item xs={12}>
-                                            <XDateInput
-                                                disablePast
-                                                name={"date"}
-                                                placeholder={"Event date"}
-                                                helperText={"When is the event?"}
-                                                multiline={false}
-                                                autoFocus={false}
-                                                pickerVariant={"dialog"}
-                                                variant={"outlined"}
-                                            />
-                                        </Grid>
-
-                                        <Grid item xs={6}>
-
-                                            <XTimeInput helperText={"What time does the event start?"}
-                                                        disablePast
-                                                        variant={"outlined"}
-                                                        placeholder={"Start time"}
-                                                        name={"startTime"}/>
-                                        </Grid>
-
-                                        <Grid item xs={6}>
-
-                                            <XTimeInput helperText={"What time does the event end?"}
-                                                        placeholder={"End time"}
-                                                        variant={"outlined"}
-                                                        name={"endTime"}/>
-                                        </Grid>
-
-                                        <Grid item xs={12}>
-                                            <div className="event-form-label">
-                                                Description / Agenda
-                                            </div>
-                                            <XRichTextArea
-                                                variant={"standard"}
-                                                name={"details"}
-                                                label={"Event description"}
-                                            />
-                                        </Grid>
-
-                                        <Grid item xs={12}>
-                                            <div className="event-form-label">
-                                                Attachments
-                                            </div>
-                                            <EventAttachments formField={formField} onDragDrop={handleDragDrop}/>
                                         </Grid>
 
                                     </Grid>
