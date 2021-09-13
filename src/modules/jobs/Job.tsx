@@ -49,7 +49,7 @@ const Job = ({match}: any) => {
     const [canViewApplicants, setCanViewApplicants] = useState<boolean>(false)
 
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
-    const [isCompleteProfile, setProfileStatus] = useState<boolean>(false)
+    const [isIncompleteProfile, setProfileStatus] = useState<boolean>(false)
 
     const handleApply = async (job: IJob) => {
 
@@ -79,15 +79,13 @@ const Job = ({match}: any) => {
         (async () => {
             try {
 
-                getProfileStatus(user.profile.sub)
-                    .then((response: any) => {
-                        setProfileStatus(response.body)
-                    })
+                const profileStatus: any = await getProfileStatus(user.profile.sub)
+                setProfileStatus(!profileStatus.body)
 
                 const response: any = await getJobById(id)
                 const job = response.body[0]
 
-                document.title = `${job.title} / My Village`
+                document.title = `${job.title} / Jobs`
 
                 setJob(job)
 
@@ -141,7 +139,7 @@ const Job = ({match}: any) => {
                                                         onClick={() => handleApply(job)}
                                                         variant={"contained"}
                                                         disableElevation
-                                                        disabled={alreadyApplied || !isCompleteProfile}
+                                                        disabled={alreadyApplied || isIncompleteProfile}
                                                         color={"secondary"}>
                                                     {applying ? <CircularProgress color={"inherit"} size={25} /> : "Apply Now"}
                                                 </Button>
@@ -158,9 +156,11 @@ const Job = ({match}: any) => {
                                             </div>
                                         }/>
 
-                                    {!isCompleteProfile && <CardContent>
+                                    {isIncompleteProfile && <CardContent>
                                         <Alert icon={false} title={"Your profile is incomplete"} color={"warning"}>
-                                            You are not able to apply for this job because your profile is not complete. For your profile to be complete, you need to provide the following information:
+                                            You are not able to apply for this job because your profile is not
+                                            complete. For your profile to be complete, you need to provide the
+                                            following information:
                                             <ol>
                                                 <li>Contact information</li>
                                                 <li>Employment & Education history</li>
