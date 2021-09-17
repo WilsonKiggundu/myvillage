@@ -32,6 +32,7 @@ import XDialog from "../../components/dialogs/XDialog";
 import RateEvent from "./forms/RateEvent";
 import {EventLoader} from "../../components/loaders/EventLoader";
 import Linkify from "react-linkify";
+import {Alert} from "@material-ui/lab";
 
 
 const Event = ({match}: any) => {
@@ -59,10 +60,10 @@ const Event = ({match}: any) => {
 
                 const event = response.body
 
-                event.type = (event.type === "physical" ? "Physical Event" : event.type)
+                // event.type = (event.type === "physical" ? "Physical Event" : event.type)
                 setIsPastEvent(isBefore(new Date(event.endDateTime), new Date()))
 
-                if(user){
+                if (user) {
 
                     const userId = user.profile.sub
 
@@ -149,7 +150,7 @@ const Event = ({match}: any) => {
                             <Grid container justify={"space-between"} spacing={4}>
                                 <Grid item xs={12} md={8}>
                                     <h1 className="event-title">{event.title}</h1>
-                                    <label className="event-label">{event.type}</label>
+                                    <label className="event-label text-capitalize">{event.type}</label>
                                 </Grid>
                                 <Grid style={{textAlign: isMobile ? "left" : "right"}} item xs={12} md={4}>
                                     {
@@ -168,14 +169,22 @@ const Event = ({match}: any) => {
                                                     disabled={submitting || isAttending}
                                                     color={"secondary"}>
                                                 {
-                                                    submitting ? <CircularProgress size={20}/> :
-                                                        isAttending ? "You are attending" : "Register to attend"
+                                                    submitting ? <CircularProgress size={20}/> : "Register to attend"
                                                 }
 
                                             </Button>
                                     }
                                 </Grid>
+
+                                {isAttending &&
+                                    <Grid item xs={12}>
+                                        <Alert color={"info"}>You have registered to attend the {event.type}.
+                                            Please check your email <strong>{user?.profile?.email}</strong> for
+                                            instructions on how to join the event.</Alert>
+                                    </Grid>
+                                }
                             </Grid>
+
 
                             <Box mb={4} mt={4}>
                                 <Grid spacing={2} container justify={"flex-start"}>
@@ -259,15 +268,14 @@ const Event = ({match}: any) => {
                                 {/*    </Button>*/}
                                 {/*</Box>*/}
 
-
-                                {event.webinar && <Box mt={4} mb={4}>
-                                    <Button disableElevation variant={"contained"}
-                                            color={"primary"}
-                                            href={event.webinar.startUrl}
-                                            target={"_blank"}>
-                                        Join The Webinar
-                                    </Button>
-                                </Box>}
+                                {/*{event.webinar && <Box mt={4} mb={4}>*/}
+                                {/*    <Button disableElevation variant={"contained"}*/}
+                                {/*            color={"primary"}*/}
+                                {/*            href={event.webinar.joinUrl}*/}
+                                {/*            target={"_blank"}>*/}
+                                {/*        Join The Webinar*/}
+                                {/*    </Button>*/}
+                                {/*</Box>}*/}
 
 
                                 <SocialShare

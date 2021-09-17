@@ -94,6 +94,7 @@ export const Endpoints = {
 
     person: {
         base: "/api/person",
+        status: "/api/person/status",
         award: "/api/person/awards",
         employment: "/api/person/employment",
         project: "/api/person/project",
@@ -105,6 +106,7 @@ export const Endpoints = {
         connection: "/api/person/connections",
         freelance: "/api/person/freelance",
         blacklist: "/api/person/blacklist",
+        settings: "/api/settings"
     },
 
     contact: "/api/contact",
@@ -117,5 +119,5 @@ export const Endpoints = {
         need: "/api/lookup/needs",
         upload: "/api/lookup/uploads",
         stack: "/api/lookup/stack",
-    },
+    }
 }

@@ -42,6 +42,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import BookIcon from '@material-ui/icons/Book';
 import {white} from "../../theme/custom-colors";
 import Button from "@material-ui/core/Button";
+import {Notifications} from "@material-ui/icons";
 
 type Anchor = 'left' | 'right';
 const drawerWidth = 250;
@@ -301,8 +302,6 @@ export default function ApplicationBar() {
                         <ListItemText primary={"Blog"}/>
                     </ListItemLink>
 
-                    <Divider/>
-
                     <ListItemLink slag={"community"} handleClick={() => handleClick(Urls.profiles.people)}>
                         <ListItemIcon>
                             <PeopleIcon/>
@@ -323,8 +322,6 @@ export default function ApplicationBar() {
                         <ListItemText primary={"Developers"}/>
                     </ListItemLink>
 
-                    <Divider/>
-
                     <ListItemLink slag={"startups"} handleClick={() => handleClick(Urls.profiles.startups)}>
                         <ListItemIcon>
                             <LayersIcon/>
@@ -339,8 +336,6 @@ export default function ApplicationBar() {
                         <ListItemText primary={"Work in Tech"}/>
                     </ListItemLink>
 
-                    <Divider/>
-
                     <ListItemLink slag={"events"} handleClick={() => handleClick(Urls.events)}>
                         <ListItemIcon>
                             <EventIcon/>
@@ -350,25 +345,44 @@ export default function ApplicationBar() {
 
                     <Divider/>
 
-                    <Box mt={2} mb={2} ml={2} mr={2}>
-                        {
-                            user ?
-                                <Button disableElevation
-                                        onClick={handleLogout}
-                                        style={{width: '100%'}}
-                                        variant={"contained"}
-                                        color={"inherit"}
-                                        size={"large"}>Logout</Button> :
-                                <Button disableElevation
-                                        onClick={handleLogin}
-                                        style={{width: '100%'}}
-                                        variant={"contained"}
-                                        color={"secondary"}
-                                        size={"large"}>Login</Button>
-                        }
-                    </Box>
+                </List>
+
+                <List
+                    subheader={
+                        <ListSubheader component="div" id="nested-list-subheader">
+                            Settings
+                        </ListSubheader>
+                    }
+                >
+
+                    <ListItemLink slag={"email-settings"} handleClick={() => handleClick(Urls.settings.emailNotifications)}>
+                        <ListItemIcon>
+                            <Notifications/>
+                        </ListItemIcon>
+                        <ListItemText primary={"Email Preferences"}/>
+                    </ListItemLink>
 
                 </List>
+
+                <Divider />
+
+                <Box mt={2} mb={2} ml={2} mr={2}>
+                    {
+                        user ?
+                            <Button disableElevation
+                                    onClick={handleLogout}
+                                    style={{width: '100%'}}
+                                    variant={"contained"}
+                                    color={"inherit"}
+                                    size={"large"}>Logout</Button> :
+                            <Button disableElevation
+                                    onClick={handleLogin}
+                                    style={{width: '100%'}}
+                                    variant={"contained"}
+                                    color={"secondary"}
+                                    size={"large"}>Login</Button>
+                    }
+                </Box>
 
             </Drawer>
         </>

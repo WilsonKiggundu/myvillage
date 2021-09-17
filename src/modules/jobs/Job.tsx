@@ -1,7 +1,6 @@
 import {IJob} from "../../interfaces/IJob";
 import React, {useEffect, useState} from "react";
 import {
-    Avatar,
     Box,
     Button,
     Card,
@@ -23,11 +22,15 @@ import AttachmentIcon from '@material-ui/icons/Attachment';
 import {applyForJob, getJobById} from "./redux/jobsEndpoints";
 import {userSelector} from "../../data/coreSelectors";
 import userManager from "../../utils/userManager";
-import {longDate, timeAgo} from "../../utils/dateHelpers";
+import {longDate} from "../../utils/dateHelpers";
 import {useHistory} from "react-router-dom";
 import SocialShare from "../../components/SocialShare";
 import ViewApplicants from "./ViewApplicants";
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 import Toast from "../../utils/Toast";
+import {getProfileStatus} from "../profiles/people/redux/peopleEndpoints";
+import {Alert} from "@material-ui/lab";
+import {handleLogin} from "../../utils/authHelpers";
 
 
 const Job = ({match}: any) => {
@@ -45,6 +48,7 @@ const Job = ({match}: any) => {
     const [canViewApplicants, setCanViewApplicants] = useState<boolean>(false)
 
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
+    const [isIncompleteProfile, setProfileStatus] = useState<boolean>(false)
 
     const handleApply = async (job: IJob) => {
 
@@ -74,10 +78,15 @@ const Job = ({match}: any) => {
         (async () => {
             try {
 
+                if (user) {
+                    const profileStatus: any = await getProfileStatus(user.profile.sub)
+                    setProfileStatus(!profileStatus.body)
+                }
+
                 const response: any = await getJobById(id)
                 const job = response.body[0]
 
-                document.title = `${job.title} / My Village`
+                document.title = `${job.title} / Jobs`
 
                 setJob(job)
 
@@ -120,22 +129,23 @@ const Job = ({match}: any) => {
                             <Box mb={2}>
                                 <Card>
                                     <CardHeader
-                                        avatar={
-                                            <Avatar src={company?.avatar} variant={"square"}>
-                                                {company?.name[0].toUpperCase()}
-                                            </Avatar>
-                                        }
+                                        // avatar={
+                                        //     <Avatar src={company?.avatar} variant={"square"}>
+                                        //         {company?.name[0].toUpperCase()}
+                                        //     </Avatar>
+                                        // }
                                         action={
-                                            <div style={{padding: 15}}>
+                                            user ? <div style={{padding: 15}}>
                                                 <Button className="apply-button"
                                                         onClick={() => handleApply(job)}
                                                         variant={"contained"}
                                                         disableElevation
-                                                        disabled={alreadyApplied}
+                                                        disabled={alreadyApplied || isIncompleteProfile}
                                                         color={"secondary"}>
-                                                    {applying ? <CircularProgress color={"inherit"} size={25} /> : "Apply Now"}
+                                                    {applying ?
+                                                        <CircularProgress color={"inherit"} size={25}/> : "Apply Now"}
                                                 </Button>
-                                            </div>
+                                            </div> : ""
                                         }
                                         title={
                                             <div className="job-title">
@@ -147,6 +157,37 @@ const Job = ({match}: any) => {
                                                 {job.category?.name}, {job.location}
                                             </div>
                                         }/>
+
+                                    {!user && <CardContent>
+                                        <Alert icon={<LockOpenIcon />} title={"Your profile is incomplete"} color={"info"}>
+                                            <p>You need to log in order to apply for the job.</p>
+                                            <Button size={"small"}
+                                                    variant={"contained"}
+                                                    disableElevation
+                                                    color={"primary"}
+                                                    onClick={handleLogin}>log in &rarr;</Button>
+                                        </Alert>
+                                    </CardContent>}
+
+                                    {isIncompleteProfile && <CardContent>
+                                        <Alert icon={false} title={"Your profile is incomplete"} color={"warning"}>
+                                            You are not able to apply for this job because your profile is not
+                                            complete. For your profile to be complete, you need to provide the
+                                            following information:
+                                            <ol>
+                                                <li>Contact information</li>
+                                                <li>Employment & Education history</li>
+                                                <li>Your skill set</li>
+                                                <li>Projects you have worked on (for developers)</li>
+                                                <li>Your developer stack (for developers)</li>
+                                                <li>Your rates (for freelancers)</li>
+                                            </ol>
+                                            &nbsp;
+                                            <a
+                                                href={Urls.profiles.onePerson(user.profile.sub)}>
+                                                Complete your profile &rarr;</a>
+                                        </Alert>
+                                    </CardContent>}
 
                                     <Divider/>
 
@@ -187,7 +228,7 @@ const Job = ({match}: any) => {
                                         `at ${job.company ? job.company.name : job.companyId}. Closes on ${longDate(job.deadline)}`
                                     } title={"#JobOpportunity " + job.title}/>
 
-                                    {canViewApplicants && <ViewApplicants job={job} />}
+                                    {canViewApplicants && <ViewApplicants job={job}/>}
 
                                 </Card>
                             </Box>
