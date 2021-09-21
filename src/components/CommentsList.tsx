@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom';
 import {timeAgo} from "../utils/dateHelpers";
 import {getAsync, makeUrl} from "../utils/ajax";
 import {Endpoints} from "../services/Endpoints";
+import ReactLinkify from "react-linkify";
 
 interface IProps {
     postId?: string
@@ -79,14 +80,9 @@ export default function CommentsList({postId, articleId}: IProps) {
                     </a>
                 </Typography>
                 <Typography style={{marginTop: '5px', whiteSpace: 'pre-line'}} paragraph>
-                    {c.details}
+                    <ReactLinkify>{c.details}</ReactLinkify>
                 </Typography>
                 <Grid container spacing={2}>
-                    <Grid item>
-                        <Typography style={{cursor: 'pointer'}}>
-                            Like
-                        </Typography>
-                    </Grid>
                     <Grid item>
                         <Typography  component={"div"}>
                             <small style={{color: grey[500]}}>
@@ -95,8 +91,6 @@ export default function CommentsList({postId, articleId}: IProps) {
                         </Typography>
                     </Grid>
                 </Grid>
-
-
 
             </Grid>
         </Grid>
