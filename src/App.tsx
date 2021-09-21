@@ -40,7 +40,7 @@ import UpdateArticle from "./modules/articles/UpdateArticle";
 import PersonEmailPreferences from "./modules/profiles/people/PersonEmailPreferences";
 
 export const App = () => {
-    useTracking('G-WCYNV9YTKE')
+    useTracking('G-5M4EMPQZS9')
 
     return (
             <Switch>

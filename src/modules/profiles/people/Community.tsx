@@ -44,12 +44,6 @@ const Community = ({category} : IProps) => {
     useEffect(() => {
 
         document.title = 'Community / My Village'
-
-        // window.addEventListener('scroll', () => {
-        //     if (people.request.hasMore && scrolledToBottom()) {
-        //         dispatch(loadPeople())
-        //     }
-        // })
     })
 
     useEffect(() => {
