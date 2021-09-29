@@ -27,17 +27,19 @@ export interface IPerson {
 }
 
 export const getInitials = (firstname: string, lastname: string) => {
-    const initials = []
+    const initials : string[] = []
     if (firstname) initials.push(firstname[0].toUpperCase())
     if (lastname) initials.push(lastname[0].toUpperCase())
     return initials.join("")
 }
 
 export const isDeveloper = (person: IPerson) => {
-    return person.categories.map((m: any) => m.category.name).includes('Developer')
+    // return person.categories.map((m: any) => m.category.name).includes('Developer')
+    return true;
 }
 
 export const isLancer = (person: IPerson) => {
-    return person.categories.map((m: any) => m.category.name).includes('Freelancer')
+    // return person.categories.map((m: any) => m.category.name).includes('Freelancer')
+    return true;
 }
 

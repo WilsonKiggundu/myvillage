@@ -32,8 +32,8 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
 
     const jobDetails = div.textContent || div.innerText || ""
 
-    const salaryArray = []
-    let salaryRange = undefined
+    const salaryArray : string[] = []
+    let salaryRange : string | undefined = undefined
 
     if (job.minSalary) salaryArray.push(job.minSalary)
     if (job.maxSalary) salaryArray.push(job.maxSalary)

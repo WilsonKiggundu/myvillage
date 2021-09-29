@@ -38,6 +38,7 @@ import Articles from "./modules/articles/Articles";
 import Article from "./modules/articles/Article";
 import UpdateArticle from "./modules/articles/UpdateArticle";
 import PersonEmailPreferences from "./modules/profiles/people/PersonEmailPreferences";
+import InvestorReadiness from "./modules/investors/InvestorReadiness";
 
 export const App = () => {
     useTracking('G-5M4EMPQZS9')
@@ -72,6 +73,9 @@ export const App = () => {
                     <Route exact path={Urls.events} component={() => <EventsList/>}/>
                     <Route exact path={Urls.createEvent} component={() => <CreateEvent />}/>
                     <Route exact path={Urls.event} component={Event}/>
+
+                    <Route exact path={Urls.investors.readiness} component={() => <InvestorReadiness /> } />
+
                     <Route exact path={Urls.calendar} component={Calendar}/>
                     <Route exact path={Urls.profiles.freelancers} component={FreelancerHome}/>
                     <Route exact path={Urls.profiles.developers} component={DeveloperHome}/>

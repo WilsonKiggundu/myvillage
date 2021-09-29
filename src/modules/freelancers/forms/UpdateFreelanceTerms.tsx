@@ -103,7 +103,7 @@ const UpdateFreelanceTermsForm = ({onClose, freelanceTerms}: IProps) => {
             }
 
             if(onClose) onClose()
-        } catch (e) {
+        } catch (e: any) {
             Toast.error("Unable to update your profile. Please try again later")
         }
     }

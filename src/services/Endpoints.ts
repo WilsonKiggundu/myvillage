@@ -1,4 +1,4 @@
-let profileBaseUrl, eventsBaseUrl, jobsBaseUrl, cdnBaseUrl, notificationsBaseUrl
+let profileBaseUrl, eventsBaseUrl, jobsBaseUrl, cdnBaseUrl, notificationsBaseUrl, investorReadinessApiBaseUrl
 
 switch (process.env.REACT_APP_ENV) {
     case "test":
@@ -6,6 +6,7 @@ switch (process.env.REACT_APP_ENV) {
         eventsBaseUrl = "https://events-api-test.innovationvillage.co.ug"
         notificationsBaseUrl = "https://commservice-test.innovationvillage.co.ug"
         jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
+        investorReadinessApiBaseUrl = "https://api-test.investor.myvillage.africa"
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
         break
     case "production":
@@ -14,6 +15,7 @@ switch (process.env.REACT_APP_ENV) {
         notificationsBaseUrl = "https://commservice.innovationvillage.co.ug"
         jobsBaseUrl = "https://jobs-api.innovationvillage.co.ug"
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
+        investorReadinessApiBaseUrl = "https://api.investor.myvillage.africa"
         break
     default:
         profileBaseUrl = "https://localhost:7001"
@@ -21,6 +23,7 @@ switch (process.env.REACT_APP_ENV) {
         notificationsBaseUrl = "https://commservice-test.innovationvillage.co.ug"
         jobsBaseUrl = "https://jobs-api-test.innovationvillage.co.ug"
         cdnBaseUrl = "https://static.innovationvillage.co.ug"
+        investorReadinessApiBaseUrl = "https://localhost:2001"
 }
 
 export const Endpoints = {
@@ -49,6 +52,12 @@ export const Endpoints = {
         }
     },
 
+    investorReadiness: {
+        base: investorReadinessApiBaseUrl,
+        questions: '/api/questions',
+        responses: '/api/responses'
+    },
+
     notification: {
         base: notificationsBaseUrl,
         api: {
@@ -62,6 +71,10 @@ export const Endpoints = {
     },
     business: {
         base: "/api/business",
+        investorReadiness: {
+            questions: "/api/questions",
+            responses: "/api/responses"
+        },
         address: "/api/business/addresses",
         awards: "/api/business/awards",
         contact: "/api/business/contacts",

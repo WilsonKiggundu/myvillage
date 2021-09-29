@@ -15,7 +15,7 @@ const handleDownload = (path: string) => {
 
 const EventAttachments = ({uploads, cellHeight}: IProps) => {
 
-    const [images, setImages] = useState()
+    const [images, setImages] = useState<IUpload[]>()
 
     useEffect(() => {
         const images = uploads?.filter(upload => IsImage(upload.path))

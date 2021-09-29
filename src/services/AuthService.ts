@@ -103,7 +103,7 @@ export default class AuthService {
             try {
                 const parsedToken = JSON.parse(window.atob(token))
                 return parsedToken
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error.message)
                 return token
             }

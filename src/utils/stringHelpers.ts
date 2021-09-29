@@ -1,7 +1,7 @@
 export const getInitials = (fullName = '') => {
     try {
         return fullName.split(' ').map(it => it[0].toUpperCase()).join("")
-    } catch (e) {
+    } catch (e: any) {
         return ''
     }
 }

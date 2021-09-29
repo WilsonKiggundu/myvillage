@@ -4,13 +4,14 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {FormControl} from "@material-ui/core";
 import {useField} from "formik";
-import {getAsync, getWithoutLoginAsync} from "../../utils/ajax";
+import {getWithoutLoginAsync} from "../../utils/ajax";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Avatar from "@material-ui/core/Avatar";
 import {globalStyles} from "../../theme/styles";
 import Box from "@material-ui/core/Box";
 
 interface IProps {
+    returnObject?: boolean
     placeholder?: string
     label?: string
     name: string
@@ -96,16 +97,18 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
                     setOpen(false);
                 }}
                 onChange={(_, newValue: any) => {
-                    helpers.setValue(newValue.id || '')
+                    props.returnObject ?
+                        helpers.setValue(newValue) :
+                        helpers.setValue(newValue.id || '')
                 }}
                 filterSelectedOptions
                 // getOptionSelected={(option, value) => option.name === value.name}
                 renderOption={(option: any) =>
                     <>
                         {option.avatar &&
-                            <Avatar className={classes.smallAvatar} src={option.avatar}>
-                                {option.name[0].toUpperCase()}
-                            </Avatar>
+                        <Avatar className={classes.smallAvatar} src={option.avatar}>
+                            {option.name[0].toUpperCase()}
+                        </Avatar>
                         }
 
                         <Box ml={option.avatar ? 2 : ''}>{option.name}</Box>
@@ -115,10 +118,9 @@ const XSelectInputAsync = ({data, ...props}: IProps) => {
                 loading={loading}
                 renderInput={(params) => (
                     <TextField
-                        size={props.size}
                         {...params}
                         placeholder={props.placeholder}
-                        // label={props.label}
+                        label={props.label}
                         variant={props.variant}
                         InputProps={{
                             ...params.InputProps,

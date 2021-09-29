@@ -37,7 +37,7 @@ function MainLayout(props: IProps) {
                         setPerson(person)
                         setOpenAddCategoryDialog(true)
                     }
-                } catch (e) {
+                } catch (e: any) {
                     console.log("Failed to fetch user" + e)
                 }
             }

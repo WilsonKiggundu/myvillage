@@ -7,7 +7,7 @@ import {rootReducer} from "./rootReducer";
 import rootSaga from "./rootSaga";
 import Toast from "../utils/Toast";
 
-const middlewares = [];
+const middlewares : any = [];
 const myWindow = window as any;
 const toolsName = '__REDUX_DEVTOOLS_EXTENSION__';
 const devTools: any = myWindow[toolsName] ? myWindow[toolsName]() : (f: any) => f;

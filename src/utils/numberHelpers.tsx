@@ -6,7 +6,7 @@ export const printMoney = (money: number) => {
                 UGX&nbsp;
             {new Intl.NumberFormat('en-US', {maximumFractionDigits: 2}).format(money)}
             </span> : ""
-    } catch (e) {
+    } catch (e: any) {
         return ''
     }
 }
@@ -14,7 +14,7 @@ export const printMoney = (money: number) => {
 export const printNumber = (number: number) => {
     try {
         return number ? new Intl.NumberFormat().format(number) : ''
-    } catch (e) {
+    } catch (e: any) {
         return ''
     }
 }
@@ -22,7 +22,7 @@ export const printNumber = (number: number) => {
 export const printDecimal = (number: number) => {
     try {
         return number ? new Intl.NumberFormat('en-US', {maximumFractionDigits: 2}).format(number) : ''
-    } catch (e) {
+    } catch (e: any) {
         return ''
     }
 }
@@ -30,7 +30,7 @@ export const printDecimal = (number: number) => {
 export const printInteger = (number: number) => {
     try {
         return number ? new Intl.NumberFormat('en-US', {maximumFractionDigits: 0}).format(number) : ''
-    } catch (e) {
+    } catch (e: any) {
         return ''
     }
 }

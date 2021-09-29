@@ -4,7 +4,7 @@ export function prettyJson(json: string): string {
     try {
         const data = JSON.parse(json)
         return JSON.stringify(data, null, 2)
-    } catch (e) {
+    } catch (e: any) {
         return "null"
     }
 }
@@ -19,7 +19,7 @@ export function parseXpath(data: any, path: any): any {
         if (resp && resp.length > 0) {
             return resp[0]
         }
-    } catch (e) {
+    } catch (e: any) {
         console.error(e)
     }
     return undefined

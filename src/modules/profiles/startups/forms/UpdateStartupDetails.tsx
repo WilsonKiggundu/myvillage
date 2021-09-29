@@ -11,6 +11,7 @@ import Box from "@material-ui/core/Box";
 import {IStartup} from "../../../../interfaces/IStartup";
 import {addStartup, editStartup} from "../redux/startupsActions";
 import {userSelector} from "../../../../data/coreSelectors";
+import XDateInput from "../../../../components/inputs/XDateInput";
 
 interface IProps {
     onClose?: () => any
@@ -50,7 +51,7 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
 
         try {
             dispatch(profile && profile.id ? editStartup(values) : addStartup(values))
-        } catch (e) {
+        } catch (e: any) {
 
         } finally {
             if (onClose) onClose()
@@ -67,10 +68,11 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                 <Grid item xs={12}>
                     <XTextInput
                         name="name"
-                        label={"What is the name of your startup?"}
+                        placeholder={"Enter your startup's name"}
+                        label={"Business name"}
                         type={"text"}
-                        helperText={"Ensure you spell it correctly to increase visibility. Required"}
-                        variant={"standard"}
+                        helperText={"What's your startup called?"}
+                        variant={"outlined"}
                         margin={"none"}
                     />
                 </Grid>
@@ -78,9 +80,10 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                 <Grid item xs={12}>
                     <XTextInput
                         name="category"
-                        label={"How do you categorize your startup?"}
+                        placeholder={"How do you categorize your startup?"}
+                        label={"Category"}
                         helperText={"Ex. FinTech, AgriTech, Services"}
-                        variant={"standard"}
+                        variant={"outlined"}
                         margin={"none"}
                     />
                 </Grid>
@@ -92,7 +95,7 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
                         label={"Say something brief about your startup..."}
                         helperText={"Say as much as you can about your startup to capture the attention of the community. Required"}
                         type={"text"}
-                        variant={"standard"}
+                        variant={"outlined"}
                         margin={"none"}
                     />
                 </Grid>
@@ -100,31 +103,32 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
 
                 <Grid item xs={12}>
                     <Box mt={2}>
-                        <XTextInput
-                            helperText={"Month, Year"}
-                            label={"Date of Incorporation"}
-                            placeholder={"month, year"}
+                        <XDateInput
+                            variant={"outlined"}
+                            disableFuture
+                            label={"Date of incorporation"}
+                            helperText={"When did you start / register the business?"}
                             name={"incorporationDate"}/>
                     </Box>
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <XTextInput
                         name="employeeCount"
                         label={"How many employees do you have?"}
                         helperText={"It's fine if you just put an approximate number. Required"}
                         type={"text"}
-                        variant={"standard"}
+                        variant={"outlined"}
                         margin={"none"}
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <XTextInput
                         name={"website"}
                         label={"Enter the website url"}
                         helperText={"A website is a quick place people can learn more about your startup"}
-                        variant={"standard"}
+                        variant={"outlined"}
                         margin={"none"}
                     />
                 </Grid>

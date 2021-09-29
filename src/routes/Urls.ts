@@ -1,7 +1,7 @@
 export const Urls = ({
     base: process.env.REACT_APP_PUBLIC_URL,
     devices: {
-      publicKey: '/api/devices/key'
+        publicKey: '/api/devices/key'
     },
     settings: {
         emailNotifications: '/settings/email/notifications'
@@ -22,7 +22,7 @@ export const Urls = ({
     feed: "/feed",
     blog: "/blog/articles",
     freelancers: {
-      projects: '/freelancers/projects'
+        projects: '/freelancers/projects'
     },
     profiles: {
         freelancers: '/freelancers',
@@ -47,6 +47,9 @@ export const Urls = ({
     },
     job: '/jobs/:id/details',
     events: "/events",
+    investors: {
+        readiness: '/investors/readiness'
+    },
     createEvent: "/events/create",
     singleEvent: (id: any) => `/events/${id}/details`,
     event: '/events/:id/details',

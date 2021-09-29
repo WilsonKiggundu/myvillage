@@ -11,6 +11,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import TodayIcon from '@material-ui/icons/Today';
 
 import './css/StartupBioCard.css'
+import {IAddress} from "../../../interfaces/IAddress";
 
 interface IProps {
     startup: IStartup
@@ -22,8 +23,8 @@ export function StartupBioCard({startup}: IProps) {
 
     useEffect(() => {
         if (startup.addresses?.length) {
-            const addressArray = []
-            const address = startup.addresses[0]
+            const addressArray : string[] = []
+            const address : IAddress = startup.addresses[0]
             if (address.city) addressArray.push(address.city)
             if (address.country) addressArray.push(address.country)
             if (address.addressLine) addressArray.push(address.addressLine)

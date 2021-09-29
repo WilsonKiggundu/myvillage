@@ -67,7 +67,7 @@ const Job = ({match}: any) => {
                 setApplying(false)
                 setAlreadyApplied(true)
 
-            } catch (error) {
+            } catch (error: any) {
                 Toast.error(error)
             }
         }
@@ -106,7 +106,7 @@ const Job = ({match}: any) => {
                     }
                 }
 
-            } catch (e) {
+            } catch (e: any) {
                 if (e.toString().includes('Unauthorized')) {
                     await userManager.signinRedirect({
                         state: window.location.pathname

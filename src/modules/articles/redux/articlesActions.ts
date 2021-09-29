@@ -77,7 +77,7 @@ export function* saveArticleAction(action: any){
     try {
         const response = yield call<any>(createArticle, action.payload)
         yield put(addArticleSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addArticleFailed(error.message));
     }
 }
@@ -87,7 +87,7 @@ export function* fetchArticlesAction(){
         const response = yield call<any>(getArticles)
         yield put(loadArticlesSuccess(response))
         yield put(increment())
-    } catch (error) {
+    } catch (error: any) {
         yield put(loadArticlesFailed(error.message));
     }
 }
@@ -97,7 +97,7 @@ export function* saveCommentAction(action: any){
     try {
         const response = yield call<any>(createComment, action.payload)
         yield put(addCommentSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addCommentFailed(error.message));
     }
 }
@@ -106,7 +106,7 @@ export function* fetchCommentsAction(action: any){
     try {
         const response = yield call<any>(getComments, action.payload)
         yield put(loadCommentsSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(loadCommentsFailed(error.message));
     }
 }
@@ -116,7 +116,7 @@ export function* saveArticleLikeAction(action: any){
     try {
         const response = yield call<any>(addLikeEndpoint, action.payload)
         yield put(likeArticleSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(likeArticleFailed(error.message));
     }
 }

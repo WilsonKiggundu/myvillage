@@ -44,7 +44,7 @@ const UpdateContactForm = ({onClose, contact, profile}: IProps) => {
             }
 
 
-        } catch (e) {
+        } catch (e: any) {
 
         } finally {
             actions.resetForm()

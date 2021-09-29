@@ -1,5 +1,4 @@
 import {Urls} from "../../routes/Urls";
-import LayersIcon from '@material-ui/icons/Layers';
 
 export const MainMenuItems = [
     {

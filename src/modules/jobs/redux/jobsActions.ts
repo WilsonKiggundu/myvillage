@@ -54,7 +54,7 @@ export function* createJob(action: any){
     try {
         const response = yield call<any>(postJob, action.payload)
         yield put(addJobSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addJobFailed(error.message));
     }
 }
@@ -63,7 +63,7 @@ export function* fetchJobs(action: any){
     try {
         const response = yield call<any>(getJobs, action.payload)
         yield put(loadJobsSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(loadJobsFailed(error.message));
     }
 }
@@ -72,7 +72,7 @@ export function* fetchJobCategories(){
     try {
         const response = yield call<any>(getJobCategories)
         yield put(loadJobCategoriesSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(loadJobCategoriesFailed(error.message));
     }
 }

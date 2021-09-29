@@ -34,6 +34,7 @@ import XAsyncTypeahead from "../XAsyncTypeahead";
 import LayersIcon from "@material-ui/icons/Layers";
 import PeopleIcon from '@material-ui/icons/People';
 import EventIcon from '@material-ui/icons/Event';
+import MoneyIcon from '@material-ui/icons/Money'
 import WorkIcon from '@material-ui/icons/Work';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
@@ -350,12 +351,30 @@ export default function ApplicationBar() {
                 <List
                     subheader={
                         <ListSubheader component="div" id="nested-list-subheader">
+                            Investors
+                        </ListSubheader>
+                    }
+                >
+                    <ListItemLink slag={"investors/readiness"} handleClick={() => handleClick(Urls.investors.readiness)}>
+                        <ListItemIcon>
+                            <MoneyIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary={"Investor Readiness"}/>
+                    </ListItemLink>
+                </List>
+
+                <Divider/>
+
+                <List
+                    subheader={
+                        <ListSubheader component="div" id="nested-list-subheader">
                             Settings
                         </ListSubheader>
                     }
                 >
 
-                    <ListItemLink slag={"email-settings"} handleClick={() => handleClick(Urls.settings.emailNotifications)}>
+                    <ListItemLink slag={"email-settings"}
+                                  handleClick={() => handleClick(Urls.settings.emailNotifications)}>
                         <ListItemIcon>
                             <Notifications/>
                         </ListItemIcon>
@@ -364,7 +383,7 @@ export default function ApplicationBar() {
 
                 </List>
 
-                <Divider />
+                <Divider/>
 
                 <Box mt={2} mb={2} ml={2} mr={2}>
                     {

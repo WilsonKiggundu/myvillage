@@ -45,7 +45,7 @@ const CreateJob = (props: IProps) => {
 
     const currentValidationSchema = ValidationSchema[0];
     const [files, setFiles] = useState<any>([])
-    
+
     const initialValues = {
         location: '',
         title: '',
@@ -115,7 +115,7 @@ const CreateJob = (props: IProps) => {
             Toast.success("Job added successfully")
             // history.push(Urls.jobs.list)
 
-        } catch (e) {
+        } catch (e: any) {
             Toast.error("An error occurred while adding the job.", "bottom-center")
         } finally {
             // actions.resetForm()

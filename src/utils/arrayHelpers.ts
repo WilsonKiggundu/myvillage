@@ -17,3 +17,17 @@ export function chunkArray<T>(arr: T[], n: number): Array<Array<T>> {
     }
     return chunks;
 }
+
+export function sortArray<T>(arr: T[], str: string) : Array<T>{
+    return arr.sort((a: T, b: T) => {
+
+        const left = a[str]
+        const right = b[str]
+
+        console.log({left, right})
+
+        if (a < b) return -1
+        if (a > b) return 1
+        return 0
+    })
+}

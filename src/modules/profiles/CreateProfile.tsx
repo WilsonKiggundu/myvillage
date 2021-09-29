@@ -95,7 +95,7 @@ export const CreateProfile = (props: IProps) => {
             await putPersonCategories({categories, personId})
             window.location.replace(Urls.profiles.onePerson(personId))
 
-        } catch (e) {
+        } catch (e: any) {
             Toast.error("Unable to create profile." + e)
         }
     }

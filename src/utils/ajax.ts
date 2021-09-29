@@ -56,7 +56,7 @@ export const handleResponse = (callBack: CallbackFunction, errorCallBack?: Error
         } else {
             callBack(res.body)
         }
-    } catch (e) {
+    } catch (e: any) {
         console.error("Failed to process response", e)
     } finally {
         if (endCallBack) {
@@ -65,7 +65,7 @@ export const handleResponse = (callBack: CallbackFunction, errorCallBack?: Error
     }
 }
 
-export type Services = "Profiles" | "Jobs" | "Events" | "Auth" | "CDN" | "Notification"
+export type Services = "Profiles" | "Jobs" | "Events" | "Auth" | "CDN" | "Notification" | "InvestorReadiness"
 
 export const makeUrl = (service: Services, endpoint: string, params?: object) => {
     switch (service) {
@@ -78,6 +78,8 @@ export const makeUrl = (service: Services, endpoint: string, params?: object) =>
             return Endpoints.jobs.base + endpoint
         case "Profiles":
             return Endpoints.base + endpoint
+        case "InvestorReadiness":
+            return Endpoints.investorReadiness.base + endpoint
         case "Notification":
             return Endpoints.notification.base + endpoint
         default:

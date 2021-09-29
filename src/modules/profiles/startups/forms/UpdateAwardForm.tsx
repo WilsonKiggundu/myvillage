@@ -38,7 +38,7 @@ const UpdateAwardForm = ({onClose, id, award, profile}: IProps) => {
         try {
             // const resultAction: any = await dispatch(addAward(values))
             // unwrapResult(resultAction)
-        } catch (e) {
+        } catch (e: any) {
 
         }
 

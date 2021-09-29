@@ -37,7 +37,7 @@ export function* createEvent(action: any){
     try {
         const response = yield call<any>(postEvent, action.payload)
         yield put(addEventSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addEventFailed(error.message));
     }
 }
@@ -46,7 +46,7 @@ export function* fetchEvents(){
     try {
         const response = yield call<any>(getEvents)
         yield put(loadEventsSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(loadEventsFailed(error.message));
     }
 }
