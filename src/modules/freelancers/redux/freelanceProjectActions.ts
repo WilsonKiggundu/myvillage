@@ -56,7 +56,7 @@ export function* fetchFreelanceProjectsAction(action: any){
     try {
         const response = yield call<any>(fetchFreelanceProjectsEndpoint, action.payload)
         yield put(getFreelanceProjectsSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(getFreelanceProjectsFailed(error.message));
     }
 }
@@ -65,7 +65,7 @@ export function* createFreelanceProjectAction(action: any){
     try {
         const response = yield call<any>(postFreelanceProjectEndpoint, action.payload)
         yield put(addFreelanceProjectSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addFreelanceProjectFailed(error.message));
     }
 }
@@ -74,7 +74,7 @@ export function* updateFreelanceProjectAction(action: any){
     try {
         const response = yield call<any>(putFreelanceProjectEndpoint, action.payload)
         yield put(editFreelanceProjectSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editFreelanceProjectFailed(error.message));
     }
 }
@@ -83,7 +83,7 @@ export function* removeFreelanceProjectAction(action: any){
     try {
         const response = yield call<any>(deleteFreelanceProjectEndpoint, action.payload)
         yield put(delFreelanceProjectSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(delFreelanceProjectFailed(error.message));
     }
 }

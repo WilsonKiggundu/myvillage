@@ -112,7 +112,7 @@ const EventPostCard = ({id, post}: any) => {
             setIsAttending(true)
             Toast.success("Your registration has been successful")
 
-        } catch (error: any) {
+        } catch (error) {
             Toast.error(error.toString())
         } finally {
 

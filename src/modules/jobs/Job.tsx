@@ -67,7 +67,7 @@ const Job = ({match}: any) => {
                 setApplying(false)
                 setAlreadyApplied(true)
 
-            } catch (error: any) {
+            } catch (error) {
                 Toast.error(error)
             }
         }

@@ -80,7 +80,7 @@ export function* savePostAction(action: any){
     try {
         const response = yield call<any>(createPost, action.payload)
         yield put(addPostSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addPostFailed(error.message));
     }
 }
@@ -90,7 +90,7 @@ export function* fetchPostsAction(){
         const response = yield call<any>(getPosts)
         yield put(loadPostsSuccess(response))
         yield put(increment())
-    } catch (error: any) {
+    } catch (error) {
         yield put(loadPostsFailed(error.message));
     }
 }
@@ -100,7 +100,7 @@ export function* saveCommentAction(action: any){
     try {
         const response = yield call<any>(createComment, action.payload)
         yield put(addCommentSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addCommentFailed(error.message));
     }
 }
@@ -109,7 +109,7 @@ export function* fetchCommentsAction(action: any){
     try {
         const response = yield call<any>(getComments, action.payload)
         yield put(loadCommentsSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(loadCommentsFailed(error.message));
     }
 }
@@ -119,7 +119,7 @@ export function* savePostLikeAction(action: any){
     try {
         const response = yield call<any>(addLikeEndpoint, action.payload)
         yield put(likePostSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(likePostFailed(error.message));
     }
 }
