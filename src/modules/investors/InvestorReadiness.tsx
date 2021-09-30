@@ -32,7 +32,7 @@ const InvestorReadiness = () => {
     return (
         <>
             <div className="particles-background">
-                <Particles height={"50vh"} width={"100%"} params={particlesConfig}/>
+                {/* <Particles height={"50vh"} width={"100%"} params={particlesConfig}/> */}
             </div>
 
             <div className="ir-jumbotron">
