@@ -81,7 +81,7 @@ const Event = ({match}: any) => {
 
                 document.title = `${event.title} / My Village`
 
-            } catch (e: any) {
+            } catch (e) {
 
                 if (e.toString().includes('Unauthorized')) {
                     await userManager.signinRedirect({

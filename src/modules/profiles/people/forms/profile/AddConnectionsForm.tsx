@@ -78,7 +78,7 @@ const AddConnectionsForm = ({person, onClose}: IProps) => {
 
         try {
             dispatch(editPersonConnection({personId, followerId: user.profile.sub}))
-        } catch (e: any) {
+        } catch (e) {
             Toast.error(e.toString())
         } finally {
             if (onClose) onClose()

@@ -53,7 +53,7 @@ const Startup = ({match}: any) => {
                     payload: startup
                 })
 
-            } catch (e: any) {
+            } catch (e) {
                 if (e.toString().includes('Unauthorized')) {
                     await userManager.signinRedirect({
                         state: window.location.pathname + window.location.search

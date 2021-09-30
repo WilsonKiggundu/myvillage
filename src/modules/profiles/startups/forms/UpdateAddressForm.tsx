@@ -37,7 +37,7 @@ const UpdateAddressForm = ({onClose, address, profile}: IProps) => {
         try {
             values.businessId = profile.id
             dispatch(address?.id ? editStartupAddress(values) : addStartupAddress(values))
-        } catch (e: any) {
+        } catch (e) {
 
         } finally {
             actions.resetForm()

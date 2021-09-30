@@ -51,7 +51,7 @@ const UpdateStartupDetails = ({onClose, profile}: IProps) => {
 
         try {
             dispatch(profile && profile.id ? editStartup(values) : addStartup(values))
-        } catch (e: any) {
+        } catch (e) {
 
         } finally {
             if (onClose) onClose()
