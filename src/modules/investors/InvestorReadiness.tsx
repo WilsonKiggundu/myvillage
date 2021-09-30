@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// import Particles from "react-particles-js";
 import particlesConfig from "../../config/configParticles";
 import {Box, Button, Card, CardContent, CardHeader, Container, Grid} from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle"
