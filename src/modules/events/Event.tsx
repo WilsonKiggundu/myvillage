@@ -81,7 +81,7 @@ const Event = ({match}: any) => {
 
                 document.title = `${event.title} / My Village`
 
-            } catch (e: any) {
+            } catch (e) {
 
                 if (e.toString().includes('Unauthorized')) {
                     await userManager.signinRedirect({
@@ -114,7 +114,7 @@ const Event = ({match}: any) => {
             setIsAttending(true)
             Toast.success("Your registration has been successful")
 
-        } catch (error: any) {
+        } catch (error) {
             Toast.error(error.toString())
         } finally {
 

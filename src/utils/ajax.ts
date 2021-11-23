@@ -56,7 +56,7 @@ export const handleResponse = (callBack: CallbackFunction, errorCallBack?: Error
         } else {
             callBack(res.body)
         }
-    } catch (e: any) {
+    } catch (e) {
         console.error("Failed to process response", e)
     } finally {
         if (endCallBack) {

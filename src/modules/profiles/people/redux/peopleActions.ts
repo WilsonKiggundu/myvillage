@@ -426,7 +426,7 @@ export function* updatePersonCategories(action: any){
     try {
         const response = yield call<any>(putPersonCategories, action.payload)
         yield put(editPersonCategoriesSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonCategoriesFailed(error.message));
     }
 }
@@ -435,7 +435,7 @@ export function* removePersonCategories(action: any){
     try {
         const response = yield call<any>(delPersonCategories, action.payload)
         yield put(deletePersonCategoriesSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonCategoriesFailed(error.message));
     }
 }
@@ -445,7 +445,7 @@ export function* updatePersonInterests(action: any){
 
         const response = yield call<any>(putPersonInterests, action.payload)
         yield put(editPersonInterestsSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonInterestsFailed(error.message));
     }
 }
@@ -454,7 +454,7 @@ export function* removePersonInterests(action: any){
     try {
         const response = yield call<any>(delPersonInterests, action.payload)
         yield put(deletePersonInterestsSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonInterestsFailed(error.message));
     }
 }
@@ -464,7 +464,7 @@ export function* updatePersonSkills(action: any){
 
         const response = yield call<any>(putPersonSkills, action.payload)
         yield put(editPersonSkillsSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonSkillsFailed(error.message));
     }
 }
@@ -473,7 +473,7 @@ export function* removePersonSkills(action: any){
     try {
         const response = yield call<any>(delPersonSkills, action.payload)
         yield put(deletePersonSkillsSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonSkillsFailed(error.message));
     }
 }
@@ -483,7 +483,7 @@ export function* updatePersonEducation(action: any){
 
         const response = yield call<any>(putPersonEducation, action.payload)
         yield put(editPersonEducationSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonEducationFailed(error.message));
     }
 }
@@ -493,7 +493,7 @@ export function* createPersonEducation(action: any){
 
         const response = yield call<any>(postPersonEducation, action.payload)
         yield put(addPersonEducationSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addPersonEducationFailed(error.message));
     }
 }
@@ -502,7 +502,7 @@ export function* removePersonEducation(action: any){
     try {
         const response = yield call<any>(delPersonEducation, action.payload)
         yield put(deletePersonEducationSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonEducationFailed(error.message));
     }
 }
@@ -512,7 +512,7 @@ export function* updatePersonEmployment(action: any){
 
         const response = yield call<any>(putPersonEmployment, action.payload)
         yield put(editPersonEmploymentSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonEmploymentFailed(error.message));
     }
 }
@@ -522,7 +522,7 @@ export function* createPersonEmployment(action: any){
 
         const response = yield call<any>(postPersonEmployment, action.payload)
         yield put(addPersonEmploymentSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addPersonEmploymentFailed(error.message));
     }
 }
@@ -531,7 +531,7 @@ export function* removePersonEmployment(action: any){
     try {
         const response = yield call<any>(delPersonEmployment, action.payload)
         yield put(deletePersonEmploymentSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonEmploymentFailed(error.message));
     }
 }
@@ -541,7 +541,7 @@ export function* updatePersonProject(action: any){
 
         const response = yield call<any>(putPersonProject, action.payload)
         yield put(editPersonProjectSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonProjectFailed(error.message));
     }
 }
@@ -551,7 +551,7 @@ export function* createPersonProject(action: any){
 
         const response = yield call<any>(postPersonProject, action.payload)
         yield put(addPersonProjectSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addPersonProjectFailed(error.message));
     }
 }
@@ -560,7 +560,7 @@ export function* removePersonProject(action: any){
     try {
         const response = yield call<any>(delPersonProject, action.payload)
         yield put(deletePersonProjectSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonProjectFailed(error.message));
     }
 }
@@ -571,7 +571,7 @@ export function* updatePersonStack(action: any){
 
         const response = yield call<any>(putPersonStack, action.payload)
         yield put(editPersonStackSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonStackFailed(error.message));
     }
 }
@@ -581,7 +581,7 @@ export function* createPersonStack(action: any){
 
         const response = yield call<any>(postPersonStack, action.payload)
         yield put(addPersonStackSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addPersonStackFailed(error.message));
     }
 }
@@ -590,7 +590,7 @@ export function* removePersonStack(action: any){
     try {
         const response = yield call<any>(delPersonStack, action.payload)
         yield put(deletePersonStackSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonStackFailed(error.message));
     }
 }
@@ -599,7 +599,7 @@ export function* fetchPersonConnections(action: any){
     try {
         const response = yield call<any>(getPersonConnection, action.payload)
         yield put(loadPersonConnectionSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(loadPersonConnectionFailed(error.message));
     }
 }
@@ -609,7 +609,7 @@ export function* updatePersonConnection(action: any){
 
         const response = yield call<any>(putPersonConnection, action.payload)
         yield put(editPersonConnectionSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonConnectionFailed(error.message));
     }
 }
@@ -618,7 +618,7 @@ export function* removePersonConnection(action: any){
     try {
         const response = yield call<any>(delPersonConnection, action.payload)
         yield put(deletePersonConnectionSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonConnectionFailed(error.message));
     }
 }
@@ -627,7 +627,7 @@ export function* fetchPeople(action: any){
     try {
         const response = yield call<any>(getPeople, action.payload)
         yield put(loadPeopleSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(loadPeopleFailed(error.message));
     }
 }
@@ -636,7 +636,7 @@ export function* updatePerson(action: any){
     try {
         const response = yield call<any>(putPerson, action.payload, action.uploadType)
         yield put(editPersonSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonFailed(error.message));
     }
 }
@@ -645,7 +645,7 @@ export function* updatePersonContact(action: any){
     try {
         const response = yield call<any>(putPersonContact, action.payload)
         yield put(editPersonContactSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(editPersonContactFailed(error.message));
     }
 }
@@ -654,7 +654,7 @@ export function* createPersonContact(action: any){
     try {
         const response = yield call<any>(postPersonContact, action.payload)
         yield put(addPersonContactSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(addPersonContactFailed(error.message));
     }
 }
@@ -663,7 +663,7 @@ export function* removePersonContact(action: any){
     try {
         const response = yield call<any>(delPersonContact, action.payload)
         yield put(deletePersonContactSuccess(response))
-    } catch (error: any) {
+    } catch (error) {
         yield put(deletePersonContactFailed(error.message));
     }
 }

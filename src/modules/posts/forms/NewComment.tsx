@@ -51,7 +51,7 @@ const NewComment = ({done, onClose, ...props}: IProps) => {
 
         try {
             dispatch(addComment(comment))
-        } catch (e: any) {
+        } catch (e) {
 
         }
 
