@@ -40,7 +40,7 @@ const NewPost = ({onClose}: IProps) => {
 
         try {
             dispatch(addPost(values))
-        } catch (e) {
+        } catch (e: any) {
 
         } finally {
             actions.resetForm()

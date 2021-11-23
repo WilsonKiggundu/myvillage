@@ -231,7 +231,7 @@ const FreelanceProjects = () => {
 
                     }
                 }
-            } catch (e) {
+            } catch (e: any) {
                 Toast.error("Unable to process your request")
                 console.log(e)
             }

@@ -107,7 +107,7 @@ const NewJob = ({done, onClose}: IProps) => {
         //
         // try {
         //     dispatch(addJob(job))
-        // } catch (e) {
+        // } catch (e: any) {
         //
         // } finally {
         //     actions.resetForm()

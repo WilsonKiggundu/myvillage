@@ -67,7 +67,7 @@ const Job = ({match}: any) => {
                 setApplying(false)
                 setAlreadyApplied(true)
 
-            } catch (error) {
+            } catch (error: any) {
                 Toast.error(error)
             }
         }
@@ -106,7 +106,7 @@ const Job = ({match}: any) => {
                     }
                 }
 
-            } catch (e) {
+            } catch (e: any) {
                 if (e.toString().includes('Unauthorized')) {
                     await userManager.signinRedirect({
                         state: window.location.pathname
@@ -193,10 +193,14 @@ const Job = ({match}: any) => {
 
                                     <CardContent>
                                         <Grid spacing={2} container justify={"flex-start"}>
-                                            {company?.name && <Grid item xs={6} sm={6} md={4} lg={3}>
+                                            <Grid item xs={6} sm={6} md={4} lg={3}>
                                                 <strong>Company</strong><br/>
-                                                <a href={Urls.profiles.singleStartup(company?.id)}>{company?.name}</a>
-                                            </Grid>}
+
+                                                {job.company ?
+                                                    <a href={Urls.profiles.singleStartup(job.company?.id)}>
+                                                        {job.company?.name}
+                                                    </a> : job.companyId}
+                                            </Grid>
                                             <Grid item xs={6} sm={6} md={4} lg={3}>
                                                 <strong>Job Category</strong><br/>
                                                 {job.category?.name}

@@ -260,7 +260,7 @@ export function* createStartup(action: any){
     try {
         const response = yield call<any>(postStartup, action.payload)
         yield put(addStartupSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addStartupFailed(error.message));
     }
 }
@@ -269,7 +269,7 @@ export function* updateStartup(action: any){
     try {
         const response = yield call<any>(putStartup, action.payload, action.uploadType)
         yield put(editStartupSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(editStartupFailed(error.message));
     }
 }
@@ -278,7 +278,7 @@ export function* updateStartupAddress(action: any){
     try {
         const response = yield call<any>(putStartupAddress, action.payload)
         yield put(editStartupAddressSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(editStartupAddressFailed(error.message));
     }
 }
@@ -287,7 +287,7 @@ export function* createStartupAddress(action: any){
     try {
         const response = yield call<any>(postStartupAddress, action.payload)
         yield put(addStartupAddressSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addStartupAddressFailed(error.message));
     }
 }
@@ -296,7 +296,7 @@ export function* removeStartupAddress(action: any){
     try {
         const response = yield call<any>(delStartupAddress, action.payload)
         yield put(deleteStartupAddressSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(deleteStartupAddressFailed(error.message));
     }
 }
@@ -305,7 +305,7 @@ export function* updateStartupContact(action: any){
     try {
         const response = yield call<any>(putStartupContact, action.payload)
         yield put(editStartupContactSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(editStartupContactFailed(error.message));
     }
 }
@@ -314,7 +314,7 @@ export function* createStartupContact(action: any){
     try {
         const response = yield call<any>(postStartupContact, action.payload)
         yield put(addStartupContactSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addStartupContactFailed(error.message));
     }
 }
@@ -323,7 +323,7 @@ export function* removeStartupContact(action: any){
     try {
         const response = yield call<any>(delStartupContact, action.payload)
         yield put(deleteStartupContactSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(deleteStartupContactFailed(error.message));
     }
 }
@@ -332,7 +332,7 @@ export function* updateStartupProduct(action: any){
     try {
         const response = yield call<any>(putStartupProduct, action.payload)
         yield put(editStartupProductSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(editStartupProductFailed(error.message));
     }
 }
@@ -341,7 +341,7 @@ export function* createStartupProduct(action: any){
     try {
         const response = yield call<any>(putStartupProduct, action.payload)
         yield put(addStartupProductSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(addStartupProductFailed(error.message));
     }
 }
@@ -350,7 +350,7 @@ export function* removeStartupProduct(action: any){
     try {
         const response = yield call<any>(delStartupProduct, action.payload)
         yield put(deleteStartupProductSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(deleteStartupProductFailed(error.message));
     }
 }
@@ -359,7 +359,7 @@ export function* updateStartupInterests(action: any){
     try {
         const response = yield call<any>(putStartupInterests, action.payload)
         yield put(editStartupInterestsSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(editStartupInterestsFailed(error.message));
     }
 }
@@ -368,7 +368,7 @@ export function* removeStartupInterests(action: any){
     try {
         const response = yield call<any>(delStartupInterests, action.payload)
         yield put(deleteStartupInterestsSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(deleteStartupInterestsFailed(error.message));
     }
 }
@@ -377,7 +377,7 @@ export function* updateStartupRoles(action: any){
     try {
         const response = yield call<any>(putStartupRoles, action.payload)
         yield put(editStartupRolesSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(editStartupRolesFailed(error.message));
     }
 }
@@ -386,7 +386,7 @@ export function* removeStartupRoles(action: any){
     try {
         const response = yield call<any>(delStartupRoles, action.payload)
         yield put(deleteStartupRolesSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(deleteStartupRolesFailed(error.message));
     }
 }
@@ -395,7 +395,7 @@ export function* fetchStartups(){
     try {
         const response = yield call<any>(getStartups)
         yield put(loadStartupsSuccess(response))
-    } catch (error) {
+    } catch (error: any) {
         yield put(loadStartupsFailed(error.message));
     }
 }

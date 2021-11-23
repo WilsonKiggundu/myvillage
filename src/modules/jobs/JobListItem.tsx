@@ -9,7 +9,7 @@ import {longDate} from "../../utils/dateHelpers";
 import {Urls} from "../../routes/Urls";
 import {useHistory} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import {ChevronRight} from "@material-ui/icons";
+import {CalendarToday, ChevronRight} from "@material-ui/icons";
 
 interface IProps {
     job: IJob
@@ -66,15 +66,27 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                     }/>
 
                 <CardContent>
+
+                    {/*<pre>{JSON.stringify(job, null, 2)}</pre>*/}
+
                     <Box mb={3}>
                         <Grid container justify={"flex-start"} spacing={2}>
                             <Grid item xs={12} md={4}>
                                 <Grid container spacing={2} justify={"flex-start"}>
                                     {
+                                        <Grid xs={12} item className="job-location">
+                                            <small>Company</small><br/>
+                                            <h6>{job.company ?? job.companyId}</h6>
+                                        </Grid>
+                                    }
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <Grid container spacing={2} justify={"flex-start"}>
+                                    {
                                         job.location && <Grid xs={12} item className="job-location">
-                                            <LocationOnIcon className="job-location-icon"/>
-                                            <strong>Location</strong><br/>
-                                            <span>{job.location}</span>
+                                            <small>Location</small><br/>
+                                            <h6>{job.location}</h6>
                                         </Grid>
                                     }
                                 </Grid>
@@ -83,7 +95,7 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                                 {
                                     job.deadline && <Box mb={3}>
                                         <div className="">
-                                            <strong>Application deadline</strong><br/>{longDate(job.deadline)}
+                                            <small>Application deadline</small><br/><h6>{longDate(job.deadline)}</h6>
                                         </div>
                                     </Box>
                                 }
@@ -94,7 +106,11 @@ const JobListItem = ({job, showJobDetails, showVewDetailsButton}: IProps) => {
                     {
                         showJobDetails && <Box mt={3} mb={2}>
                             <div className="job-details-teaser">
-                                {jobDetails}
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: job.details
+                                    }}
+                                />
                             </div>
                         </Box>
                     }

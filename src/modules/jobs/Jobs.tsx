@@ -20,10 +20,11 @@ import JobListItem from "./JobListItem";
 import userManager from "../../utils/userManager";
 import * as yup from "yup";
 import {Alert, Autocomplete} from "@material-ui/lab";
-import {Button, Snackbar, TextField, useMediaQuery, useTheme} from "@material-ui/core";
+import {Box, Button, Snackbar, TextField, useMediaQuery, useTheme} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import JobFilter from "./forms/JobFilter";
 import { handleLogin } from "../../utils/authHelpers";
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import {isBefore} from "date-fns";
 
 
@@ -74,20 +75,26 @@ const Jobs = () => {
     )
 
     return (
-        <Container maxWidth={"md"}>
+        <Container maxWidth={"lg"}>
 
-            <JobFilter />
+            {jobs && jobs.data ? <JobFilter /> :
+                <Box mt={2} mb={2}>
+                    <Alert color={"warning"} variant={"standard"} icon={<NotificationsActiveIcon />}>
+                        <h5>No jobs found, for now!</h5>
+                        Employers are always looking for talent. We shall notify you via email as soon as new jobs are posted.
+                    </Alert>
+                </Box>
+            }
 
             <Grid container spacing={2} justify={"center"}>
-                <Grid item xs={12}>
                     {jobs && jobs.data.filter((job: IJob) => !isBefore(new Date(job.deadline), new Date()))
-                        .map((job: IJob, index: number) => <JobListItem
-                        key={index}
-                        job={job}
-                        showJobDetails
-                        showVewDetailsButton
-                    />)}
-                </Grid>
+                        .map((job: IJob, index: number) => <Grid key={index} item xs={12}>
+                            <JobListItem
+                                job={job}
+                                showJobDetails
+                                showVewDetailsButton
+                            />
+                        </Grid>)}
             </Grid>
 
             <>

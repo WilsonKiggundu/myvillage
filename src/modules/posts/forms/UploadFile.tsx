@@ -84,6 +84,7 @@ const UploadFile = ({done, id, addCaption, showUploadButton, type, addToFeed, ca
 
             Promise.all(files.map(async (file: any) => {
                 const {body}: any = await postFileAsync(file)
+
                 const upload: IUpload = {
                     contentType: body.attachment_content_type,
                     dateCreated: body.created_at,

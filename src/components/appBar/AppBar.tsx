@@ -334,7 +334,7 @@ export default function ApplicationBar() {
                         <ListItemIcon>
                             <WorkIcon/>
                         </ListItemIcon>
-                        <ListItemText primary={"Work in Tech"}/>
+                        <ListItemText primary={"Jobs"}/>
                     </ListItemLink>
 
                     <ListItemLink slag={"events"} handleClick={() => handleClick(Urls.events)}>

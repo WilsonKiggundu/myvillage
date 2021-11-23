@@ -5,6 +5,7 @@ import * as _ from 'lodash'
 import grey from "@material-ui/core/colors/grey";
 import {getStartups} from "../modules/profiles/startups/redux/startupsEndpoints";
 import {Urls} from "../routes/Urls";
+import {getJobs} from "../modules/jobs/redux/jobsEndpoints";
 
 const XAsyncTypeahead = (props) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,18 @@ const XAsyncTypeahead = (props) => {
             avatar: startup.avatar
         })))
 
+        // const jobsResponse = await getJobs({title: query});
+
+        // const {jobs} = jobsResponse.body
+        //
+        // options.push(...jobs.map(job => ({
+        //     label: `${job.title}`,
+        //     subtitle: job.category,
+        //     id: job.id,
+        //     type: 'Jobs',
+        //     avatar: job.company?.avatar
+        // })))
+
         setOptions(options)
         setIsLoading(false)
     };
@@ -57,6 +70,9 @@ const XAsyncTypeahead = (props) => {
             case 'People':
                 window.location.replace(Urls.profiles.onePerson(option.id))
                 break
+            case 'Jobs':
+                window.location.replace(Urls.jobs.singleJob(option.id))
+                break
             default:
                 return
         }
@@ -71,7 +87,7 @@ const XAsyncTypeahead = (props) => {
             minLength={3}
             onSearch={handleSearch}
             options={options}
-            placeholder="Search MyVillage"
+            placeholder={props.placeholder}
             renderMenu={(options, menuProps, state) => {
                 let index = 0;
                 const types = _.groupBy(options, 'type');

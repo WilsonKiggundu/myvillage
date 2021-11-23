@@ -42,7 +42,7 @@ const EventActionButtons = ({id, showLabels, iconSize, bgColor}: IProps) => {
 
                 Toast.success("Success")
 
-            } catch (error) {
+            } catch (error: any) {
                 Toast.error(error.toString())
             } finally {
 

@@ -111,7 +111,7 @@ export const printStdDatetime = (value: any): string => {
 export const strToDate = (str: string): Date | null => {
     try {
         return parseISO(str)
-    } catch (e) {
+    } catch (e: any) {
         return null
     }
 }
@@ -150,7 +150,7 @@ export const isThisYear = (str: string): boolean => {
 export const longDate = (date: any): string => {
     try{
         return format(parseISO(date), longDateFormat)
-    }catch (e){
+    }catch (e: any){
         return ""
     }
 }
@@ -158,7 +158,7 @@ export const longDate = (date: any): string => {
 export const timeFormat = (date: any): string => {
     try{
         return format(parseISO(date), "h:mma z")
-    }catch (e){
+    }catch (e: any){
         return ""
     }
 }

@@ -115,7 +115,7 @@ const CreateJob = (props: IProps) => {
             Toast.success("Job added successfully")
             // history.push(Urls.jobs.list)
 
-        } catch (e) {
+        } catch (e: any) {
             Toast.error("An error occurred while adding the job.", "bottom-center")
         } finally {
             // actions.resetForm()

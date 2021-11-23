@@ -63,7 +63,7 @@ const Person = ({match}: any) => {
                     payload: person
                 })
 
-            } catch (e) {
+            } catch (e: any) {
                 if (e.toString().includes('Unauthorized')) {
                     await userManager.signinRedirect({
                         state: window.location.pathname + window.location.search

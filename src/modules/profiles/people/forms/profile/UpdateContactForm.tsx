@@ -45,7 +45,7 @@ const UpdateContactForm = ({onClose, contact, profile}: IProps) => {
                 dispatch(addPersonContact(values))
             }
 
-        } catch (e) {
+        } catch (e: any) {
 
         } finally {
             actions.resetForm()

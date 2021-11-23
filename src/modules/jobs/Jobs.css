@@ -40,10 +40,10 @@
 
 .job-details-teaser{
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     position: relative;
-    max-height: 4.2em;
+    max-height: 7.2em;
     overflow: hidden;
     padding-right: 1em;
 }
@@ -92,6 +92,10 @@
 
 .apply-button{
     /*margin: 15px 15px 0 0;*/
+}
+
+.border-grid{
+    border: solid 1px #F1F1F1;
 }
 
 .CreateJob-title{
